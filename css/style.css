@@ -177,8 +177,8 @@ header .container {
   width: 770px;
   height: 600px; }
 /* line 44, ../sass/_splash.sass */
-header #slide-nav-left,
-header #slide-nav-right {
+header #slide-previous,
+header #slide-next {
   position: absolute;
   top: 230px;
   opacity: 0.75;
@@ -192,17 +192,17 @@ header #slide-nav-right {
   -o-transition-duration: 0.25s;
   transition-duration: 0.25s; }
   /* line 53, ../sass/_splash.sass */
-  header #slide-nav-left:hover,
-  header #slide-nav-right:hover {
+  header #slide-previous:hover,
+  header #slide-next:hover {
     opacity: 1; }
 /* line 56, ../sass/_splash.sass */
-header #slide-nav-left {
+header #slide-previous {
   left: 0; }
 /* line 59, ../sass/_splash.sass */
-header #slide-nav-right {
+header #slide-next {
   right: 0; }
 /* line 62, ../sass/_splash.sass */
-header .slide-nav-dots {
+header #slide-pager {
   position: absolute;
   bottom: 0;
   text-align: center;
@@ -210,33 +210,38 @@ header .slide-nav-dots {
   width: 100%;
   padding: 8px 0; }
   /* line 70, ../sass/_splash.sass */
-  header .slide-nav-dots li {
+  header #slide-pager a {
+    cursor: pointer;
     display: inline-block;
     width: 16px;
     height: 16px;
     margin: 0 4.5px;
-    background: url('../img/slideshow-dot-inactive.png?1362590309') center no-repeat; }
-    /* line 77, ../sass/_splash.sass */
-    header .slide-nav-dots li.active {
-      background: url('../img/slideshow-dot-active.png?1362590301') center no-repeat; }
-/* line 80, ../sass/_splash.sass */
+    background: url('../img/slideshow-pager-inactive.png?1362590309') center no-repeat;
+    text-indent: -10000px; }
+    /* line 79, ../sass/_splash.sass */
+    header #slide-pager a.activeSlide {
+      background: url('../img/slideshow-pager-active.png?1362590301') center no-repeat; }
+/* line 82, ../sass/_splash.sass */
 header .slides {
   margin: 0 auto;
   width: 700px;
   height: 560px;
   overflow: hidden; }
-  /* line 86, ../sass/_splash.sass */
+  /* line 88, ../sass/_splash.sass */
+  header .slides div {
+    width: 100%; }
+  /* line 91, ../sass/_splash.sass */
   header .slides p {
     line-height: 1.3;
     margin: 18px; }
-  /* line 90, ../sass/_splash.sass */
+  /* line 95, ../sass/_splash.sass */
   header .slides .instructions {
     font-size: 21.6px;
     font-weight: bold;
     letter-spacing: -1px;
     text-transform: uppercase; }
 
-/* line 97, ../sass/_splash.sass */
+/* line 102, ../sass/_splash.sass */
 .sign_up .button {
   background: url('../img/button.png?1362590258') center center no-repeat;
   color: white;
@@ -249,7 +254,7 @@ header .slides {
   text-transform: uppercase;
   width: 128px;
   height: 35px; }
-/* line 111, ../sass/_splash.sass */
+/* line 116, ../sass/_splash.sass */
 .sign_up .button.student:after {
   content: "";
   border-right: 1px solid #383838;
@@ -259,10 +264,10 @@ header .slides {
   width: 1px;
   height: 22px; }
 
-/* line 123, ../sass/_splash.sass */
+/* line 128, ../sass/_splash.sass */
 .learning_opportunities {
   background-image: url('../img/background-chalkboard-black.jpg?1362608262'); }
-  /* line 126, ../sass/_splash.sass */
+  /* line 131, ../sass/_splash.sass */
   .learning_opportunities .container {
     overflow: hidden;
     *zoom: 1;
@@ -271,11 +276,11 @@ header .slides {
     background-repeat: no-repeat;
     max-width: 1182px;
     min-height: 569px; }
-    /* line 134, ../sass/_splash.sass */
+    /* line 139, ../sass/_splash.sass */
     .learning_opportunities .container h2 {
       margin: 0 auto;
       width: 950px; }
-    /* line 141, ../sass/_splash.sass */
+    /* line 146, ../sass/_splash.sass */
     .learning_opportunities .container .organizations {
       overflow: hidden;
       *zoom: 1;
@@ -284,38 +289,38 @@ header .slides {
       padding: 0 15px;
       height: 520px;
       border-bottom: 1px solid #e9edec; }
-      /* line 149, ../sass/_splash.sass */
+      /* line 154, ../sass/_splash.sass */
       .learning_opportunities .container .organizations li {
         float: left;
         margin: 0 6px 6px; }
-        /* line 153, ../sass/_splash.sass */
+        /* line 158, ../sass/_splash.sass */
         .learning_opportunities .container .organizations li img {
           border: 1px solid #b5b5b6;
           width: 80px;
           height: 80px; }
 
-/* line 159, ../sass/_splash.sass */
+/* line 164, ../sass/_splash.sass */
 footer .logos {
   border-bottom: 1px solid white;
   padding-bottom: 27px;
   margin: 27px 0;
   text-align: center; }
-  /* line 165, ../sass/_splash.sass */
+  /* line 170, ../sass/_splash.sass */
   footer .logos img {
     margin: 0 27px;
     width: 110px;
     height: 110px; }
-/* line 174, ../sass/_splash.sass */
+/* line 179, ../sass/_splash.sass */
 footer .email_address {
   text-align: left; }
-  /* line 177, ../sass/_splash.sass */
+  /* line 182, ../sass/_splash.sass */
   footer .email_address a {
     color: white; }
-/* line 180, ../sass/_splash.sass */
+/* line 185, ../sass/_splash.sass */
 footer .copyright {
   text-align: right; }
 
-/* line 188, ../sass/_splash.sass */
+/* line 193, ../sass/_splash.sass */
 section h2:before, section h2:after,
 footer h2:before,
 footer h2:after {
@@ -325,33 +330,33 @@ footer h2:after {
   border-bottom-color: #e9edec;
   position: absolute;
   top: 50%; }
-/* line 197, ../sass/_splash.sass */
+/* line 202, ../sass/_splash.sass */
 section h2:before,
 footer h2:before {
   left: 0; }
-/* line 200, ../sass/_splash.sass */
+/* line 205, ../sass/_splash.sass */
 section h2:after,
 footer h2:after {
   right: 0; }
 
-/* line 206, ../sass/_splash.sass */
+/* line 211, ../sass/_splash.sass */
 .sign_up h2:before, .sign_up h2:after,
 .join_us h2:before,
 .join_us h2:after {
   border-bottom-color: #90928f; }
 
-/* line 211, ../sass/_splash.sass */
+/* line 216, ../sass/_splash.sass */
 .sign_up h2:before, .sign_up h2:after {
   width: 38%; }
 
-/* line 216, ../sass/_splash.sass */
+/* line 221, ../sass/_splash.sass */
 .learning_opportunities h2:before, .learning_opportunities h2:after {
   width: 30%; }
 
-/* line 221, ../sass/_splash.sass */
+/* line 226, ../sass/_splash.sass */
 .join_us h2:before, .join_us h2:after {
   width: 42%; }
 
-/* line 226, ../sass/_splash.sass */
+/* line 231, ../sass/_splash.sass */
 footer h2:before, footer h2:after {
   width: 40%; }

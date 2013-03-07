@@ -24,16 +24,9 @@
 
 <header role="banner">
   <div class="container">
-    <img id="slide-nav-left" src="img/slideshow-arrow-left.png">
-    <img id="slide-nav-right" src="img/slideshow-arrow-right.png">
-    <div class="slide-nav-dots">
-      <ul>
-        <li id="slide-nav-1"></li>
-        <li id="slide-nav-2"></li>
-        <li id="slide-nav-3"></li>
-        <li id="slide-nav-4"></li>
-        <li id="slide-nav-5"></li>
-    </div>
+    <img id="slide-previous" src="img/slideshow-previous.png">
+    <img id="slide-next" src="img/slideshow-next.png">
+    <div id="slide-pager"></div>
 
     <div class="slides">
       <div class="slide" id="slide-1">
@@ -145,7 +138,20 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="js/script.js"></script>
+
+<script src="js/vendor/jquery.cycle.all.js"></script>  
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.slides').cycle({
+    fx:     'scrollHorz',
+    speed:  'fast',
+    timeout: 0,
+    next:   '#slide-next',
+    prev:   '#slide-previous',
+    pager:  '#slide-pager'
+  });
+});
+</script>
 
 <script>
   var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
