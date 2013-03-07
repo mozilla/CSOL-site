@@ -1,0 +1,65 @@
+*
+  @include box-sizing(border-box)
+  position: relative
+
+a
+  color: inherit
+
+input
+  margin: 0
+
+html
+  font-family: $font-family
+  font-size: $font-size
+  line-height: $line
+  color: $text-color-dark
+  // Prevent abrupt quality changes during transitions.
+  -webkit-font-smoothing: antialiased
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+  font-weight: bold
+  line-height: 1
+  text-transform: uppercase
+
+h1
+  font-size: $line*2
+
+h2
+  font-size: $line*1.25
+  letter-spacing: -$line/11
+  margin-bottom: $line
+
+p
+  margin: $line
+
+  &.emphasis
+    font-size: 20px
+    font-weight: bold
+
+strong
+  font-weight: bold
+
+em
+  font-style: italic
+
+a
+  color: $text-color-green
+      
+header,
+footer,
+section
+  padding: $line*1.75 0 $line*2
+  text-align: center
+
+.container
+  margin: 0 auto
+  max-width: $desktop
+
+.half
+  float: left
+  width: 50%

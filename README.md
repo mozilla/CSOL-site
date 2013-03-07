@@ -1,4 +1,3 @@
-CSOL-site
-=========
+# Chicago Summer of Learning
 
-Chicago Summer of Learning website development
+The website for the Chicago Summer of Learning, developed by Ocupop and Mozilla.
