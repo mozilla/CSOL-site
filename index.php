@@ -150,6 +150,12 @@ $(document).ready(function(){
     prev:   '#slide-previous',
     pager:  '#slide-pager'
   });
+
+  // Arrow keys navigate slideshow.
+  $(document).keydown(function(e){ 
+    if(e.which == 37){ $('#slide-previous').click();} 
+    if(e.which == 39){ $('#slide-next').click();} 
+  }); 
 });
 </script>
 
