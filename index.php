@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Chicago Summer of Learning | Mozilla</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
+  <script type="text/javascript" src="//use.typekit.net/wkk6kxn.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<!--[if lt IE 7]>
+  <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<header role="banner">
+  <div class="container">
+    <div class="slide-nav left"></div>
+    <div class="slide-nav right"></div>
+    <div class="slide-nav dots">
+      <ul>
+        <li id="slide-nav-1"></li>
+        <li id="slide-nav-2"></li>
+        <li id="slide-nav-3"></li>
+        <li id="slide-nav-4"></li>
+        <li id="slide-nav-5"></li>
+    </div>
+
+    <div class="slides">
+      <div class="slide" id="slide-1">
+        <img src="img/slideshow-slide1.png">
+        <p><strong><em>Learning happens everywhere in the city</em></strong>&mdash;in libraries, parks, museums, local programs, schools, and beyond. This summer, Mayor Emanuel is challenging the entire city of Chicago to come together to offer exciting and engaging opportunities for students&mdash;particularly in science, technology, engineering, arts, and math. School stops for the summer, but learning never should.</p>
+        <p class="instructions">Click right to see how it works!</p>
+      </div>
+
+      <div class="slide" id="slide-2">
+        <img src="img/slideshow-slide2.png">
+        <p>Participants learn over the summer with local programs (i.e.: zoo, library, parks) and earn badges along the way.</p>
+      </div>
+
+      <div class="slide" id="slide-3">
+        <img src="img/slideshow-slide3.png">
+        <p>The badges they earn roll up into city-level badges.</p>
+      </div>
+
+      <div class="slide" id="slide-4">
+        <img src="img/slideshow-slide4.png">
+        <p>The city-level badges unlock access to the challenges where learners can make projects and learn more skills, and then showcase their work at a set of events in Chicago at the end of the summer.</p>
+      </div>
+
+      <div class="slide" id="slide-5">
+        <img src="img/slideshow-slide5.png">
+        <p>All of that badge info&mdash;everything from the initial organization badges to the top-level challenges and badges&mdash;feeds back into the schools in the fall.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sign_up">
+  <div class="container">
+    <h2>Sign Up Now!</h2>
+
+    <a href="#" class="button student">Student</a>
+    <a href="#" class="button parent">Parent</a>
+
+    <p>With you help, we&rsquo;ll launch the largest citywide summer learning campaign in the nation.</p>
+  </div>
+</section>
+
+<section class="learning_opportunities">
+  <div class="container">
+    <h2>Learning Opportunities</h2>
+
+    <p>The following organizations will offer engaging opportunities for kids of all ages this summer.</p>
+
+    <div class="organizations">
+      <ul>
+        <li><img src="img/organization_logos/after_school_matters.jpg" alt="After School Matters" title="After School Matters"></li>
+        <li><img src="img/organization_logos/art_institute_chicago.jpg" alt="Art Institute Chicago" title="Art Institute Chicago"></li>
+        <li><img src="img/organization_logos/catholic_charities.jpg" alt="Catholic Charities" title="Catholic Charities"></li>
+        <li><img src="img/organization_logos/chess_academy.jpg" alt="Chess Academy" title="Chess Academy"></li>
+        <li><img src="img/organization_logos/chicago_architecture_foundation.jpg" alt="Chicago Architecture Foundation" title="Chicago Architecture Foundation"></li>
+        <li><img src="img/organization_logos/chicago_botanic_garden.jpg" alt="Chicago Botanic Garden" title="Chicago Botanic Garden"></li>
+        <li><img src="img/organization_logos/chicago_childrens_museum.jpg" alt="Chicago Childrens Museum" title="Chicago Childrens Museum"></li>
+        <li><img src="img/organization_logos/chicago_history_museum.jpg" alt="Chicago History Museum" title="Chicago History Museum"></li>
+        <li><img src="img/organization_logos/chicago_park_district.jpg" alt="Chicago Park District" title="Chicago Park District"></li>
+        <li><img src="img/organization_logos/chicago_pre_college_science.jpg" alt="Chicago Pre College Science" title="Chicago Pre College Science"></li>
+        <li><img src="img/organization_logos/chicago_public_library.jpg" alt="Chicago Public Library" title="Chicago Public Library"></li>
+        <li><img src="img/organization_logos/chicago_public_schools.jpg" alt="Chicago Public Schools" title="Chicago Public Schools"></li>
+        <li><img src="img/organization_logos/chicago_shakespeare_theater.jpg" alt="chicago Shakespeare Theater" title="Chicago Shakespeare Theater"></li>
+        <li><img src="img/organization_logos/city_of_chicago.jpg" alt="City of Chicago" title="City of Chicago"></li>
+        <li><img src="img/organization_logos/common_threads.jpg" alt="Common Threads" title="Common Threads"></li>
+        <li><img src="img/organization_logos/devry_university.jpg" alt="Devry University" title="Devry University"></li>
+        <li><img src="img/organization_logos/frank_lloyd_wright.jpg" alt="frank Lloyd Wright" title="Drank Lloyd Wright"></li>
+        <li><img src="img/organization_logos/girls_in_the_game.jpg" alt="Girls in the Game" title="Girls in the Game"></li>
+        <li><img src="img/organization_logos/green_apple_campus.jpg" alt="Green Apple Campus" title="Green Apple Campus"></li>
+        <li><img src="img/organization_logos/iit_boeing_scholars_academy.jpg" alt="IIT Boeing Scholars Academy" title="IIT Boeing Scholars Academy"></li>
+        <li><img src="img/organization_logos/level_up.jpg" alt="Level Up" title="Level Up"></li>
+        <li><img src="img/organization_logos/lincoln_park_zoo.jpg" alt="Lincoln Park Zoo" title="Lincoln Park Zoo"></li>
+        <li><img src="img/organization_logos/mindful_practices.jpg" alt="Mindful Practices" title="Mindful Practices"></li>
+        <li><img src="img/organization_logos/museum_of_science_industry.jpg" alt="Museum of Science Industry" title="Museum of Science Industry"></li>
+        <li><img src="img/organization_logos/smart_museum_of_art.jpg" alt="Smart Museum of Art" title="Smart Museum of Art"></li>
+        <li><img src="img/organization_logos/summer_advantage_usa.jpg" alt="Summer Advantage USA" title="Summer Advantage USA"></li>
+        <li><img src="img/organization_logos/the_field_museum.jpg" alt="The Field Museum" title="The Field Museum"></li>
+        <li><img src="img/organization_logos/working_in_the_schools.jpg" alt="Working in the Schools" title="Working in the Schools"></li>
+        <li><img src="img/organization_logos/yollocalli_arts_reach.jpg" alt="Yollocalli Arts Reach" title="Yollocalli Arts Reach"></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="join_us">
+  <div class="container">
+    <h2>Join Us!</h2>
+    <p>Does your organization offer learning opportunities for students of all ages? We&rsquo;re designing a citywide digital badge system to showcase student learning. We have developed over 150 badges with over 50 organizations already. Will you join us? If you are interested in having your organization participate, it&rsquo;s not too late. Email <a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a> with the subject &lsquo;Organization&rsquo; today.</p>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="container">
+    <h2>Our Vision</h2>
+    <p>Every child across the city will have access to high-quality learning opportunities over the summer for a full year of learning opportunities.</p>
+    <div class="logos">
+      <img src="img/footer-logo-city_of_chicago.png" alt="City of Chicago" title="City of Chicago">
+      <img src="img/footer-logo-macarthur_foundation.png" alt="MacArthur Foundation" title="MacArthur Foundation">
+      <img src="img/footer-logo-mozilla.png" alt="Mozilla" title="Mozilla">
+    </div>
+    <div class="email_address">
+      <a href="mailto:summeroflearning@cityofchicago.org?subject=Organization">summeroflearning@cityofchicago.org</a>
+    </div>
+    <div class="copyright">
+      &copy; 2013
+    </div>
+  </div>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="js/script.js"></script>
+
+<script>
+  var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+  (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+  s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+</body>
+</html>

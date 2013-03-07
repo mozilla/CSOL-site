@@ -1,0 +1,183 @@
+// Shared
+
+header,
+footer,
+.learning_opportunities
+  background-size: cover
+  color: $text-color-light
+
+header,
+footer
+  background-image: image-url('background-chalkboard-green.jpg')
+
+section .container
+  &:after // bottom border for each section
+    content: ""
+    border-bottom-width: 1px
+    border-bottom-style: solid
+    position: absolute
+    width: 100%
+    height: 1px
+
+.sign_up,
+.join_us
+  background-image: image-url('background-pattern.png')
+  box-shadow: 0 0 100px 0 #000
+  z-index: 2
+
+  .container
+    &:after
+      border-bottom-color: $border-color-dark
+
+.learning_opportunities .container
+  &:after
+    border: 0
+
+
+// Sections
+
+header
+  .instructions
+    font-size: $font-size*1.2
+    font-weight: bold
+    letter-spacing: -1px
+    text-transform: uppercase
+
+  .slides
+    width: 600px
+    height: 600px
+    overflow: hidden
+
+.sign_up
+  .button
+    background: image-url('button.png') center center no-repeat
+    color: $text-color-light
+    display: inline-block
+    font-weight: bold
+    margin: 0 $line/2
+    padding: $line/7 0
+    text-align: center
+    text-decoration: none
+    text-transform: uppercase
+    width: 128px
+    height: 35px
+
+  .button.student
+    &:after
+      content: ""
+      border-right: 1px solid $text-color-dark
+      position: absolute
+      top: 16%
+      right: -17px
+      width: 1px
+      height: 22px
+
+  p
+    @extend .emphasis
+
+.learning_opportunities
+  background-image: image-url('background-chalkboard-black.jpg')
+
+  .container
+    @include clearfix
+    background-image: image-url('background-clipped_paper.png')
+    background-position: center 90px
+    background-repeat: no-repeat
+    max-width: 1182px
+    min-height: 569px
+
+    h2
+      margin: 0 auto
+      width: $desktop
+
+    p
+      @extend .emphasis
+
+    .organizations
+      @include clearfix
+      margin: 60px auto 0
+      width: 950px
+      padding: 0 15px
+      height: 520px
+      border-bottom: 1px solid $border-color-light
+
+      li
+        float: left
+        margin: 0 6px 6px
+
+        img
+          border: 1px solid #b5b5b6
+          width: 80px
+          height: 80px
+
+footer
+  .logos
+    border-bottom: 1px solid #fff
+    padding-bottom: $line
+    margin: $line 0
+    text-align: center
+
+    img
+      margin: 0 $line
+      width: 110px
+      height: 110px
+
+  .email_address,
+  .copyright
+    @extend .half
+
+  .email_address
+    text-align: left
+
+    a
+      color: $text-color-light
+
+  .copyright
+    text-align: right
+
+
+// Decorative lines for headings
+section,
+footer
+  h2
+    &:before,
+    &:after
+      content: ""
+      border-bottom-width: 1px
+      border-bottom-style: solid
+      border-bottom-color: $border-color-light
+      position: absolute
+      top: 50%
+    
+    &:before
+      left: 0
+
+    &:after
+      right: 0
+
+.sign_up,
+.join_us
+  h2
+    &:before,
+    &:after
+      border-bottom-color: $border-color-dark
+
+.sign_up h2
+  &:before,
+  &:after
+    width: 38%
+
+.learning_opportunities h2
+  &:before,
+  &:after
+    width: 30%
+
+.join_us h2
+  &:before,
+  &:after
+    width: 42%
+
+footer h2
+  &:before,
+  &:after
+    width: 40%
