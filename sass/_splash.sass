@@ -37,16 +37,61 @@ section .container
 // Sections
 
 header
-  .instructions
-    font-size: $font-size*1.2
-    font-weight: bold
-    letter-spacing: -1px
-    text-transform: uppercase
+  .container
+    width: 770px
+    height: 600px
+
+  #slide-nav-left,
+  #slide-nav-right
+    position: absolute
+    top: 230px
+    opacity: .75
+    cursor: pointer
+    @include transition-property(opacity)
+    @include transition-duration(.25s)
+
+    &:hover
+      opacity: 1
+
+  #slide-nav-left
+    left: 0
+
+  #slide-nav-right
+    right: 0
+
+  .slide-nav-dots
+    position: absolute
+    bottom: 0
+    text-align: center
+    height: 32px
+    width: 100%
+    padding: 8px 0
+
+    li
+      display: inline-block
+      width: 16px
+      height: 16px
+      margin: 0 $line/6
+      background: image-url('slideshow-dot-inactive.png') center no-repeat
+
+      &.active
+        background: image-url('slideshow-dot-active.png') center no-repeat
 
   .slides
-    width: 600px
-    height: 600px
+    margin: 0 auto
+    width: 700px
+    height: 560px
     overflow: hidden
+
+    p
+      line-height: 1.3
+      margin: $line/1.5
+
+    .instructions
+      font-size: $font-size*1.2
+      font-weight: bold
+      letter-spacing: -1px
+      text-transform: uppercase
 
 .sign_up
   .button

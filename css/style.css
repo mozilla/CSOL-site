@@ -136,19 +136,19 @@ footer .copyright {
   float: left;
   width: 50%; }
 
-/* line 3, ../sass/splash.sass */
+/* line 3, ../sass/_splash.sass */
 header,
 footer,
 .learning_opportunities {
   background-size: cover;
   color: white; }
 
-/* line 9, ../sass/splash.sass */
+/* line 9, ../sass/_splash.sass */
 header,
 footer {
   background-image: url('../img/background-chalkboard-green.jpg?1362608272'); }
 
-/* line 14, ../sass/splash.sass */
+/* line 14, ../sass/_splash.sass */
 section .container:after {
   content: "";
   border-bottom-width: 1px;
@@ -157,34 +157,86 @@ section .container:after {
   width: 100%;
   height: 1px; }
 
-/* line 22, ../sass/splash.sass */
+/* line 22, ../sass/_splash.sass */
 .sign_up,
 .join_us {
   background-image: url('../img/background-pattern.png?1351255824');
   box-shadow: 0 0 100px 0 black;
   z-index: 2; }
-  /* line 29, ../sass/splash.sass */
+  /* line 29, ../sass/_splash.sass */
   .sign_up .container:after,
   .join_us .container:after {
     border-bottom-color: #90928f; }
 
-/* line 33, ../sass/splash.sass */
+/* line 33, ../sass/_splash.sass */
 .learning_opportunities .container:after {
   border: 0; }
 
-/* line 40, ../sass/splash.sass */
-header .instructions {
-  font-size: 21.6px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  text-transform: uppercase; }
-/* line 46, ../sass/splash.sass */
+/* line 40, ../sass/_splash.sass */
+header .container {
+  width: 770px;
+  height: 600px; }
+/* line 44, ../sass/_splash.sass */
+header #slide-nav-left,
+header #slide-nav-right {
+  position: absolute;
+  top: 230px;
+  opacity: 0.75;
+  cursor: pointer;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  -o-transition-duration: 0.25s;
+  transition-duration: 0.25s; }
+  /* line 53, ../sass/_splash.sass */
+  header #slide-nav-left:hover,
+  header #slide-nav-right:hover {
+    opacity: 1; }
+/* line 56, ../sass/_splash.sass */
+header #slide-nav-left {
+  left: 0; }
+/* line 59, ../sass/_splash.sass */
+header #slide-nav-right {
+  right: 0; }
+/* line 62, ../sass/_splash.sass */
+header .slide-nav-dots {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  height: 32px;
+  width: 100%;
+  padding: 8px 0; }
+  /* line 70, ../sass/_splash.sass */
+  header .slide-nav-dots li {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0 4.5px;
+    background: url('../img/slideshow-dot-inactive.png?1362590309') center no-repeat; }
+    /* line 77, ../sass/_splash.sass */
+    header .slide-nav-dots li.active {
+      background: url('../img/slideshow-dot-active.png?1362590301') center no-repeat; }
+/* line 80, ../sass/_splash.sass */
 header .slides {
-  width: 600px;
-  height: 600px;
+  margin: 0 auto;
+  width: 700px;
+  height: 560px;
   overflow: hidden; }
+  /* line 86, ../sass/_splash.sass */
+  header .slides p {
+    line-height: 1.3;
+    margin: 18px; }
+  /* line 90, ../sass/_splash.sass */
+  header .slides .instructions {
+    font-size: 21.6px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    text-transform: uppercase; }
 
-/* line 52, ../sass/splash.sass */
+/* line 97, ../sass/_splash.sass */
 .sign_up .button {
   background: url('../img/button.png?1362590258') center center no-repeat;
   color: white;
@@ -197,7 +249,7 @@ header .slides {
   text-transform: uppercase;
   width: 128px;
   height: 35px; }
-/* line 66, ../sass/splash.sass */
+/* line 111, ../sass/_splash.sass */
 .sign_up .button.student:after {
   content: "";
   border-right: 1px solid #383838;
@@ -207,10 +259,10 @@ header .slides {
   width: 1px;
   height: 22px; }
 
-/* line 78, ../sass/splash.sass */
+/* line 123, ../sass/_splash.sass */
 .learning_opportunities {
   background-image: url('../img/background-chalkboard-black.jpg?1362608262'); }
-  /* line 81, ../sass/splash.sass */
+  /* line 126, ../sass/_splash.sass */
   .learning_opportunities .container {
     overflow: hidden;
     *zoom: 1;
@@ -219,11 +271,11 @@ header .slides {
     background-repeat: no-repeat;
     max-width: 1182px;
     min-height: 569px; }
-    /* line 89, ../sass/splash.sass */
+    /* line 134, ../sass/_splash.sass */
     .learning_opportunities .container h2 {
       margin: 0 auto;
       width: 950px; }
-    /* line 96, ../sass/splash.sass */
+    /* line 141, ../sass/_splash.sass */
     .learning_opportunities .container .organizations {
       overflow: hidden;
       *zoom: 1;
@@ -232,38 +284,38 @@ header .slides {
       padding: 0 15px;
       height: 520px;
       border-bottom: 1px solid #e9edec; }
-      /* line 104, ../sass/splash.sass */
+      /* line 149, ../sass/_splash.sass */
       .learning_opportunities .container .organizations li {
         float: left;
         margin: 0 6px 6px; }
-        /* line 108, ../sass/splash.sass */
+        /* line 153, ../sass/_splash.sass */
         .learning_opportunities .container .organizations li img {
           border: 1px solid #b5b5b6;
           width: 80px;
           height: 80px; }
 
-/* line 114, ../sass/splash.sass */
+/* line 159, ../sass/_splash.sass */
 footer .logos {
   border-bottom: 1px solid white;
   padding-bottom: 27px;
   margin: 27px 0;
   text-align: center; }
-  /* line 120, ../sass/splash.sass */
+  /* line 165, ../sass/_splash.sass */
   footer .logos img {
     margin: 0 27px;
     width: 110px;
     height: 110px; }
-/* line 129, ../sass/splash.sass */
+/* line 174, ../sass/_splash.sass */
 footer .email_address {
   text-align: left; }
-  /* line 132, ../sass/splash.sass */
+  /* line 177, ../sass/_splash.sass */
   footer .email_address a {
     color: white; }
-/* line 135, ../sass/splash.sass */
+/* line 180, ../sass/_splash.sass */
 footer .copyright {
   text-align: right; }
 
-/* line 143, ../sass/splash.sass */
+/* line 188, ../sass/_splash.sass */
 section h2:before, section h2:after,
 footer h2:before,
 footer h2:after {
@@ -273,33 +325,33 @@ footer h2:after {
   border-bottom-color: #e9edec;
   position: absolute;
   top: 50%; }
-/* line 152, ../sass/splash.sass */
+/* line 197, ../sass/_splash.sass */
 section h2:before,
 footer h2:before {
   left: 0; }
-/* line 155, ../sass/splash.sass */
+/* line 200, ../sass/_splash.sass */
 section h2:after,
 footer h2:after {
   right: 0; }
 
-/* line 161, ../sass/splash.sass */
+/* line 206, ../sass/_splash.sass */
 .sign_up h2:before, .sign_up h2:after,
 .join_us h2:before,
 .join_us h2:after {
   border-bottom-color: #90928f; }
 
-/* line 166, ../sass/splash.sass */
+/* line 211, ../sass/_splash.sass */
 .sign_up h2:before, .sign_up h2:after {
   width: 38%; }
 
-/* line 171, ../sass/splash.sass */
+/* line 216, ../sass/_splash.sass */
 .learning_opportunities h2:before, .learning_opportunities h2:after {
   width: 30%; }
 
-/* line 176, ../sass/splash.sass */
+/* line 221, ../sass/_splash.sass */
 .join_us h2:before, .join_us h2:after {
   width: 42%; }
 
-/* line 181, ../sass/splash.sass */
+/* line 226, ../sass/_splash.sass */
 footer h2:before, footer h2:after {
   width: 40%; }

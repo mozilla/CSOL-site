@@ -24,9 +24,9 @@
 
 <header role="banner">
   <div class="container">
-    <div class="slide-nav left"></div>
-    <div class="slide-nav right"></div>
-    <div class="slide-nav dots">
+    <img id="slide-nav-left" src="img/slideshow-arrow-left.png">
+    <img id="slide-nav-right" src="img/slideshow-arrow-right.png">
+    <div class="slide-nav-dots">
       <ul>
         <li id="slide-nav-1"></li>
         <li id="slide-nav-2"></li>
