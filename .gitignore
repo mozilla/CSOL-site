@@ -13,3 +13,8 @@ Thumbs.db
 
 # Project files.
 RD_2/
+
+.#*
+*log
+*~
+*#*

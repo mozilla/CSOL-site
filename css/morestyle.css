@@ -1,0 +1,19 @@
+#badges-101 .button {
+    background-color: #1D94E4;
+    background-image: -moz-linear-gradient(center top , #1D94E4 0%, #006DCA 100%);
+    border-bottom: medium none;
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1), 0 -2px 0 0 rgba(0, 0, 0, 0.1) inset;
+    color: white;
+    cursor: pointer;
+    display: block;
+    float: left;
+    letter-spacing: -0.25px;
+    padding: 0.25em 2em;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    transition-delay: 0s;
+    transition-duration: 0.25s;
+    transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+}
