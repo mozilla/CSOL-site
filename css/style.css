@@ -155,7 +155,8 @@ section .container:after {
   border-bottom-style: solid;
   position: absolute;
   width: 100%;
-  height: 1px; }
+  height: 1px;
+  left: 0; }
 
 /* line 22, ../sass/_splash.sass */
 .sign_up,
