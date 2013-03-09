@@ -1,6 +1,27 @@
 /* Badges 101 lesson & quiz slideshow */
+@font-face {
+	font-family: MetaWebPro-Black;
+	src: url(../fonts/MetaWebPro-Black.woff) format('woff');
+}
+
 #badges-101 {
-  display: none; 
+  display: none;
+  font: normal 16px Georgia,"Times New Roman",Times,serif;
+  color: #656565;
+}
+
+#badges-101,
+#badges-101 section {
+  padding: 0;
+  text-align: left;
+}
+
+#badges-101 section {
+  position: static;
+}
+
+#badges-101 p {
+  margin: 1em 0;
 }
 
   #slides .pagination {
@@ -20,7 +41,7 @@
     width:12px;
     height:0;
     padding-top:12px;
-    background-image:url(../img/slides/pagination.png);
+    background-image:url(../img/quiz/pagination.png);
     background-position:0 0;
     float:left;
     overflow:hidden;
@@ -29,34 +50,16 @@
   #slides .pagination li.current a {
     background-position:0 -12px;
   }
-  
-    .slides_container {            
+
+    .slides_container {
       width:640px;
-      height:420px;                
+      height:420px;
     }
     .slides_container div {
       width:640px;
       height:420px;
       display:block;
     }
-
-  #badges-101 .button {
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-  }
-
-  #badges-101 .next {
-    position: absolute;
-    bottom: 10px; 
-    right: 20px;
-  }
-
-  #badges-101 #intro .next {
-    float: none;
-    position: static;
-    margin: 0 auto;
-  }
 
   #badges-101 #intro p {
     margin: 30px 0;
@@ -74,48 +77,10 @@
     overflow: hidden;
   }
 
-  #badges-101 .true {
-    float: left;
-    background-color: #81BC2E; 
-    /* IE10 */ 
-    background-image: -ms-linear-gradient(top, #81BC2E 0%, #659C28 100%);
-    /* Mozilla Firefox */ 
-    background-image: -moz-linear-gradient(top, #81BC2E 0%, #659C28 100%);
-    /* Opera */ 
-    background-image: -o-linear-gradient(top, #81BC2E 0%, #659C28 100%);
-    /* Webkit (Safari/Chrome 10) */ 
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #81BC2E), color-stop(1, #659C28));
-    /* Webkit (Chrome 11+) */ 
-    background-image: -webkit-linear-gradient(top, #81BC2E 0%, #659C28 100%);
-    /* Proposed W3C Markup */ 
-    background-image: linear-gradient(top, #81BC2E 0%, #659C28 100%);
-  }
-  #badges-101 .true:after {
-    content: "";
-  }
-
-  #badges-101 .false {
-    float: right;
-    background-color: #D63A2B; 
-    /* IE10 */ 
-    background-image: -ms-linear-gradient(top, #E55927 0%, #D63A2B 100%);
-    /* Mozilla Firefox */ 
-    background-image: -moz-linear-gradient(top, #E55927 0%, #D63A2B 100%);
-    /* Opera */ 
-    background-image: -o-linear-gradient(top, #E55927 0%, #D63A2B 100%);
-    /* Webkit (Safari/Chrome 10) */ 
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E55927), color-stop(1, #D63A2B));
-    /* Webkit (Chrome 11+) */ 
-    background-image: -webkit-linear-gradient(top, #E55927 0%, #D63A2B 100%);
-    /* Proposed W3C Markup */ 
-    background-image: linear-gradient(top, #E55927 0%, #D63A2B 100%);
-  }
-  #badges-101 .false:after {
-    content: "";
-  }
-
   #badges-101 #intro,
-  #badges-101 #final {
+  #badges-101 #intro section,
+  #badges-101 #final,
+  #badges-101 #final section {
     text-align: center;
   }
 
@@ -148,7 +113,7 @@
 
   #badges-101 .lesson p {
     font-size: 18px;
-    margin: 80px;
+    margin: 40px;
   }
 
   #badges-101 .quiz {
@@ -181,7 +146,7 @@
   }
 
   #badges-101 #intro h1 {
-    background: url('/img/index/101badge.png') no-repeat scroll center top transparent;
+    background: url(../img/quiz/101badge.png) no-repeat scroll center top transparent;
     padding-top: 145px;
   }
 
@@ -203,7 +168,7 @@
   }
 
   #badges-101 #final .backpack {
-    background: url('/img/index/backpack.png') no-repeat scroll center top transparent;
+    background: url(../img/quiz/backpack.png) no-repeat scroll center top transparent;
     display: block;
     padding-top: 90px;
     margin-top: 30px;
@@ -212,10 +177,143 @@
   }
 
   #badges-101 #final .navigator {
-    background: url('/img/index/navigatorbadge.png') no-repeat scroll center top transparent;
+    background: url(../img/quiz/navigatorbadge.png) no-repeat scroll center top transparent;
     display: block;
     padding-top: 90px;
     margin-top: 30px;
     float: right;
     width: 168px;
   }
+
+#badges-101 .button {
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+  float: left;
+  display: block;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
+  letter-spacing: -0.25px;
+  background-color: #1D94E4;
+  text-align: center;
+  color: white;
+  border-bottom: none;
+  cursor: pointer;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
+  background-image: -ms-linear-gradient(top, #1d94e4 0%, #006dca 100%);
+  background-image: -moz-linear-gradient(top, #1d94e4 0%, #006dca 100%);
+  background-image: -o-linear-gradient(top, #1d94e4 0%, #006dca 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1d94e4), color-stop(1, #006dca));
+  background-image: -webkit-linear-gradient(top, #1d94e4 0%, #006dca 100%);
+  background-image: linear-gradient(top, #1d94e4 0%, #006dca 100%);
+  -webkit-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -webkit-transition-duration: 0.25s;
+  -webkit-transition-delay: 0s;
+  -moz-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -moz-transition-duration: 0.25s;
+  -moz-transition-delay: 0s;
+  transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+
+#badges-101 .button:hover,
+#badges-101 .button:focus {
+  -webkit-box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12 px 24px 2px rgba(255, 255, 255, 0.2);
+  -moz-box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 2px rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1), inset 0px -2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 2px rgba(255, 255, 255, 0.2);
+  -webkit-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -webkit-transition-duration: 0.25s;
+  -webkit-transition-delay: 0s;
+  -moz-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -moz-transition-duration: 0.25s;
+  -moz-transition-delay: 0s;
+  transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+
+#badges-101 .button:active {
+  -webkit-box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  -webkit-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -webkit-transition-duration: 0.25s;
+  -webkit-transition-delay: 0s;
+  -moz-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  -moz-transition-duration: 0.25s;
+  -moz-transition-delay: 0s;
+  transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+
+#badges-101 .button:link,
+#badges-101 .button:visited,
+#badges-101 .button:focus,
+#badges-101 .button:hover,
+#badges-101 .button:active {
+  color: #fff;
+  text-decoration: none;
+}
+
+#badges-101 .button:after {
+  content: ' ❯';
+}
+
+#badges-101 .next {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
+#badges-101 #intro .next {
+  float: none;
+  position: static;
+  margin: 0 auto;
+}
+
+#badges-101 .true {
+  float: left;
+  background-color: #81BC2E;
+  /* IE10 */
+  background-image: -ms-linear-gradient(top, #81BC2E 0%, #659C28 100%);
+  /* Mozilla Firefox */
+  background-image: -moz-linear-gradient(top, #81BC2E 0%, #659C28 100%);
+  /* Opera */
+  background-image: -o-linear-gradient(top, #81BC2E 0%, #659C28 100%);
+  /* Webkit (Safari/Chrome 10) */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #81BC2E), color-stop(1, #659C28));
+  /* Webkit (Chrome 11+) */
+  background-image: -webkit-linear-gradient(top, #81BC2E 0%, #659C28 100%);
+  /* Proposed W3C Markup */
+  background-image: linear-gradient(top, #81BC2E 0%, #659C28 100%);
+}
+
+#badges-101 .false {
+  float: right;
+  background-color: #D63A2B;
+  /* IE10 */
+  background-image: -ms-linear-gradient(top, #E55927 0%, #D63A2B 100%);
+  /* Mozilla Firefox */
+  background-image: -moz-linear-gradient(top, #E55927 0%, #D63A2B 100%);
+  /* Opera */
+  background-image: -o-linear-gradient(top, #E55927 0%, #D63A2B 100%);
+  /* Webkit (Safari/Chrome 10) */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E55927), color-stop(1, #D63A2B));
+  /* Webkit (Chrome 11+) */
+  background-image: -webkit-linear-gradient(top, #E55927 0%, #D63A2B 100%);
+  /* Proposed W3C Markup */
+  background-image: linear-gradient(top, #E55927 0%, #D63A2B 100%);
+}
+
+#badges-101 .true:after,
+#badges-101 .false:after {
+  content: "";
+}
