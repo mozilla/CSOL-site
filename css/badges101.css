@@ -163,6 +163,7 @@
 
   #badges-101 .question {
     text-align: center;
+    font: sans-serif;
   }
 
   #badges-101 .discussion {
@@ -174,7 +175,7 @@
   }
 
   #badges-101 h1 {
-    font: normal 60px/56px "MetaWebPro-Black";
+    font: normal 50px/46px sans-serif;
     text-transform: uppercase;
     display: block;
     margin: 0;

@@ -9,6 +9,7 @@
     $('.quiz .discussion').hide();
     /* For each quiz slide... */
     $('.quiz').each(function(){
+
       var discussion = $('.discussion', this);
       /* Show the discussion when they click the right answer */
       $('.options', this).one('click', function(evt){
