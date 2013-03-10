@@ -53,15 +53,15 @@
             "recipient": hashedEmail,
             "badge": {
               "version": "0.5.0",
-              "name": "Badges 101",
+              "name": "Chicago Summer of Learning Badges 101",
               "image": $("#badges101")[0].src,
               "description": "You really get badges!",
-              "criteria": "http://badges-101.openbadges.org/",
+              "criteria": "http://www.chicagosummeroflearning.org/",
               "issuer": {
-                "origin": "http://www.openbadges.org",
-                "name": "Open Badges",
-                "org": "Mozilla Foundation",
-                "contact": "hai2u@openbadges.org"
+                "origin": "http://www.chicagosummeroflearning.org",
+                "name": "Chicago Summer of Learning",
+                "org": "City of Chicago",
+                "contact": "summeroflearning@cityofchicago.org"
               }
             }
           }
