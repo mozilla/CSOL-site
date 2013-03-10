@@ -1,5 +1,8 @@
 (function(){
   $(document).ready(function(){
+    /* hide the email sign up forms */
+    $('.mailsignup').hide();
+
     /* Cheating takes you straight to the win panel 
        when you 'get started' in the UI 
      */
