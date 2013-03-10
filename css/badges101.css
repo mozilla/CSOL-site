@@ -27,7 +27,7 @@
   #slides .pagination {
     margin:26px auto 0;
     padding: 0;
-    width:100px;
+    width:120px;
   }
 
   #slides .pagination li {
@@ -146,8 +146,8 @@
   }
 
   #badges-101 #intro h1 {
-    background: url(../img/quiz/101badge.png) no-repeat scroll center top transparent;
-    padding-top: 145px;
+    //background: url(../img/quiz/101badge.png) no-repeat scroll center top transparent;
+    //padding-top: 145px;
   }
 
   #badges-101 #final h1 {
