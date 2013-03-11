@@ -68,8 +68,10 @@
   <div class="container">
     <h2>Sign Up Now!</h2>
 
-    <a href="#email-signup-student" class="button student fancybox">Student</a>
-    <a href="#email-signup-parent" class="button parent fancybox">Parent</a>
+    <p>
+      <!-- <a href="#email-signup-student" class="button student fancybox">Student</a> -->
+      <a href="#email-signup-parent" class="button parent fancybox" data-fancybox-width="500">For Parents</a>
+    </p>
 
     <p>With you help, we&rsquo;ll launch the largest citywide summer learning campaign in the nation.</p>
   </div>
@@ -87,10 +89,9 @@
     <h2>Earn your first badge</h2>
 
     <p>You can earn a badge my friend</p>
-    <a href="#badges-101" class="button badge fancybox">Get Started</a>
+    <p><a href="#badges-101" class="button badge fancybox">Get Started</a></p>
   </div>
 </section>
-
 
 <section class="learning_opportunities">
   <div class="container">
@@ -233,16 +234,10 @@
 
 <section id="email-signup-parent" class="mailsignup">
   <!-- Begin MailChimp Signup Form -->
-  <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-  <style type="text/css">
-	  #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
-	  /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
-	     We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
-  </style>
-  <div id="mc_embed_signup">
-    <form action="http://mozilla.us5.list-manage1.com/subscribe/post?u=b7bf9f69069d22065249adfbe&amp;id=cafedc7388" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-	    <label for="mce-EMAIL">Subscribe to our mailing list</label>
-	    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+  <div class="mc_embed_signup">
+    <form action="http://mozilla.us5.list-manage1.com/subscribe/post?u=b7bf9f69069d22065249adfbe&amp;id=cafedc7388" method="post" id="mc-embedded-subscribe-form-parent" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+	    <p><label for="mce-email-parent">Subscribe to our mailing list:</label>
+  	    <input type="email" class="text" value="" name="EMAIL" class="email" id="mce-email-parent" placeholder="email address" required></p>
 	    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
     </form>
   </div>
@@ -251,16 +246,11 @@
 
 <section id="email-signup-student" class="mailsignup">
   <!-- Begin MailChimp Signup Form -->
-  <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-  <style type="text/css">
-	  #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
-	  /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
-	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
-  </style>
-  <div id="mc_embed_signup">
-    <form action="http://mozilla.us5.list-manage1.com/subscribe/post?u=b7bf9f69069d22065249adfbe&amp;id=a20923b367" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-	    <label for="mce-EMAIL">Subscribe to our mailing list</label>
-	    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+  <div class="mc_embed_signup">
+    <form action="http://mozilla.us5.list-manage1.com/subscribe/post?u=b7bf9f69069d22065249adfbe&amp;id=a20923b367" method="post" id="mc-embedded-subscribe-form-student" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+	    <p><label for="mce-email-student">Subscribe to our mailing list:</label>
+  	    <input type="email" class="text" value="" name="EMAIL" class="email" id="mce-email-student" placeholder="email address" required></p>
+
 	    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
     </form>
   </div>
