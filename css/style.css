@@ -139,7 +139,8 @@ footer .copyright {
 /* line 3, ../sass/_splash.sass */
 header,
 footer,
-.learning_opportunities {
+.learning_opportunities,
+.badge_video {
   background-size: cover;
   color: white; }
 
@@ -160,13 +161,15 @@ section .container:after {
 
 /* line 22, ../sass/_splash.sass */
 .sign_up,
-.join_us {
+.join_us,
+.earn_badge {
   background-image: url('../img/background-pattern.png?1351255824');
   box-shadow: 0 0 100px 0 black;
   z-index: 2; }
   /* line 29, ../sass/_splash.sass */
   .sign_up .container:after,
-  .join_us .container:after {
+  .join_us .container:after,
+  .earn_badge .container:after {
     border-bottom-color: #90928f; }
 
 /* line 33, ../sass/_splash.sass */
@@ -242,8 +245,18 @@ header .slides {
     text-transform: uppercase; }
 
 /* line 102, ../sass/_splash.sass */
-.sign_up .button {
-  background: url('../img/button.png?1362590258') center center no-repeat;
+.sign_up .button,
+.earn_badge .button,
+.mailsignup .button {
+  background: #383839; /* url('../img/button.png?1362590258') center center no-repeat; */
+  background-image: -webkit-gradient(linear, top left, bottom left, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.25)));
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.25), rgba(0,0,0,0.25));
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,0.25), rgba(0,0,0,0.25));
+  background-image: linear-gradient(top, rgba(255,255,255,0.25), rgba(0,0,0,0.25));
+  box-shadow: inset 0 -2px 2px rgba(0,0,0,0.5);
+  text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+  border-radius: 5px;
+  border: none;
   color: white;
   display: inline-block;
   font-weight: bold;
@@ -252,8 +265,27 @@ header .slides {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  width: 128px;
-  height: 35px; }
+  min-width: 160px;
+  height: 35px;
+  font-size: inherit;
+  cursor: pointer;
+  -webkit-transition: background-color 0.25s;
+  -moz-transition: background-color 0.25s;
+  transition: background-color 0.25s; }
+
+  .sign_up .button:active,
+  .earn_badge .button:active,
+  .mailsignup .button:active,
+  .sign_up .button:hover,
+  .earn_badge .button:hover,
+  .mailsignup .button:hover {
+    background-color: #484849;
+  }
+
+.mailsignup input.text {
+  font-size: inherit;
+}
+
 /* line 116, ../sass/_splash.sass */
 .sign_up .button.student:after {
   content: "";
@@ -265,7 +297,8 @@ header .slides {
   height: 22px; }
 
 /* line 128, ../sass/_splash.sass */
-.learning_opportunities {
+.learning_opportunities,
+.badge_video {
   background-image: url('../img/background-chalkboard-black.jpg?1362608262'); }
   /* line 131, ../sass/_splash.sass */
   .learning_opportunities .container {
@@ -314,7 +347,8 @@ footer .logos {
 footer .email_address {
   text-align: left; }
   /* line 182, ../sass/_splash.sass */
-  footer .email_address a {
+  footer .email_address a,
+  .badge_video a {
     color: white; }
 /* line 185, ../sass/_splash.sass */
 footer .copyright {
@@ -322,8 +356,7 @@ footer .copyright {
 
 /* line 193, ../sass/_splash.sass */
 section h2:before, section h2:after,
-footer h2:before,
-footer h2:after {
+footer h2:before, footer h2:after {
   content: "";
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -341,8 +374,8 @@ footer h2:after {
 
 /* line 211, ../sass/_splash.sass */
 .sign_up h2:before, .sign_up h2:after,
-.join_us h2:before,
-.join_us h2:after {
+.join_us h2:before, .join_us h2:after,
+.earn_badge h2:before, .earn_badge h2:after {
   border-bottom-color: #90928f; }
 
 /* line 216, ../sass/_splash.sass */
@@ -356,6 +389,14 @@ footer h2:after {
 /* line 226, ../sass/_splash.sass */
 .join_us h2:before, .join_us h2:after {
   width: 42%; }
+
+.badge_video h2:before, .badge_video h2:after {
+  width: 16.5%;
+}
+
+.earn_badge h2:before, .earn_badge h2:after {
+  width: 31%;
+}
 
 /* line 231, ../sass/_splash.sass */
 footer h2:before, footer h2:after {
