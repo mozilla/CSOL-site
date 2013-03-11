@@ -23,7 +23,13 @@
     });
     $('.fancybox').fancybox({
       closeBtn: true,
-      arrows: false
+      arrows: false,
+      autoSize: false,
+      beforeLoad: function() {
+        this.width = $(this.element).data('fancybox-width') || 'auto';
+        this.height = $(this.element).data('fancybox-height') || 'auto';
+        console.log(this);
+      }
     });
   });
 
