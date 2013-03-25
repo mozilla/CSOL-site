@@ -18,3 +18,7 @@ RD_2/
 *log
 *~
 *#*
+
+# Node related
+node_modules
+
