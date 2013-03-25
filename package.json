@@ -1,0 +1,22 @@
+{
+  "name": "CSOL-site",
+  "version": "0.0.1",
+  "description": "The website for the Chicago Summer of Learning, developed by Ocupop and Mozilla.",
+  "main": "app.js",
+  "dependencies": {
+    "express": "~3.1.0",
+    "nunjucks": "~0.1.8a"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/CSOL-site.git"
+  },
+  "author": "Mozilla",
+  "license": "MPL 2.0",
+  "gitHead": "dcc7dcf3f377593ecee811ebf9a25eede814941f",
+  "readmeFilename": "README.md"
+}
