@@ -1,5 +1,9 @@
 module.exports = function (app) {
 
+  app.get('/', function (req, res, next) {
+    res.render('home.html')
+  });
+
   app.get('/about', function (req, res, next) {
     res.send('GET /about')
   });

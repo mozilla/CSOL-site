@@ -9,7 +9,11 @@ module.exports = function (app) {
   });
 
   app.get('/backpack', function (req, res, next) {
-    res.send('GET /backpack');
+    res.render('user/backpack.html');
   });
+
+  app.get('/favorites', function (req, res, next) {
+    res.render('user/bookmarks.html')
+  })
 
 };
