@@ -1,0 +1,28 @@
+{% extends 'auth/layout.html' %}
+{% set bodyClass = 'log-in' %}
+{% set pageTitle = 'Log In' %}
+
+{% block content %}
+	<form class="form-horizontal span6 offset3" method="post">
+		<p class="text-center">Log in with <a href="#">Facebook</a>, etc. <span class="divider"><em>or</em></span></p>
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-username">Email or Username</label>
+				<div class="controls">
+					<input type="text" id="input-username" name="username" placeholder="e.g. user@example.com">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="input-password">Password</label>
+				<div class="controls">
+					<input type="password" id="input-password" name="password">
+					<span class="help-block"><small><a href="/login/password">Forgot password?</a></small></span>
+				</div>
+			</div>
+			<div class="form-actions">
+				<p><button type="submit" class="btn">Log In</button></p>
+				<small>Don't have an account? <a href="/signup">Sign up.</a></small>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}

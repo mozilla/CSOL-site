@@ -1,0 +1,26 @@
+{% extends 'user/layout.html' %}
+
+{% set pageTitle = 'My Favorites' %}
+
+{% block content %}
+	<ul class="thumbnails">
+		<li class="span3">
+			<figure class="thumbnail">
+				<img src="/media/images/badge.png" class="img-circle">
+				<figcaption class="caption">
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+					<p class="text-right"><a href="#" class="btn">Details</a></p>
+				</figcaption>
+			</figure>
+		</li>
+		<li class="span3">
+			<figure class="thumbnail">
+				<img src="/media/images/badge.png" class="img-circle">
+				<figcaption class="caption">
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+					<p class="text-right"><a href="#" class="btn">Details</a></p>
+				</figcaption>
+			</figure>
+		</li>
+	</ul>
+{% endblock %}
