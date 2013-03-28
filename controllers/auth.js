@@ -1,7 +1,6 @@
 module.exports = function (app) {
 
   app.get('/login', function (req, res, next) {
-    console.log('Request', req);
     res.render('auth/login.html')
   });
 
