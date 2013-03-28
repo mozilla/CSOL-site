@@ -12,9 +12,19 @@
 							<label for="filter-{{ filter.name }}">{{ filter.label }}</label>
 							<select id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-medium">
 								<option></option>
-								{% for value, label in filter.options %}
-									<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
-								{% endfor %}
+									{% if filter.is_grouped %}
+										{% for label, options in filter.options %}
+											<optgroup label="{{ label }}">
+												{% for value, label in options %}
+													<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+												{% endfor %}
+											</optgroup>
+										{% endfor %}
+									{% else %}
+										{% for value, label in filter.options %}
+											<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+										{% endfor %}
+									{% endif %}
 							</select>
 						{% endfor %}
 						<noscript>

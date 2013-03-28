@@ -7,16 +7,16 @@ module.exports = function (app) {
     if (arguments.length) {
       requested = Array.prototype.splice.call(arguments, 0);
     } else {
-      requested = ['programs', 'orgs', 'ages'];
+      requested = ['categories', 'grouped_programs', 'ages'];
     }
 
     requested.forEach(function(filter) {
       switch (filter) {
-        case 'programs':
-        case 'program':
+        case 'categories':
+        case 'category':
           filters.push({
-            name: 'program',
-            label: 'Program',
+            name: 'category',
+            label: 'Category',
             options: {
               science: 'Science',
               technology: 'Technology',
@@ -31,7 +31,48 @@ module.exports = function (app) {
           filters.push({
             name: 'org',
             label: 'Organisation',
-            options: {}
+            options: {
+              'org1': 'Org 1',
+              'org2': 'Org 2',
+              'org3': 'Org 3',
+            }
+          });
+          break;
+        case 'programs':
+        case 'program':
+          filters.push({
+            name: 'program',
+            label: 'Program',
+            options: {
+              'p1': 'Program 1',
+              'p2': 'Program 2',
+              'p3': 'Program 3',
+              'p4': 'Program 4',
+              'p5': 'Program 5',
+              'p6': 'Program 6'
+            }
+          });
+          break;
+        case 'grouped_programs':
+        case 'grouped_program':
+          filters.push({
+            name: 'program',
+            label: 'Program',
+            options: {
+              'Org 1': {
+                'p1': 'Program 1',
+                'p2': 'Program 2'
+              },
+              'Org 2': {
+                'p3': 'Program 3',
+                'p4': 'Program 4'
+              },
+              'Org 3': {
+                'p5': 'Program 5',
+                'p6': 'Program 6'
+              }
+            },
+            is_grouped: true
           });
           break;
         case 'ages':
@@ -54,8 +95,26 @@ module.exports = function (app) {
     return filters;
   }
 
+  app.param('programName', function (req, res, next, badgeName) {
+    // yep, get stuff from the db.
+    next();
+  });
+
   app.get('/programs', function (req, res, next) {
-    res.send('GET /programs');
+    var programs = [];
+
+    for (var i = 0; i < 12; ++i) {
+      programs.push({
+        thumbnail: '/media/images/program.png',
+        description: 'Program blah sed eiusmod...',
+        url: '/programs/ae784f'
+      });
+    }
+
+    res.render('programs/list.html', {
+      filters: getFilters('categories', 'orgs', 'ages'),
+      items: programs
+    });
   });
 
   app.get('/programs/science', function (req, res, next) {
@@ -76,6 +135,18 @@ module.exports = function (app) {
 
   app.get('/programs/math', function (req, res, next) {
     res.send('MATH!!!')
+  });
+
+  app.get('/programs/:programName', function (req, res, next) {
+    res.render('programs/single.html');
+  });
+
+  app.get('/programs/:programName/favorite', function (req, res, next) {
+    return res.redirect('/login', 303);
+  });
+
+  app.get('/programs/:programName/unfavorite', function (req, res, next) {
+    return res.redirect('/login', 303);
   });
 
   app.param('badgeName', function (req, res, next, badgeName) {
@@ -122,13 +193,13 @@ module.exports = function (app) {
     for (var i = 0; i < 12; ++i) {
       orgs.push({
         thumbnail: '/media/images/org.png',
-        description: 'Organisation blah irure dolor...',
+        description: 'Organisation blah irure...',
         url: '/orgs/some-organisation'
       });
     }
 
     res.render('orgs/list.html', {
-      filters: getFilters('programs', 'ages'),
+      filters: getFilters('categories', 'ages'),
       items: orgs
     });
   });

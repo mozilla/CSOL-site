@@ -1,57 +1,24 @@
 {% extends 'layout.html' %}
 {% set pageTitle = 'Claiming Badges' %}
+{% set navItem = 'claim' %}
 
 {% block content %}
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-<h3><a href="/badges">Recent Badges</a></h3>
-<ul class="thumbnails">
-	<li class="span3">
-		<figure class="thumbnail">
-			<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-			<figcaption class="caption">
-				<p>Badge blah in voluptate velit...</p>
-				<p class="text-right">
-					<a href="/badges/ae784f" class="btn">Details</a>
-					<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-				</p>
-			</figcaption>
-		</figure>
-	</li>
-	<li class="span3">
-		<figure class="thumbnail">
-			<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-			<figcaption class="caption">
-				<p>Badge blah in voluptate velit...</p>
-				<p class="text-right">
-					<a href="/badges/ae784f" class="btn">Details</a>
-					<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-				</p>
-			</figcaption>
-		</figure>
-	</li>
-	<li class="span3">
-		<figure class="thumbnail">
-			<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-			<figcaption class="caption">
-				<p>Badge blah in voluptate velit...</p>
-				<p class="text-right">
-					<a href="/badges/ae784f" class="btn">Details</a>
-					<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-				</p>
-			</figcaption>
-		</figure>
-	</li>
-	<li class="span3">
-		<figure class="thumbnail">
-			<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-			<figcaption class="caption">
-				<p>Badge blah in voluptate velit...</p>
-				<p class="text-right">
-					<a href="/badges/ae784f" class="btn">Details</a>
-					<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-				</p>
-			</figcaption>
-		</figure>
-	</li>
-</ul>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+	<h3>Already have a claim code?</h3>
+	<form method="get" class="form-horizontal well span6 offset3">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-code">Claim Code</label>
+				<div class="controls">
+					<input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM">
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn">Claim this badge</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
 {% endblock %}
