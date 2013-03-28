@@ -1,0 +1,8 @@
+{% extends 'filter.html' %}
+{% set pageTitle = 'My Favorites' %}
+{% set user = {} %}
+
+{% block item_actions %}
+	{{ super() }}
+	<a class="btn" href="/badges/ae784f/unfavorite"><i class="icon-remove-circle"></i></a>
+{% endblock %}

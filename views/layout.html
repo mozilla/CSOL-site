@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
+		<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="/media/css/core.css">
+	</head>
+	<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+		<header id="header">
+			<div class="container">
+				<h1><a href="/">Chicago Summer of Learning</a></h1>
+				<nav id="navigation">
+					<ul>
+						<li class="badges"><a href="/badges">Badges</a></li>
+						<li class="claim"><a href="/claim">Claim</a></li>
+						<li class="orgs"><a href="/orgs">Organisations</a></li>
+						{% if user %}
+							<li class="backpack"><a href="/backpack">My Badges</a></li>
+							<li class="backpack"><a href="/favorites">My Favorites</a></li>
+							<li class="log-out"><a href="/logout">Log Out</a></li>
+						{% else %}
+							<li class="log-in"><a href="/login">Log In</a></li>
+							<li class="sign-up"><a href="/signup">Sign Up</a></li>
+						{% endif %}
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<div id="content">
+			<div class="container">
+				{% block pageTitle %}{% if pageTitle %}<h2>{{ pageTitle }}</h2>{% endif %}{% endblock %}
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+		<footer id="footer">
+			<div class="container">
+			</div>
+		</footer>
+	</body>
+</html>

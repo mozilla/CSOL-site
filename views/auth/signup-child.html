@@ -1,0 +1,22 @@
+{% extends 'auth/layout.html' %}
+{% set bodyClass = 'sign-up-next' %}
+{% set pageTitle = 'Parents & Guardians' %}
+
+{% block content %}
+	<form class="form-horizontal span6 offset3" method="post">
+		<fieldset>
+			<p>Thanks. We just need to get an email address for your parent or guardian.</p>
+			<div class="control-group">
+				<label class="control-label" for="input-email">Email</label>
+				<div class="controls">
+					<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<p><button type="submit" class="btn">Submit</button></p>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}

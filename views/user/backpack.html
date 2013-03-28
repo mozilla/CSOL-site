@@ -1,0 +1,17 @@
+{% extends 'filter.html' %}
+{% set pageTitle = 'My Badges' %}
+{% set user = {} %}
+
+{% block list %}
+	{{ super() }}
+	<li class="span3">
+		<figure class="thumbnail">
+			<a href="/claim"><img src="/media/images/add-badge.png"></a>
+			<figcaption class="caption">
+				<p>Claim another badge!</p>
+				<p class="text-right"><a href="/claim" class="btn">+1</a></p>
+			</figcaption>
+		</figure>
+		</a>
+	</li>
+{% endblock %}
