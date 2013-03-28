@@ -1,0 +1,22 @@
+{% extends 'filter.html' %}
+{% set pageTitle = 'My Favorites' %}
+{% set user = {} %}
+{% set navItem = 'bookmarks' %}
+
+{% block filter %}
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav">
+				<li{% if not view %} class="active"{% endif %}><a href="/favorites">All</a></li>
+				<li{% if view == 'badges' %} class="active"{% endif %}><a href="/favorites/badges">Badges</a></li>
+				<li{% if view == 'programs' %} class="active"{% endif %}><a href="/favorites/programs">Programs</a></li>
+				<li{% if view == 'orgs' %} class="active"{% endif %}><a href="/favorites/orgs">Organisations</a></li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}
+
+{% block item_actions %}
+	{{ super() }}
+	<a class="btn" href="{{ item.url }}/unfavorite"><i class="icon-remove-circle"></i></a>
+{% endblock %}
