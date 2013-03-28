@@ -1,0 +1,71 @@
+{% extends 'badges/layout.html' %}
+{% set pageTitle = 'Some Badge' %}
+{% set user = {} %}
+
+{% block content %}
+	<div class="row">
+		<div class="span4">
+			<img src="/media/images/badge-large.png">
+		</div>
+		<div class="span8">
+			<p>From <a href="/orgs/some-organisation">Some Organisation</a>.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+			<p class="text-right">
+				<a href="/badges/ae784f/claim" class="btn">Claim this badge</a>
+				<a href="/badges/ae784f/favorite" class="btn"><i class="icon-heart"></i> Add to your favorites</a>
+			</p>
+		</div>
+	</div>
+	<h3><a href="/badges">Related Badges</a></h3>
+	<ul class="thumbnails">
+		<li class="span3">
+			<figure class="thumbnail">
+				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+				<figcaption class="caption">
+					<p>Badge blah in voluptate velit...</p>
+					<p class="text-right">
+						<a href="/badges/ae784f" class="btn">Details</a>
+						<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+					</p>
+				</figcaption>
+			</figure>
+		</li>
+		<li class="span3">
+			<figure class="thumbnail">
+				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+				<figcaption class="caption">
+					<p>Badge blah in voluptate velit...</p>
+					<p class="text-right">
+						<a href="/badges/ae784f" class="btn">Details</a>
+						<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+					</p>
+				</figcaption>
+			</figure>
+		</li>
+		<li class="span3">
+			<figure class="thumbnail">
+				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+				<figcaption class="caption">
+					<p>Badge blah in voluptate velit...</p>
+					<p class="text-right">
+						<a href="/badges/ae784f" class="btn">Details</a>
+						<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+					</p>
+				</figcaption>
+			</figure>
+		</li>
+		<li class="span3">
+			<figure class="thumbnail">
+				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+				<figcaption class="caption">
+					<p>Badge blah in voluptate velit...</p>
+					<p class="text-right">
+						<a href="/badges/ae784f" class="btn">Details</a>
+						<a class="btn" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+					</p>
+				</figcaption>
+			</figure>
+		</li>
+	</ul>
+{% endblock %}

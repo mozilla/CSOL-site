@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% if not items %}{% set items = [] %}{% endif %}
+
+{% block content %}
+	{% block filter %}
+		{% if filters %}
+			<div class="navbar">
+				<form class="navbar-inner navbar-form form-inline" method="get">
+					<span class="brand">Filter:</span>
+					<div class="pull-right">
+						{% for filter in filters %}
+							<label for="filter-{{ filter.name }}">{{ filter.label }}</label>
+							<select id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-medium">
+								<option></option>
+								{% for value, label in filter.options %}
+									<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+								{% endfor %}
+							</select>
+						{% endfor %}
+						<noscript>
+							<input type="submit" value="Update" class="btn">
+						</noscript>
+					</div>
+				</form>
+			</div>
+		{% endif %}
+	{% endblock %}
+	{% block list_wrapper %}
+		<ul class="thumbnails">
+			{% block list %}
+				{% for item in items %}
+					{% block item %}
+						<li class="span3">
+							{% if item.template %}
+								{% include item.template %}
+							{% else %}
+								<figure class="thumbnail">
+									<a href="{{ item.url }}"><img src="{{ item.thumbnail }}"></a>
+									<figcaption class="caption">
+										<p>{{ item.description }}</p>
+										{% block item_actions_wrapper %}
+											<p class="text-right">
+												{% block item_actions %}
+													<a href="{{ item.url }}" class="btn">Details</a>
+												{% endblock %}
+											</p>
+										{% endblock %}
+									</figcaption>
+								</figure>
+							{% endif %}
+						{% endblock %}
+					</li>
+				{% endfor %}
+			{% endblock %}
+		</ul>
+	{% endblock %}
+	{% block pagination %}
+		<nav class="pagination pagination-centered">
+			<ul>
+				<li class="disabled"><span>&laquo;</span></li>
+				<li class="disabled"><span>1</span></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">&raquo;</a></li>
+			</ul>
+		</nav>
+	{% endblock %}
+{% endblock %}

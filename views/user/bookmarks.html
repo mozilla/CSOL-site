@@ -1,26 +1,8 @@
-{% extends 'user/layout.html' %}
-
+{% extends 'filter.html' %}
 {% set pageTitle = 'My Favorites' %}
+{% set user = {} %}
 
-{% block content %}
-	<ul class="thumbnails">
-		<li class="span3">
-			<figure class="thumbnail">
-				<img src="/media/images/badge.png" class="img-circle">
-				<figcaption class="caption">
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
-					<p class="text-right"><a href="#" class="btn">Details</a></p>
-				</figcaption>
-			</figure>
-		</li>
-		<li class="span3">
-			<figure class="thumbnail">
-				<img src="/media/images/badge.png" class="img-circle">
-				<figcaption class="caption">
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
-					<p class="text-right"><a href="#" class="btn">Details</a></p>
-				</figcaption>
-			</figure>
-		</li>
-	</ul>
+{% block item_actions %}
+	{{ super() }}
+	<a class="btn" href="/badges/ae784f/unfavorite"><i class="icon-remove-circle"></i></a>
 {% endblock %}

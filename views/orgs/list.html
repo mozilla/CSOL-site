@@ -1,0 +1,7 @@
+{% extends 'filter.html' %}
+{% set pageTitle = 'Organisations' %}
+
+{% block item_actions %}
+	{{ super() }}
+	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+{% endblock %}

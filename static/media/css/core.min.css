@@ -9,5 +9,6 @@ html,body{margin:0;padding:0;background:#EEE;}
 ul.row{list-style:none;}
 figure.thumbnail{margin:0;}
 .thumbnail img{margin-top:5px;}
+.thumbnail>a{display:block;text-align:center;}
 form .divider{display:block;margin:2em 0;text-align:center;position:relative;}form .divider::before{content:"";position:absolute;left:0;top:50%;width:100%;border-top:solid 1px #CCC;}
 form .divider em{background:#FFF;padding:0 1em;position:relative;}
