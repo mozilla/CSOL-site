@@ -1,0 +1,29 @@
+{% extends 'badges/layout.html' %}
+{% set pageTitle = 'Claim Some Badge' %}
+{% set user = {} %}
+
+{% block content %}
+	<div class="row">
+		<div class="span4">
+			<img src="/media/images/badge-large.png">
+		</div>
+		<div class="span8">
+			<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<form method="get" class="form-horizontal well">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="input-code">Claim Code</label>
+						<div class="controls">
+							<input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn">Claim this badge</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'auth/layout.html' %}
+{% set bodyClass = 'parent-sign-up' %}
+{% set pageTitle = 'Parents & Guardians' %}
+{% set navItem = 'sign-up' %}
+
+{% block content %}
+	<form class="form-horizontal span6 offset3" method="post">
+		<p class="text-center">Sign up with <a href="#">Facebook</a>, etc. <span class="divider"><em>or</em></span></p>
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-name">Name</label>
+				<div class="controls">
+					<input type="text" id="input-name" name="name">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="input-email">Email</label>
+				<div class="controls">
+					<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<p><button type="submit" class="btn">Sign Up</button></p>
+					<small>Already have an account? <a href="/login">Log in.</a></small>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}

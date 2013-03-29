@@ -1,19 +1,23 @@
 module.exports = function (app) {
 
+  app.get('/', function (req, res, next) {
+    res.render('home.html');
+  });
+
   app.get('/about', function (req, res, next) {
-    res.send('GET /about')
+    res.render('info/about.html');
   });
 
   app.get('/privacy', function (req, res, next) {
-    res.send('GET /privacy')
+    res.render('info/privacy.html');
   });
 
   app.get('/terms', function (req, res, next) {
-    res.send('GET /terms')
+    res.render('info/terms.html');
   });
 
   app.get('/vpat', function (req, res, next) {
-    res.send('GET /vpat')
+    res.render('info/vpat.html');
   });
 
 };
