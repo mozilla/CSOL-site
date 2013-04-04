@@ -24,19 +24,42 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/favorites', function (req, res, next) {
-    var badges = [];
+  app.get('/favorites/:view?', function (req, res, next) {
+    var badge = {
+      thumbnail: '/media/images/badge.png',
+      description: 'Badge blah in voluptate velit...',
+      url: '/badges/ae784f'
+    };
 
-    for (var i = 0; i < 3; ++i) {
-      badges.push({
-        thumbnail: '/media/images/badge.png',
-        description: 'Badge blah in voluptate velit...',
-        url: '/badges/ae784f'
-      });
+    var org = {
+      thumbnail: '/media/images/org.png',
+      description: 'Organisation blah irure...',
+      url: '/orgs/some-organisation'
+    };
+
+    var program = {
+      thumbnail: '/media/images/program.png',
+      description: 'Program blah sed eiusmod...',
+      url: '/programs/ae784f'
+    };
+
+    var view = req.params.view,
+        favorites = [badge, org, badge, program];
+
+    switch (view) {
+      case 'badges':
+        favorites = [badge, badge]; break;
+      case 'programs':
+        favorites = [program];
+      case 'orgs':
+        favorites = [org]; break;
+      default:
+        view = null;
     }
 
     res.render('user/bookmarks.html', {
-      items: badges
+      items: favorites,
+      view: view
     })
   })
 

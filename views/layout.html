@@ -6,24 +6,25 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
 		<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="/media/bootstrap/css/responsive.css">
 		<link rel="stylesheet" href="/media/css/core.css">
 	</head>
 	<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
 		<header id="header">
 			<div class="container">
 				<h1><a href="/">Chicago Summer of Learning</a></h1>
-				<nav id="navigation">
-					<ul>
-						<li class="badges"><a href="/badges">Badges</a></li>
-						<li class="claim"><a href="/claim">Claim</a></li>
-						<li class="orgs"><a href="/orgs">Organisations</a></li>
+				<nav id="navigation" class="pull-right">
+					<ul class="nav nav-pills">
+						<li class="programs{% if navItem == 'programs' %} active{% endif %}"><a href="/programs">Programs</a></li>
+						<li class="orgs{% if navItem == 'orgs' %} active{% endif %}"><a href="/orgs">Organisations</a></li>
+						<li class="claim{% if navItem == 'claim' %} active{% endif %}"><a href="/claim">Claim</a></li>
 						{% if user %}
-							<li class="backpack"><a href="/backpack">My Badges</a></li>
-							<li class="backpack"><a href="/favorites">My Favorites</a></li>
+							<li class="backpack{% if navItem == 'backpack' %} active{% endif %}"><a href="/backpack">My Badges</a></li>
+							<li class="bookmarks{% if navItem == 'bookmarks' %} active{% endif %}"><a href="/favorites">My Favorites</a></li>
 							<li class="log-out"><a href="/logout">Log Out</a></li>
 						{% else %}
-							<li class="log-in"><a href="/login">Log In</a></li>
-							<li class="sign-up"><a href="/signup">Sign Up</a></li>
+							<li class="log-in{% if navItem == 'log-in' %} active{% endif %}"><a href="/login">Log In</a></li>
+							<li class="sign-up{% if navItem == 'sign-up' %} active{% endif %}"><a href="/signup">Sign Up</a></li>
 						{% endif %}
 					</ul>
 				</nav>
@@ -31,12 +32,20 @@
 		</header>
 		<div id="content">
 			<div class="container">
-				{% block pageTitle %}{% if pageTitle %}<h2>{{ pageTitle }}</h2>{% endif %}{% endblock %}
+				{% block pageTitleWrapper %}{% if pageTitle %}<h2>{% block pageTitle %}{{ pageTitle }}{% endblock %}</h2>{% endif %}{% endblock %}
 				{% block content %}{% endblock %}
 			</div>
 		</div>
 		<footer id="footer">
 			<div class="container">
+				<nav class="pull-right">
+					<ul class="nav nav-pills">
+						<li class="about{% if navItem == 'about' %} active{% endif %}"><a href="/about">About</a></li>
+						<li class="terms{% if navItem == 'terms' %} active{% endif %}"><a href="/terms">Terms</a></li>
+						<li class="privacy{% if navItem == 'privacy' %} active{% endif %}"><a href="/privacy">Privacy</a></li>
+						<li class="vpat{% if navItem == 'vpat' %} active{% endif %}"><a href="/vpat">VPAT</a></li>
+					</ul>
+				</nav>
 			</div>
 		</footer>
 	</body>
