@@ -93,30 +93,6 @@ body {
 #navigation ul li:last-child a {
   border-right: none;
 }
-#content {
-  padding: 50px 0;
-  min-height: 200px;
-}
-#footer {
-  border-top: solid 1px #CCC;
-  min-height: 100px;
-  background: url(../images/chalkboard_bg_green.jpg) center;
-  position: relative;
-  -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  color: white;
-}
-#footer a {
-  color: white;
-}
-#footer a:hover {
-  background: #738967;
-}
-#footer .container {
-  margin-top: 20px;
-  text-transform: uppercase;
-}
 ul.row {
   list-style: none;
 }
@@ -151,10 +127,13 @@ form .divider em {
 }
 #content {
   text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.4);
+  padding: 50px 0;
+  min-height: 200px;
 }
 #content h2 {
   text-transform: uppercase;
-  font-weight: normal;
+  font-family: "ff-meta-web-pro";
+  font-weight: bold;
   display: block;
   margin: 0 auto;
   text-align: center;
@@ -227,6 +206,89 @@ form .divider em {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
+#footer {
+  border-top: solid 1px #CCC;
+  min-height: 100px;
+  background: url(../images/chalkboard_bg_green.jpg) center;
+  position: relative;
+  -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  color: white;
+  font-size: 1.1em;
+}
+#footer .toprow {
+  border-bottom: 1px solid white;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+}
+#footer .toprow .pull-left {
+  font-size: 1.1em;
+  padding-top: 10px;
+}
+#footer a {
+  color: white;
+}
+#footer a:hover {
+  background-color: none;
+}
+#footer .nav {
+  font-size: 1.2em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+}
+#footer .nav li {
+  margin-bottom: 0;
+  padding: 0;
+}
+#footer .nav li a {
+  display: inline-block;
+}
+#footer .nav li a:hover {
+  background: none;
+}
+#footer .container {
+  padding: 40px 0;
+}
+#footer .logo-csol {
+  width: 100%;
+  height: 131px;
+  background: url(../images/csol_logo_footer.png) center no-repeat;
+  text-indent: -999em;
+  display: block;
+  margin-bottom: 20px;
+  margin-right: 15px;
+}
+#footer .logos {
+  text-align: center;
+}
+#footer .description {
+  margin-bottom: 20px;
+}
+#footer .logo {
+  text-indent: -999em;
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  background-repeat: no-repeat;
+}
+#footer .logo.macarthur {
+  width: 78px;
+  height: 78px;
+  background-image: url(../images/footer_logo_macarthur.png);
+}
+#footer .logo.city {
+  width: 78px;
+  height: 78px;
+  background-image: url(../images/footer_logo_citiofchi.png);
+}
+#footer .logo.mozilla {
+  width: 82px;
+  height: 78px;
+  background-image: url(../images/footer_logo_mozilla.png);
+  background-position: 10px 20px;
+}
 @media all and (max-width: 767px) {
   #header h1 {
     padding: 10px 20px;
@@ -241,5 +303,20 @@ form .divider em {
   #content h2:before,
   #content h2:after {
     border: none;
+  }
+  #footer {
+    padding: 0 20px;
+  }
+  #footer .pull-left {
+    float: none;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  #footer nav {
+    float: none;
+    text-align: center;
+  }
+  #footer nav li {
+    display: inline-block;
   }
 }
