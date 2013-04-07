@@ -8,6 +8,8 @@
 		<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="/media/bootstrap/css/responsive.css">
 		<link rel="stylesheet" href="/media/css/core.css">
+		<script type="text/javascript" src="//use.typekit.net/nht7hbp.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
 		<header id="header">
@@ -38,14 +40,36 @@
 		</div>
 		<footer id="footer">
 			<div class="container">
-				<nav class="pull-right">
-					<ul class="nav nav-pills">
-						<li class="about{% if navItem == 'about' %} active{% endif %}"><a href="/about">About</a></li>
-						<li class="terms{% if navItem == 'terms' %} active{% endif %}"><a href="/terms">Terms</a></li>
-						<li class="privacy{% if navItem == 'privacy' %} active{% endif %}"><a href="/privacy">Privacy</a></li>
-						<li class="vpat{% if navItem == 'vpat' %} active{% endif %}"><a href="/vpat">VPAT</a></li>
-					</ul>
-				</nav>
+				<div class="row-fluid toprow">
+					
+					<div class="pull-left">
+						<a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a> | &copy; 2013
+					</div>
+
+					<nav class="pull-right">
+						<ul class="nav nav-pills">
+							<li class="about{% if navItem == 'about' %} active{% endif %}"><a href="/about">About</a> | </li>
+							<li class="terms{% if navItem == 'terms' %} active{% endif %}"><a href="/terms">Terms</a> | </li>
+							<li class="privacy{% if navItem == 'privacy' %} active{% endif %}"><a href="/privacy">Privacy</a> | </li>
+							<li class="vpat{% if navItem == 'vpat' %} active{% endif %}"><a href="/vpat">VPAT</a></li>
+						</ul>
+					</nav>
+				</div><!-- .row-fluid -->
+				<div class="row-fluid">
+					<div class="span3 csol">
+						<a href="/" class="logo-csol">Chicago Summer of Learning</a>
+					</div><!-- .span -->
+					<div class="span5 description">
+						<p>More than 100 organizations across the city have joined forces to integrate learning into summer activities for youth of all ages in every Chicago neighborhood.</p>
+
+						<p>With your help, we'll launch the largest citywide summer learning campaign in the nation.</p>
+					</div><!-- .span -->
+					<div class="span4 logos">
+						<a href="#" class="logo city">City of Chicago</a>
+						<a href="#" class="logo macarthur">MacArthur Foundation</a>
+						<a href="#" class="logo mozilla">Mozilla</a>
+					</div><!-- .span -->
+				</div><!-- .row-fluid -->
 			</div>
 		</footer>
 	</body>
