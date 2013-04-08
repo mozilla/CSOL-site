@@ -15,25 +15,24 @@ if (!process.env['CSOL_DB_NAME']) {
 const path = require('path');
 const async = require('async');
 
+/**
+ * Prepare the database by syncing all known models and optionally
+ * saving some test data.
+ *
+ * If only one argument is passed, it is treated as the callback. When
+ * there are no fixtures passed, the only tables that will get synced
+ * are those that are known about (through `require`ing the models in
+ * in the test file) before `prepare` is called.
+ *
+ * @param fixtures Array of fixture objects. A fixture object is
+ *   expected to have the following properties:
+ *     - model: Name of the model. Should correspond to a filein models/ dir
+ *     - name: Name to give the resulting instance
+ *     - values: Object with the values to save
+ */
 exports.prepare = function (fixtures, callback) {
   if (typeof fixtures == 'function')
     callback = fixtures, fixtures = [];
-
-  function requireModel (filename) {
-    return require(path.join(__dirname, '..', 'models',  filename));
-  }
-
-  function saveFixture(models, fixture, callback) {
-    const Model = models[fixture.model];
-    Model.create(fixture.values)
-      .success(function (instance) {
-        console.log('success');
-        return callback(null, instance);
-      })
-      .error(function (error) {
-        return callback(error);
-      });
-  }
 
   const db = require('../db');
 
@@ -49,12 +48,12 @@ exports.prepare = function (fixtures, callback) {
     .success(function () {
       async.mapSeries(fixtures, save, function (err, instances) {
         if (err) throw err;
-        const named = instances.reduce(function (named, instance, idx) {
+        instances.forEach(function (instance, idx) {
           const name = fixtures[idx].name;
-          named[idx] = named[name] = instance;
-          return named;
-        }, {});
-        return callback(named);
+          if (name)
+            instances[name] = instance;
+        });
+        return callback(instances);
       });
     })
     .error(function (error) {
@@ -63,3 +62,19 @@ exports.prepare = function (fixtures, callback) {
       process.exit(1);
     });
 };
+
+function requireModel (filename) {
+  return require(path.join(__dirname, '..', 'models',  filename));
+}
+
+function saveFixture(models, fixture, callback) {
+  const Model = models[fixture.model];
+  Model.create(fixture.values)
+    .success(function (instance) {
+      console.log('success');
+      return callback(null, instance);
+    })
+    .error(function (error) {
+      return callback(error);
+    });
+}
