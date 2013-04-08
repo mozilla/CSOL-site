@@ -2,6 +2,11 @@
 
 The website for the Chicago Summer of Learning, developed by Ocupop and Mozilla.
 
-## Database
+## Environment
 
-Set your database credentials in the environment variables `CSOL_DB_USER` and `CSOL_DB_PASS`.
+Property | Default | Description
+-------|-------|----------
+`CSOL_DB_NAME` | `"csol"` | Name of the database.
+`CSOL_DB_USER` | `"root"` | Database username.
+`CSOL_DB_PASS` | `null` | Database password.
+
