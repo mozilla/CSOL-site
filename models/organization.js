@@ -11,12 +11,4 @@ const Organization = db.define('Organization', {
   email: { type: db.type.STRING, allowNull: true, validate: { isEmail: true }},
 });
 
-Organization.sync().success(function () {
-  console.log('created `Organization` table');
-}).error(function (error) {
-  console.log('could not create `Organization` table:');
-  console.dir(error);
-  process.exit(1);
-});
-
 module.exports = Organization;
