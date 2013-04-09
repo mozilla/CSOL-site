@@ -4,5 +4,5 @@
 
 {% block item_actions %}
 	{{ super() }}
-	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+	<a class="btn" href="/orgs/{{ item.id }}/favorite"><i class="icon-heart"></i></a>
 {% endblock %}

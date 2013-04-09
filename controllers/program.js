@@ -1,3 +1,6 @@
+const organizations = require('../models/organization');
+const _             = require('underscore');
+
 module.exports = function (app) {
 
   function getFilters() {
@@ -188,20 +191,17 @@ module.exports = function (app) {
   });
 
   app.get('/orgs', function (req, res, next) {
-    var orgs = [];
-
-    for (var i = 0; i < 12; ++i) {
-      orgs.push({
-        thumbnail: '/media/images/org.png',
-        description: 'Organisation blah irure...',
-        url: '/orgs/some-organisation'
+    organizations.findAll().success(function(orgs) {
+      res.render('orgs/list.html', {
+        filters: getFilters('categories', 'ages'),
+        items: _.map(orgs, function(o) { 
+          o.detailUrl = o.detailUrl(); 
+          return o;
+        })
       });
     }
+    );
 
-    res.render('orgs/list.html', {
-      filters: getFilters('categories', 'ages'),
-      items: orgs
-    });
   });
 
   app.param('orgName', function (req, res, next, orgName) {
@@ -210,7 +210,10 @@ module.exports = function (app) {
   });
 
   app.get('/orgs/:orgName', function (req, res, next) {
-    res.render('orgs/single.html');
+    // orgName is db id for now, possible attack?
+    organizations.find({id:req.params.orgName}).success(function(org) {
+      res.render('orgs/single.html', {org:org});
+    });
   });
 
   app.get('/orgs/:orgName/favorite', function (req, res, next) {
