@@ -66,11 +66,11 @@ body {
   text-align: center;
   line-height: .8em;
 }
-#navigation ul {
+#navigation .nav {
   margin-bottom: 0;
   display: inline-block;
 }
-#navigation ul li a {
+#navigation .nav li > a {
   text-transform: uppercase;
   margin: 0;
   padding: 10px 30px 10px 30px;
@@ -82,16 +82,35 @@ body {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   color: #404041;
-  border-right: 1px solid #404041;
+  border: none;
+  border-left: 1px solid #404041;
 }
-#navigation ul li a:hover {
+#navigation .nav li > a:hover {
   background: #eee;
 }
-#navigation ul li.active a {
+#navigation .nav li.active a {
   background: #eee;
 }
-#navigation ul li:last-child a {
-  border-right: none;
+#navigation .nav li:first-child a {
+  border-left: none;
+}
+#navigation .nav ul li a {
+  border: none;
+}
+#navigation .nav form {
+  padding: 10px;
+  text-align: left;
+}
+#navigation .nav form .btn {
+  display: block;
+  width: 100%;
+}
+#navigation .nav form small {
+  margin-top: 10px;
+  border-top: solid 1px #CCC;
+  display: block;
+  clear: both;
+  text-align: center;
 }
 ul.row {
   list-style: none;

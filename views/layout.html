@@ -17,16 +17,46 @@
 				<h1><a href="/">Chicago Summer of Learning</a></h1>
 				<nav id="navigation">
 					<ul class="nav nav-pills">
-						<li class="programs{% if navItem == 'programs' %} active{% endif %}"><a href="/programs">Programs</a></li>
-						<li class="orgs{% if navItem == 'orgs' %} active{% endif %}"><a href="/orgs">Organisations</a></li>
-						<li class="claim{% if navItem == 'claim' %} active{% endif %}"><a href="/claim">Claim</a></li>
+						<li class="learn{% if navItem == 'learn' %} active{% endif %}">
+							<a href="/learn">Learn</a>
+						</li>
+						<li class="badges{% if navItem == 'badges' %} active{% endif %}">
+							<a href="/badges">Badges</a>
+						</li>
+						<li class="challenges{% if navItem == 'challenges' %} active{% endif %}">
+							<a href="/challenges">Challenges</a>
+						</li>
 						{% if user %}
-							<li class="backpack{% if navItem == 'backpack' %} active{% endif %}"><a href="/backpack">My Badges</a></li>
-							<li class="bookmarks{% if navItem == 'bookmarks' %} active{% endif %}"><a href="/favorites">My Favorites</a></li>
-							<li class="log-out"><a href="/logout">Log Out</a></li>
+							<li class="dropdown dashboard{% if navItem == 'dashboard' %} active{% endif %}">
+								<a href="/dashboard" class="dropdown-toggle" role="button" data-toggle="dropdown" id="dashboard-menu-toggle">My Dashboard <i class="caret"></i></a>
+								<ul class="dropdown-menu" role="menu" id="dashboard-menu" aria-labelledby="dashboard-menu-toggle">
+									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+										<a role="menuitem" tabindex="-1" href="/dashboard/badges">My Badges</a>
+									</li>
+									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+										<a role="menuitem" tabindex="-1" href="/dashboard/favorites">My Favorites</a>
+									</li>
+									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+										<a role="menuitem" tabindex="-1" href="/dashboard/applications">My Applications</a>
+									</li>
+									<li class="divider" role="presentation" aria-hidden="true"></li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="/logout">Log Out</a>
+									</li>
+								</ul>
+							</li>
 						{% else %}
-							<li class="log-in{% if navItem == 'log-in' %} active{% endif %}"><a href="/login">Log In</a></li>
-							<li class="sign-up{% if navItem == 'sign-up' %} active{% endif %}"><a href="/signup">Sign Up</a></li>
+							<li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
+								<a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" id="menu-login-form-toggle">Log In / Sign Up <i class="caret"></i></a>
+								<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
+									<label for="menu-login-username">Email or username:</label>
+									<input type="text" id="menu-login-username" name="username" placeholder="e.g. user@example.com">
+									<label for="menu-login-password">Password:</label>
+									<input type="password" id="menu-login-password" name="password">
+									<button type="submit" class="btn">Submit</button>
+									<small>Don't have an account? <a href="/signup">Sign up.</a></small>
+								</form>
+							</li>
 						{% endif %}
 					</ul>
 				</nav>
@@ -72,5 +102,7 @@
 				</div><!-- .row-fluid -->
 			</div>
 		</footer>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="/media/bootstrap/js/bootstrap.js"></script>
 	</body>
 </html>
