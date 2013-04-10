@@ -158,6 +158,10 @@ form .divider em {
   width: 35%;
   border-top: solid 1px black;
 }
+#content .container {
+  border-bottom: 1px solid #404041;
+  padding-bottom: 15px;
+}
 .navbar-form {
   color: white;
   text-shadow: 1px 1px 0px black;
@@ -199,6 +203,38 @@ form .divider em {
   padding: 15px ;
 }
 .btn {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul {
+  background: white;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul li:first-child,
+.pagination ul li:last-child,
+.pagination ul li:first-child span,
+.pagination ul li:last-child span {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul li a {
+  color: #404041;
+}
+.pagination ul li a:first-child,
+.pagination ul li a:last-child {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;

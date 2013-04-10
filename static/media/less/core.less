@@ -185,6 +185,13 @@ form .divider {
 			border-top: solid 1px black;
 		}
 	}
+
+	.container {
+		border-bottom: 1px solid #404041;
+		padding-bottom: 15px;
+	}
+
+
 } // end #content
 
 .navbar-form {
@@ -227,6 +234,32 @@ form .divider {
 
 .btn {
 	.border-radius(0);
+}
+
+
+.pagination {
+
+	ul {
+		background: white;
+		.border-radius(0);
+
+		li {
+
+			&:first-child, &:last-child, &:first-child span, &:last-child span {
+				.border-radius(0);
+			}
+
+			a {
+				color: #404041;
+				
+				&:first-child, &:last-child {
+					.border-radius(0);
+				}
+			}
+		}
+	}
+
+
 }
 
 #footer {
