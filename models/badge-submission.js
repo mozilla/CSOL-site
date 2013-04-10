@@ -17,4 +17,3 @@ const BadgeSubmission = db.define('BadgeSubmission', {
 
 BadgeSubmission.hasOne(Reviewer);
 BadgeSubmission.belongsTo(BadgePledge);
-
