@@ -1,6 +1,6 @@
 const db = require('../db');
 
-const Reviwer = require('./reviwer');
+const Reviewer = require('./reviewer');
 const BadgePledge = require('./badge-pledge');
 const BadgeSubmission = db.define('BadgeSubmission', {
   id: {
