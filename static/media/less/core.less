@@ -71,20 +71,21 @@ body {
 	text-align: center;
 	line-height: .8em;
 
-	ul {
+	.nav {
 		margin-bottom: 0;
 		display: inline-block;
 
 		li {
 
-			a {
+			& > a {
 				text-transform: uppercase;
 				margin: 0;
 				padding: 10px 30px 10px 30px;
 				font-size: 1.2em;
 				.border-radius(0);
 				color: #404041;
-				border-right: 1px solid #404041;
+				border: none;
+				border-left: 1px solid #404041;
 
 				&:hover {
 					background: #eee;
@@ -94,15 +95,37 @@ body {
 
 			&.active {
 				a {
-					background:#eee;
+					background: #eee;
 				}
 		
 			}
 
-			&:last-child{
+			&:first-child{
 				a {
-					border-right: none;
+					border-left: none;
 				}
+			}
+		}
+
+		ul li a {
+			border: none;
+		}
+
+		form {
+			padding: 10px;
+			text-align: left;
+
+			.btn {
+				display: block;
+				width: 100%;
+			}
+
+			small {
+				margin-top: 10px;
+				border-top: solid 1px #CCC;
+				display: block;
+				clear: both;
+				text-align: center;
 			}
 		}
 	}
