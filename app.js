@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 require('./controllers/auth')(app);
 require('./controllers/info')(app);
 require('./controllers/backpack')(app);
-require('./controllers/program')(app);
+require('./controllers/learn')(app);
 
 if (!module.parent)
   app.listen(3000);
