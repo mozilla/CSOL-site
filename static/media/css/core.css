@@ -149,7 +149,8 @@ form .divider em {
   padding: 50px 0;
   min-height: 200px;
 }
-#content h2 {
+#content h2,
+#content h3 {
   text-transform: uppercase;
   font-family: "ff-meta-web-pro";
   font-weight: bold;
@@ -161,7 +162,13 @@ form .divider em {
   padding-top: 8px;
   position: relative;
 }
-#content h2::before {
+#content h2 a,
+#content h3 a {
+  font-size: 1.3em;
+  color: black;
+}
+#content h2::before,
+#content h3::before {
   content: "";
   position: absolute;
   left: 0;
@@ -169,13 +176,25 @@ form .divider em {
   width: 35%;
   border-top: solid 1px black;
 }
-#content h2::after {
+#content h2::after,
+#content h3::after {
   content: "";
   position: absolute;
   right: 0;
   top: 50%;
   width: 35%;
   border-top: solid 1px black;
+}
+#content h3 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#content .container {
+  border-bottom: 1px solid #404041;
+  padding-bottom: 15px;
+}
+#content img {
+  margin-bottom: 20px;
 }
 .navbar-form {
   color: white;
@@ -218,6 +237,38 @@ form .divider em {
   padding: 15px ;
 }
 .btn {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul {
+  background: white;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul li:first-child,
+.pagination ul li:last-child,
+.pagination ul li:first-child span,
+.pagination ul li:last-child span {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.pagination ul li a {
+  color: #404041;
+}
+.pagination ul li a:first-child,
+.pagination ul li a:last-child {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -300,7 +351,7 @@ form .divider em {
 #footer .logo.city {
   width: 78px;
   height: 78px;
-  background-image: url(../images/footer_logo_citiofchi.png);
+  background-image: url(../images/footer_logo_cityofchi.png);
 }
 #footer .logo.mozilla {
   width: 82px;
@@ -310,17 +361,24 @@ form .divider em {
 }
 @media all and (max-width: 767px) {
   #header h1 {
-    padding: 10px 20px;
-    min-height: 130px;
+    padding: 0 5%;
   }
   #header h1 a {
-    height: 150px;
+    padding: 15% 0;
+    height: auto;
+    margin: 0;
+  }
+  #navigation .nav li a {
+    padding: 10px 10px;
+    font-size: .9em;
   }
   #content {
-    padding: 20px 20px;
+    padding: 30px 20px;
   }
   #content h2:before,
-  #content h2:after {
+  #content h2:after,
+  #content h3:before,
+  #content h3:after {
     border: none;
   }
   #footer {
@@ -331,11 +389,20 @@ form .divider em {
     text-align: center;
     margin-bottom: 20px;
   }
-  #footer nav {
+  #footer nav,
+  #footer .nav-pills {
     float: none;
     text-align: center;
   }
-  #footer nav li {
+  #footer nav li,
+  #footer .nav-pills li {
     display: inline-block;
+    font-size: .8em;
+  }
+}
+@media all and (max-width: 480px) {
+  #navigation .nav li a {
+    padding: 10px 5px;
+    font-size: .8em;
   }
 }

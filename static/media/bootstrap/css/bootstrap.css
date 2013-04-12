@@ -4376,7 +4376,7 @@ input[type="submit"].btn.btn-mini {
   line-height: 20px;
   text-decoration: none;
   background-color: #ffffff;
-  border: 1px solid #dddddd;
+  border: 1px solid #7a7a7a;
   border-left-width: 0;
 }
 .pagination ul > li > a:hover,
