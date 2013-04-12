@@ -1,0 +1,66 @@
+{% extends 'auth/layout.html' %}
+{% set bodyClass = 'sign-up' %}
+{% set pageTitle = 'Almost there' %}
+{% set navItem = 'sign-up' %}
+
+{% block content %}
+	<form class="form-horizontal span6 offset3" method="post">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-email">Email address</label>
+				<div class="controls">
+					<input type="email" id="input-email" name="email">
+					<span class="help-block">You'll need this to claim your badges.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" id="input-password-label">Your password is</label>
+				<div class="controls">
+					<span class="uneditable-input" id="input-password">{{ password }}</span>
+					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
+					<script>
+						(function() {
+							var span = document.getElementById('input-password'),
+							    label = document.getElementById('input-password-label'),
+							    container = span.parentNode,
+							    wrapper = document.createElement('div'),
+							    button = document.createElement('button');
+
+							wrapper.className = 'input-append';
+							container.insertBefore(wrapper, span);
+
+							button.className = 'btn';
+							button.type = 'button';
+							button.innerHTML = '<i class="icon-pencil"></i>';
+							button.title = 'Choose your own password';
+							button.onclick = function() {
+								label.innerHTML = 'Password';
+								label.for = 'input-password-1';
+
+								for (var i = 1; i <= 2; ++i) {
+									var password = document.createElement('input');
+									password.type = 'password';
+									password.id = 'input-password-' + i;
+									password.name = 'password-' + i;
+									password.placeholder = (i==1) ? 'Your own password' : 'Retype your password';
+									container.insertBefore(password, wrapper);
+								}
+
+								wrapper.parentNode.removeChild(wrapper);
+								document.getElementById('input-password-1').focus();
+							}
+
+							wrapper.appendChild(span);
+							wrapper.appendChild(button);
+						})();
+					</script>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<p><button type="submit" class="btn">All Done!</button></p>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}

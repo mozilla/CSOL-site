@@ -1,16 +1,23 @@
 {% extends 'auth/layout.html' %}
-{% set bodyClass = 'sign-up-next' %}
-{% set pageTitle = 'Parents & Guardians' %}
-{% set navItem = 'sign-up' %}
+{% set bodyClass = 'sign-up' %}
+{% set pageTitle = 'Almost there' %}
+{% set navItem = 'auth' %}
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
 		<fieldset>
-			<p>Thanks. We just need to get an email address for your parent or guardian.</p>
 			<div class="control-group">
-				<label class="control-label" for="input-email">Email</label>
+				<label class="control-label" for="input-email">Your parent's email</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+					<span class="help-block">We need to know you're not an alien!</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" id="input-password-label">Your password is</label>
+				<div class="controls">
+					<span class="uneditable-input" id="input-password">{{ password }}</span>
+					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
 				</div>
 			</div>
 			<div class="control-group">
