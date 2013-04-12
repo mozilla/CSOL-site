@@ -106,7 +106,7 @@ module.exports = function (app) {
       type: 'parent',
       dependents: []
     }
-    return res.redirect('/backpack', 303);
+    return res.redirect('/dashboard', 303);
   });
 
   app.get('/logout', function (req, res, next) {
