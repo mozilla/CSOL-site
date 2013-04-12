@@ -26,30 +26,36 @@
 						<li class="challenges{% if navItem == 'challenges' %} active{% endif %}">
 							<a href="/challenges">Challenges</a>
 						</li>
-						{% if user %}
-							<li class="dropdown dashboard{% if navItem == 'dashboard' %} active{% endif %}">
-								<a href="/dashboard" class="dropdown-toggle" role="button" data-toggle="dropdown" id="dashboard-menu-toggle">My Dashboard <i class="caret"></i></a>
-								<ul class="dropdown-menu" role="menu" id="dashboard-menu" aria-labelledby="dashboard-menu-toggle">
-									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-										<a role="menuitem" tabindex="-1" href="/dashboard/badges">My Badges</a>
-									</li>
-									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-										<a role="menuitem" tabindex="-1" href="/dashboard/favorites">My Favorites</a>
-									</li>
-									<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-										<a role="menuitem" tabindex="-1" href="/dashboard/applications">My Applications</a>
-									</li>
-									<li class="divider" role="presentation" aria-hidden="true"></li>
-									<li role="presentation">
-										<a role="menuitem" tabindex="-1" href="/logout">Log Out</a>
-									</li>
-								</ul>
-							</li>
+						{% if user.is_valid %}
+							{% if user.type == 'learner' %}
+								<li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
+									<a href="/backpack" class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My Backpack <i class="caret"></i></a>
+									<ul class="dropdown-menu" role="menu" id="dashboard-menu" aria-labelledby="backpack-menu-toggle">
+										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+											<a role="menuitem" tabindex="-1" href="/backpack/badges">My Badges</a>
+										</li>
+										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+											<a role="menuitem" tabindex="-1" href="/backpack/favorites">My Favorites</a>
+										</li>
+										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+											<a role="menuitem" tabindex="-1" href="/backpack/applications">My Applications</a>
+										</li>
+										<li class="divider" role="presentation" aria-hidden="true"></li>
+										<li role="presentation">
+											<a role="menuitem" tabindex="-1" href="/logout">Log Out</a>
+										</li>
+									</ul>
+								</li>
+							{% else %}
+								<li class="dashboard{% if navItem == 'dashboard' %} active{% endif %}">
+									<a href="/dashboard">My Dashboard</a>
+								</li>
+							{% endif %}
 						{% else %}
 							<li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
 								<a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" id="menu-login-form-toggle">Log In / Sign Up <i class="caret"></i></a>
 								<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
-									<label for="menu-login-username">Email or username:</label>
+									<label for="menu-login-username">Email or Nickname:</label>
 									<input type="text" id="menu-login-username" name="username" placeholder="e.g. user@example.com">
 									<label for="menu-login-password">Password:</label>
 									<input type="password" id="menu-login-password" name="password">

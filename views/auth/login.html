@@ -1,16 +1,15 @@
 {% extends 'auth/layout.html' %}
 {% set bodyClass = 'log-in' %}
 {% set pageTitle = 'Log In' %}
-{% set navItem = 'log-in' %}
+{% set navItem = 'auth' %}
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
-		<p class="text-center">Log in with <a href="#">Facebook</a>, etc. <span class="divider"><em>or</em></span></p>
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label" for="input-username">Email or Username</label>
+				<label class="control-label" for="input-username">Email or Nickname</label>
 				<div class="controls">
-					<input type="text" id="input-username" name="username" placeholder="e.g. user@example.com">
+					<input type="text" id="input-username" name="username" value="{{ username }}" placeholder="e.g. user@example.com">
 				</div>
 			</div>
 			<div class="control-group">
