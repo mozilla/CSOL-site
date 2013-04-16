@@ -109,6 +109,25 @@ module.exports = function (app) {
     return res.redirect('/dashboard', 303);
   });
 
+  app.param('signupToken', function (req, res, next, token) {
+    console.log(token);
+    if (!/^[a-f0-9]{20}$/.test(token)) {
+      next(new Error('Invalid token'));
+    } else {
+      next();
+    }
+  });
+
+  app.get('/signup/:signupToken', function (req, res, next) {
+    res.render('auth/signup-parent.html', {
+      auto_email: 'user@example.com'
+    });
+  });
+
+  app.post('/signup/:signupToken', function (req, res, next) {
+    res.send('POST /signup/' + req.params.signupToken);
+  });
+
   app.get('/logout', function (req, res, next) {
     delete req.session.user;
     return res.redirect('/');
