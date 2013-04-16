@@ -124,6 +124,10 @@ module.exports = function (app) {
     });
   });
 
+  app.post('/signup/:signupToken', function (req, res, next) {
+    res.send('POST /signup/' + req.params.signupToken);
+  });
+
   app.get('/logout', function (req, res, next) {
     delete req.session.user;
     return res.redirect('/');
