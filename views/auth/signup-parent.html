@@ -7,15 +7,25 @@
 	<form class="form-horizontal span6 offset3" method="post">
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label" for="input-name">Name</label>
+				<label class="control-label" for="input-email">Email</label>
 				<div class="controls">
-					<input type="text" id="input-name" name="name">
+					{% if auto_email %}
+						<input type="email" readonly="readonly" id="input-email" value="{{ auto_email }}">
+					{% else %}
+						<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+					{% endif %}
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="input-email">Email</label>
+				<label class="control-label" for="input-password-1">Password</label>
 				<div class="controls">
-					<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+					<input type="password" id="input-password-1" name="password-1">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="input-password-2">And again</label>
+				<div class="controls">
+					<input type="password" id="input-password-2" name="password-2">
 				</div>
 			</div>
 			<div class="control-group">
