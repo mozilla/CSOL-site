@@ -7,16 +7,16 @@
 	<form class="form-horizontal span6 offset3" method="post">
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label" for="input-email">Email address</label>
+				<label class="control-label" for="input-email">Email</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="email">
 					<span class="help-block">You'll need this to claim your badges.</span>
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" id="input-password-label">Your password is</label>
+				<label class="control-label" id="input-password-label">Password</label>
 				<div class="controls">
-					<span class="uneditable-input" id="input-password">{{ password }}</span>
+					<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
 					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
 					<script>
 						(function() {
@@ -34,20 +34,16 @@
 							button.innerHTML = '<i class="icon-pencil"></i>';
 							button.title = 'Choose your own password';
 							button.onclick = function() {
-								label.innerHTML = 'Password';
-								label.for = 'input-password-1';
+								label.for = 'input-password';
 
-								for (var i = 1; i <= 2; ++i) {
-									var password = document.createElement('input');
-									password.type = 'password';
-									password.id = 'input-password-' + i;
-									password.name = 'password-' + i;
-									password.placeholder = (i==1) ? 'Your own password' : 'Retype your password';
-									container.insertBefore(password, wrapper);
-								}
+								var password = document.createElement('input');
+								password.type = 'password';
+								password.id = 'input-password';
+								password.name = 'password';
+								container.insertBefore(password, wrapper);
 
 								wrapper.parentNode.removeChild(wrapper);
-								document.getElementById('input-password-1').focus();
+								document.getElementById('input-password').focus();
 							}
 
 							wrapper.appendChild(span);
