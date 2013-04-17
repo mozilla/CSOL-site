@@ -70,6 +70,35 @@
 		</header>
 		<div id="content">
 			<div class="container">
+				{% block notices %}
+					{% block messages %}
+						{% if messages and messages.length %}
+							{% for message in messages %}
+								<div class="alert alert-info">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endblock %}
+					{% block successes %}
+						{% if successes and successes.length %}
+							{% for success in successes %}
+								<div class="alert alert-success">
+									{{ success }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endblock %}
+					{% block errors %}
+						{% if errors and errors.length %}
+							{% for error in errors %}
+								<div class="alert alert-error">
+									{{ error }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endblock %}
+				{% endblock %}
 				{% block pageTitleWrapper %}{% if pageTitle %}<h2>{% block pageTitle %}{{ pageTitle }}{% endblock %}</h2>{% endif %}{% endblock %}
 				{% block content %}{% endblock %}
 			</div>
