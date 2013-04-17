@@ -1,4 +1,5 @@
-var db = require('../db.js');
+var db = require('../db.js'),
+    Learner = require('./learner');
 
 var Guardian = db.define('Guardian', {
   id: {
@@ -20,4 +21,5 @@ var Guardian = db.define('Guardian', {
   }
 });
 
+Guardian.hasMany(Learner, {as: 'Dependents'});
 module.exports = Guardian;

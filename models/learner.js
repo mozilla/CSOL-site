@@ -1,5 +1,4 @@
-var db = require('../db.js'),
-    Guardian = require('./guardian');
+var db = require('../db.js');
 
 var Learner = db.define('Learner', {
   id: {
@@ -34,6 +33,5 @@ var Learner = db.define('Learner', {
   }
 });
 
-Learner.hasOne(Guardian);
 
 module.exports = Learner;
