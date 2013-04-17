@@ -20,6 +20,14 @@ var SignupToken = db.define('SignupToken', {
     allowNull: false,
     defaultValue: false
   }
+}, {
+  instanceMethods: {
+    isValid: function() {
+      if (this.expired) return false;
+      // Could potentially invalidate tokens that are too old at this point
+      return true;
+    }
+  }
 });
 
 SignupToken.hasOne(Learner);
