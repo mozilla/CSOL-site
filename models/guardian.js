@@ -22,4 +22,6 @@ var Guardian = db.define('Guardian', {
 });
 
 Guardian.hasMany(Learner, {as: 'Dependents'});
+Guardian.sync();
+
 module.exports = Guardian;

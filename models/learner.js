@@ -33,5 +33,6 @@ var Learner = db.define('Learner', {
   }
 });
 
+Learner.sync();
 
 module.exports = Learner;

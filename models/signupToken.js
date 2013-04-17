@@ -24,4 +24,6 @@ var SignupToken = db.define('SignupToken', {
 
 SignupToken.hasOne(Learner);
 
+SignupToken.sync();
+
 module.exports = SignupToken;
