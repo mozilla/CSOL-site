@@ -1,4 +1,38 @@
+var bcrypt = require('bcrypt'),
+    learners = require('../models/learner'),
+    guardians = require('../models/guardian'),
+    signupTokens = require('../models/signupToken');
+
 module.exports = function (app) {
+
+  var extractUserData = function (user) {
+    var userType = user.daoFactoryName.toLowerCase(),
+        userHome;
+
+    switch (userType) {
+      case 'learner':
+        userHome = '/backpack';
+        break
+      default:
+        userHome = '/dashboard';
+    }
+
+    return {
+      id: user.id,
+      username: user.username || user.email,
+      email: user.email,
+      type: userType,
+      is_valid: true,
+      favorites: [],
+      dependents: [],
+      home: userHome
+    };
+  }
+
+  var redirectUser = function (req, res, user, status) {
+    req.session.user = extractUserData(user);
+    return res.redirect(req.session.user.home, status || 303);
+  }
 
   app.use(function(req, res, next) {
     res.locals.user = req.session.user;
@@ -14,17 +48,44 @@ module.exports = function (app) {
   });
 
   app.post('/login', function (req, res, next) {
-    if (req.body['username'] && req.body['password']) {
-      req.session.user = {
-        username: req.body['username'],
-        type: 'learner',
-        is_valid: true,
-        favorites: []
+    var username = req.body['username'],
+        password = req.body['password'];
+
+    var finalize = function(err, user) {
+      if (err) {
+        res.render('auth/login.html', {
+          username: username,
+          errors: [err]
+        });
+      } else {
+        redirectUser(req, res, user);
       }
-      return res.redirect('/backpack', 303);
+    }
+
+    var validateUser = function(user) {
+      if (user) {
+        bcrypt.compare(password, user.password, function(err, match) {
+          if (err || !match) {
+            finalize(new Error(err || 'Username or password incorrect'));
+          } else {
+            finalize(null, user);
+          }
+        });
+      } else {
+        finalize(new Error('Username or password incorrect'));
+      }
+    }
+
+    if (!username || !password) {
+      finalize(new Error('Missing username or password'));
     } else {
-      res.render('auth/login.html', {
-        username: req.body['username']
+      // Annoying redundancy here, but no other obvious way to generate OR queries
+      learners.find({where: ["`email`=? OR `username`=?", username, username]}).success(function(user) {
+        if (user) {
+          validateUser(user);
+        } else {
+          guardians.find({where: {email: username}}).success(validateUser);
+        }
       });
     }
   });
@@ -99,33 +160,107 @@ module.exports = function (app) {
   });
 
   app.post('/signup/parents', function (req, res, next) {
-    req.session.user = {
-      username: req.body['email'],
-      is_valid: true,
-      email: req.body['email'],
-      type: 'parent',
-      dependents: []
+    var email = req.body['email'],
+        password = req.body['password'];
+
+    var finalize = function(err, user) {
+      if (err) {
+        res.render('auth/signup-parent.html', {
+          email: email,
+          errors: [err]
+        });
+      } else {
+        redirectUser(req, res, user);
+      }
     }
-    return res.redirect('/dashboard', 303);
+
+    if (!email || !password) {
+      finalize(new Error('Missing email or password'));
+    } else {
+      guardians.find({where: {email: email}}).success(function(user) {
+        if (user) {
+          console.log('Guardian with email address ' + email + ' already exists');
+          finalize(new Error('Email address already in use.'));
+        } else {
+          console.log('Guardian not found');
+          bcrypt.hash(password, 10, function(err, hash) {
+            if (err || !hash) {
+              finalize(new Error(err || 'Unable to create an account. Please try again.'));
+            } else {
+              console.log('Password hashed:', hash);
+              guardians.create({email: email, password: hash}).success(function(user) {
+                finalize(user ? null : new Error('Unable to create an account. Please try again.'), user);
+              });
+            }
+          });
+        }
+      });
+    }
   });
 
   app.param('signupToken', function (req, res, next, token) {
-    console.log(token);
-    if (!/^[a-f0-9]{20}$/.test(token)) {
-      next(new Error('Invalid token'));
-    } else {
-      next();
-    }
+    signupTokens.find({where: {token: token}}).success(function(token) {
+      if (token && token.isValid()) {
+        req.params.signupToken = token;
+        next();
+      } else {
+        // Not sure whether we really want to redirect here,
+        // or if we just want to issue an error about the token.
+        return res.redirect('/signup/parents');
+      }
+    });
   });
 
   app.get('/signup/:signupToken', function (req, res, next) {
     res.render('auth/signup-parent.html', {
-      auto_email: 'user@example.com'
+      auto_email: req.params.signupToken.email
     });
   });
 
   app.post('/signup/:signupToken', function (req, res, next) {
-    res.send('POST /signup/' + req.params.signupToken);
+    var email = req.params.signupToken.email,
+        password = req.body['password'];
+
+    // This should probably be refactored to share code with standard guarian signup
+
+    var finalize = function(err, user) {
+      if (err) {
+        res.render('auth/signup-parent.html', {
+          auto_email: email,
+          errors: [err]
+        });
+      } else {
+        // Set the token to be expired
+        req.params.signupToken.updateAttributes({
+          expired: true
+        }).success(function() {
+          redirectUser(req, res, user);
+        });
+      }
+    }
+
+    if (!email || !password) {
+      finalize(new Error('Missing email or password'));
+    } else {
+      guardians.find({where: {email: email}}).success(function(user) {
+        if (user) {
+          console.log('Guardian with email address ' + email + ' already exists');
+          finalize(new Error('Email address already in use.'));
+        } else {
+          console.log('Guardian not found');
+          bcrypt.hash(password, 10, function(err, hash) {
+            if (err || !hash) {
+              finalize(new Error(err || 'Unable to create an account. Please try again.'));
+            } else {
+              console.log('Password hashed:', hash);
+              guardians.create({email: email, password: hash}).success(function(user) {
+                finalize(user ? null : new Error('Unable to create an account. Please try again.'), user);
+              });
+            }
+          });
+        }
+      });
+    }
   });
 
   app.get('/logout', function (req, res, next) {
