@@ -10,7 +10,8 @@
     "sequelize": "~1.6.0",
     "tap": "~0.4.1",
     "async": "~0.2.6",
-    "bcrypt": "~0.7.5"
+    "bcrypt": "~0.7.5",
+    "underscore": "~1.4.4"
   },
   "devDependencies": {},
   "scripts": {
