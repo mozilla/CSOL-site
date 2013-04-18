@@ -36,15 +36,7 @@ function generateToken () {
 
 function extractUserData (user) {
   var userType = user.daoFactoryName.toLowerCase(),
-      userHome;
-
-  switch (userType) {
-    case 'learner':
-      userHome = '/backpack';
-      break
-    default:
-      userHome = '/dashboard';
-  }
+      userHome = (userType == 'learner') ? '/backpack' : '/dashboard';
 
   return {
     id: user.id,
