@@ -30,7 +30,7 @@
 							{% if user.type == 'learner' %}
 								<li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
 									<a href="/backpack" class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My Backpack <i class="caret"></i></a>
-									<ul class="dropdown-menu" role="menu" id="dashboard-menu" aria-labelledby="backpack-menu-toggle">
+									<ul class="dropdown-menu" role="menu" id="backpack-menu" aria-labelledby="backpack-menu-toggle">
 										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
 											<a role="menuitem" tabindex="-1" href="/backpack/badges">My Badges</a>
 										</li>
