@@ -4,37 +4,37 @@ const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const signupTokens = db.model('SignupToken');
 
-var validateEmail = function (email) {
+function validateEmail (email) {
   // TODO - make sure email is valid
   return true;
 }
 
-var normalizeUsername = function (username) {
+function normalizeUsername (username) {
   // For now, just remove white space and lower case it
   return (''+username).replace(/\s/g, '').toLowerCase();
 }
 
-var validateUsername = function (username) {
+function validateUsername (username) {
   // TODO - make sure username is valid
   return true;
 }
 
-var generatePassword = function () {
+function generatePassword () {
   return 'GeneratedPassword';
 }
 
-var validatePassword = function (password) {
+function validatePassword (password) {
   // TODO - make sure password is valid
   return true;
 }
 
-var generateToken = function () {
+function generateToken () {
   // There must be better ways of doing it than this!
   var now = Date.now();
   return ((Math.random() * now).toString(36) + '-' + (Math.random() * now).toString(36)).replace(/[^a-z0-9-]/ig, '-');
 }
 
-var extractUserData = function (user) {
+function extractUserData (user) {
   var userType = user.daoFactoryName.toLowerCase(),
       userHome;
 
@@ -58,7 +58,7 @@ var extractUserData = function (user) {
   };
 }
 
-var redirectUser = function (req, res, user, status) {
+function redirectUser (req, res, user, status) {
   req.session.user = extractUserData(user);
   return res.redirect(req.session.user.home, status || 303);
 }
