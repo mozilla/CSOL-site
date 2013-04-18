@@ -55,6 +55,7 @@
 							<li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
 								<a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" id="menu-login-form-toggle">Log In / Sign Up <i class="caret"></i></a>
 								<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
+									<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 									<label for="menu-login-username">Email or Nickname:</label>
 									<input type="text" id="menu-login-username" name="username" placeholder="e.g. user@example.com">
 									<label for="menu-login-password">Password:</label>

@@ -17,7 +17,13 @@ app.use(express.session({
 app.use(express.logger());
 app.use(express.compress());
 app.use(express.bodyParser());
+app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'static')));
+
+app.use(function(req, res, next) {
+  res.locals.csrfToken = req.session._csrf;
+  next();
+});
 
 require('./controllers/auth')(app);
 require('./controllers/info')(app);

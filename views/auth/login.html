@@ -5,6 +5,7 @@
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="input-username">Email or Nickname</label>
