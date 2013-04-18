@@ -31,6 +31,11 @@ module.exports = {
     password: {
       type: db.type.STRING,
       allowNull: false
+    },
+    complete: {
+      type: db.type.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   },
   relationships: [
