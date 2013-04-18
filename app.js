@@ -25,6 +25,36 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(function(req, res, next) {
+  // This should be in Nunjucks, but right now it's not
+  // https://github.com/jlongster/nunjucks/issues/72
+  res.locals.range = function(start, stop, step) {
+    if (!step) step = 1;
+    if (!stop) {
+      stop = start;
+      start = 0;
+    }
+
+    // console.log(start, stop, step);
+
+    var arr = [start];
+
+    if (start > stop) {
+      while (start - step > stop) {
+        arr.push(start -= step);
+      }
+    } else {
+      while (start + step < stop) {
+        arr.push(start += step);
+      }
+    }
+
+    // console.log(arr);
+    return arr;
+  }
+  next();
+})
+
 require('./controllers/auth')(app);
 require('./controllers/info')(app);
 require('./controllers/backpack')(app);
