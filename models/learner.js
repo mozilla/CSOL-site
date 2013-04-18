@@ -1,38 +1,42 @@
-var db = require('../db.js');
+var db = require('../db');
 
-var Learner = db.define('Learner', {
-  id: {
-    type: db.type.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  underage: {
-    type: db.type.BOOLEAN,
-    allowNull: false,
-    defaultValue: true
-  },
-  email: {
-    type: db.type.STRING,
-    allowNull: true,
-    unique: true,
-    validate: {
-      isEmail: true
+module.exports = {
+  properties: {
+    id: {
+      type: db.type.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    underage: {
+      type: db.type.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
+    email: {
+      type: db.type.STRING,
+      allowNull: true,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    username: {
+      type: db.type.STRING,
+      allowNull: true,
+      unique: true,
+      validate: {
+        is: ['[a-zA-Z0-9 ]']
+      }
+    },
+    password: {
+      type: db.type.STRING,
+      allowNull: false
     }
   },
-  username: {
-    type: db.type.STRING,
-    allowNull: true,
-    unique: true,
-    validate: {
-      is: ['[a-zA-Z0-9 ]']
+  relationships: [
+    {
+      model: 'Guardian',
+      type: 'belongsTo'
     }
-  },
-  password: {
-    type: db.type.STRING,
-    allowNull: false
-  }
-});
-
-Learner.sync();
-
-module.exports = Learner;
+  ]
+};

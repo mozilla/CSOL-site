@@ -1,26 +1,32 @@
-var db = require('../db.js'),
-    Learner = require('./learner');
+var db = require('../db');
 
-var SignupToken = db.define('SignupToken', {
-  token: {
-    type: db.type.STRING,
-    allowNull: false,
-    unique: true
-  },
-  email: {
-    type: db.type.STRING,
-    allowNull: false,
-    unique: false,
-    validate: {
-      isEmail: true
+module.exports = {
+  properties: {
+    token: {
+      type: db.type.STRING,
+      allowNull: false,
+      unique: true
+    },
+    email: {
+      type: db.type.STRING,
+      allowNull: false,
+      unique: false,
+      validate: {
+        isEmail: true
+      }
+    },
+    expired: {
+      type: db.type.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   },
-  expired: {
-    type: db.type.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  }
-}, {
+  relationships: [
+    {
+      model: 'Learner',
+      type: 'hasOne'
+    }
+  ],
   instanceMethods: {
     isValid: function() {
       if (this.expired) return false;
@@ -28,10 +34,4 @@ var SignupToken = db.define('SignupToken', {
       return true;
     }
   }
-});
-
-SignupToken.hasOne(Learner);
-
-SignupToken.sync();
-
-module.exports = SignupToken;
+};

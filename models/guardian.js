@@ -1,27 +1,30 @@
-var db = require('../db.js'),
-    Learner = require('./learner');
+var db = require('../db');
 
-var Guardian = db.define('Guardian', {
-  id: {
-    type: db.type.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  email: {
-    type: db.type.STRING,
-    allowNull: true,
-    unique: true,
-    validate: {
-      isEmail: true
+module.exports = {
+  properties: {
+    id: {
+      type: db.type.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    email: {
+      type: db.type.STRING,
+      allowNull: true,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    password: {
+      type: db.type.STRING,
+      allowNull: false
     }
   },
-  password: {
-    type: db.type.STRING,
-    allowNull: false
-  }
-});
-
-Guardian.hasMany(Learner, {as: 'Dependents'});
-Guardian.sync();
-
-module.exports = Guardian;
+  relationships: [
+    {
+      model: 'Learner',
+      type: 'hasMany',
+      as: 'Dependents'
+    }
+  ]
+};
