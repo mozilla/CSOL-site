@@ -57,9 +57,9 @@
 								<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
 									<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 									<label for="menu-login-username">Email or Nickname:</label>
-									<input type="text" id="menu-login-username" name="username" placeholder="e.g. user@example.com">
+									<input type="text" id="menu-login-username" name="username" required="required">
 									<label for="menu-login-password">Password:</label>
-									<input type="password" id="menu-login-password" name="password">
+									<input type="password" id="menu-login-password" name="password" required="required">
 									<button type="submit" class="btn">Submit</button>
 									<small>Don't have an account? <a href="/signup">Sign up.</a></small>
 								</form>

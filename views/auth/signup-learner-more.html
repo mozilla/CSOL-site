@@ -10,7 +10,7 @@
 			<div class="control-group">
 				<label class="control-label" for="input-email">Email</label>
 				<div class="controls">
-					<input type="email" id="input-email" name="email">
+					<input type="email" id="input-email" name="email" required="required">
 					<span class="help-block">You'll need this to claim your badges.</span>
 				</div>
 			</div>
@@ -21,14 +21,14 @@
 					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
 					<script>
 						(function() {
-							var span = document.getElementById('input-password'),
+							var input = document.getElementById('input-password'),
 							    label = document.getElementById('input-password-label'),
-							    container = span.parentNode,
+							    container = input.parentNode,
 							    wrapper = document.createElement('div'),
 							    button = document.createElement('button');
 
 							wrapper.className = 'input-append';
-							container.insertBefore(wrapper, span);
+							container.insertBefore(wrapper, input);
 
 							button.className = 'btn';
 							button.type = 'button';
@@ -41,13 +41,14 @@
 								password.type = 'password';
 								password.id = 'input-password';
 								password.name = 'password';
+								password.required = 'required';
 								container.insertBefore(password, wrapper);
 
 								wrapper.parentNode.removeChild(wrapper);
 								document.getElementById('input-password').focus();
 							}
 
-							wrapper.appendChild(span);
+							wrapper.appendChild(input);
 							wrapper.appendChild(button);
 						})();
 					</script>
