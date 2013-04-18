@@ -35,8 +35,6 @@ app.use(function(req, res, next) {
       start = 0;
     }
 
-    // console.log(start, stop, step);
-
     var arr = [start];
 
     if (start > stop) {
@@ -49,7 +47,6 @@ app.use(function(req, res, next) {
       }
     }
 
-    // console.log(arr);
     return arr;
   }
   next();
