@@ -222,20 +222,27 @@ module.exports = function (app) {
     var email = req.params.signupToken.email,
         password = req.body['password'];
 
-    // This should probably be refactored to share code with standard guarian signup
+    // This should probably be refactored to share code with standard guardian signup
 
     var finalize = function(err, user) {
-      if (err) {
+      if (err || !user) {
         res.render('auth/signup-parent.html', {
           auto_email: email,
-          errors: [err]
+          errors: [err || new Error('Unable to create an account. Please try again.')]
         });
       } else {
-        // Set the token to be expired
-        req.params.signupToken.updateAttributes({
-          expired: true
-        }).success(function() {
-          redirectUser(req, res, user);
+        req.params.signupToken.getLearner().success(function(learner) {
+          if (learner) {
+            // For now, just going to assume this works
+            learner.setGuardian(user);
+          }
+
+          // Set the token to be expired
+          req.params.signupToken.updateAttributes({
+            expired: true
+          }).success(function() {
+            redirectUser(req, res, user);
+          });
         });
       }
     }
@@ -245,17 +252,15 @@ module.exports = function (app) {
     } else {
       guardians.find({where: {email: email}}).success(function(user) {
         if (user) {
-          console.log('Guardian with email address ' + email + ' already exists');
           finalize(new Error('Email address already in use.'));
         } else {
-          console.log('Guardian not found');
           bcrypt.hash(password, 10, function(err, hash) {
             if (err || !hash) {
-              finalize(new Error(err || 'Unable to create an account. Please try again.'));
+              finalize();
             } else {
               console.log('Password hashed:', hash);
               guardians.create({email: email, password: hash}).success(function(user) {
-                finalize(user ? null : new Error('Unable to create an account. Please try again.'), user);
+                finalize(null, user);
               });
             }
           });
