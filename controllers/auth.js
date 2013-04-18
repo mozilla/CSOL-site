@@ -1,8 +1,8 @@
-var bcrypt = require('bcrypt'),
-    db = require('../db'),
-    learners = db.model('Learner'),
-    guardians = db.model('Guardian'),
-    signupTokens = db.model('SignupToken');
+const bcrypt = require('bcrypt');
+const db = require('../db');
+const learners = db.model('Learner');
+const guardians = db.model('Guardian');
+const signupTokens = db.model('SignupToken');
 
 module.exports = function (app) {
 
