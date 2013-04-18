@@ -4,66 +4,66 @@ const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const signupTokens = db.model('SignupToken');
 
+var validateEmail = function (email) {
+  // TODO - make sure email is valid
+  return true;
+}
+
+var normalizeUsername = function (username) {
+  // For now, just remove white space and lower case it
+  return (''+username).replace(/\s/g, '').toLowerCase();
+}
+
+var validateUsername = function (username) {
+  // TODO - make sure username is valid
+  return true;
+}
+
+var generatePassword = function () {
+  return 'GeneratedPassword';
+}
+
+var validatePassword = function (password) {
+  // TODO - make sure password is valid
+  return true;
+}
+
+var generateToken = function () {
+  // There must be better ways of doing it than this!
+  var now = Date.now();
+  return ((Math.random() * now).toString(36) + '-' + (Math.random() * now).toString(36)).replace(/[^a-z0-9-]/ig, '-');
+}
+
+var extractUserData = function (user) {
+  var userType = user.daoFactoryName.toLowerCase(),
+      userHome;
+
+  switch (userType) {
+    case 'learner':
+      userHome = '/backpack';
+      break
+    default:
+      userHome = '/dashboard';
+  }
+
+  return {
+    id: user.id,
+    username: user.username || user.email,
+    email: user.email,
+    type: userType,
+    is_valid: true,
+    favorites: [],
+    dependents: [],
+    home: userHome
+  };
+}
+
+var redirectUser = function (req, res, user, status) {
+  req.session.user = extractUserData(user);
+  return res.redirect(req.session.user.home, status || 303);
+}
+
 module.exports = function (app) {
-
-  var validateEmail = function (email) {
-    // TODO - make sure email is valid
-    return true;
-  }
-
-  var normalizeUsername = function (username) {
-    // For now, just remove white space and lower case it
-    return (''+username).replace(/\s/g, '').toLowerCase();
-  }
-
-  var validateUsername = function (username) {
-    // TODO - make sure username is valid
-    return true;
-  }
-
-  var generatePassword = function () {
-    return 'GeneratedPassword';
-  }
-
-  var validatePassword = function (password) {
-    // TODO - make sure password is valid
-    return true;
-  }
-
-  var generateToken = function () {
-    // There must be better ways of doing it than this!
-    var now = Date.now();
-    return ((Math.random() * now).toString(36) + '-' + (Math.random() * now).toString(36)).replace(/[^a-z0-9-]/ig, '-');
-  }
-
-  var extractUserData = function (user) {
-    var userType = user.daoFactoryName.toLowerCase(),
-        userHome;
-
-    switch (userType) {
-      case 'learner':
-        userHome = '/backpack';
-        break
-      default:
-        userHome = '/dashboard';
-    }
-
-    return {
-      id: user.id,
-      username: user.username || user.email,
-      email: user.email,
-      type: userType,
-      is_valid: true,
-      favorites: [],
-      dependents: [],
-      home: userHome
-    };
-  }
-
-  var redirectUser = function (req, res, user, status) {
-    req.session.user = extractUserData(user);
-    return res.redirect(req.session.user.home, status || 303);
-  }
 
   app.use(function(req, res, next) {
     res.locals.user = req.session.user;
