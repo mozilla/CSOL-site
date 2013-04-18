@@ -71,7 +71,6 @@ module.exports = function (app) {
   });
 
   app.get('/login', function (req, res, next) {
-    console.log(generateToken());
     if (req.session.user) {
       return res.redirect('/backpack', 303);
     } else {
