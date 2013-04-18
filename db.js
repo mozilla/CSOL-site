@@ -1,9 +1,11 @@
+const path = require('path');
+
 const Sequelize = require('sequelize');
 
 const DB_NAME = process.env['CSOL_DB_NAME'] || 'csol';
 const USERNAME = process.env['CSOL_DB_USER'] || 'root';
 const PASSWORD = process.env['CSOL_DB_PASS'];
-const MODEL_PATH = process.env['CSOL_MODEL_PATH'] || __dirname + '/models';
+const MODEL_PATH = process.env['CSOL_MODEL_PATH'] || path.join(__dirname, 'models');
 
 const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
   define: { charset: 'utf8' }
@@ -23,7 +25,7 @@ db.model = function(name) {
   if (!modelCache[key]) {
     console.log('Defining model:', name);
 
-    var definition = require(MODEL_PATH + '/' + normalized),
+    var definition = require(path.join(MODEL_PATH, normalized)),
         properties = definition.properties,
         relationships = definition.relationships;
 
