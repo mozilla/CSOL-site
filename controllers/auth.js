@@ -55,7 +55,7 @@ function extractUserData (user) {
 
 function redirectUser (req, res, user, status) {
   req.session.user = extractUserData(user);
-  return res.redirect(req.session.user.home, status || 303);
+  return res.redirect(status || 303, req.session.user.home);
 }
 
 module.exports = function (app) {
@@ -67,7 +67,7 @@ module.exports = function (app) {
 
   app.get('/login', function (req, res, next) {
     if (req.session.user) {
-      return res.redirect('/backpack', 303);
+      return res.redirect(303, '/backpack');
     } else {
       res.render('auth/login.html');
     }
@@ -262,7 +262,7 @@ module.exports = function (app) {
               signup.state = underage ? 'child' : 'more';
               signup.password = generatePassword();
               req.session.signup = signup;
-              res.redirect('/signup/learners', 303);
+              res.redirect(303, '/signup/learners');
             });
           }
         });
