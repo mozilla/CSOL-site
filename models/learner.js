@@ -41,7 +41,7 @@ module.exports = {
   relationships: [
     {
       model: 'Guardian',
-      type: 'belongsTo'
+      type: 'hasOne'
     }
   ]
 };
