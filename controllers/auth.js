@@ -130,7 +130,6 @@ module.exports = function (app) {
 
   app.get('/signup/learners', function (req, res, next) {
     var signup = req.session.signup || {};
-    console.log(signup);
 
     if (signup.state == 'child') {
       res.render('auth/signup-child.html', signup);
@@ -169,7 +168,6 @@ module.exports = function (app) {
           }).success(function(token) {
             // TODO - send an email
 
-            console.log(token.token);
             token.setLearner(user); // Assuming this worked
 
             bcrypt.hash(signup.password, 10, function(err, hash) {
@@ -261,7 +259,6 @@ module.exports = function (app) {
               password: '',
               underage: underage
             }).success(function(user) {
-              console.log(user);
               signup.state = underage ? 'child' : 'more';
               signup.password = generatePassword();
               req.session.signup = signup;
