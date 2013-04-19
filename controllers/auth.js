@@ -63,7 +63,6 @@ function extractUserData (user) {
     username: user.username || user.email,
     email: user.email,
     type: userType,
-    is_valid: true,
     favorites: [],
     dependents: [],
     home: userHome
