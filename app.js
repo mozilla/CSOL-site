@@ -7,7 +7,7 @@ const app = express();
 const nunjucks = require('nunjucks');
 const _ = require('underscore');
 
-const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')));
+const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: true});
 env.express(app);
 
 app.use(express.cookieParser())
