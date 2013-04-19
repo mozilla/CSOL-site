@@ -196,6 +196,17 @@ form .divider em {
 #content img {
   margin-bottom: 20px;
 }
+#content .poster {
+  border: solid 20px #D9D9D9;
+  border-color: rgba(153, 153, 153, 0.09999999999999998);
+}
+#content .poster img {
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.09999999999999998);
+}
 .navbar-form {
   color: white;
   text-shadow: 1px 1px 0px black;
