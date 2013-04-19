@@ -11,6 +11,33 @@ const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
   define: { charset: 'utf8' }
 });
 
+/**
+ * In order to get useful bi-directional relationships on models, the relationship
+ * has to be defined on both sides:
+ *
+ *     Learner.hasOne(Guardian);
+ *     Guardian.hasMany(Learner);
+ *
+ * This automatically adds functionality to both parties, and without both
+ * relationships being defined, half would be missing:
+ *
+ *     Learner.[get|set]Guardian();
+ *     Guardian.[get|set]Learners();
+ *     Guardian.[add|remove]Learner();
+ *
+ * However, this doesn't work when models are split out into their own files, as
+ * we end up with circular references. That is, in order for `Learner` to reference
+ * `Guardian`, it has to `require(.../guardian)`, but `Guardian` has to do likewise
+ * in order to reference `Learner`.
+ *
+ * Hence the following abstraction, which allows us to define models in their own
+ * files, but also allows for fully-defined bi-directional relationships. So,
+ * rather than pull in models directly by `require(.../model)`, we now go via the
+ * database instead.
+ *
+ *     model = require(.../db).model('Model');
+ */
+
 var modelCache = {};
 
 db.model = function(name) {
