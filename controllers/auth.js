@@ -51,6 +51,10 @@ function generateToken () {
 }
 
 function extractUserData (user) {
+  // This won't exist in actual user objects,
+  // so assume it's one we've already built
+  if ('home' in user) return user;
+
   var userType = user.daoFactoryName.toLowerCase();
   var userHome = (userType === 'learner') ? '/backpack' : '/dashboard';
 
@@ -227,8 +231,7 @@ module.exports = function (app) {
   });
 
   app.get('/login', function (req, res, next) {
-    if (req.session.user)
-      return res.redirect(303, '/backpack');
+    if (req.session.user) return redirectUser(req, res, req.session.user);
 
     res.render('auth/login.html');
   });
