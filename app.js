@@ -1,4 +1,4 @@
-const SESSION_SECRET = process.env.SESSION_SECRET || "=-pJ#7-/^@11J|rW*W{+AVU+pV]CO6lCT?3dq*+eEQ}/wDm+bFYgA&~8s]@V7>4<"
+const SESSION_SECRET = process.env.SESSION_SECRET || "=-pJ#7-/^@11J|rW*W{+AVU+pV]CO6lCT?3dq*+eEQ}/wDm+bFYgA&~8s]@V7>4<";
 
 const path = require('path');
 const http = require('http');
