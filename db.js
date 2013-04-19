@@ -21,9 +21,9 @@ const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
  * This automatically adds functionality to both parties, and without both
  * relationships being defined, half would be missing:
  *
- *     Learner.[get|set]Guardian();
- *     Guardian.[get|set]Learners();
- *     Guardian.[add|remove]Learner();
+ *     <learner instance>.[get|set]Guardian();
+ *     <guardian instance>.[get|set]Learners();
+ *     <guardian instance>.[add|remove]Learner();
  *
  * However, this doesn't work when models are split out into their own files, as
  * we end up with circular references. That is, in order for `Learner` to reference
