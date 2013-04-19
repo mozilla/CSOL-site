@@ -15,7 +15,7 @@ const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
  * In order to get useful bi-directional relationships on models, the relationship
  * has to be defined on both sides:
  *
- *     Learner.hasOne(Guardian);
+ *     Learner.belongsTo(Guardian);
  *     Guardian.hasMany(Learner);
  *
  * This automatically adds functionality to both parties, and without both
