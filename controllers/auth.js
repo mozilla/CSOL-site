@@ -4,6 +4,9 @@ const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const signupTokens = db.model('SignupToken');
 
+const COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
+
+
 function validateEmail (email) {
   // TODO - make sure email is valid
   return true;
@@ -229,7 +232,7 @@ module.exports = function (app) {
 
       var today = new Date();
       var cutoff = new Date(
-        today.getFullYear() - 13,
+        today.getFullYear() - COPPA_MAX_AGE,
         today.getMonth(),
         today.getDate()
       );
