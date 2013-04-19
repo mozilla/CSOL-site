@@ -23,12 +23,25 @@ function validateUsername (username) {
 }
 
 function generatePassword () {
+  // TODO - generate an actual password
   return 'GeneratedPassword';
 }
 
 function validatePassword (password) {
   // TODO - make sure password is valid
   return true;
+}
+
+function validateCoppaCompliance (birthday) {
+  var today = new Date();
+
+  var cutoff = new Date(
+    today.getFullYear() - COPPA_MAX_AGE,
+    today.getMonth(),
+    today.getDate()
+  );
+
+  return cutoff > birthday;
 }
 
 function generateToken () {
@@ -58,6 +71,150 @@ function redirectUser (req, res, user, status) {
   return res.redirect(status || 303, req.session.user.home);
 }
 
+function processInitialLearnerSignup (req, res, next) {
+  var signup = req.session.signup || {};
+
+  signup.birthday_year = parseInt(req.body['birthday_year'], 10);
+  signup.birthday_month = parseInt(req.body['birthday_month'], 10);
+  signup.birthday_day = parseInt(req.body['birthday_day'], 10);
+  signup.username = req.body['username'];
+
+  var normalizedUsername = normalizeUsername(signup.username);
+
+  var birthday = new Date(
+    signup.birthday_year,
+    signup.birthday_month - 1, // JS dates have 0-indexed months
+    signup.birthday_day
+  );
+
+  function fail (err) {
+    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    req.session.signup = signup;
+    res.render('auth/signup-learner.html', signup);
+  }
+
+  // Check for accidental February 30ths, etc
+  if (birthday.getFullYear() !== signup.birthday_year
+        || birthday.getMonth() !== signup.birthday_month - 1
+        || birthday.getDate() !== signup.birthday_day)
+    return fail(new Error('This is not a valid date.'));
+
+  learners.find({where: {username: normalizedUsername}})
+    .complete(function(err, user) {
+      if (err) return fail(err);
+      if (user) return fail(new Error('This nickname is already in use'));
+
+      // Create the user now, to prevent race conditions on usernames
+      var underage = !validateCoppaCompliance(birthday);
+
+      learners.create({
+        username: normalizedUsername,
+        password: '',
+        underage: underage
+      }).complete(function(err, user) {
+        if (err || !user) return fail(err);
+
+        signup.state = underage ? 'child' : 'more';
+        signup.password = generatePassword();
+        req.session.signup = signup;
+        res.redirect(303, '/signup/learners');
+      });
+    });
+}
+
+function processChildLearnerSignup (req, res, next) {
+  var signup = req.session.signup || {},
+      normalizedUsername = normalizeUsername(signup.username);
+
+  signup.parent_email = req.body['parent_email'];
+
+  function fail (err) {
+    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    res.session.signup = signup;
+    res.render('auth/signup-child.html', signup);
+  }
+
+  if (!signup.parent_email)
+    return fail(new Error('Missing email address'));
+
+  if (!validateEmail(signup.parent_email))
+    return fail(new Error('Invalid email address'));
+
+  learners.find({where: {username: normalizedUsername}})
+    .complete(function(err, user) {
+      if (err || !user) return fail(err);
+
+      signupTokens.create({
+        email: signup.parent_email,
+        token: generateToken(),
+      }).complete(function(err, token) {
+        if (err || !token) return fail(err);
+
+        // TODO - send an email
+
+        token.setLearner(user); // Assuming this worked
+
+        bcrypt.hash(signup.password, 10, function(err, hash) {
+          if (err || !hash) return fail(err);
+
+          user.updateAttributes({
+            complete: true,
+            password: hash
+          }).complete(function(err) {
+            if (err) return fail(err);
+
+            delete req.session.signup;
+            redirectUser(req, res, user);
+          });
+        });
+      });
+  });
+}
+
+function processStandardLearnerSignup (req, res, next) {
+  var signup = req.session.signup || {},
+      normalizedUsername = normalizeUsername(signup.username);
+
+  signup.email = req.body['email'];
+  if ('password' in req.body)
+    signup.password = req.body['password'];
+
+  function fail (err) {
+    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    res.session.signup = signup;
+    res.render('auth/signup-learner-more.html', signup);
+  }
+
+  if (!signup.email || !signup.password)
+    return fail(new Error('Missing email address or password'));
+
+  if (!validateEmail(signup.email))
+    return fail(new Error('Invalid email address'));
+
+  if (!validatePassword(signup.password))
+    return fail(new Error('Invalid password'));
+
+  learners.find({where: {username: normalizedUsername}})
+    .complete(function(err, user) {
+      if (err || !user) return fail(err);
+
+      bcrypt.hash(signup.password, 10, function(err, hash) {
+        if (err || !hash) return fail(err);
+
+        user.updateAttributes({
+          complete: true,
+          email: signup.email,
+          password: hash
+        }).complete(function(err) {
+          if (err) return fail(err);
+
+          delete res.session.signup;
+          redirectUser(req, res, user);
+        });
+      });
+  });
+}
+
 module.exports = function (app) {
 
   app.use(function(req, res, next) {
@@ -66,54 +223,55 @@ module.exports = function (app) {
   });
 
   app.get('/login', function (req, res, next) {
-    if (req.session.user) {
+    if (req.session.user)
       return res.redirect(303, '/backpack');
-    } else {
-      res.render('auth/login.html');
-    }
+
+    res.render('auth/login.html');
   });
 
   app.post('/login', function (req, res, next) {
     var username = req.body['username'],
         password = req.body['password'];
 
-    var finalize = function(err, user) {
-      if (err) {
-        res.render('auth/login.html', {
+    function finalize (err, user) {
+      if (err || !user) {
+        return res.render('auth/login.html', {
           username: username,
-          errors: [err]
+          errors: [err || new Error('Unable to log in. Please try again.')]
         });
-      } else {
-        redirectUser(req, res, user);
       }
+
+      redirectUser(req, res, user);
     }
 
-    var validateUser = function(user) {
-      if (user) {
-        bcrypt.compare(password, user.password, function(err, match) {
-          if (err || !match) {
-            finalize(new Error(err || 'Nickname or password incorrect'));
-          } else {
-            finalize(null, user);
-          }
-        });
-      } else {
-        finalize(new Error('Nickname or password incorrect'));
-      }
-    }
+    function validateUser (user) {
+      if (!user)
+        return finalize(new Error('Nickname or password incorrect'));
 
-    if (!username || !password) {
-      finalize(new Error('Missing nickname or password'));
-    } else {
-      // Annoying redundancy here, but no other obvious way to generate OR queries
-      learners.find({where: ["`email`=? OR `username`=?", username, username]}).success(function(user) {
-        if (user) {
-          validateUser(user);
-        } else {
-          guardians.find({where: {email: username}}).success(validateUser);
-        }
+      bcrypt.compare(password, user.password, function(err, match) {
+        if (err || !match)
+          return finalize(err || new Error('Nickname or password incorrect'));
+
+        finalize(null, user);
       });
     }
+
+    if (!username || !password)
+      return finalize(new Error('Missing nickname or password'));
+
+    // Annoying redundancy here, but no other obvious way to generate OR queries
+    learners.find({where: ["`email`=? OR `username`=?", username, username]})
+      .complete(function(err, user) {
+        if (err) return finalize(err);
+        if (user) return validateUser(user);
+
+        guardians.find({where: {email: username}})
+          .complete(function(err, user) {
+            if (err) return finalize(err);
+
+            validateUser(user)
+          });
+      });
   });
 
   app.get('/login/password', function (req, res, next) {
@@ -131,143 +289,27 @@ module.exports = function (app) {
   app.get('/signup/learners', function (req, res, next) {
     var signup = req.session.signup || {};
 
-    if (signup.state == 'child') {
-      res.render('auth/signup-child.html', signup);
-    } else if (signup.state == 'more') {
-      res.render('auth/signup-learner-more.html', signup);
-    } else {
-      delete req.session.signup;
-      res.render('auth/signup-learner.html');
-    }
+    if (signup.state == 'child')
+      return res.render('auth/signup-child.html', signup);
+
+    if (signup.state == 'more')
+      return res.render('auth/signup-learner-more.html', signup);
+
+    delete req.session.signup;
+    res.render('auth/signup-learner.html');
   });
 
   app.post('/signup/learners', function (req, res, next) {
     var signup = req.session.signup || {};
     delete signup.errors;
 
-    if (signup.state == 'child') {
-      var normalizedUsername = normalizeUsername(signup.username);
+    if (signup.state == 'child')
+      return processChildLearnerSignup(req, res, next);
 
-      signup.parent_email = req.body['parent_email'];
+    if (signup.state == 'more')
+      return processStandardLearnerSignup(req, res, next);
 
-      var fail = function(err) {
-        signup.errors = [err];
-        res.session.signup = signup;
-        res.render('auth/signup-child.html', signup);
-      }
-
-      if (!signup.parent_email) {
-        fail(new Error('Missing email address'));
-      } else if (!validateEmail(signup.parent_email)) {
-        fail(new Error('Invalid email address'));
-      } else {
-        learners.find({where: {username: normalizedUsername}}).success(function(user) {
-          signupTokens.create({
-            email: signup.parent_email,
-            token: generateToken(),
-          }).success(function(token) {
-            // TODO - send an email
-
-            token.setLearner(user); // Assuming this worked
-
-            bcrypt.hash(signup.password, 10, function(err, hash) {
-              user.updateAttributes({
-                complete: true,
-                password: hash
-              }).success(function() {
-                delete req.session.signup;
-                redirectUser(req, res, user);
-              });
-            });
-          });
-        });
-      }
-    } else if (signup.state == 'more') {
-      var normalizedUsername = normalizeUsername(signup.username);
-
-      signup.email = req.body['email'];
-      if ('password' in req.body) signup.password = req.body['password'];
-
-      var fail = function(err) {
-        signup.errors = [err];
-        res.session.signup = signup;
-        res.render('auth/signup-learner-more.html', signup);
-      }
-
-      if (!signup.email || !signup.password) {
-        fail(new Error('Missing email address or password'));
-      } else if (!validateEmail(signup.email)) {
-        fail(new Error('Invalid email address'));
-      } else if (!validatePassword(signup.password)) {
-        fail(new Error('Invalid password'));
-      } else {
-        learners.find({where: {username: normalizedUsername}}).success(function(user) {
-          bcrypt.hash(signup.password, 10, function(err, hash) {
-            user.updateAttributes({
-              complete: true,
-              email: signup.email,
-              password: hash
-            }).success(function() {
-              delete res.session.signup;
-              redirectUser(req, res, user);
-            });
-          });
-        });
-      }
-    } else {
-      signup.birthday_year = parseInt(req.body['birthday_year'], 10);
-      signup.birthday_month = parseInt(req.body['birthday_month'], 10);
-      signup.birthday_day = parseInt(req.body['birthday_day'], 10);
-      signup.username = req.body['username'];
-
-      var normalizedUsername = normalizeUsername(signup.username);
-
-      var birthday = new Date(
-        signup.birthday_year,
-        signup.birthday_month - 1, // JS dates have 0-indexed months
-        signup.birthday_day
-      );
-
-      var today = new Date();
-      var cutoff = new Date(
-        today.getFullYear() - COPPA_MAX_AGE,
-        today.getMonth(),
-        today.getDate()
-      );
-
-      var fail = function(err) {
-        signup.errors = [err];
-        req.session.signup = signup;
-        res.render('auth/signup-learner.html', signup);
-      }
-
-      // Check for accidental February 30ths, etc
-      if (birthday.getFullYear() !== signup.birthday_year
-            || birthday.getMonth() !== signup.birthday_month - 1
-            || birthday.getDate() !== signup.birthday_day) {
-        fail(new Error('This is not a valid date.'));
-      } else {
-        learners.find({where: {username: normalizedUsername}}).success(function(user) {
-          if (user) {
-            fail(new Error('This nickname is already in use'));
-          } else {
-            // Create the user now, to prevent race conditions on usernames
-            var underage = (birthday > cutoff);
-
-            learners.create({
-              username: normalizedUsername,
-              password: '',
-              underage: underage
-            }).success(function(user) {
-              signup.state = underage ? 'child' : 'more';
-              signup.password = generatePassword();
-              req.session.signup = signup;
-              res.redirect(303, '/signup/learners');
-            });
-          }
-        });
-      }
-    }
+    processInitialLearnerSignup(req, res, next, signup);
   });
 
   app.get('/signup/parents', function (req, res, next) {
@@ -278,56 +320,64 @@ module.exports = function (app) {
     var email = req.body['email'],
         password = req.body['password'];
 
-    var finalize = function(err, user) {
-      if (err) {
-        res.render('auth/signup-parent.html', {
+    function finalize (err, user) {
+      if (err || !user) {
+        return res.render('auth/signup-parent.html', {
           email: email,
-          errors: [err]
+          errors: [err || new Error('Unable to complete sign-up process. Please try again.')]
         });
-      } else {
-        redirectUser(req, res, user);
       }
+
+      redirectUser(req, res, user);
     }
 
-    if (!email || !password) {
-      finalize(new Error('Missing email or password'));
-    } else if (!validateEmail(email)) {
-      finalize(new Error('Invalid email address'));
-    } else if (!validatePassword(password)) {
-      finalize(new Error('Invalid password'));
-    } else {
-      guardians.find({where: {email: email}}).success(function(user) {
+    if (!email || !password)
+      return finalize(new Error('Missing email or password'));
+
+    if (!validateEmail(email))
+      return finalize(new Error('Invalid email address'));
+
+    if (!validatePassword(password))
+      return finalize(new Error('Invalid password'));
+
+    guardians.find({where: {email: email}})
+      .complete(function(err, user) {
+        if (err) return finalize(err);
+
         if (user) {
           console.log('Guardian with email address ' + email + ' already exists');
-          finalize(new Error('Email address already in use.'));
-        } else {
-          console.log('Guardian not found');
-          bcrypt.hash(password, 10, function(err, hash) {
-            if (err || !hash) {
-              finalize(new Error(err || 'Unable to create an account. Please try again.'));
-            } else {
-              console.log('Password hashed:', hash);
-              guardians.create({email: email, password: hash}).success(function(user) {
-                finalize(user ? null : new Error('Unable to create an account. Please try again.'), user);
-              });
-            }
-          });
+          return finalize(new Error('Email address already in use.'));
         }
+
+        console.log('Guardian not found');
+        bcrypt.hash(password, 10, function(err, hash) {
+          if (err || !hash)
+            return finalize(new Error(err || 'Unable to create an account. Please try again.'));
+
+          console.log('Password hashed:', hash);
+          guardians.create({email: email, password: hash})
+            .complete(function(err, user) {
+              if (err || !user)
+                return finalize(err);
+
+              return finalize(null, user);
+            });
+        });
       });
-    }
   });
 
   app.param('signupToken', function (req, res, next, token) {
-    signupTokens.find({where: {token: token}}).success(function(token) {
-      if (token && token.isValid()) {
-        req.params.signupToken = token;
-        next();
-      } else {
+    signupTokens.find({where: {token: token}})
+      .complete(function(err, token) {
+        if (!err && token && token.isValid()) {
+          req.params.signupToken = token;
+          next();
+        }
+
         // Not sure whether we really want to redirect here,
-        // or if we just want to issue an error about the token.
+        // or if we just want to report the error somehow.
         return res.redirect('/signup/parents');
-      }
-    });
+      });
   });
 
   app.get('/signup/:signupToken', function (req, res, next) {
@@ -342,14 +392,20 @@ module.exports = function (app) {
 
     // This should probably be refactored to share code with standard guardian signup
 
-    var finalize = function(err, user) {
-      if (err || !user) {
-        res.render('auth/signup-parent.html', {
-          auto_email: email,
-          errors: [err || new Error('Unable to create an account. Please try again.')]
-        });
-      } else {
-        req.params.signupToken.getLearner().success(function(learner) {
+    function fail (err) {
+      res.render('auth/signup-parent.html', {
+        auto_email: email,
+        errors: [err || new Error('Unable to create an account. Please try again.')]
+      });
+    }
+
+    function finalize (err, user) {
+      if (err || !user) return fail(err);
+
+      req.params.signupToken.getLearner()
+        .complete(function(err, learner) {
+          if (err) return failOut(err);
+
           if (learner) {
             // For now, just going to assume this works
             learner.setGuardian(user);
@@ -358,33 +414,31 @@ module.exports = function (app) {
           // Set the token to be expired
           req.params.signupToken.updateAttributes({
             expired: true
-          }).success(function() {
+          }).complete(function(err) {
+            if (err) return fail(err);
+
             redirectUser(req, res, user);
           });
         });
-      }
     }
 
-    if (!email || !password) {
-      finalize(new Error('Missing email or password'));
-    } else {
-      guardians.find({where: {email: email}}).success(function(user) {
-        if (user) {
-          finalize(new Error('Email address already in use.'));
-        } else {
-          bcrypt.hash(password, 10, function(err, hash) {
-            if (err || !hash) {
-              finalize();
-            } else {
-              console.log('Password hashed:', hash);
-              guardians.create({email: email, password: hash}).success(function(user) {
-                finalize(null, user);
-              });
-            }
-          });
-        }
+    if (!email || !password)
+      return finalize(new Error('Missing email or password'));
+
+    guardians.find({where: {email: email}})
+      .complete(function(err, user) {
+        if (user)
+          return finalize(new Error('Email address already in use.'));
+
+        bcrypt.hash(password, 10, function(err, hash) {
+          if (err || !hash)
+            return finalize(err);
+
+          console.log('Password hashed:', hash);
+          guardians.create({email: email, password: hash})
+            .complete(finalize);
+        });
       });
-    }
   });
 
   app.get('/logout', function (req, res, next) {
