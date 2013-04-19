@@ -369,7 +369,7 @@ module.exports = function (app) {
         console.log('Guardian not found');
         bcrypt.hash(password, 10, function(err, hash) {
           if (err || !hash)
-            return finalize(new Error(err || 'Unable to create an account. Please try again.'));
+            return finalize(err || new Error('Unable to create an account. Please try again.'));
 
           console.log('Password hashed:', hash);
           guardians.create({email: email, password: hash})
