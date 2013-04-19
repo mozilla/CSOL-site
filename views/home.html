@@ -1,4 +1,29 @@
 {% extends 'layout.html' %}
+{% set bodyClass = 'home' %}
+{% set pageTitle = 'What can you discover in Chicago Summer?' %}
 
 {% block content %}
+<div class="row-fluid">
+	<div class="span4">
+		<div class="poster">
+			<img src="/media/images/poster.png" alt="">
+		</div>
+		<h3>Projects</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+	</div>
+	<div class="span4">
+		<div class="poster">
+			<img src="/media/images/poster.png" alt="">
+		</div>
+		<h3>Challenges</h3>
+		<p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+	</div>
+	<div class="span4">
+		<div class="poster">
+			<img src="/media/images/poster.png" alt="">
+		</div>
+		<h3>Skills</h3>
+		<p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+	</div>
+</div>
 {% endblock %}
