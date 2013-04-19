@@ -41,13 +41,18 @@ const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
 var modelCache = {};
 
 db.model = function(name) {
+  // `normalizedName` is a conversion from 'some name' to 'someName'
   var normalized = name.replace(/(^| +)([a-z])/ig, function(match, space, character) {
         return character[space ? 'toUpperCase' : 'toLowerCase']();
-      }),
-      name = normalized.replace(/(^| +)([a-z])/ig, function(match, space, character) {
+      });
+
+  // `name` is a conversion from 'some name' into 'SomeName'
+  var name = normalized.replace(/(^| +)([a-z])/ig, function(match, space, character) {
         return character.toUpperCase();
-      }),
-      key = name.toLowerCase();
+      });
+
+  // `key` is a conversion from 'some name' to 'somename'
+  var key = name.toLowerCase();
 
   if (!modelCache[key]) {
     console.log('Defining model:', name);
@@ -60,6 +65,8 @@ db.model = function(name) {
     delete definition.relationships;
 
     var model = db.define(name, properties, definition);
+    // We need to cache the model before resolving any relationships, so that it
+    // is available to any related models that might reference it.
     modelCache[key] = model;
 
     if (relationships) {
