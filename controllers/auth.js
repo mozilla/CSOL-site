@@ -1,10 +1,10 @@
-const bcrypt = require('bcrypt');
-const db = require('../db');
-const learners = db.model('Learner');
-const guardians = db.model('Guardian');
-const signupTokens = db.model('SignupToken');
+var bcrypt = require('bcrypt');
+var db = require('../db');
+var learners = db.model('Learner');
+var guardians = db.model('Guardian');
+var signupTokens = db.model('SignupToken');
 
-const COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
+var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 
 
 function validateEmail (email) {
@@ -51,8 +51,8 @@ function generateToken () {
 }
 
 function extractUserData (user) {
-  var userType = user.daoFactoryName.toLowerCase(),
-      userHome = (userType == 'learner') ? '/backpack' : '/dashboard';
+  var userType = user.daoFactoryName.toLowerCase();
+  var userHome = (userType === 'learner') ? '/backpack' : '/dashboard';
 
   return {
     id: user.id,
@@ -73,13 +73,12 @@ function redirectUser (req, res, user, status) {
 
 function processInitialLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
+  var normalizedUsername = normalizeUsername(signup.username);
 
   signup.birthday_year = parseInt(req.body['birthday_year'], 10);
   signup.birthday_month = parseInt(req.body['birthday_month'], 10);
   signup.birthday_day = parseInt(req.body['birthday_day'], 10);
   signup.username = req.body['username'];
-
-  var normalizedUsername = normalizeUsername(signup.username);
 
   var birthday = new Date(
     signup.birthday_year,
@@ -93,10 +92,15 @@ function processInitialLearnerSignup (req, res, next) {
     res.render('auth/signup-learner.html', signup);
   }
 
+  if (!validateUsername(signup.username))
+    return fail(new Error('This is not a valid nickname'));
+
   // Check for accidental February 30ths, etc
-  if (birthday.getFullYear() !== signup.birthday_year
-        || birthday.getMonth() !== signup.birthday_month - 1
-        || birthday.getDate() !== signup.birthday_day)
+  var isValidDate = birthday.getFullYear() === signup.birthday_year
+        && birthday.getMonth() === signup.birthday_month - 1
+        && birthday.getDate() === signup.birthday_day;
+
+  if (!isValidDate)
     return fail(new Error('This is not a valid date.'));
 
   learners.find({where: {username: normalizedUsername}})
@@ -123,8 +127,8 @@ function processInitialLearnerSignup (req, res, next) {
 }
 
 function processChildLearnerSignup (req, res, next) {
-  var signup = req.session.signup || {},
-      normalizedUsername = normalizeUsername(signup.username);
+  var signup = req.session.signup || {};
+  var normalizedUsername = normalizeUsername(signup.username);
 
   signup.parent_email = req.body['parent_email'];
 
@@ -172,8 +176,8 @@ function processChildLearnerSignup (req, res, next) {
 }
 
 function processStandardLearnerSignup (req, res, next) {
-  var signup = req.session.signup || {},
-      normalizedUsername = normalizeUsername(signup.username);
+  var signup = req.session.signup || {};
+  var normalizedUsername = normalizeUsername(signup.username);
 
   signup.email = req.body['email'];
   if ('password' in req.body)
@@ -230,8 +234,8 @@ module.exports = function (app) {
   });
 
   app.post('/login', function (req, res, next) {
-    var username = req.body['username'],
-        password = req.body['password'];
+    var username = req.body['username'];
+    var password = req.body['password'];
 
     function finalize (err, user) {
       if (err || !user) {
@@ -289,10 +293,10 @@ module.exports = function (app) {
   app.get('/signup/learners', function (req, res, next) {
     var signup = req.session.signup || {};
 
-    if (signup.state == 'child')
+    if (signup.state === 'child')
       return res.render('auth/signup-child.html', signup);
 
-    if (signup.state == 'more')
+    if (signup.state === 'more')
       return res.render('auth/signup-learner-more.html', signup);
 
     delete req.session.signup;
@@ -303,10 +307,10 @@ module.exports = function (app) {
     var signup = req.session.signup || {};
     delete signup.errors;
 
-    if (signup.state == 'child')
+    if (signup.state === 'child')
       return processChildLearnerSignup(req, res, next);
 
-    if (signup.state == 'more')
+    if (signup.state === 'more')
       return processStandardLearnerSignup(req, res, next);
 
     processInitialLearnerSignup(req, res, next, signup);
@@ -317,8 +321,8 @@ module.exports = function (app) {
   });
 
   app.post('/signup/parents', function (req, res, next) {
-    var email = req.body['email'],
-        password = req.body['password'];
+    var email = req.body['email'];
+    var password = req.body['password'];
 
     function finalize (err, user) {
       if (err || !user) {
@@ -387,8 +391,8 @@ module.exports = function (app) {
   });
 
   app.post('/signup/:signupToken', function (req, res, next) {
-    var email = req.params.signupToken.email,
-        password = req.body['password'];
+    var email = req.params.signupToken.email;
+    var password = req.body['password'];
 
     // This should probably be refactored to share code with standard guardian signup
 
