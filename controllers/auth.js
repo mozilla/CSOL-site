@@ -74,6 +74,11 @@ function redirectUser (req, res, user, status) {
   return res.redirect(status || 303, req.session.user.home);
 }
 
+function clearUser (req, res) {
+  delete req.session.user;
+  delete res.locals.user;
+}
+
 function processInitialLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
   var normalizedUsername = normalizeUsername(signup.username);
@@ -289,10 +294,14 @@ module.exports = function (app) {
   });
 
   app.get('/signup', function (req, res, next) {
+    clearUser(req, res);
+
     res.render('/auth/signup.html');
   });
 
   app.get('/signup/learners', function (req, res, next) {
+    clearUser(req, res);
+
     var signup = req.session.signup || {};
 
     if (signup.state === 'child')
@@ -319,6 +328,8 @@ module.exports = function (app) {
   });
 
   app.get('/signup/parents', function (req, res, next) {
+    clearUser(req, res);
+
     res.render('auth/signup-parent.html');
   });
 
@@ -448,7 +459,8 @@ module.exports = function (app) {
   });
 
   app.get('/logout', function (req, res, next) {
-    delete req.session.user;
+    clearUser(req, res);
+
     return res.redirect('/');
   });
 
