@@ -221,7 +221,7 @@ function processStandardLearnerSignup (req, res, next) {
         }).complete(function(err) {
           if (err) return fail(err);
 
-          delete res.session.signup;
+          delete req.session.signup;
           redirectUser(req, res, user);
         });
       });
