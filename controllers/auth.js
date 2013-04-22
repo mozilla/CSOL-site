@@ -143,7 +143,7 @@ function processChildLearnerSignup (req, res, next) {
 
   function fail (err) {
     signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
-    res.session.signup = signup;
+    req.session.signup = signup;
     res.render('auth/signup-child.html', signup);
   }
 
@@ -194,7 +194,7 @@ function processStandardLearnerSignup (req, res, next) {
 
   function fail (err) {
     signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
-    res.session.signup = signup;
+    req.session.signup = signup;
     res.render('auth/signup-learner-more.html', signup);
   }
 
