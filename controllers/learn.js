@@ -61,7 +61,6 @@ module.exports = function(app) {
         item: item
       });
 
-    console.log(req.query);
     if ('category' in req.query) {
       var category = req.query['category'];
       delete req.query['category'];
