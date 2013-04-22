@@ -82,7 +82,7 @@ function clearUser (req, res) {
 
 function processInitialLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
-  var normalizedUsername = normalizeUsername(signup.username);
+  var normalizedUsername = normalizeUsername(req.body['username']);
 
   signup.birthday_year = parseInt(req.body['birthday_year'], 10);
   signup.birthday_month = parseInt(req.body['birthday_month'], 10);
