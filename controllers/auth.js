@@ -5,6 +5,7 @@ var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
 
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
+var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 
 
 function validateEmail (email) {
@@ -166,7 +167,7 @@ function processChildLearnerSignup (req, res, next) {
 
         token.setLearner(user); // Assuming this worked
 
-        bcrypt.hash(signup.password, 10, function(err, hash) {
+        bcrypt.hash(signup.password, BCRYPT_SEED_ROUNDS, function(err, hash) {
           if (err || !hash) return fail(err);
 
           user.updateAttributes({
@@ -210,7 +211,7 @@ function processStandardLearnerSignup (req, res, next) {
     .complete(function(err, user) {
       if (err || !user) return fail(err);
 
-      bcrypt.hash(signup.password, 10, function(err, hash) {
+      bcrypt.hash(signup.password, BCRYPT_SEED_ROUNDS, function(err, hash) {
         if (err || !hash) return fail(err);
 
         user.updateAttributes({
@@ -367,7 +368,7 @@ module.exports = function (app) {
         }
 
         console.log('Guardian not found');
-        bcrypt.hash(password, 10, function(err, hash) {
+        bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
           if (err || !hash)
             return finalize(err || new Error('Unable to create an account. Please try again.'));
 
@@ -447,7 +448,7 @@ module.exports = function (app) {
         if (user)
           return finalize(new Error('Email address already in use.'));
 
-        bcrypt.hash(password, 10, function(err, hash) {
+        bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
           if (err || !hash)
             return finalize(err);
 
