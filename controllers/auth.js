@@ -112,26 +112,25 @@ function processInitialLearnerSignup (req, res, next) {
   if (!isValidDate)
     return fail(new Error('This is not a valid date.'));
 
-  learners.find({where: {username: normalizedUsername}})
-    .complete(function(err, user) {
-      if (err) return fail(err);
-      if (user) return fail(new Error('This nickname is already in use'));
+  var underage = !validateCoppaCompliance(birthday);
 
-      // Create the user now, to prevent race conditions on usernames
-      var underage = !validateCoppaCompliance(birthday);
+  // Due to sign-up being a two-step process, we're creating the user now to prevent
+  // race conditions on usernames - even if the username does not exist now, it may
+  // well have been created by the time sign-up is complete.
+  // This will fail if the username is already being used
+  learners.create({username: normalizedUsername, password: '', underage: underage})
+    .error(function(err) {
+      // Did try a `findOrCreate`, but couldn't get `isNewRecord` to work
+      if (err.code === 'ER_DUP_ENTRY')
+        return fail(new Error('This nickname is already in use'));
 
-      learners.create({
-        username: normalizedUsername,
-        password: '',
-        underage: underage
-      }).complete(function(err, user) {
-        if (err || !user) return fail(err);
-
-        signup.state = underage ? 'child' : 'more';
-        signup.password = generatePassword();
-        req.session.signup = signup;
-        res.redirect(303, '/signup/learners');
-      });
+      return fail(err);
+    })
+    .success(function(user) {
+      signup.state = underage ? 'child' : 'more';
+      signup.password = generatePassword();
+      req.session.signup = signup;
+      res.redirect(303, '/signup/learners');
     });
 }
 
