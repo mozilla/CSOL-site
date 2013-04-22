@@ -18,11 +18,6 @@ module.exports = function(app) {
         title: 'Activities',
         set: 'activity'
       };
-    } else if (section == 'games') {
-      req.params.section = {
-        title: 'Games',
-        set: 'game'
-      };
     } else {
       return next(new Error('Learn section "' + section + '" not found'));
     }
@@ -50,19 +45,19 @@ module.exports = function(app) {
     var itemOptions = [{
       thumbnail: '/media/images/org.png',
       description: 'Organisation blah irure...',
-      url: '/orgs/some-organisation'
+      url: '/learn/orgs/some-organisation'
     },{
       thumbnail: '/media/images/program.png',
       description: 'Program blah sed eiusmod...',
-      url: '/programs/ae784f'
+      url: '/learn/programs/some-program'
     },{
-      thumbnail: '/media/images/challenge.png',
-      description: 'Challenge id est laborum...',
-      url: '/challenges/some-challenge'
+      thumbnail: '/media/images/activity.png',
+      description: 'Activity id est laborum...',
+      url: '/learn/activities/some-activity'
     }];
 
     if (item)
-      return res.render('learn/' + section.path + '/single.html', {
+      return res.render('learn/' + section.set + '/single.html', {
         item: item
       });
 
