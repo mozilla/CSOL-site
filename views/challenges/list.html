@@ -1,0 +1,8 @@
+{% extends 'filter.html' %}
+{% set pageTitle = 'Challenges' %}
+
+{% block item_actions %}
+	<a class="btn" href="{{ item.url }}/apply">Apply</a>
+	{{ super() }}
+	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+{% endblock %}
