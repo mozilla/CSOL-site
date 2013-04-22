@@ -219,7 +219,11 @@ function processStandardLearnerSignup (req, res, next) {
           email: signup.email,
           password: hash
         }).complete(function(err) {
-          if (err) return fail(err);
+          if (err) {
+            if (err.code === 'ER_DUP_ENTRY')
+              return fail(new Error('This email address is already in use'));
+            return fail(err);
+          }
 
           delete req.session.signup;
           redirectUser(req, res, user);
