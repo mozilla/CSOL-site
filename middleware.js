@@ -5,7 +5,7 @@ var _ = require('underscore');
 var COOKIE_KEY = 'csol_state';
 
 if ('COOKIE_SECRET' in process.env) {
-  var COOKIE_SECRET = process.env.SESSION_SECRET;
+  var COOKIE_SECRET = process.env.COOKIE_SECRET;
 } else {
   // TODO - switch this behaviour to be more like that in the backpack,
   // where a token is generated automatically and stored for future use
