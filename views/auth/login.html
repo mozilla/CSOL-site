@@ -5,17 +5,18 @@
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="input-username">Email or Nickname</label>
 				<div class="controls">
-					<input type="text" id="input-username" name="username" value="{{ username }}" placeholder="e.g. user@example.com">
+					<input type="text" id="input-username" name="username" value="{{ username }}" required="required">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="input-password">Password</label>
 				<div class="controls">
-					<input type="password" id="input-password" name="password">
+					<input type="password" id="input-password" name="password" required="required">
 					<span class="help-block"><small><a href="/login/password">Forgot password?</a></small></span>
 				</div>
 			</div>
