@@ -1,37 +1,24 @@
-const SESSION_SECRET = process.env.SESSION_SECRET || "=-pJ#7-/^@11J|rW*W{+AVU+pV]CO6lCT?3dq*+eEQ}/wDm+bFYgA&~8s]@V7>4<";
-
 const path = require('path');
 const http = require('http');
 const express = require('express');
-const app = express();
 const nunjucks = require('nunjucks');
-const _ = require('underscore');
+const middleware = require('./middleware');
+const helpers = require('./helpers');
 
+const app = express();
 const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: true});
 env.express(app);
 
-app.use(express.cookieParser())
-app.use(express.session({
-  secret: SESSION_SECRET,
-  cookie: {httpOnly: true},
-}));
+app.use(express.cookieParser());
+app.use(middleware.session());
 app.use(express.logger());
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.use(function(req, res, next) {
-  res.locals.csrfToken = req.session._csrf;
-  next();
-});
-
-app.use(function(req, res, next) {
-  // This should be in Nunjucks, but right now it's not
-  // https://github.com/jlongster/nunjucks/issues/72
-  res.locals.range = _.range;
-  next();
-})
+app.use(helpers.addCsrfToken);
+app.use(helpers.addRangeGlobal);
 
 require('./controllers/auth')(app);
 require('./controllers/info')(app);
