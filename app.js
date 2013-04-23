@@ -18,7 +18,7 @@ app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'static')));
 
 app.use(helpers.addCsrfToken);
-app.use(helpers.addRangeGlobal);
+app.use(helpers.addRangeMethod);
 
 require('./controllers/auth')(app);
 require('./controllers/info')(app);
