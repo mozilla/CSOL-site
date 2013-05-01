@@ -13,9 +13,12 @@ module.exports = function (app) {
 
     for (var i = 0; i < 7; ++i) {
       badges.push({
+        id: i,
         thumbnail: '/media/images/badge.png',
         description: 'Badge blah in voluptate velit...',
-        url: '/badges/ae784f'
+        url: '/badges/ae784f',
+        share: true,
+        template: 'user/badge.html'
       });
     }
 

@@ -1,0 +1,33 @@
+<figure class="thumbnail">
+  <a href="{{ item.url }}"><img src="{{ item.thumbnail }}"></a>
+  <figcaption class="caption">
+    <p>{{ item.description }}</p>
+    {% block item_actions_wrapper %}
+      <p class="text-right">
+        {% block item_actions %}
+          <a href="{{ item.url }}" class="btn">Details</a>
+          {% if item.share %}
+            <a href="#share{{item.id}}" role="button" class="btn" data-toggle="modal" data-target="#share{{item.id}}">Share</a>
+          {% endif %}
+        {% endblock %}
+      </p>
+    {% endblock %}
+  </figcaption>
+</figure>
+
+{% if item.share %}
+  <div id="share{{item.id}}" class="modal hide">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">x</button>
+      <h4>Share your badge</h4>
+    </div>
+    <div class="modal-body">
+      <ul class="unstyled">
+        <li><a href="#" class="btn">Twitter</a></li>
+        <li><a href="#" class="btn">Facebook</a></li>
+        <li><a href="#" class="btn">Mozilla Backpack</a></li>
+      </ul>
+    </div>
+  </div>
+{% endif %}
+							
