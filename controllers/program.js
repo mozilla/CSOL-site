@@ -162,21 +162,17 @@ module.exports = function (app) {
   });
 
   app.get('/badges', api('getBadges'), function (req, res, next) {
-    var page = req.query.page || 1;
-    var query = {
-      page: page
-    }
+    var err = req.remote.error;
+    var data = req.remote.data;
 
-    api.getBadges(query, function(err, data) {
-      if (err)
-        return next(data.message);
+    if (err)
+      return next(data.message);
 
-      res.render('badges/list.html', {
-        filters: getFilters(),
-        items: data.items,
-        page: data.page,
-        pages: data.pages
-      });
+    res.render('badges/list.html', {
+      filters: getFilters(),
+      items: data.items,
+      page: data.page,
+      pages: data.pages
     });
 
     /*

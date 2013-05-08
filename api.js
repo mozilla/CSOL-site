@@ -12,11 +12,6 @@ var DEFAULT_QUERY = {
 // Used as middleware to intercept XHR requests
 function api (method) {
   return function (req, res, next) {
-    if (!req.xhr)
-      return next();
-
-    res.contentType('application/json');
-
     if (!_.isFunction(method))
       method = api[method];
 
@@ -38,7 +33,16 @@ function api (method) {
       if (err)
         data.error = err;
 
-      return res.json(data);
+      if (req.xhr) {
+        res.contentType('application/json');
+        return res.json(data);
+      }
+
+      req.remote = {
+        err: err,
+        data: data
+      }
+      next();
     });
   }
 }
