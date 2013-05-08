@@ -1,3 +1,5 @@
+var api = require('../api');
+
 module.exports = function (app) {
 
   function getFilters() {
@@ -150,11 +152,34 @@ module.exports = function (app) {
   });
 
   app.param('badgeName', function (req, res, next, badgeName) {
-    // yep, get stuff from the db.
-    next();
+    api.getBadge(badgeName, function(err, data) {
+      if (err)
+        return next(data.message);
+
+      req.params.badge = data.badge;
+      next();
+    });
   });
 
-  app.get('/badges', function (req, res, next) {
+  app.get('/badges', api('getBadges'), function (req, res, next) {
+    var page = req.query.page || 1;
+    var query = {
+      page: page
+    }
+
+    api.getBadges(query, function(err, data) {
+      if (err)
+        return next(data.message);
+
+      res.render('badges/list.html', {
+        filters: getFilters(),
+        items: data.items,
+        page: data.page,
+        pages: data.pages
+      });
+    });
+
+    /*
     var badges = [];
 
     for (var i = 0; i < 12; ++i) {
@@ -169,10 +194,13 @@ module.exports = function (app) {
       filters: getFilters(),
       items: badges
     });
+    */
   });
 
   app.get('/badges/:badgeName', function (req, res, next) {
-    res.render('badges/single.html');
+    res.render('badges/single.html', {
+      badge: req.params.badge
+    });
   });
 
   app.get('/badges/:badgeName/claim', function (req, res, next) {
