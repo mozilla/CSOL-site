@@ -9,14 +9,16 @@ var DEFAULT_QUERY = {
 
 
 // Core API function
-// Used as middleware to intercept XHR requests
+// Loads data into `request.remote`, and intercepts XHR requests
 function api (method) {
   return function (req, res, next) {
     if (!_.isFunction(method))
       method = api[method];
 
-    if (!_.isFunction(method))
-      return res.json({error: 500, message: DEFAULT_ERROR});
+    if (!_.isFunction(method)) {
+      console.error('Method supplied to API not a function');
+      return next('Supplied method not valid');
+    }
 
     // Build query from various inputs
     var query = _.extend(
