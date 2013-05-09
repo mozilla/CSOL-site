@@ -48,7 +48,7 @@
 								{% include item.template %}
 							{% else %}
 								<figure class="thumbnail">
-									<a href="{{ item.url }}"><img src="{{ item.thumbnail }}"></a>
+									<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
 									<figcaption class="caption">
 										<p>{{ item.description }}</p>
 										{% block item_actions_wrapper %}
@@ -68,15 +68,28 @@
 		</ul>
 	{% endblock %}
 	{% block pagination %}
-		<nav class="pagination pagination-centered">
-			<ul>
-				<li class="disabled"><span>&laquo;</span></li>
-				<li class="disabled"><span>1</span></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">&raquo;</a></li>
-			</ul>
-		</nav>
+		{% if pages > 1 %}
+			<nav class="pagination pagination-centered">
+				<ul>
+					{% if page == 1 %}
+						<li class="disabled"><span>&laquo;</span></li>
+					{% else %}
+						<li><a href="?page={{ page - 1 }}">&laquo;</a></li>
+					{% endif %}
+					{% for pageNum in range(1, (pages + 1)) %}
+						{% if page == pageNum %}
+							<li class="disabled"><span>{{ pageNum }}</span></li>
+						{% else %}
+							<li><a href="?page={{ pageNum }}">{{ pageNum }}</a></li>
+						{% endif %}
+					{% endfor %}
+					{% if page == pages %}
+						<li class="disabled"><span>&raquo;</span></li>
+					{% else %}
+						<li><a href="?page={{ page + 1 }}">&raquo;</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+		{% endif %}
 	{% endblock %}
 {% endblock %}
