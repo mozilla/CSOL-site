@@ -11,7 +11,7 @@ var DEFAULT_QUERY = {
 
 // Core API function
 // Loads data into `request.remote`, and intercepts XHR requests
-function api (method) {
+function api (method, default_query) {
   return function (req, res, next) {
     if (!_.isFunction(method))
       method = api[method];
@@ -24,9 +24,10 @@ function api (method) {
     // Build query from various inputs
     var query = _.extend(
       DEFAULT_QUERY,
-      req.query||{},
-      req.body||{},
-      req.params||{}
+      default_query || {},
+      req.query || {},
+      req.body || {},
+      req.params || {}
     );
 
     method(query, function(err, data) {
