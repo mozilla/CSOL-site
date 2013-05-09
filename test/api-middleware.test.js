@@ -126,7 +126,46 @@ test('api(bad string)', function(t) {
   );
 });
 
+test('getBadge', function(t) {
+
+  t.test('without id', function(t) {
+    api.getBadge(function(err, data) {
+      t.ok(err);
+      t.same(data, { message: "Invalid badge key" });
+      t.end();
+    });
+  });
+
+  t.test('with bad id', function(t) {
+    var mock = sinon.mock(request);
+    mock.expects('get')
+      .once().withArgs(sinon.match('/v1/badges'))
+      .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(DATA));
+    api.getBadge({ id: 'NOPE' }, function(err, data) {
+      t.ok(mock.verify(), "mock verified");
+      t.ok(err, "error");
+      t.same(data.message, "Badge not found", "error message is correct");
+      t.end();
+    });
+  });
+
+  t.test('with good id', function(t) {
+    var mock = sinon.mock(request);
+    mock.expects('get')
+      .once().withArgs(sinon.match('/v1/badges'))
+      .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(DATA));
+    api.getBadge({ id: 'link-basic' }, function(err, data) {
+      t.ok(mock.verify(), "mock verified");
+      t.notOk(err, "no error");
+      t.similar(data.badge, { name: "Link Badge, basic"});
+      t.end();
+    });
+  });
+
+});
+
 test('getBadges', function(t){
+
   t.test('request.get error', function(t) {
     sinon.stub(request, "get").callsArgWith(1, 'asplode');
     api.getBadges(function(err, data) {
