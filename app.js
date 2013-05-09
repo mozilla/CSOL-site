@@ -26,6 +26,7 @@ require('./controllers/backpack')(app);
 require('./controllers/program')(app);
 require('./controllers/learn')(app);
 require('./controllers/challenges')(app);
+require('./controllers/errors')(app);
 
 if (!module.parent)
   app.listen(3000);

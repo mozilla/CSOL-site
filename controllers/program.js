@@ -154,7 +154,7 @@ module.exports = function (app) {
   app.param('badgeName', function (req, res, next, badgeName) {
     api.getBadge(badgeName, function(err, data) {
       if (err)
-        return next(data.message);
+        return next(err);
 
       req.params.badge = data.badge;
       next();
@@ -170,23 +170,6 @@ module.exports = function (app) {
       page: data.page,
       pages: data.pages
     });
-
-    /*
-    var badges = [];
-
-    for (var i = 0; i < 12; ++i) {
-      badges.push({
-        thumbnail: '/media/images/badge.png',
-        description: 'Badge blah in voluptate velit...',
-        url: '/badges/ae784f'
-      });
-    }
-
-    res.render('badges/list.html', {
-      filters: getFilters(),
-      items: badges
-    });
-    */
   });
 
   app.get('/badges/:badgeName', function (req, res, next) {

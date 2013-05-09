@@ -1,9 +1,8 @@
 const tap = require('tap');
 const test = tap.test;
 const path = require('path');
-const _ = require('underscore');
-const express = require('express');
 const sinon = require('sinon');
+const fakeRequest = require('./').fakeRequest;
 
 /* Using injectr on a trial basis to inject request module,
    then stubbing/mocking it with sinon to return remote API
@@ -49,27 +48,6 @@ const DATA = {
   }
 };
 
-function fakeRequest(func, config, callback) {
-  if (typeof config === 'function') {
-    callback = config;
-    config = {};
-  }
-
-  // TODO: translating config object to req data is sloppy
-  var req = _.extend(
-    { __proto__: express.request,
-      headers: {} },
-    config
-  );
-  req.headers = {'x-requested-with': config.xhr ? 'XmlHttpRequest' : 'Whatever'};
-  var res = { __proto__: express.response };
-  sinon.stub(res, 'json');
-  var next = sinon.stub();
-
-  func(req, res, next);
-  callback(req, res, next);
-}
-
 test ('api(callback)', function(t) {
   t.test('basic case', function(t) {
     var func = sinon.stub().callsArgWith(1, null, { result: 1 });
@@ -109,7 +87,7 @@ test ('api(callback)', function(t) {
     fakeRequest(
       api(func),
       function(req, res, next) {
-        t.similar(req.remote, { err: 'Kaboom' }, 'func error in req.remote');
+        t.ok(next.calledWith('Kaboom'));
         t.end();
       }
     );
@@ -130,8 +108,8 @@ test('getBadge', function(t) {
 
   t.test('without id', function(t) {
     api.getBadge(function(err, data) {
-      t.ok(err);
-      t.same(data, { message: "Invalid badge key" });
+      t.isa(err, 'ServerError');
+      t.same(err.message, "Invalid badge key");
       t.end();
     });
   });
@@ -143,8 +121,8 @@ test('getBadge', function(t) {
       .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(DATA));
     api.getBadge({ id: 'NOPE' }, function(err, data) {
       t.ok(mock.verify(), "mock verified");
-      t.ok(err, "error");
-      t.same(data.message, "Badge not found", "error message is correct");
+      t.isa(err, "ServerError");
+      t.same(err.message, "Badge not found", "error message is correct");
       t.end();
     });
   });
@@ -169,8 +147,9 @@ test('getBadges', function(t){
   t.test('request.get error', function(t) {
     sinon.stub(request, "get").callsArgWith(1, 'asplode');
     api.getBadges(function(err, data) {
-      t.same(err, 500);
-      t.same(data, { message: 'asplode' });
+      t.isa(err, 'ServerError');
+      t.same(err.statusCode, 500);
+      t.same(err.message, 'asplode');
       t.end();
       request.get.restore();
     });
@@ -179,8 +158,9 @@ test('getBadges', function(t){
   t.test('remote API returns non-200 response', function(t) {
     sinon.stub(request, "get").callsArgWith(1, null, { statusCode: 404 });
     api.getBadges(function(err, data) {
-      t.same(err, 500);
-      t.same(data, { message: 'Upstream error' });
+      t.isa(err, 'ServerError');
+      t.same(err.statusCode, 500);
+      t.same(err.message, 'Upstream error');
       t.end();
       request.get.restore();
     });
@@ -189,8 +169,9 @@ test('getBadges', function(t){
   t.test('remote API returns non-JSON body', function(t) {
     sinon.stub(request, "get").callsArgWith(1, null, { statusCode: 200 }, 'Nope!');
     api.getBadges(function(err, data) {
-      t.same(err, 500);
-      t.same(data, { message: 'Unexpected token N' });
+      t.isa(err, 'ServerError');
+      t.same(err.statusCode, 500);
+      t.same(err.message, 'Unexpected token N');
       t.end();
       request.get.restore();
     });
@@ -201,8 +182,9 @@ test('getBadges', function(t){
       null, { statusCode: 200 },
       JSON.stringify({ status: 'Nope!', reason: "Meh." }));
     api.getBadges(function(err, data) {
-      t.same(err, 500);
-      t.same(data, { message: 'Meh.' });
+      t.isa(err, 'ServerError');
+      t.same(err.statusCode, 500);
+      t.same(err.message, 'Meh.');
       t.end();
       request.get.restore();
     });
@@ -232,8 +214,9 @@ test('getBadges', function(t){
         .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(DATA));
       api.getBadges({ page: 2 }, function(err, data) {
         t.ok(mock.verify(), 'mock passes');
-        t.same(err, '404');
-        t.similar(data, { message: "Page not found" });
+        t.isa(err, 'ServerError');
+        t.same(err.statusCode, 404);
+        t.same(err.message, 'Page not found');
         t.end();
       });
     });

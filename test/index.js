@@ -78,3 +78,28 @@ function saveFixture(models, fixture, callback) {
       return callback(error);
     });
 }
+
+const express = require('express');
+const sinon = require('sinon');
+const _ = require('underscore');
+
+exports.fakeRequest = function fakeRequest(func, config, callback) {
+  if (typeof config === 'function') {
+    callback = config;
+    config = {};
+  }
+
+  // TODO: translating config object to req data is sloppy
+  var req = _.extend(
+    { __proto__: express.request,
+      headers: {} },
+    config
+  );
+  req.headers = {'x-requested-with': config.xhr ? 'XmlHttpRequest' : 'Whatever'};
+  var res = { __proto__: express.response };
+  sinon.stub(res, 'json');
+  var next = sinon.stub();
+
+  func(req, res, next);
+  callback(req, res, next);
+};
