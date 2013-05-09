@@ -4,7 +4,8 @@ var _ = require('underscore');
 
 var DEFAULT_ERROR = 'There was a problem accessing this data.';
 var DEFAULT_QUERY = {
-  page: 1
+  page: 1,
+  pageSize: 12
 };
 
 
@@ -119,15 +120,19 @@ function normalizeBadge (badge, id) {
 }
 
 api.getBadges = apiMethod(function getBadges (query, callback) {
-  var pageSize = 12,
-      page = parseInt(query.page, 10),
-      start = (page - 1) * pageSize,
-      end = start + pageSize;
+  var pageSize = parseInt(query.pageSize, 10),
+      page = parseInt(query.page, 10);
+
+  if (isNaN(pageSize) || pageSize < 1)
+    return callback(400, 'Invalid pageSize number');
 
   if (isNaN(page) || page < 1)
     return callback(400, 'Invalid page number');
 
-  remote('get', '/v1/badges', function(err, data) {
+  var start = (page - 1) * pageSize,
+      end = start + pageSize;
+
+  remote.get('/v1/badges', function(err, data) {
     if (err)
       return callback(err, data);
 
