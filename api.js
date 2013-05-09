@@ -40,10 +40,7 @@ function api (method, default_query) {
       if (req.xhr)
         return res.json(data);
 
-      req.remote = {
-        err: err,
-        data: data
-      }
+      req.remote = data;
       next();
     });
   }
