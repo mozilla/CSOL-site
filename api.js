@@ -37,10 +37,8 @@ function api (method, default_query) {
       if (err)
         data.error = err;
 
-      if (req.xhr) {
-        res.contentType('application/json');
+      if (req.xhr)
         return res.json(data);
-      }
 
       req.remote = {
         err: err,
