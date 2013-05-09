@@ -166,7 +166,7 @@ module.exports = function (app) {
     var data = req.remote.data;
 
     if (err)
-      return next(data.message);
+      return next({status: err, message: data.message});
 
     res.render('badges/list.html', {
       filters: getFilters(),
