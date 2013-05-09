@@ -122,6 +122,9 @@ var remote = (function() {
 // Make sure badges returned from remote API
 // contain all the information we need
 function normalizeBadge (badge, id) {
+  if (!id)
+    id = badge.shortname;
+
   if (!badge.id)
     badge.id = id;
 
