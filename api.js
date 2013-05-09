@@ -161,7 +161,7 @@ api.getBadges = apiMethod(function getBadges (query, callback) {
     callback(null, {
       page: page,
       pages: pages,
-      items: badges.slice(start, end)
+      badges: badges.slice(start, end)
     });
   });
 });

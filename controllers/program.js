@@ -170,7 +170,7 @@ module.exports = function (app) {
 
     res.render('badges/list.html', {
       filters: getFilters(),
-      items: data.items,
+      items: data.badges,
       page: data.page,
       pages: data.pages
     });
