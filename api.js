@@ -77,34 +77,47 @@ function apiMethod (method) {
 }
 
 // Load data from remote endpoint
-function remote (method, path, callback) {
-  // TODO - put this in settings somewhere
-  var origin = 'http://openbadger-csol.mofostaging.net';
+var remote = (function() {
+  function remote (method, path, callback) {
+    // TODO - put this in settings somewhere
+    var origin = 'http://openbadger-csol.mofostaging.net';
 
-  if (!request[method])
-    return callback(500, 'Unknown method');
+    if (!request[method])
+      return callback(500, 'Unknown method');
 
-  // TODO - need to add ability to pass data through
-  // TODO - might want to cache this at some point
-  request[method](origin + path, function(err, response, body) {
-    if (err)
-      return callback(500, err);
+    // TODO - need to add ability to pass data through
+    // TODO - might want to cache this at some point
+    request[method](origin + path, function(err, response, body) {
+      if (err)
+        return callback(500, err);
 
-    if (response.statusCode !== 200)
-      return callback(500, 'Upstream error');
+      if (response.statusCode !== 200)
+        return callback(500, 'Upstream error');
 
-    try {
-      var data = JSON.parse(body);
-    } catch (e) {
-      return callback(500, e.message);
-    }
+      try {
+        var data = JSON.parse(body);
+      } catch (e) {
+        return callback(500, e.message);
+      }
 
-    if (data.status !== 'ok')
-      return callback(500, data.reason);
+      if (data.status !== 'ok')
+        return callback(500, data.reason);
 
-    callback(null, data);
+      callback(null, data);
+    });
+  }
+
+  _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
+    Object.defineProperty(remote, method, {
+      enumerable: true,
+      value: function(path, callback) {
+        remote(method, path, callback);
+      }
+    });
   });
-}
+
+  return remote;
+})();
 
 // Make sure badges returned from remote API
 // contain all the information we need
