@@ -41,6 +41,10 @@ function api (method, default_query) {
         return res.json(data);
 
       req.remote = data;
+
+      if (data.error)
+        return next(data);
+
       next();
     });
   }

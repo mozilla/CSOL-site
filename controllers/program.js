@@ -162,11 +162,7 @@ module.exports = function (app) {
   });
 
   app.get('/badges', api('getBadges'), function (req, res, next) {
-    var err = req.remote.error;
     var data = req.remote;
-
-    if (err)
-      return next({status: err, message: data.message});
 
     res.render('badges/list.html', {
       filters: getFilters(),
