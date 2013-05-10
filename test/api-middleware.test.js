@@ -82,7 +82,7 @@ test ('api(callback)', function(t) {
       },
       function(req, res, next) {
         t.ok(func.calledWithMatch({ a: 1, b: 1, c: 1 }), 'func gets params, body, query data');
-        t.similar(req.remote, { data: { result: 1 }}, 'func return data in req.remote');
+        t.similar(req.remote, { result: 1 }, 'func return data in req.remote');
         t.ok(next.calledOnce, 'next called');
         t.end();
       }
@@ -109,7 +109,7 @@ test ('api(callback)', function(t) {
     fakeRequest(
       api(func),
       function(req, res, next) {
-        t.similar(req.remote, { err: 'Kaboom' }, 'func error in req.remote');
+        t.ok(next.calledWithMatch({ error: 'Kaboom' }), 'next called with error');
         t.end();
       }
     );
@@ -219,7 +219,7 @@ test('getBadges', function(t){
         t.ok(mock.verify(), 'mock passes');
         t.notOk(err, 'no err');
         t.similar(data, { page: 1, pages: 1 }, 'page and pages in data');
-        t.same(data.items.length, 3, 'three badges returned');
+        t.same(data.badges.length, 3, 'three badges returned');
         //TODO: test for normalization?
         t.end();
       });
