@@ -5,6 +5,7 @@
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset>
 			<div class="control-group">
@@ -15,6 +16,7 @@
 					{% else %}
 						<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
 					{% endif %}
+					<span class="help-block"><strong><a href="#">Please see our privacy policy.</a></strong></span>
 				</div>
 			</div>
 			<div class="control-group">
