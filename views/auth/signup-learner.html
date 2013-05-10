@@ -6,12 +6,14 @@
 
 {% block content %}
 	<form class="form-horizontal span6 offset3" method="post">
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="input-username">Nickname</label>
 				<div class="controls">
 					<input type="text" id="input-username" name="username" value="{{ username }}" required="required">
+					<span class="help-block">Copy about generating a username.<br>Please don't use your real name.</span>
 				</div>
 			</div>
 			<div class="control-group">
