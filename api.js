@@ -40,10 +40,11 @@ function api (method, default_query) {
       if (req.xhr)
         return res.json(data);
 
-      req.remote = {
-        err: err,
-        data: data
-      }
+      req.remote = data;
+
+      if (data.error)
+        return next(data);
+
       next();
     });
   }
@@ -164,7 +165,7 @@ api.getBadges = apiMethod(function getBadges (query, callback) {
     callback(null, {
       page: page,
       pages: pages,
-      items: badges.slice(start, end)
+      badges: badges.slice(start, end)
     });
   });
 });
