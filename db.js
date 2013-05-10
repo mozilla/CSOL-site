@@ -5,9 +5,13 @@ const Sequelize = require('sequelize');
 const DB_NAME = process.env['CSOL_DB_NAME'] || 'csol';
 const USERNAME = process.env['CSOL_DB_USER'] || 'root';
 const PASSWORD = process.env['CSOL_DB_PASS'];
+const DB_HOST = process.env['CSOL_DB_HOST'];
+const DB_PORT = process.env['CSOL_DB_PORT'];
 const MODEL_PATH = process.env['CSOL_MODEL_PATH'] || path.join(__dirname, 'models');
 
 const db = new Sequelize(DB_NAME, USERNAME, PASSWORD, {
+  host: DB_HOST,
+  port: DB_PORT,
   define: { charset: 'utf8' }
 });
 
