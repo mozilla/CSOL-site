@@ -71,7 +71,6 @@ body {
   display: inline-block;
 }
 #navigation .nav li > a {
-  text-transform: uppercase;
   margin: 0;
   padding: 10px 30px 10px 30px;
   font-size: 1.2em;
@@ -315,13 +314,15 @@ form .divider em {
 }
 #footer .nav {
   font-size: 1.2em;
-  text-transform: uppercase;
   margin: 0;
   padding: 0;
 }
 #footer .nav li {
   margin-bottom: 0;
   padding: 0;
+}
+#footer .nav li:last-child a {
+  padding-right: 0;
 }
 #footer .nav li a {
   display: inline-block;
@@ -343,6 +344,11 @@ form .divider em {
 }
 #footer .logos {
   text-align: center;
+}
+#footer .copytxt {
+  font-size: .9em;
+  line-height: 1.8em;
+  text-align: right;
 }
 #footer .description {
   margin-bottom: 20px;
@@ -409,6 +415,9 @@ form .divider em {
   #footer .nav-pills li {
     display: inline-block;
     font-size: .8em;
+  }
+  #footer .copytxt {
+    text-align: center;
   }
 }
 @media all and (max-width: 480px) {

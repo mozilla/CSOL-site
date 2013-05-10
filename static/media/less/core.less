@@ -78,7 +78,6 @@ body {
 		li {
 
 			& > a {
-				text-transform: uppercase;
 				margin: 0;
 				padding: 10px 30px 10px 30px;
 				font-size: 1.2em;
@@ -347,13 +346,18 @@ form .divider {
 	.nav {
 
 		font-size: 1.2em;
-		text-transform: uppercase;
 		margin: 0;
 		padding: 0;
 
 		li {
 			margin-bottom: 0;
 			padding: 0;
+
+			&:last-child {
+				a {
+					padding-right: 0;
+				}
+			}
 
 			a {
 				display: inline-block;
@@ -384,6 +388,12 @@ form .divider {
 
 	.logos {
 		text-align: center;
+	}
+
+	.copytxt {
+			font-size: .9em;
+			line-height: 1.8em;
+			text-align: right;
 	}
 
 	.description {
@@ -474,6 +484,10 @@ form .divider {
 				display: inline-block;
 				font-size: .8em;
 			}
+		}
+
+		.copytxt {
+			text-align: center;
 		}
 	}
 }
