@@ -1,5 +1,6 @@
 var request = require('request');
 var _ = require('underscore');
+var ServerError = require('./server-error');
 
 
 var DEFAULT_ERROR = 'There was a problem accessing this data.';
@@ -35,17 +36,13 @@ function api (method, default_query) {
         data = {};
 
       if (err)
-        data.error = err;
+        return next(err);
 
       if (req.xhr)
         return res.json(data);
 
       req.remote = data;
-
-      if (data.error)
-        return next(data);
-
-      next();
+      return next();
     });
   }
 }
@@ -69,10 +66,10 @@ function apiMethod (method) {
       if (!err)
         return callback(null, data);
 
-      if (!data || _.isString(data))
-        data = {message: data || DEFAULT_ERROR};
+      if (_.isString(err))
+        err = new ServerError(500, err);
 
-      callback(err, data);
+      return callback(err, data);
     });
   }
 }
@@ -84,27 +81,27 @@ var remote = (function() {
     var origin = 'http://openbadger-csol.mofostaging.net';
 
     if (!request[method])
-      return callback(500, 'Unknown method');
+      return callback(new ServerError(500, 'Unknown method'));
 
     // TODO - need to add ability to pass data through
     // TODO - might want to cache this at some point
     request[method](origin + path, function(err, response, body) {
       if (err)
-        return callback(500, err);
+        return callback(new ServerError(500, err));
 
       if (response.statusCode !== 200)
-        return callback(500, 'Upstream error');
+        return callback(new ServerError(500, 'Upstream error'));
 
       try {
         var data = JSON.parse(body);
       } catch (e) {
-        return callback(500, e.message);
+        return callback(new ServerError(500, e.message));
       }
 
       if (data.status !== 'ok')
-        return callback(500, data.reason);
+        return callback(new ServerError(500, data.reason));
 
-      callback(null, data);
+      return callback(null, data);
     });
   }
 
@@ -140,10 +137,10 @@ api.getBadges = apiMethod(function getBadges (query, callback) {
       page = parseInt(query.page, 10);
 
   if (isNaN(pageSize) || pageSize < 1)
-    return callback(400, 'Invalid pageSize number');
+    return callback(new ServerError(400, 'Invalid pageSize number'));
 
   if (isNaN(page) || page < 1)
-    return callback(400, 'Invalid page number');
+    return callback(new ServerError(400, 'Invalid page number'));
 
   var start = (page - 1) * pageSize,
       end = start + pageSize;
@@ -156,13 +153,9 @@ api.getBadges = apiMethod(function getBadges (query, callback) {
     var pages = Math.ceil(badges.length / pageSize);
 
     if (page > pages)
-      return callback(404, {
-        message: 'Page not found',
-        page: page,
-        pages: pages
-      });
+      return callback(new ServerError(404, 'Page not found'));
 
-    callback(null, {
+    return callback(null, {
       page: page,
       pages: pages,
       badges: badges.slice(start, end)
@@ -174,7 +167,7 @@ api.getBadge = apiMethod(function getBadge (query, callback) {
   var id = query.id;
 
   if (!id)
-    return callback(400, 'Invalid badge key');
+    return callback(new ServerError(400, 'Invalid badge key'));
 
   remote('get', '/v1/badges', function(err, data) {
     if (err)
@@ -183,11 +176,11 @@ api.getBadge = apiMethod(function getBadge (query, callback) {
     var badge = data.badges[id];
 
     if (!badge)
-      return callback(404, 'Badge not found');
+      return callback(new ServerError(404, 'Badge not found'));
 
     normalizeBadge(badge, id);
 
-    callback(null, {
+    return callback(null, {
       badge: badge
     });
   });
