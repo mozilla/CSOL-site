@@ -70,6 +70,7 @@ test('getBadge(query, cb)', function(t) {
     getStub.callsArgWith(1, null, DATA['badge']);
     openbadger.getBadge({ id: 'some-id' }, function(err, data) {
       t.notOk(err, "no error");
+      t.ok(getStub.calledWithMatch('/badge/some-id'), 'endpoint');
       t.similar(data.badge, { name: "Link Badge, basic"}, 'badge');
       t.similar(data.badge, { id: 'some-id', url: '/badges/some-id' }, 'normalized');
       t.end();
@@ -100,6 +101,7 @@ test('getBadges', function(t){
       t.same(data.badges.length, 3, 'data length');
       var badge = data.badges[0];
       t.ok(badge.id && badge.url && badge.name && badge.behaviors, 'looks like normalized badge');
+      t.ok(getStub.calledWithMatch('/v2/badges'), 'endpoint');
       t.end(); 
     });
   });
