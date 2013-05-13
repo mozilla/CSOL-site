@@ -1,4 +1,5 @@
 var api = require('../api');
+var badger = require('../openbadger');
 
 module.exports = function (app) {
 
@@ -161,7 +162,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/badges', api('getBadges'), function (req, res, next) {
+  app.get('/badges', api(badger.getBadges), function (req, res, next) {
     var data = req.remote;
 
     res.render('badges/list.html', {

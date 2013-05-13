@@ -18,9 +18,6 @@ var DEFAULT_QUERY = {
 //      or calls next(err)
 function api (method, default_query) {
   return function (req, res, next) {
-    if (!_.isFunction(method))
-      method = api[method];
-
     if (!_.isFunction(method)) {
       console.error('Method supplied to API not a function');
       return next('Supplied method not valid');
@@ -96,6 +93,7 @@ var remote = function(origin) {
         return callback(500, err);
 
       if (response.statusCode !== 200)
+        // TODO - add logging so the upstream error can be debugged
         return callback(500, 'Upstream error');
 
       try {
