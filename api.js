@@ -10,7 +10,12 @@ var DEFAULT_QUERY = {
 
 
 // Core API function
-// Loads data into `request.remote`, and intercepts XHR requests
+// api(method) returns middleware function 
+// that calls method with:
+//    query:     Specifies parameters for API call
+//    callback:  Method invokes callback(err, data)
+//      Loads data into `request.remote`, and intercepts XHR requests,
+//      or calls next(err)
 function api (method, default_query) {
   return function (req, res, next) {
     if (!_.isFunction(method))
@@ -31,11 +36,11 @@ function api (method, default_query) {
     );
 
     method(query, function(err, data) {
-      if (!_.isObject(data))
-        data = {};
-
-      if (err)
+      if (err) {
+        if (!data || _.isString(data))
+          data = {message: data || DEFAULT_ERROR};
         data.error = err;
+      }
 
       if (req.xhr)
         return res.json(data);
@@ -78,10 +83,8 @@ function apiMethod (method) {
 }
 
 // Load data from remote endpoint
-var remote = (function() {
+var remote = function(origin) {
   function remote (method, path, callback) {
-    // TODO - put this in settings somewhere
-    var origin = 'http://openbadger-csol.mofostaging.net';
 
     if (!request[method])
       return callback(500, 'Unknown method');
@@ -108,89 +111,63 @@ var remote = (function() {
     });
   }
 
+  var self = {};
+
   _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
-    Object.defineProperty(remote, method, {
+    Object.defineProperty(self, method, {
       enumerable: true,
       value: function(path, callback) {
         remote(method, path, callback);
-      }
+      },
+      writable: true // This is needed for mocking
     });
   });
 
-  return remote;
-})();
-
-// Make sure badges returned from remote API
-// contain all the information we need
-function normalizeBadge (badge, id) {
-  if (!id)
-    id = badge.shortname;
-
-  if (!badge.id)
-    badge.id = id;
-
-  if (!badge.url)
-    badge.url = '/badges/' + badge.id;
-
-  return badge;
+  return self;
 }
 
-api.getBadges = apiMethod(function getBadges (query, callback) {
-  var pageSize = parseInt(query.pageSize, 10),
-      page = parseInt(query.page, 10);
+function paginate(key, dataFn) {
+  if (!dataFn && _.isFunction(key)) {
+    dataFn = key;
+    key = 'data';
+  }
 
-  if (isNaN(pageSize) || pageSize < 1)
-    return callback(400, 'Invalid pageSize number');
+  return function(query, callback) {
+    var pageSize = parseInt(query.pageSize, 10),
+        page = parseInt(query.page, 10);
 
-  if (isNaN(page) || page < 1)
-    return callback(400, 'Invalid page number');
+    if (isNaN(pageSize) || pageSize < 1)
+      return callback(400, 'Invalid pageSize number');
 
-  var start = (page - 1) * pageSize,
-      end = start + pageSize;
+    if (isNaN(page) || page < 1)
+      return callback(400, 'Invalid page number');
 
-  remote.get('/v1/badges', function(err, data) {
-    if (err)
-      return callback(err, data);
+    var start = (page - 1) * pageSize,
+        end = start + pageSize;
 
-    var badges = _.map(data.badges, normalizeBadge);
-    var pages = Math.ceil(badges.length / pageSize);
+    dataFn(query, function(err, data) {
+      if (err)
+        return callback(err, data);
 
-    if (page > pages)
-      return callback(404, {
-        message: 'Page not found',
+      var pages = Math.ceil(data[key].length / pageSize);
+
+      if (page > pages)
+        return callback(404, {
+          message: 'Page not found',
+          page: page,
+          pages: pages
+        });
+
+      data[key] = data[key].slice(start, end);
+      callback(null, _.extend(data, {
         page: page,
-        pages: pages
-      });
-
-    callback(null, {
-      page: page,
-      pages: pages,
-      badges: badges.slice(start, end)
+        pages: pages,
+      }));
     });
-  });
-});
-
-api.getBadge = apiMethod(function getBadge (query, callback) {
-  var id = query.id;
-
-  if (!id)
-    return callback(400, 'Invalid badge key');
-
-  remote('get', '/v1/badges', function(err, data) {
-    if (err)
-      return callback(err, data);
-
-    var badge = data.badges[id];
-
-    if (!badge)
-      return callback(404, 'Badge not found');
-
-    normalizeBadge(badge, id);
-
-    callback(null, {
-      badge: badge
-    });
-  });
-});
+  };
+}
 
 module.exports = api;
+module.exports.remote = remote;
+module.exports.apiMethod = apiMethod;
+module.exports.paginate = paginate;
