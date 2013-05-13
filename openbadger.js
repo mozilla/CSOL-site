@@ -3,7 +3,7 @@ const apiMethod = api.apiMethod;
 const paginate = api.paginate;
 const _ = require('underscore');
 
-var remote = api.remote('OBR_ORIGIN_HERE');
+var remote = api.remote('http://openbadger-csol.mofostaging.net');
 
 /* For swapping in a test object */
 exports.setRemote = function setRemote(newRemote) {
@@ -28,7 +28,7 @@ function normalizeBadge (badge, id) {
 }
 
 exports.getBadges = apiMethod(paginate('badges', function getBadges (query, callback) {
-  remote.get('/v1/badges', function(err, data) {
+  remote.get('/v2/badges', function(err, data) {
     if (err)
       return callback(err, data);
 
@@ -46,14 +46,11 @@ exports.getBadge = apiMethod(function getBadge (query, callback) {
   if (!id)
     return callback(400, 'Invalid badge key');
 
-  remote.get('/v1/badges', function(err, data) {
+  remote.get('/v2/badge/' + id, function(err, data) {
     if (err)
       return callback(err, data);
 
-    var badge = data.badges[id];
-
-    if (!badge)
-      return callback(404, 'Badge not found');
+    var badge = data.badge;
 
     normalizeBadge(badge, id);
 
