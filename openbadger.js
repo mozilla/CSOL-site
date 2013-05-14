@@ -3,7 +3,8 @@ const apiMethod = api.apiMethod;
 const paginate = api.paginate;
 const _ = require('underscore');
 
-var remote = api.remote('http://openbadger-csol.mofostaging.net');
+const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
+var remote = api.remote(ENDPOINT);
 
 /* For swapping in a test object */
 exports.setRemote = function setRemote(newRemote) {
@@ -22,7 +23,7 @@ function normalizeBadge (badge, id) {
     badge.id = id;
 
   if (!badge.url)
-    badge.url = '/badges/' + badge.id;
+    badge.url = '/badge/' + badge.id;
 
   return badge;
 }

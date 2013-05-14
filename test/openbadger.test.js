@@ -45,7 +45,12 @@ const DATA = {
   }
 };
 
-test('getBadge(query, cb)', function(t) {
+const DEFAULT_QUERY = {
+  pageSize: 5,
+  page: 1
+};
+
+test('getBadge', function(t) {
 
   t.test('called without id', function(t) {
     openbadger.getBadge(function(err, data) {
@@ -72,7 +77,7 @@ test('getBadge(query, cb)', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/badge/some-id'), 'endpoint');
       t.similar(data.badge, { name: "Link Badge, basic"}, 'badge');
-      t.similar(data.badge, { id: 'some-id', url: '/badges/some-id' }, 'normalized');
+      t.similar(data.badge, { id: 'some-id', url: '/badge/some-id' }, 'normalized');
       t.end();
     });
   });
@@ -80,10 +85,6 @@ test('getBadge(query, cb)', function(t) {
 });
 
 test('getBadges', function(t){
-  var DEFAULT_QUERY = {
-    pageSize: 5, 
-    page: 1
-  };
 
   t.test('on error', function(t) {
     getStub.callsArgWith(1, 500, 'error of some sort');
