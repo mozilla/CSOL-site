@@ -23,7 +23,7 @@ function normalizeBadge (badge, id) {
     badge.id = id;
 
   if (!badge.url)
-    badge.url = '/badge/' + badge.id;
+    badge.url = '/earn/' + badge.id;
 
   return badge;
 }
@@ -59,4 +59,51 @@ exports.getBadge = apiMethod(function getBadge (query, callback) {
       badge: badge
     });
   });
+});
+
+function normalizeProgram(program, id) {
+  if (!id)
+    id = program.shortname;
+
+  if (!program.id)
+    program.id = id;
+
+  if (!program.url)
+    program.url = '/learn/' + program.id;
+
+  return program;
+}
+
+exports.getPrograms = apiMethod(paginate('programs', function getPrograms (query, callback) {
+  remote.get('/v2/programs', function(err, data) {
+    if (err)
+      return callback(err, data);
+
+    var programs = _.map(data.programs, normalizeProgram);
+
+    return callback(null, {
+      programs: programs
+    });
+  });
+}));
+
+exports.getProgram = apiMethod(function getProgram (query, callback) {
+  var id = query.id;
+
+  if (!id)
+    return callback(400, 'Invalid program key');
+
+  remote.get('/v2/program/' + id, function(err, data) {
+    if (err)
+      return callback(err, data);
+
+    var program = data.program;
+
+    normalizeProgram(program, id);
+
+    callback(null, {
+      program: program
+    });
+  });
+
 });

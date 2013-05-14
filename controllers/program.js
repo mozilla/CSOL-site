@@ -98,62 +98,43 @@ module.exports = function (app) {
     return filters;
   }
 
-  app.param('programName', function (req, res, next, badgeName) {
-    // yep, get stuff from the db.
-    next();
-  });
+  app.param('programName', function (req, res, next, programName) {
+    badger.getProgram(programName, function(err, data) {
+      if (err)
+        return next(data.message);
 
-  app.get('/programs', function (req, res, next) {
-    var programs = [];
-
-    for (var i = 0; i < 12; ++i) {
-      programs.push({
-        thumbnail: '/media/images/program.png',
-        description: 'Program blah sed eiusmod...',
-        url: '/programs/ae784f'
-      });
-    }
-
-    res.render('programs/list.html', {
-      filters: getFilters('categories', 'orgs', 'ages'),
-      items: programs
+      req.params.program = data.program;
+      next();
     });
   });
 
-  app.get('/programs/science', function (req, res, next) {
-    res.send('SCIENCE!!')
+  app.get('/learn', api(badger.getPrograms), function (req, res, next) {
+    var data = req.remote;
+
+    res.render('programs/list.html', {
+      filters: getFilters('categories', 'orgs', 'ages'),
+      items: data.programs,
+      page: data.page,
+      pages: data.pages
+    });
   });
 
-  app.get('/programs/technology', function (req, res, next) {
-    res.send('TECHNOLOGY!!!')
+  app.get('/learn/:programName', function (req, res, next) {
+    res.render('programs/single.html', {
+      program: req.params.program
+    });
   });
 
-  app.get('/programs/engineering', function (req, res, next) {
-    res.send('ENGINEERING!!!')
-  });
-
-  app.get('/programs/art', function (req, res, next) {
-    res.send('ART!!!')
-  });
-
-  app.get('/programs/math', function (req, res, next) {
-    res.send('MATH!!!')
-  });
-
-  app.get('/programs/:programName', function (req, res, next) {
-    res.render('programs/single.html');
-  });
-
-  app.get('/programs/:programName/favorite', function (req, res, next) {
+  app.get('/learn/:programName/favorite', function (req, res, next) {
     return res.redirect('/login', 303);
   });
 
-  app.get('/programs/:programName/unfavorite', function (req, res, next) {
+  app.get('/learn/:programName/unfavorite', function (req, res, next) {
     return res.redirect('/login', 303);
   });
 
   app.param('badgeName', function (req, res, next, badgeName) {
-    api.getBadge(badgeName, function(err, data) {
+    badger.getBadge(badgeName, function(err, data) {
       if (err)
         return next(data.message);
 
@@ -162,7 +143,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/badges', api(badger.getBadges), function (req, res, next) {
+  app.get('/earn', api(badger.getBadges), function (req, res, next) {
     var data = req.remote;
 
     res.render('badges/list.html', {
@@ -171,40 +152,23 @@ module.exports = function (app) {
       page: data.page,
       pages: data.pages
     });
-
-    /*
-    var badges = [];
-
-    for (var i = 0; i < 12; ++i) {
-      badges.push({
-        thumbnail: '/media/images/badge.png',
-        description: 'Badge blah in voluptate velit...',
-        url: '/badges/ae784f'
-      });
-    }
-
-    res.render('badges/list.html', {
-      filters: getFilters(),
-      items: badges
-    });
-    */
   });
 
-  app.get('/badges/:badgeName', function (req, res, next) {
+  app.get('/earn/:badgeName', function (req, res, next) {
     res.render('badges/single.html', {
       badge: req.params.badge
     });
   });
 
-  app.get('/badges/:badgeName/claim', function (req, res, next) {
+  app.get('/earn/:badgeName/claim', function (req, res, next) {
     res.render('badges/claim.html');
   });
 
-  app.get('/badges/:badgeName/favorite', function (req, res, next) {
+  app.get('/earn/:badgeName/favorite', function (req, res, next) {
     return res.redirect('/login', 303);
   });
 
-  app.get('/badges/:badgeName/unfavorite', function (req, res, next) {
+  app.get('/earn/:badgeName/unfavorite', function (req, res, next) {
     return res.redirect('/favorites', 303);
   });
 
