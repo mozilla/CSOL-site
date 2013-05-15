@@ -476,6 +476,19 @@ test('paginate', function(t) {
     t.end();
   });
 
+  t.test('error on non-pageable data', function(t) {
+    var method = sinon.stub().callsArgWith(1, null, { data: 1 });; 
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
+    var callback = sinon.stub();
+    api.method(callback);
+    var args = callback.getCall(0).args;
+    t.same(args[0], 500, 'error');
+    t.similar(args[1], { message: 'Unpageable data returned from upstream' }, 'message');
+    t.end();
+  });
+
   t.test('calls paginated method with query and callback', function(t) {
     var method = sinon.stub(); 
     var api = new Api('ORIGIN', {

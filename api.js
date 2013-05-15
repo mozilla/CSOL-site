@@ -126,6 +126,9 @@ function paginate(key, dataFn) {
       if (err)
         return callback(err, data);
 
+      if (!data[key].length) 
+        return callback(500, 'Unpageable data returned from upstream');
+
       var pages = Math.ceil(data[key].length / pageSize);
 
       if (page > pages)
