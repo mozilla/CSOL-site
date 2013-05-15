@@ -21,3 +21,5 @@ RD_2/
 
 # Node related
 node_modules
+codekit-config.json
+config.env
