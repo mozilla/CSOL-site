@@ -231,6 +231,33 @@ form .divider em {
   text-align: center;
   display: block;
 }
+#content .filter label {
+  text-indent: -1000%;
+  width: 26px;
+  height: 26px;
+  margin-right: 3px;
+  padding-top: 0;
+  background: url(../images/filter_icons_sprite.png);
+  background-position: 0 1px;
+}
+#content .filter label.filter-category {
+  background-position: 68px 2px;
+}
+#content .filter label.filter-age {
+  background-position: -72px 2px;
+}
+#content .filter label.filter-date {
+  background-position: -136px 2px;
+}
+#content .filter label.filter-search {
+  background-position: -229px 2px;
+}
+#content .filter select {
+  margin-right: 15px;
+}
+#content .filter .navbar-inner {
+  padding-left: 10px;
+}
 .home #content h3 {
   text-align: center;
   margin-bottom: 10px;
