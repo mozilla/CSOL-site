@@ -246,6 +246,12 @@ form .divider {
 	h3 {
 		margin-top: 20px; 
 		margin-bottom: 20px;
+	
+		&.activity {
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+
 	}
 
 	.container {
@@ -341,6 +347,17 @@ form .divider {
 	
 }
 
+.activity {
+
+	p.activity-description {
+		margin: 20px 0 25px 0;
+	}
+
+	.span8 {
+		padding-bottom: 30px;
+	}
+}
+
 .navbar-form {
 	color: white;
 	text-shadow: 1px 1px 0px black;
@@ -419,6 +436,7 @@ form .divider {
 	box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, .25);
 	color: white;
 	font-size: 1.1em;
+	text-shadow: none;
 
 	.toprow {
 		border-bottom: 1px solid white;
@@ -567,6 +585,11 @@ form .divider {
 
 	#footer {
 		padding: 0 20px;
+
+		#content {
+			text-shadow: none;
+		}
+		
 
 		.pull-left {
 			float: none;

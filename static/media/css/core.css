@@ -214,6 +214,10 @@ form .divider em {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+#content h3.activity {
+  margin-bottom: 0;
+  margin-top: 0;
+}
 #content .container {
   border-bottom: 1px solid #404041;
   padding-bottom: 15px;
@@ -273,6 +277,12 @@ form .divider em {
 }
 .home #content h2::after {
   width: 12%;
+}
+.activity p.activity-description {
+  margin: 20px 0 25px 0;
+}
+.activity .span8 {
+  padding-bottom: 30px;
 }
 .navbar-form {
   color: white;
@@ -364,6 +374,7 @@ form .divider em {
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   color: white;
   font-size: 1.1em;
+  text-shadow: none;
 }
 #footer .toprow {
   border-bottom: 1px solid white;
@@ -468,6 +479,9 @@ form .divider em {
   }
   #footer {
     padding: 0 20px;
+  }
+  #footer #content {
+    text-shadow: none;
   }
   #footer .pull-left {
     float: none;
