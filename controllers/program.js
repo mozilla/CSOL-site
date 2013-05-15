@@ -1,4 +1,3 @@
-var api = require('../api');
 var badger = require('../openbadger');
 
 module.exports = function (app) {
@@ -108,7 +107,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/learn', api(badger.getPrograms), function (req, res, next) {
+  app.get('/learn', badger.middleware('getPrograms'), function (req, res, next) {
     var data = req.remote;
 
     res.render('programs/list.html', {
@@ -143,7 +142,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/earn', api(badger.getBadges), function (req, res, next) {
+  app.get('/earn', badger.middleware('getBadges'), function (req, res, next) {
     var data = req.remote;
 
     res.render('badges/list.html', {

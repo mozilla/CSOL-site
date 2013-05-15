@@ -8,20 +8,15 @@ var DEFAULT_QUERY = {
   pageSize: 12
 };
 
+function middleware (method, default_query) {
+  if (!_.isFunction(method))
+    method = this[method]; 
 
-// Core API function
-// api(method) returns middleware function 
-// that calls method with:
-//    query:     Specifies parameters for API call
-//    callback:  Method invokes callback(err, data)
-//      Loads data into `request.remote`, and intercepts XHR requests,
-//      or calls next(err)
-function api (method, default_query) {
+  if (!_.isFunction(method)) {
+    throw new Error('Supplied method ' + method + ' not valid');
+  }
+
   return function (req, res, next) {
-    if (!_.isFunction(method)) {
-      console.error('Method supplied to API not a function');
-      return next('Supplied method not valid');
-    }
 
     // Build query from various inputs
     var query = _.extend(
@@ -80,48 +75,32 @@ function apiMethod (method) {
 }
 
 // Load data from remote endpoint
-var remote = function(origin) {
-  function remote (method, path, callback) {
+function remote (method, path, callback) {
 
-    if (!request[method])
-      return callback(500, 'Unknown method');
+  if (!request[method])
+    return callback(500, 'Unknown method');
 
-    // TODO - need to add ability to pass data through
-    // TODO - might want to cache this at some point
-    request[method](origin + path, function(err, response, body) {
-      if (err)
-        return callback(500, err);
+  // TODO - need to add ability to pass data through
+  // TODO - might want to cache this at some point
+  request[method](this.origin + path, function(err, response, body) {
+    if (err)
+      return callback(500, err);
 
-      if (response.statusCode !== 200)
-        // TODO - add logging so the upstream error can be debugged
-        return callback(500, 'Upstream error');
+    if (response.statusCode !== 200)
+      // TODO - add logging so the upstream error can be debugged
+      return callback(500, 'Upstream error');
 
-      try {
-        var data = JSON.parse(body);
-      } catch (e) {
-        return callback(500, e.message);
-      }
+    try {
+      var data = JSON.parse(body);
+    } catch (e) {
+      return callback(500, e.message);
+    }
 
-      if (data.status !== 'ok')
-        return callback(500, data.reason);
+    if (data.status !== 'ok')
+      return callback(500, data.reason);
 
-      callback(null, data);
-    });
-  }
-
-  var self = {};
-
-  _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
-    Object.defineProperty(self, method, {
-      enumerable: true,
-      value: function(path, callback) {
-        remote(method, path, callback);
-      },
-      writable: true // This is needed for mocking
-    });
+    callback(null, data);
   });
-
-  return self;
 }
 
 function paginate(key, dataFn) {
@@ -165,7 +144,37 @@ function paginate(key, dataFn) {
   };
 }
 
-module.exports = api;
-module.exports.remote = remote;
-module.exports.apiMethod = apiMethod;
-module.exports.paginate = paginate;
+module.exports = function Api(origin, config) {
+  config = config || {};
+
+  this.origin = origin;
+
+  _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
+    Object.defineProperty(this, method, {
+      enumerable: true,
+      value: function(path, callback) {
+        this.remote(method, path, callback);
+      },
+      writable: true // This is needed for mocking
+    });
+  }, this);
+
+  _.each(config, function(item, name) {
+    var methodConfig = _.isObject(item) ? item : {};
+    var method = _.isFunction(item) ? item : methodConfig.func;
+    method = method.bind(this);
+    if (methodConfig.paginate) { 
+      var key = methodConfig.key || 'data';
+      method = paginate(key, method);
+    }
+    this[name] = apiMethod(method);
+  }, this);
+
+  _.extend(this, {
+    middleware: middleware,
+    remote: remote
+  });
+
+};
+
+

@@ -10,7 +10,7 @@ then stubbing/mocking it with sinon to return remote API
 dummy data. */
 const injectr = require('injectr');
 var request = require('request');
-const api = injectr(
+const Api = injectr(
   path.join(__dirname, '../api.js'),
   {
     request: request
@@ -41,11 +41,138 @@ function fakeRequest(func, config, callback) {
   callback(req, res, next);
 }
 
-test('api(method) middleware', function(t) {
+test('Api()', function(t) {
+
+  t.test('uses method names', function(t) {
+    var stubA = sinon.stub();
+    var api = new Api('ORIGIN', {
+      methodA: stubA,
+      methodB: sinon.stub()
+    });
+    t.isa(api.methodA, 'function');
+    t.isa(api.methodB, 'function');
+    t.end();
+  });
+
+  t.test('wrapped method context has remote helpers', function(t) {
+    var requestMock = sinon.mock(request);
+    var get = requestMock.expects('get');
+    var api = new Api('ORIGIN', {
+      method: function(){ this.get() },
+    });
+    api.method();
+    t.ok(get.calledOnce, 'this.get');
+    t.end();
+    requestMock.restore();
+  });
+
+  t.test('calls wrapped method with query and callback', function(t) {
+    var method = sinon.stub(); 
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method();
+    t.ok(method.calledOnce, 'wraps');
+    t.ok(method.calledWith(sinon.match({}), sinon.match.func), 'args');
+    t.end();
+  });
+
+  t.test('string arg becomes id', function(t) {
+    var method = sinon.stub(); 
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method('foo');
+    t.ok(method.calledWith(sinon.match({ id: 'foo' })), 'query arg');
+    t.end();
+  });
+
+  t.test('query object passed through', function(t) {
+    var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method({ some: 'data' });
+    t.ok(method.calledWith(sinon.match({ some: 'data' })), 'query arg');
+    t.end();
+  });
+
+  t.test('data passed through to wrapped method callback', function(t) {
+    var method = sinon.stub().callsArgWith(1, null, 'data');
+    var callback = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method(callback);
+    t.ok(callback.calledWith(null, 'data'), 'data');
+    t.end();
+  });
+
+  t.test('err passed through to wrapped method callback with default message', function(t) {
+    var method = sinon.stub().callsArgWith(1, 'err');
+    var callback = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method(callback);
+    var args = callback.getCall(0).args;
+    t.same(args[0], 'err', 'err');
+    t.ok(args[1].message, 'message');
+    t.end();
+  });
+
+  t.test('err and message passed through to wrapped method callback', function(t) {
+    var method = sinon.stub().callsArgWith(1, 'err', 'msg');
+    var callback = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method(callback);
+    var args = callback.getCall(0).args;
+    t.same(args[0], 'err', 'err');
+    t.same(args[1].message, 'msg', 'message');
+    t.end();
+  });
+
+  t.test('err and data passed through to wrapped method callback', function(t) {
+    var method = sinon.stub().callsArgWith(1, 'err', { some: 'data' });
+    var callback = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    api.method(callback);
+    var args = callback.getCall(0).args;
+    t.same(args[0], 'err', 'err');
+    t.same(args[1], { some: 'data' }, 'data');
+    t.end();
+  });
+
+});
+
+test('api.middleware(method)', function(t) {
+  
   t.test('invokes method', function(t) {
     var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(method),
+      api.middleware(api.method),
+      function(req, res, next) {
+        t.ok(method.calledOnce, 'method called');
+        t.ok(method.calledWith(sinon.match.object, sinon.match.func), 'arg types');
+        t.end();
+      }
+    );
+  });
+
+  t.test('string method lookup', function(t) {
+    var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
+    fakeRequest(
+      api.middleware('method'),
       function(req, res, next) {
         t.ok(method.calledOnce, 'method called');
         t.ok(method.calledWith(sinon.match.object, sinon.match.func), 'arg types');
@@ -56,8 +183,11 @@ test('api(method) middleware', function(t) {
 
   t.test('query object contains request params', function(t) {
     var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(method),
+      api.middleware('method'),
       {
         params: { a: 1 },
         body: { b: 1 },
@@ -72,8 +202,11 @@ test('api(method) middleware', function(t) {
 
   t.test('query object contains default params', function(t) {
     var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(method, { default: 'hooray' }),
+      api.middleware('method', { default: 'hooray' }),
       function(req, res, next) {
         t.ok(method.calledWith(sinon.match({ default: 'hooray' })), 'query object ok');
         t.end();
@@ -83,8 +216,11 @@ test('api(method) middleware', function(t) {
 
   t.test('callback(null, data) attaches data to request and calls next()', function(t) {
     var method = sinon.stub().callsArgWith(1, null, { result: 1 });
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(method),
+      api.middleware('method'),
       function(req, res, next) {
         t.similar(req.remote, { result: 1 }, 'req.remote');
         t.ok(next.calledOnce, 'next');
@@ -94,9 +230,12 @@ test('api(method) middleware', function(t) {
   });
 
   t.test('callback(null, data) calls response.json with data for xhr', function(t) {
-    var func = sinon.stub().callsArgWith(1, null, { result: 1 });
+    var method = sinon.stub().callsArgWith(1, null, { result: 1 });
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(func),
+      api.middleware('method'),
       {
         xhr: true
       },
@@ -109,9 +248,12 @@ test('api(method) middleware', function(t) {
   });
 
   t.test('callback(err) calls next() with err and default message', function(t) {
-    var func = sinon.stub().callsArgWith(1, 500);
+    var method = sinon.stub().callsArgWith(1, 500);
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(func),
+      api.middleware('method'),
       function(req, res, next) {
         t.ok(next.calledWith(sinon.match.object), 'next called');
         var arg = next.getCall(0).args[0];
@@ -123,9 +265,12 @@ test('api(method) middleware', function(t) {
   });
 
   t.test('callback(err, msg) calls next() with err and message', function(t) {
-    var func = sinon.stub().callsArgWith(1, 500, 'msg');
+    var method = sinon.stub().callsArgWith(1, 500, 'msg');
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(func),
+      api.middleware('method'),
       function(req, res, next) {
         t.ok(next.calledWith(sinon.match.object), 'next called');
         var arg = next.getCall(0).args[0];
@@ -137,9 +282,12 @@ test('api(method) middleware', function(t) {
   });
 
   t.test('callback(err, obj) calls next() with err and obj', function(t) {
-    var func = sinon.stub().callsArgWith(1, 500, { some: 'data' });
+    var method = sinon.stub().callsArgWith(1, 500, { some: 'data' });
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(func),
+      api.middleware('method'),
       function(req, res, next) {
         t.ok(next.calledWith(sinon.match.object), 'next called');
         var arg = next.getCall(0).args[0];
@@ -151,9 +299,12 @@ test('api(method) middleware', function(t) {
   });
 
   t.test('callback(err) calls response.json for xhr', function(t) {
-    var func = sinon.stub().callsArgWith(1, 500);
+    var method = sinon.stub().callsArgWith(1, 500);
+    var api = new Api('ORIGIN', {
+      method: method
+    });
     fakeRequest(
-      api(func),
+      api.middleware('method'),
       {
         xhr: true
       },
@@ -170,14 +321,14 @@ test('api(method) middleware', function(t) {
 
 });
 
-test('api.remote.get', function(t) {
-  var remote = api.remote('ORIGIN');
+test('api.get', function(t) {
+  var api = new Api('ORIGIN');
 
   t.test('calls request.get under the hood', function(t) {
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get');
 
-    remote.get('/foo', function(){});
+    api.get('/foo', function(){});
     t.ok(get.calledOnce, 'called');
     t.ok(get.calledWith(sinon.match('ORIGIN/foo')), 'with origin and endpoint');
     requestMock.restore();
@@ -185,15 +336,15 @@ test('api.remote.get', function(t) {
   });
 
   t.test('calls against different origins don\'t collide', function(t) {
-    var remote2 = api.remote('ANOTHER');
+    var api2 = new Api('ANOTHER');
 
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get').twice();
 
-    remote.get('/foo', function(){});
-    remote2.get('/bar', function(){});
-    t.same(get.getCall(0).args[0], 'ORIGIN/foo', 'remote');
-    t.same(get.getCall(1).args[0], 'ANOTHER/bar', 'remote2');
+    api.get('/foo', function(){});
+    api2.get('/bar', function(){});
+    t.same(get.getCall(0).args[0], 'ORIGIN/foo', 'api');
+    t.same(get.getCall(1).args[0], 'ANOTHER/bar', 'api2');
     requestMock.restore();
     t.end();
   });
@@ -202,7 +353,7 @@ test('api.remote.get', function(t) {
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get').callsArgWith(1, 'Error');
 
-    remote.get('/foo', function(err, data){
+    api.get('/foo', function(err, data){
       t.same(err, 500, 'error code');
       t.same(data, 'Error', 'error message');
       requestMock.restore();
@@ -214,7 +365,7 @@ test('api.remote.get', function(t) {
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get').callsArgWith(1, null, { statusCode: 404 });
 
-    remote.get('/foo', function(err, data){
+    api.get('/foo', function(err, data){
       t.same(err, 500, 'error code');
       t.same(data, 'Upstream error', 'error message');
       requestMock.restore();
@@ -227,7 +378,7 @@ test('api.remote.get', function(t) {
     var get = requestMock.expects('get')
       .callsArgWith(1, null, { statusCode: 200 }, "NOPE!");
 
-    remote.get('/foo', function(err, data){
+    api.get('/foo', function(err, data){
       t.same(err, 500, 'error code');
       t.same(data, 'Unexpected token N', 'error message');
       requestMock.restore();
@@ -245,7 +396,7 @@ test('api.remote.get', function(t) {
     var get = requestMock.expects('get')
       .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(response));
 
-    remote.get('/foo', function(err, data){
+    api.get('/foo', function(err, data){
       t.same(err, 500, 'error code');
       t.same(data, 'It broke.', 'error message');
       requestMock.restore();
@@ -263,7 +414,7 @@ test('api.remote.get', function(t) {
     var get = requestMock.expects('get')
       .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(response));
 
-    remote.get('/foo', function(err, data){
+    api.get('/foo', function(err, data){
       t.notOk(err, 'no error');
       t.same(data, { status: 'ok', data: 'Stuff.' }, 'data');
       requestMock.restore();
@@ -273,105 +424,64 @@ test('api.remote.get', function(t) {
 
 });
 
-test('apiMethod', function(t) {
-
-  t.test('calls wrapped method with query and callback', function(t) {
-    var method = sinon.stub(); 
-    var wrapped = api.apiMethod(method);
-    wrapped();
-    t.ok(method.calledOnce, 'wraps');
-    t.ok(method.calledWith(sinon.match({}), sinon.match.func), 'args');
-    t.end();
-  });
-
-  t.test('string arg becomes id', function(t) {
-    var method = sinon.stub(); 
-    var wrapped = api.apiMethod(method);
-    wrapped('foo');
-    t.ok(method.calledWith(sinon.match({ id: 'foo' })), 'query arg');
-    t.end();
-  });
-
-  t.test('query object passed through', function(t) {
-    var method = sinon.stub();
-    var wrapped = api.apiMethod(method);
-    wrapped({ some: 'data' });
-    t.ok(method.calledWith(sinon.match({ some: 'data' })), 'query arg');
-    t.end();
-  });
-
-  t.test('data passed through to wrapped method callback', function(t) {
-    var method = sinon.stub().callsArgWith(1, null, 'data');
-    var callback = sinon.stub();
-    var wrapped = api.apiMethod(method);
-    wrapped(callback);
-    t.ok(callback.calledWith(null, 'data'), 'data');
-    t.end();
-  });
-
-  t.test('err passed through to wrapped method callback with default message', function(t) {
-    var method = sinon.stub().callsArgWith(1, 'err');
-    var callback = sinon.stub();
-    var wrapped = api.apiMethod(method);
-    wrapped(callback);
-    var args = callback.getCall(0).args;
-    t.same(args[0], 'err', 'err');
-    t.ok(args[1].message, 'message');
-    t.end();
-  });
-
-  t.test('err and message passed through to wrapped method callback', function(t) {
-    var method = sinon.stub().callsArgWith(1, 'err', 'msg');
-    var callback = sinon.stub();
-    var wrapped = api.apiMethod(method);
-    wrapped(callback);
-    var args = callback.getCall(0).args;
-    t.same(args[0], 'err', 'err');
-    t.same(args[1].message, 'msg', 'message');
-    t.end();
-  });
-
-  t.test('err and data passed through to wrapped method callback', function(t) {
-    var method = sinon.stub().callsArgWith(1, 'err', { some: 'data' });
-    var callback = sinon.stub();
-    var wrapped = api.apiMethod(method);
-    wrapped(callback);
-    var args = callback.getCall(0).args;
-    t.same(args[0], 'err', 'err');
-    t.same(args[1], { some: 'data' }, 'data');
-    t.end();
-  });
-
-});
-
 test('paginate', function(t) {
+
+  t.test('wrapped method context has remote helpers', function(t) {
+    var requestMock = sinon.mock(request);
+    var get = requestMock.expects('get');
+    var api = new Api('ORIGIN', {
+      method: { 
+        func: function(){ this.get() },
+        paginate: true
+      }
+    });
+    api.method();
+    t.ok(get.calledOnce, 'this.get');
+    t.end();
+    requestMock.restore();
+  });
+
+  t.test('page and pageSize defaults', function(t) {
+    var method = sinon.stub();
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
+    var callback = sinon.stub();
+    api.method({}, callback);
+    t.similar(method.getCall(0).args[0], { page: 1, pageSize: 12 }, 'defaults');
+    t.end();
+  });
 
   t.test('intercepts bad pageSize', function(t) {
     var method = sinon.stub();
-    var paginated = api.paginate(method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
     var callback = sinon.stub();
-    paginated({ page: 1 }, callback);
-    paginated({ page: 1, pageSize: -1 }, callback);
-    t.ok(callback.getCall(0).calledWith(400, 'Invalid pageSize number'), 'error on null');
-    t.ok(callback.getCall(1).calledWith(400, 'Invalid pageSize number'), 'error on -1');
+    api.method({ pageSize: -1 }, callback);
+    t.ok(callback.getCall(0).calledWith(400, 
+      sinon.match({ message: 'Invalid pageSize number'})), 'error on -1');
     t.end();
   });
 
   t.test('intercepts bad page', function(t) {
     var method = sinon.stub();
-    var paginated = api.paginate(method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
     var callback = sinon.stub();
-    paginated({ pageSize: 5 }, callback);
-    paginated({ pageSize: 5, page: -1 }, callback);
-    t.ok(callback.getCall(0).calledWith(400, 'Invalid page number'), 'error on null');
-    t.ok(callback.getCall(1).calledWith(400, 'Invalid page number'), 'error on -1');
+    api.method({ page: -1 }, callback);
+    t.ok(callback.getCall(0).calledWith(400, 
+      sinon.match({ message: 'Invalid page number' })), 'error on -1');
     t.end();
   });
 
   t.test('calls paginated method with query and callback', function(t) {
     var method = sinon.stub(); 
-    var paginated = api.paginate(method);
-    paginated({ pageSize: 5, page: 1 });
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
+    api.method({ pageSize: 5, page: 1 });
     t.ok(method.calledOnce, 'wraps');
     t.ok(method.calledWith(sinon.match({}), sinon.match.func), 'args');
     t.end();
@@ -379,9 +489,11 @@ test('paginate', function(t) {
 
   t.test('paginates data.data from wrapped method', function(t) {
     var method = sinon.stub().callsArgWith(1, null, { data: [1, 2, 3, 4, 5] });; 
-    var paginated = api.paginate(method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
     var callback = sinon.stub();
-    paginated({ pageSize: 2, page: 1 }, callback);
+    api.method({ pageSize: 2, page: 1 }, callback);
     t.ok(callback.calledOnce, 'callback');
     var args = callback.getCall(0).args;
     t.notOk(args[0], 'no error');
@@ -391,9 +503,11 @@ test('paginate', function(t) {
 
   t.test('paginates data.key from wrapped method if key provided', function(t) {
     var method = sinon.stub().callsArgWith(1, null, { foo: [1, 2, 3, 4, 5] });; 
-    var paginated = api.paginate('foo', method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true, key: 'foo' }
+    });
     var callback = sinon.stub();
-    paginated({ pageSize: 2, page: 1 }, callback);
+    api.method({ pageSize: 2, page: 1 }, callback);
     t.ok(callback.calledOnce, 'callback');
     var args = callback.getCall(0).args;
     t.notOk(args[0], 'no error');
@@ -403,9 +517,11 @@ test('paginate', function(t) {
 
   t.test('page count and page passed along', function(t) {
     var method = sinon.stub().callsArgWith(1, null, { data: [1, 2, 3, 4, 5] });; 
-    var paginated = api.paginate(method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
     var callback = sinon.stub();
-    paginated({ pageSize: 2, page: 1 }, callback);
+    api.method({ pageSize: 2, page: 1 }, callback);
     t.ok(callback.calledOnce, 'callback');
     var args = callback.getCall(0).args;
     t.notOk(args[0], 'no error');
@@ -415,9 +531,11 @@ test('paginate', function(t) {
 
   t.test('intercepts page out of range', function(t) {
     var method = sinon.stub().callsArgWith(1, null, { data: [1, 2, 3, 4, 5] });; 
-    var paginated = api.paginate(method);
+    var api = new Api('ORIGIN', {
+      method: { func: method, paginate: true }
+    });
     var callback = sinon.stub();
-    paginated({ pageSize: 2, page: 5 }, callback);
+    api.method({ pageSize: 2, page: 5 }, callback);
     t.ok(callback.calledOnce, 'callback');
     var args = callback.getCall(0).args;
     t.same(args[0], 404, 'error');

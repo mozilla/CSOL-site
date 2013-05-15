@@ -1,10 +1,8 @@
+const path = require('path');
 const test = require('tap').test;
 const sinon = require('sinon');
-const api = require('../api');
-const openbadger = require('../openbadger');
-
-var getStub = sinon.stub();
-openbadger.setRemote({ get: getStub });
+var openbadger = require('../openbadger');
+var mock = sinon.mock(openbadger);
 
 const DATA = {
   'badges': {
@@ -77,6 +75,7 @@ const DEFAULT_QUERY = {
 test('getBadge', function(t) {
 
   t.test('called without id', function(t) {
+    var getStub = mock.expects('get').never();
     openbadger.getBadge(function(err, data) {
       t.notOk(getStub.called, 'no call');
       t.same(err, 400);
@@ -86,6 +85,7 @@ test('getBadge', function(t) {
   });
 
   t.test('on error', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, 404, 'barf');
     openbadger.getBadge({ id: 'whatever' }, function(err, data) {
       t.ok(getStub.calledOnce, "called");
@@ -96,6 +96,7 @@ test('getBadge', function(t) {
   });
 
   t.test('on success', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['badge']);
     openbadger.getBadge({ id: 'some-id' }, function(err, data) {
       t.notOk(err, "no error");
@@ -111,6 +112,7 @@ test('getBadge', function(t) {
 test('getBadges', function(t){
 
   t.test('on error', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, 500, 'error of some sort');
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
@@ -120,6 +122,7 @@ test('getBadges', function(t){
   });
 
   t.test('with data', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['badges']);
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.notOk(err, 'no error');
@@ -132,6 +135,7 @@ test('getBadges', function(t){
   });
 
   t.test('paginates', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['badges']);
     openbadger.getBadges({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
@@ -143,11 +147,9 @@ test('getBadges', function(t){
 });
 
 test('getProgram', function(t) {
-  /* reset spy data/stub behavior */
-  getStub.reset();
-  getStub.resetBehavior();
 
   t.test('called without id', function(t) {
+    var getStub = mock.expects('get').never();
     openbadger.getProgram(function(err, data) {
       t.notOk(getStub.called, 'no call');
       t.same(err, 400);
@@ -157,6 +159,7 @@ test('getProgram', function(t) {
   });
 
   t.test('on error', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, 404, 'barf');
     openbadger.getProgram({ id: 'whatever' }, function(err, data) {
       t.ok(getStub.calledOnce, "called");
@@ -167,6 +170,7 @@ test('getProgram', function(t) {
   });
 
   t.test('on success', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['program']);
     openbadger.getProgram({ id: 'some-id' }, function(err, data) {
       t.notOk(err, "no error");
@@ -182,6 +186,7 @@ test('getProgram', function(t) {
 test('getPrograms', function(t) {
 
   t.test('on error', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, 500, 'error of some sort');
     openbadger.getPrograms(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
@@ -191,6 +196,7 @@ test('getPrograms', function(t) {
   });
 
   t.test('with data', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['programs']);
     openbadger.getPrograms(DEFAULT_QUERY, function(err, data) {
       t.notOk(err, 'no error');
@@ -203,6 +209,7 @@ test('getPrograms', function(t) {
   });
 
   t.test('paginates', function(t) {
+    var getStub = mock.expects('get');
     getStub.callsArgWith(1, null, DATA['programs']);
     openbadger.getPrograms({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
