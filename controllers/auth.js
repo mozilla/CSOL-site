@@ -19,7 +19,7 @@ function generateUsername () {
 }
 
 function validateUsername (username) {
-  return usernames.validate(username);
+  return usernames.validate(normalizeUsername(username));
 }
 
 function normalizeUsername (username) {
