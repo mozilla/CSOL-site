@@ -29,8 +29,6 @@ function middleware (method, default_query) {
     );
 
     method(query, function(err, data) {
-      console.log(err, data);
-
       if (!data || _.isString(data))
         data = {message: data || DEFAULT_ERROR};
 
