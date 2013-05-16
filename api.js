@@ -1,6 +1,8 @@
 var request = require('request');
 var errors = require('./lib/errors');
 var _ = require('underscore');
+var logger = require('winston');
+var url = require('url');
 
 
 var DEFAULT_ERROR = 'There was a problem accessing this data.';
@@ -82,7 +84,8 @@ function remote (method, path, callback) {
 
   // TODO - need to add ability to pass data through
   // TODO - might want to cache this at some point
-  request[method](this.origin + path, function(err, response, body) {
+  var endpointUrl = url.format(_.extend(this.origin, { pathname: path }));
+  request[method](endpointUrl, function(err, response, body) {
     if (err)
       return callback(new errors.Unknown(err));
 
@@ -149,6 +152,9 @@ function paginate(key, dataFn) {
 module.exports = function Api(origin, config) {
   config = config || {};
 
+  origin = url.parse(origin);
+  if (origin.pathname !== '/')
+    throw new Error('Api origin url must not contain a path');
   this.origin = origin;
 
   _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
