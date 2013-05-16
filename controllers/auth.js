@@ -1,4 +1,6 @@
 var bcrypt = require('bcrypt');
+var passwords = require('../lib/passwords');
+var usernames = require('../lib/usernames');
 var db = require('../db');
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
@@ -7,10 +9,17 @@ var signupTokens = db.model('SignupToken');
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 
-
 function validateEmail (email) {
   // TODO - make sure email is valid
   return true;
+}
+
+function generateUsername () {
+  return usernames.generate();
+}
+
+function validateUsername (username) {
+  return usernames.validate(username);
 }
 
 function normalizeUsername (username) {
@@ -18,19 +27,12 @@ function normalizeUsername (username) {
   return (''+username).replace(/\s/g, '').toLowerCase();
 }
 
-function validateUsername (username) {
-  // TODO - make sure username is valid
-  return true;
-}
-
 function generatePassword () {
-  // TODO - generate an actual password
-  return 'GeneratedPassword';
+  return passwords.generate();
 }
 
 function validatePassword (password) {
-  // TODO - make sure password is valid
-  return true;
+  return passwords.validate(password);
 }
 
 function validateCoppaCompliance (birthday) {
