@@ -177,7 +177,7 @@ form .divider {
 	padding: 50px 0;
 	min-height: 200px;
 
-	h2, h3 {
+	h2 {
 		text-transform: uppercase;
 		font-family: "ff-meta-web-pro";
 		font-weight: bold;
@@ -213,9 +213,45 @@ form .divider {
 		}
 	}
 
+	h1.line30, h2.line30, h3.line30 {
+		&::before {
+			width: 30%;
+		}
+
+		&::after {
+			width: 30%;
+		}
+	}
+
+	h1.line20, h2.line20, h3.line20 {
+		&::before {
+			width: 20%;
+		}
+
+		&::after {
+			width: 20%;
+		}
+	}
+
+	h1.line10, h2.line10, h3.line10 {
+		&::before {
+			width: 10%;
+		}
+
+		&::after {
+			width: 10%;
+		}
+	}
+
 	h3 {
 		margin-top: 20px; 
 		margin-bottom: 20px;
+	
+		&.activity {
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+
 	}
 
 	.container {
@@ -229,19 +265,98 @@ form .divider {
 
 
 	.poster {
-		border: solid 20px #D9D9D9;
-		border-color: fadeout(#999, 90%);
+		background: #cfd4d1;
+		background: rgba(0,0,0,0.1);
+		background-image: url(../images/splash_banner_topbg.gif);
+		background-position: top;
+		background-repeat: repeat-x;
+		padding-top: 30px;
+		text-align: center;
+		display: block;
 
 		img {
-			width: 100%;
-			display: block;
-			margin: 0;
-			padding: 0;
-			box-shadow: 0 0 5px fadeout(#000, 90%);
+			
 		}
 	}
 
+	.filter {
+		label {
+			text-indent: -1000%;
+			width: 26px;
+			height: 26px;
+			margin-right: 3px;
+			padding-top: 0;
+			background: url(../images/filter_icons_sprite.png);
+			background-position: 0 1px;
+
+			&.filter-category {
+				background-position: 68px 2px;
+			}
+
+			&.filter-age {
+				background-position: -72px 2px;
+			}
+
+			&.filter-date {
+				background-position: -136px 2px;
+			}
+
+			&.filter-search {
+				background-position: -229px 2px;
+			}
+
+			
+		}
+
+		select {
+			margin-right: 15px;
+		}
+
+		.navbar-inner {
+			padding-left: 10px;
+		}
+
+	}
+
 } // end #content
+
+.home {
+
+	#content h3 {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	p {
+		font-size: 16px;
+		text-align: center;
+		margin-bottom: 30px;
+		line-height: 1.5em;
+	}
+
+
+	#content h2 {
+		&::before {
+			width: 12%;
+		}
+
+		&::after {
+			width: 12%;
+		}
+	}
+	
+}
+
+.activity {
+
+	p.activity-description {
+		margin: 20px 0 25px 0;
+	}
+
+	.span8 {
+		padding-bottom: 30px;
+	}
+}
 
 .navbar-form {
 	color: white;
@@ -321,6 +436,7 @@ form .divider {
 	box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, .25);
 	color: white;
 	font-size: 1.1em;
+	text-shadow: none;
 
 	.toprow {
 		border-bottom: 1px solid white;
@@ -470,6 +586,11 @@ form .divider {
 	#footer {
 		padding: 0 20px;
 
+		#content {
+			text-shadow: none;
+		}
+		
+
 		.pull-left {
 			float: none;
 			text-align: center;
@@ -487,7 +608,7 @@ form .divider {
 		}
 
 		.copytxt {
-			text-align: center;
+			text-align: center;	
 		}
 	}
 }
