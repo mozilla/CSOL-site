@@ -86,6 +86,10 @@ function remote (method, path, callback) {
   // TODO - might want to cache this at some point
   var endpointUrl = url.format(_.extend(this.origin, { pathname: path }));
   request[method](endpointUrl, function(err, response, body) {
+
+    logger.log('info', 'API request: "%s %s" %s',
+      method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
+
     if (err)
       return callback(new errors.Unknown(err));
 
