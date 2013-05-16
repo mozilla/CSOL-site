@@ -9,7 +9,7 @@ var MODELS_DIR = path.join(__dirname, '..', 'models');
 fs.readdir(MODELS_DIR, function (err, files) {
   if (err) {
     console.error(err.message);
-    return 1;
+    return process.exit(1);
   }
 
   files.forEach(function(file) {
