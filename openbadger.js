@@ -1,4 +1,5 @@
 const Api = require('./api');
+const errors = require('./lib/errors');
 const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
@@ -53,7 +54,7 @@ var openbadger = new Api(ENDPOINT, {
     var id = query.id;
 
     if (!id)
-      return callback(400, 'Invalid badge key');
+      return callback(new errors.BadRequest('Invalid badge key'));
 
     this.get('/v2/badge/' + id, function(err, data) {
       if (err)
@@ -90,7 +91,7 @@ var openbadger = new Api(ENDPOINT, {
     var id = query.id;
 
     if (!id)
-      return callback(400, 'Invalid program key');
+      return callback(new errors.BadRequest('Invalid program key'));
 
     this.get('/v2/program/' + id, function(err, data) {
       if (err)

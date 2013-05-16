@@ -27,12 +27,7 @@ require('./controllers/program')(app);
 require('./controllers/learn')(app);
 require('./controllers/challenges')(app);
 
-app.use(function(err, req, res, next) {
-  if (req.xhr)
-    res.json(err);
-  else 
-    res.send(err);
-});
+require('./lib/errors')(app, env);
 
 if (!module.parent)
   app.listen(3000);
