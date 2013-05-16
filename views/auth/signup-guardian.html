@@ -14,7 +14,7 @@
 					{% if auto_email %}
 						<input type="email" readonly="readonly" id="input-email" value="{{ auto_email }}">
 					{% else %}
-						<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com">
+						<input type="email" id="input-email" name="email" placeholder="e.g. user@example.com" required="required">
 					{% endif %}
 					<span class="help-block"><strong><a href="#">Please see our privacy policy.</a></strong></span>
 				</div>
@@ -22,7 +22,8 @@
 			<div class="control-group">
 				<label class="control-label" for="input-password">Password</label>
 				<div class="controls">
-					<input type="password" id="input-password" name="password">
+					<input type="password" id="input-password" name="password" required="required">
+					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
 				</div>
 			</div>
 			<div class="control-group">
@@ -33,4 +34,13 @@
 			</div>
 		</fieldset>
 	</form>
+{% endblock %}
+
+{% block finally %}
+<script>
+	(function() {
+		{% include 'includes/password-test.js' %}
+		setupPasswordStrengthTest();
+	})();
+</script>
 {% endblock %}

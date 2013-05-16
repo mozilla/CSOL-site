@@ -1,0 +1,84 @@
+{% extends 'auth/layout.html' %}
+{% set bodyClass = 'sign-up' %}
+{% set pageTitle = 'Almost there' %}
+{% set navItem = 'sign-up' %}
+
+{% block content %}
+	<form class="form-horizontal span6 offset3" method="post">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-email">Email</label>
+				<div class="controls">
+					<input type="email" id="input-email" name="email" value="{{ email }}" required="required">
+					<span class="help-block">You'll need this to claim your badges.
+						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" id="input-password-label" for="input-password">Password</label>
+				<div class="controls">
+					{% if passwordGenerated %}
+						<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
+					{% else %}
+						<input type="password" id="input-password" name="password">
+					{% endif %}
+					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<p><button type="submit" class="btn">All Done!</button></p>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}
+
+{% block finally %}
+<script>
+	(function() {
+		{% include 'includes/password-test.js' %}
+
+		{% if passwordGenerated %}
+			var $input = $('#input-password'),
+			    $label = $('#input-password-label'),
+			    $container = $input.parent(),
+			    $wrapper = $(document.createElement('div')),
+			    $button = $(document.createElement('button'));
+
+			$wrapper
+				.addClass('input-append')
+				.insertBefore($input);
+
+			$button
+				.addClass('btn')
+				.attr({type: 'button', title: 'Choose your own password'})
+				.html('<i class="icon-pencil"></i>');
+
+			$button.click(function() {
+				var $password = $(document.createElement('input'));
+
+				$password.attr({
+					type: 'password',
+					id: 'input-password',
+					name: 'password',
+					required: 'required'
+				});
+
+				$password.insertBefore($wrapper);
+				$wrapper.remove();
+				$password.focus();
+
+				setupPasswordStrengthTest();
+			});
+
+			$wrapper
+				.append($input)
+				.append($button);
+		{% else %}
+			setupPasswordStrengthTest();
+		{% endif %}
+	})();
+</script>
+{% endblock %}
