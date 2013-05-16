@@ -113,10 +113,10 @@ function paginate(key, dataFn) {
         page = parseInt(query.page, 10);
 
     if (isNaN(pageSize) || pageSize < 1)
-      return callback(errors.BadRequest('Invalid pageSize number'));
+      return callback(new errors.BadRequest('Invalid pageSize number'));
 
     if (isNaN(page) || page < 1)
-      return callback(errors.BadRequest('Invalid page number'));
+      return callback(new errors.BadRequest('Invalid page number'));
 
     var start = (page - 1) * pageSize,
         end = start + pageSize;
