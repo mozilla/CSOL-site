@@ -35,9 +35,10 @@ function middleware (method, default_query) {
       if (!_.isObject(data))
         data = {data: data};
 
-      if (req.xhr)
+      if (req.xhr) {
         data.status = err ? err.status.toLowerCase() : 'ok';
         return res.json(data);
+      }
 
       req.remote = data;
 

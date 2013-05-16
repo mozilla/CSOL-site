@@ -108,19 +108,6 @@ test('Api()', function(t) {
     t.end();
   });
 
-  t.test('err passed through to wrapped method callback with default message', function(t) {
-    var method = sinon.stub().callsArgWith(1, 'err');
-    var callback = sinon.stub();
-    var api = new Api('ORIGIN', {
-      method: method
-    });
-    api.method(callback);
-    var args = callback.getCall(0).args;
-    t.same(args[0], 'err', 'err');
-    t.ok(args[1].message, 'message');
-    t.end();
-  });
-
   t.test('err and message passed through to wrapped method callback', function(t) {
     var method = sinon.stub().callsArgWith(1, 'err', 'msg');
     var callback = sinon.stub();
@@ -130,7 +117,7 @@ test('Api()', function(t) {
     api.method(callback);
     var args = callback.getCall(0).args;
     t.same(args[0], 'err', 'err');
-    t.same(args[1].message, 'msg', 'message');
+    t.same(args[1], 'msg', 'message');
     t.end();
   });
 
@@ -222,7 +209,8 @@ test('api.middleware(method)', function(t) {
     fakeRequest(
       api.middleware('method'),
       function(req, res, next) {
-        t.similar(req.remote, { result: 1 }, 'req.remote');
+        console.log(req);
+        t.same(req.remote, { result: 1 }, 'req.remote');
         t.ok(next.calledOnce, 'next');
         t.end();
       }
@@ -247,7 +235,7 @@ test('api.middleware(method)', function(t) {
     );
   });
 
-  t.test('callback(err) calls next() with err and default message', function(t) {
+  t.test('callback(err) calls next() with err', function(t) {
     var method = sinon.stub().callsArgWith(1, 500);
     var api = new Api('ORIGIN', {
       method: method
@@ -255,16 +243,15 @@ test('api.middleware(method)', function(t) {
     fakeRequest(
       api.middleware('method'),
       function(req, res, next) {
-        t.ok(next.calledWith(sinon.match.object), 'next called');
+        t.ok(next.calledOnce, 'next called');
         var arg = next.getCall(0).args[0];
-        t.same(arg.error, 500, 'error');
-        t.ok(arg.message, 'default message');
+        t.same(arg, 500, 'error');
         t.end();
       }
     );
   });
 
-  t.test('callback(err, msg) calls next() with err and message', function(t) {
+  t.test('callback(err, msg) calls next() with err', function(t) {
     var method = sinon.stub().callsArgWith(1, 500, 'msg');
     var api = new Api('ORIGIN', {
       method: method
@@ -272,16 +259,16 @@ test('api.middleware(method)', function(t) {
     fakeRequest(
       api.middleware('method'),
       function(req, res, next) {
-        t.ok(next.calledWith(sinon.match.object), 'next called');
-        var arg = next.getCall(0).args[0];
-        t.same(arg.error, 500, 'error');
-        t.same(arg.message, 'msg', 'message');
+        t.ok(next.calledOnce, 'next called');
+        var args = next.getCall(0).args;
+        t.same(args[0], 500, 'error');
+        t.notOk(args[1], 'no data');
         t.end();
       }
     );
   });
 
-  t.test('callback(err, obj) calls next() with err and obj', function(t) {
+  t.test('callback(err, obj) calls next() with err', function(t) {
     var method = sinon.stub().callsArgWith(1, 500, { some: 'data' });
     var api = new Api('ORIGIN', {
       method: method
@@ -289,17 +276,22 @@ test('api.middleware(method)', function(t) {
     fakeRequest(
       api.middleware('method'),
       function(req, res, next) {
-        t.ok(next.calledWith(sinon.match.object), 'next called');
-        var arg = next.getCall(0).args[0];
-        t.same(arg.error, 500, 'error');
-        t.similar(arg, { some: 'data' }, 'obj');
+        t.ok(next.calledOnce, 'next called');
+        var args = next.getCall(0).args;
+        t.same(args[0], 500, 'error');
+        t.notOk(args[1], 'no data');
         t.end();
       }
     );
   });
 
   t.test('callback(err) calls response.json for xhr', function(t) {
-    var method = sinon.stub().callsArgWith(1, 500);
+    /* There's an implicit requirement that errors coming from
+       api methods must be objects with a status attribute. */
+    /* TODO: either add error helpers to the api module that
+       enforce the requirements, or loosen them. */
+    var err = { code: 500, status: 'error' };
+    var method = sinon.stub().callsArgWith(1, err);
     var api = new Api('ORIGIN', {
       method: method
     });
@@ -312,8 +304,7 @@ test('api.middleware(method)', function(t) {
         t.ok(res.json.calledOnce);
         t.notOk(next.callCount, 'next() not');
         var arg = res.json.getCall(0).args[0];
-        t.same(arg.error, 500, 'error');
-        t.ok(arg.message, 'default message');
+        t.similar(arg, { status: 'error' }, 'error');
         t.end();
       }
     );
@@ -354,8 +345,8 @@ test('api.get', function(t) {
     var get = requestMock.expects('get').callsArgWith(1, 'Error');
 
     api.get('/foo', function(err, data){
-      t.same(err, 500, 'error code');
-      t.same(data, 'Error', 'error message');
+      t.similar(err, { code: 500, name: 'Internal', message: 'Error' }, 'error');
+      t.notOk(data, 'no data');
       requestMock.restore();
       t.end(); 
     });
@@ -366,8 +357,8 @@ test('api.get', function(t) {
     var get = requestMock.expects('get').callsArgWith(1, null, { statusCode: 404 });
 
     api.get('/foo', function(err, data){
-      t.same(err, 500, 'error code');
-      t.same(data, 'Upstream error', 'error message');
+      t.similar(err, { code: 404, name: 'NotFound' }, 'error');
+      t.notOk(data, 'no data');
       requestMock.restore();
       t.end(); 
     });
@@ -379,8 +370,8 @@ test('api.get', function(t) {
       .callsArgWith(1, null, { statusCode: 200 }, "NOPE!");
 
     api.get('/foo', function(err, data){
-      t.same(err, 500, 'error code');
-      t.same(data, 'Unexpected token N', 'error message');
+      t.similar(err, { code: 500, name: 'Internal', message: 'Unexpected token N' }, 'error');
+      t.notOk(data, 'no data');
       requestMock.restore();
       t.end(); 
     });
@@ -397,8 +388,8 @@ test('api.get', function(t) {
       .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(response));
 
     api.get('/foo', function(err, data){
-      t.same(err, 500, 'error code');
-      t.same(data, 'It broke.', 'error message');
+      t.similar(err, { code: 500, name: 'Internal', message: 'It broke.' }, 'error');
+      t.similar(data, response, 'data');
       requestMock.restore();
       t.end(); 
     });
@@ -459,8 +450,9 @@ test('paginate', function(t) {
     });
     var callback = sinon.stub();
     api.method({ pageSize: -1 }, callback);
-    t.ok(callback.getCall(0).calledWith(400, 
-      sinon.match({ message: 'Invalid pageSize number'})), 'error on -1');
+    var args = callback.getCall(0).args;
+    t.same(args[0].name, 'BadRequest', 'err');
+    t.notOk(args[1], 'data');
     t.end();
   });
 
@@ -471,8 +463,9 @@ test('paginate', function(t) {
     });
     var callback = sinon.stub();
     api.method({ page: -1 }, callback);
-    t.ok(callback.getCall(0).calledWith(400, 
-      sinon.match({ message: 'Invalid page number' })), 'error on -1');
+    var args = callback.getCall(0).args;
+    t.same(args[0].name, 'BadRequest', 'err');
+    t.notOk(args[1], 'data');
     t.end();
   });
 
@@ -484,8 +477,8 @@ test('paginate', function(t) {
     var callback = sinon.stub();
     api.method(callback);
     var args = callback.getCall(0).args;
-    t.same(args[0], 500, 'error');
-    t.similar(args[1], { message: 'Unpageable data returned from upstream' }, 'message');
+    t.same(args[0].name, 'BadGateway', 'error');
+    t.same(args[1], { data: 1 }, 'data');
     t.end();
   });
 
@@ -551,8 +544,8 @@ test('paginate', function(t) {
     api.method({ pageSize: 2, page: 5 }, callback);
     t.ok(callback.calledOnce, 'callback');
     var args = callback.getCall(0).args;
-    t.same(args[0], 404, 'error');
-    t.similar(args[1], { message: 'Page not found' }, 'msg');
+    t.same(args[0].name, 'NotFound', 'error');
+    t.same(args[1], { page: 5, pages: 3 }, 'data');
     t.end();
   });
 });

@@ -78,8 +78,8 @@ test('getBadge', function(t) {
     var getStub = mock.expects('get').never();
     openbadger.getBadge(function(err, data) {
       t.notOk(getStub.called, 'no call');
-      t.same(err, 400);
-      t.same(data, { message: "Invalid badge key" });
+      t.similar(err, { code: 400, message: 'Invalid badge key' });
+      t.notOk(data);
       t.end();
     });
   });
@@ -89,8 +89,8 @@ test('getBadge', function(t) {
     getStub.callsArgWith(1, 404, 'barf');
     openbadger.getBadge({ id: 'whatever' }, function(err, data) {
       t.ok(getStub.calledOnce, "called");
-      t.same(err, 404);
-      t.same(data.message, "barf", "error message");
+      t.similar(err, 404);
+      t.same(data, "barf", "error message");
       t.end();
     });
   });
@@ -116,7 +116,7 @@ test('getBadges', function(t){
     getStub.callsArgWith(1, 500, 'error of some sort');
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
-      t.similar(data, { message: 'error of some sort' }, 'data');
+      t.same(data, 'error of some sort', 'data');
       t.end();
     });
   });
@@ -152,8 +152,8 @@ test('getProgram', function(t) {
     var getStub = mock.expects('get').never();
     openbadger.getProgram(function(err, data) {
       t.notOk(getStub.called, 'no call');
-      t.same(err, 400);
-      t.same(data, { message: "Invalid program key" });
+      t.similar(err, { code: 400, message: "Invalid program key" });
+      t.notOk(data);
       t.end();
     });
   });
@@ -164,7 +164,7 @@ test('getProgram', function(t) {
     openbadger.getProgram({ id: 'whatever' }, function(err, data) {
       t.ok(getStub.calledOnce, "called");
       t.same(err, 404);
-      t.same(data.message, "barf", "error message");
+      t.same(data, "barf", "error message");
       t.end();
     });
   });
@@ -190,7 +190,7 @@ test('getPrograms', function(t) {
     getStub.callsArgWith(1, 500, 'error of some sort');
     openbadger.getPrograms(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
-      t.similar(data, { message: 'error of some sort' }, 'data');
+      t.similar(data, 'error of some sort', 'data');
       t.end();
     });
   });
