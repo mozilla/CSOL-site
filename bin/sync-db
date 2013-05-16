@@ -18,7 +18,7 @@ fs.readdir(MODELS_DIR, function (err, files) {
     model.sync().success(function() {
       console.log('Successfully synchronized model:', model.name);
     }).error(function() {
-      console.log('Failed to synchronized model:', model.name);
+      console.error('Failed to synchronized model:', model.name);
     });
   });
 });
