@@ -19,7 +19,7 @@
     "injectr": "~0.4.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js"
   },
   "repository": {
     "type": "git",
