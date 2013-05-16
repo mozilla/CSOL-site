@@ -41,15 +41,12 @@ function fakeRequest(func, config, callback) {
   callback(req, res, next);
 }
 
-const ORIGIN = 'http://origin.org';
+const ORIGIN = 'http://example.org';
 
 test('Api()', function(t) {
 
-  t.test('requires pathless origin', function(t) {
+  t.test('requires origin', function(t) {
     t.throws(function(){ new Api(); }, 'throws without');
-    t.throws(function(){ new Api('http://foo.org/bar'); },
-      { name: 'Error', message: 'Api origin url must not contain a path' },
-      'throws with path');
     t.end();
   });
 
@@ -332,6 +329,19 @@ test('api.get', function(t) {
     api.get('/foo', function(){});
     t.ok(get.calledOnce, 'called');
     t.ok(get.calledWith(sinon.match(ORIGIN + '/foo')), 'with origin and endpoint');
+    requestMock.restore();
+    t.end();
+  });
+
+  t.test('leading slashes don\'t indicate absolute path', function(t) {
+    const WITH_PATH = 'http://example.org/base/';
+    var api = new Api(WITH_PATH);
+    var requestMock = sinon.mock(request);
+    var get = requestMock.expects('get').twice();
+
+    api.get('/foo/bar', function(){});
+    api.get('foo/bar', function(){});
+    t.ok(get.alwaysCalledWith(sinon.match(WITH_PATH + 'foo/bar')), 'with origin/endpoint');
     requestMock.restore();
     t.end();
   });

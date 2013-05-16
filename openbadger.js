@@ -3,6 +3,8 @@ const errors = require('./lib/errors');
 const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
+if (!ENDPOINT)
+  throw new Error('Must specify CSOL_OPENBADGER_URL in the environment');
 
 // Make sure badges returned from remote API
 // contain all the information we need
