@@ -2,9 +2,9 @@
 
 var fs = require('fs');
 var path = require('path');
-var db = require(path.join(__dirname, '../db'));
+var db = require(path.join(__dirname, '..', 'db'));
 
-var MODELS_DIR = path.join(__dirname, '../models');
+var MODELS_DIR = path.join(__dirname, '..', 'models');
 
 fs.readdir(MODELS_DIR, function (err, files) {
   if (err) {
