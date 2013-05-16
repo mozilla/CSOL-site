@@ -100,7 +100,7 @@ module.exports = function (app) {
   app.param('programName', function (req, res, next, programName) {
     badger.getProgram(programName, function(err, data) {
       if (err)
-        return next(data.message);
+        return next(err);
 
       req.params.program = data.program;
       next();
@@ -135,7 +135,7 @@ module.exports = function (app) {
   app.param('badgeName', function (req, res, next, badgeName) {
     badger.getBadge(badgeName, function(err, data) {
       if (err)
-        return next(data.message);
+        return next(err);
 
       req.params.badge = data.badge;
       next();

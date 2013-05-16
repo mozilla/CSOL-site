@@ -1,4 +1,5 @@
 var request = require('request');
+var errors = require('./lib/errors');
 var _ = require('underscore');
 
 
@@ -28,19 +29,22 @@ function middleware (method, default_query) {
     );
 
     method(query, function(err, data) {
-      if (err) {
-        if (!data || _.isString(data))
-          data = {message: data || DEFAULT_ERROR};
-        data.error = err;
-      }
+      console.log(err, data);
+
+      if (!data || _.isString(data))
+        data = {message: data || DEFAULT_ERROR};
+
+      if (!_.isObject(data))
+        data = {data: data};
 
       if (req.xhr)
+        data.status = err ? err.status.toLowerCase() : 'ok';
         return res.json(data);
 
       req.remote = data;
 
-      if (data.error)
-        return next(data);
+      if (err)
+        return next(err);
 
       next();
     });
@@ -63,13 +67,10 @@ function apiMethod (method) {
     query = _.defaults(query, DEFAULT_QUERY);
 
     method(query, function(err, data) {
-      if (!err)
-        return callback(null, data);
+      if (err)
+        return callback(err, data);
 
-      if (!data || _.isString(data))
-        data = {message: data || DEFAULT_ERROR};
-
-      callback(err, data);
+      callback(null, data);
     });
   }
 }
@@ -78,26 +79,26 @@ function apiMethod (method) {
 function remote (method, path, callback) {
 
   if (!request[method])
-    return callback(500, 'Unknown method');
+    return callback(new errors.NotImplemented('Unknown method ' + method));
 
   // TODO - need to add ability to pass data through
   // TODO - might want to cache this at some point
   request[method](this.origin + path, function(err, response, body) {
     if (err)
-      return callback(500, err);
+      return callback(new errors.Unknown(err));
 
     if (response.statusCode !== 200)
       // TODO - add logging so the upstream error can be debugged
-      return callback(500, 'Upstream error');
+      return callback(new (errors.lookup(response.statusCode))());
 
     try {
       var data = JSON.parse(body);
     } catch (e) {
-      return callback(500, e.message);
+      return callback(new errors.Unknown(e.message));
     }
 
     if (data.status !== 'ok')
-      return callback(500, data.reason);
+      return callback(new errors.Unknown(data.reason), data);
 
     callback(null, data);
   });
@@ -114,10 +115,10 @@ function paginate(key, dataFn) {
         page = parseInt(query.page, 10);
 
     if (isNaN(pageSize) || pageSize < 1)
-      return callback(400, 'Invalid pageSize number');
+      return callback(errors.BadRequest('Invalid pageSize number'));
 
     if (isNaN(page) || page < 1)
-      return callback(400, 'Invalid page number');
+      return callback(errors.BadRequest('Invalid page number'));
 
     var start = (page - 1) * pageSize,
         end = start + pageSize;
@@ -127,13 +128,12 @@ function paginate(key, dataFn) {
         return callback(err, data);
 
       if (!data[key].length) 
-        return callback(500, 'Unpageable data returned from upstream');
+        return callback(errors.BadGateway('Unpageable data returned from upstream'), data);
 
       var pages = Math.ceil(data[key].length / pageSize);
 
       if (page > pages)
-        return callback(404, {
-          message: 'Page not found',
+        return callback(new errors.NotFound('Page not found'), {
           page: page,
           pages: pages
         });
@@ -166,7 +166,7 @@ module.exports = function Api(origin, config) {
     var methodConfig = _.isObject(item) ? item : {};
     var method = _.isFunction(item) ? item : methodConfig.func;
     method = method.bind(this);
-    if (methodConfig.paginate) { 
+    if (methodConfig.paginate) {
       var key = methodConfig.key || 'data';
       method = paginate(key, method);
     }
