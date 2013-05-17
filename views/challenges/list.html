@@ -3,7 +3,24 @@
 {% set pageTitle = 'Challenges' %}
 
 {% block item_actions %}
-	<a class="btn" href="{{ item.url }}/apply">Apply</a>
+	<a class="btn" data-toggle="modal" href="#Modal">Apply</a>
 	{{ super() }}
 	<a class="btn show-tooltip" title="Save this to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+{% endblock %}
+
+{% block modal %}
+<!-- Modal -->
+<div id="Modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Apply for this challenge</h3>
+  </div>
+  <div class="modal-body">
+    <p>Egestas arcu vut scelerisque. Odio montes, magna odio nunc egestas odio ac turpis sociis tincidunt lectus ac, rhoncus. Eros elit! Non est scelerisque integer. Tristique porttitor dis aliquam, tristique! Parturient lacus amet, et mattis ac, augue, velit egestas! Ac, aenean dapibus nisi magna a, tortor, elit, aenean dictumst, dapibus augue auctor et? Vut quis porta, turpis lectus dictumst proin in! Phasellus in et? Mattis, porta? Turpis odio sed magnis! In. Turpis aliquam! Auctor dignissim, dolor porttitor eros nec, vut rhoncus, urna urna sociis proin duis? Scelerisque velit scelerisque! Dis habitasse eros et et ultrices, in velit. Mus tincidunt mauris. Ridiculus a tortor nascetur eu est, enim lorem dignissim! Pid. Penatibus nec turpis lectus augue, dictumst pid lundium? Eu? Dis magna.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <a href="#" class="btn btn-primary">Apply Now</a>
+  </div>
+</div>
 {% endblock %}
