@@ -4,6 +4,7 @@ const express = require('express');
 const nunjucks = require('nunjucks');
 const middleware = require('./middleware');
 const helpers = require('./helpers');
+const flash = require('connect-flash');
 
 const app = express();
 const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: true});
@@ -16,9 +17,11 @@ app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'static')));
+app.use(flash());
 
 app.use(helpers.addCsrfToken);
 app.use(helpers.addRangeMethod);
+app.use(helpers.addMessages);
 
 require('./controllers/auth')(app);
 require('./controllers/info')(app);
