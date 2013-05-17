@@ -301,7 +301,7 @@ form .divider em {
   padding-left: 12px;
   padding-top: 9px;
 }
-.thumbnails figure {
+#content .thumbnails figure {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -316,13 +316,19 @@ form .divider em {
   margin: 0;
   border: none;
 }
-.thumbnails figure figcaption {
+#content .thumbnails figure figcaption {
   background: #555555 url(../images/chalkboard_bg_grey.jpg) center;
   color: white !important;
   text-shadow: none;
 }
-.thumbnails figure img {
-  padding: 15px ;
+#content .thumbnails figure img {
+  padding: 10px;
+  max-width: 100%;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 .btn {
   -webkit-border-radius: 0;
