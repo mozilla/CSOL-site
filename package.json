@@ -6,6 +6,7 @@
   "dependencies": {
     "async": "~0.2.6",
     "bcrypt": "~0.7.5",
+    "connect-flash": "~0.1.1",
     "express": "~3.1.0",
     "mysql": "~2.0.0-alpha7",
     "nunjucks": "~0.1.8a",

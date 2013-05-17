@@ -72,34 +72,35 @@
 		<div id="content">
 			<div class="container">
 				{% block notices %}
-					{% block messages %}
-						{% if messages and messages.length %}
+					{% for type, messages in _messages %}
+						{% if type != 'modal' %}
 							{% for message in messages %}
-								<div class="alert alert-info">
-									{{ message }}
+								<div class="alert alert-{{ type }}">
+									{{ message.value }}
 								</div>
 							{% endfor %}
 						{% endif %}
-					{% endblock %}
-					{% block successes %}
-						{% if successes and successes.length %}
-							{% for success in successes %}
-								<div class="alert alert-success">
-									{{ success }}
-								</div>
-							{% endfor %}
-						{% endif %}
-					{% endblock %}
-					{% block errors %}
-						{% if errors and errors.length %}
-							{% for error in errors %}
-								<div class="alert alert-error">
-									{{ error }}
-								</div>
-							{% endfor %}
-						{% endif %}
-					{% endblock %}
+					{% endfor %}
 				{% endblock %}
+				{% if _messages.modal %}
+					{% for message in _messages.modal %}
+						<div class="modal hide initial" tabindex="-1" role="dialog" aria-hidden="true">
+							{% if message.title %}
+								<div class="modal-header">
+									<h3>{{ message.title }}</h3>
+								</div>
+							{% endif %}
+							<div class="modal-body">
+								{{ message.value }}
+							</div>
+							<div class="modal-footer">
+								{% for button in message.buttons %}
+									<button class="btn {% if button.type %}btn-{{ button.type }}{% endif %}" data-dismiss="modal" aria-hidden="true">{{ button.label }}</button>
+								{% endfor %}
+							</div>
+						</div>
+					{% endfor %}
+				{% endif %}
 				{% block pageTitleWrapper %}{% if pageTitle %}<h2>{% block pageTitle %}{{ pageTitle }}{% endblock %}</h2>{% endif %}{% endblock %}
 				{% block content %}{% endblock %}
 			</div>
@@ -141,5 +142,28 @@
 		</footer>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="/media/bootstrap/js/bootstrap.js"></script>
+		{% if _messages.modal %}
+		<script>
+			(function($) {
+				function next () {
+					var modal = modals.shift();
+					if (!modal)
+						return;
+
+					$(modal)
+						.modal()
+						.on('hidden', next);
+				}
+
+				var modals = [];
+
+				$('.initial[role="dialog"]').each(function(index, modal) {
+					modals.push(modal);
+				});
+
+				next();
+			})(jQuery);
+		</script>
+		{% endif %}
 	</body>
 </html>
