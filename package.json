@@ -13,7 +13,8 @@
     "request": "~2.21.0",
     "sequelize": "~1.6.0",
     "tap": "~0.4.1",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "winston": "~0.7.1"
   },
   "devDependencies": {
     "sinon": "~1.7.2",
