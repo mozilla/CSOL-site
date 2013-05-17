@@ -129,7 +129,7 @@ test('getBadges', function(t){
       t.same(data.badges.length, 3, 'data length');
       var badge = data.badges[0];
       t.ok(badge.id && badge.url && badge.name && badge.behaviors, 'looks like normalized badge');
-      t.ok(getStub.calledWithMatch('/v2/badges'), 'endpoint');
+      t.ok(getStub.calledWithMatch('/badges'), 'endpoint');
       t.end();
     });
   });
@@ -203,7 +203,7 @@ test('getPrograms', function(t) {
       t.same(data.programs.length, 3, 'data length');
       var program = data.programs[0];
       t.ok(program.id && program.url && program.name, 'looks like normalized program');
-      t.ok(getStub.calledWithMatch('/v2/programs'), 'endpoint');
+      t.ok(getStub.calledWithMatch('/programs'), 'endpoint');
       t.end();
     });
   });

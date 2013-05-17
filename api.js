@@ -1,6 +1,8 @@
 var request = require('request');
 var errors = require('./lib/errors');
 var _ = require('underscore');
+var logger = require('./logger');
+var url = require('url');
 
 
 var DEFAULT_ERROR = 'There was a problem accessing this data.';
@@ -74,6 +76,14 @@ function apiMethod (method) {
   }
 }
 
+function getFullUrl(origin, path) {
+  path = path || '';
+  path = path.replace(/^\/?/, '');
+  return url.format(_.extend(
+    origin,
+    { pathname: origin.path + path }));
+}
+
 // Load data from remote endpoint
 function remote (method, path, callback) {
 
@@ -82,7 +92,12 @@ function remote (method, path, callback) {
 
   // TODO - need to add ability to pass data through
   // TODO - might want to cache this at some point
-  request[method](this.origin + path, function(err, response, body) {
+  var endpointUrl = getFullUrl(this.origin, path);
+  request[method](endpointUrl, function(err, response, body) {
+
+    logger.log('info', 'API request: "%s %s" %s',
+      method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
+
     if (err)
       return callback(new errors.Unknown(err));
 
@@ -149,6 +164,7 @@ function paginate(key, dataFn) {
 module.exports = function Api(origin, config) {
   config = config || {};
 
+  origin = url.parse(origin);
   this.origin = origin;
 
   _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
