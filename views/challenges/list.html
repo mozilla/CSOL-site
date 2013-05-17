@@ -5,5 +5,5 @@
 {% block item_actions %}
 	<a class="btn" href="{{ item.url }}/apply">Apply</a>
 	{{ super() }}
-	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+	<a class="btn show-tooltip" title="Save this to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
 {% endblock %}
