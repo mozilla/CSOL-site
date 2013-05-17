@@ -1,4 +1,6 @@
 var bcrypt = require('bcrypt');
+var passwords = require('../lib/passwords');
+var usernames = require('../lib/usernames');
 var db = require('../db');
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
@@ -7,10 +9,17 @@ var signupTokens = db.model('SignupToken');
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 
-
 function validateEmail (email) {
   // TODO - make sure email is valid
   return true;
+}
+
+function generateUsername () {
+  return usernames.generate();
+}
+
+function validateUsername (username) {
+  return usernames.validate(normalizeUsername(username));
 }
 
 function normalizeUsername (username) {
@@ -18,19 +27,12 @@ function normalizeUsername (username) {
   return (''+username).replace(/\s/g, '').toLowerCase();
 }
 
-function validateUsername (username) {
-  // TODO - make sure username is valid
-  return true;
-}
-
 function generatePassword () {
-  // TODO - generate an actual password
-  return 'GeneratedPassword';
+  return passwords.generate();
 }
 
 function validatePassword (password) {
-  // TODO - make sure password is valid
-  return true;
+  return passwords.validate(password);
 }
 
 function validateCoppaCompliance (birthday) {
@@ -98,7 +100,7 @@ function processInitialLearnerSignup (req, res, next) {
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
-    res.render('auth/signup-learner.html', signup);
+    res.render('auth/signup.html', signup);
   }
 
   if (!validateUsername(signup.username))
@@ -128,9 +130,10 @@ function processInitialLearnerSignup (req, res, next) {
     })
     .success(function(user) {
       signup.state = underage ? 'child' : 'more';
-      signup.password = generatePassword();
+      signup.passwordGenerated = true;
+      signup.password = signup.generatedPassword = generatePassword();
       req.session.signup = signup;
-      res.redirect(303, '/signup/learners');
+      res.redirect(303, '/signup');
     });
 }
 
@@ -143,7 +146,7 @@ function processChildLearnerSignup (req, res, next) {
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
-    res.render('auth/signup-child.html', signup);
+    res.render('auth/signup-next-child.html', signup);
   }
 
   if (!signup.parent_email)
@@ -191,10 +194,12 @@ function processStandardLearnerSignup (req, res, next) {
   if ('password' in req.body)
     signup.password = req.body['password'];
 
+  signup.passwordGenerated = (signup.password === signup.generatedPassword);
+
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
-    res.render('auth/signup-learner-more.html', signup);
+    res.render('auth/signup-next.html', signup);
   }
 
   if (!signup.email || !signup.password)
@@ -300,25 +305,21 @@ module.exports = function (app) {
   app.get('/signup', function (req, res, next) {
     clearUser(req, res);
 
-    res.render('/auth/signup.html');
-  });
-
-  app.get('/signup/learners', function (req, res, next) {
-    clearUser(req, res);
-
     var signup = req.session.signup || {};
 
     if (signup.state === 'child')
-      return res.render('auth/signup-child.html', signup);
+      return res.render('auth/signup-next-child.html', signup);
 
     if (signup.state === 'more')
-      return res.render('auth/signup-learner-more.html', signup);
+      return res.render('auth/signup-next.html', signup);
 
     delete req.session.signup;
-    res.render('auth/signup-learner.html');
+    res.render('auth/signup.html', {
+      example: usernames.generate()
+    });
   });
 
-  app.post('/signup/learners', function (req, res, next) {
+  app.post('/signup', function (req, res, next) {
     var signup = req.session.signup || {};
 
     if (signup.state === 'child')
@@ -386,79 +387,101 @@ module.exports = function (app) {
       });
   });
 
+  app.get('/signup/generate_username', function (req, res, next) {
+    res.contentType('text/plain');
+    res.send(generateUsername());
+  });
+
   app.param('signupToken', function (req, res, next, token) {
     signupTokens.find({where: {token: token}})
       .complete(function(err, token) {
-        if (!err && token && token.isValid()) {
-          req.params.signupToken = token;
-          next();
-        }
+        if (err || !token || !token.isValid())
+          return res.redirect('/');
 
-        // Not sure whether we really want to redirect here,
-        // or if we just want to report the error somehow.
-        return res.redirect('/signup/parents');
+        req.params.signupToken = token;
+        next();
       });
   });
 
   app.get('/signup/:signupToken', function (req, res, next) {
-    res.render('auth/signup-parent.html', {
-      auto_email: req.params.signupToken.email
-    });
+    function render (err) {
+      res.render('auth/signup-guardian.html', {
+        auto_email: req.params.signupToken.email,
+        errors: err ? [err] : null
+      });
+    }
+
+    // See if this email address is already being used.
+    guardians.find({where: {email: req.params.signupToken.email}})
+      .complete(function(err, guardian) {
+        if (guardian) {
+          // This guardian has already signed up, so we're just
+          // going to process them through automatically.
+          return req.params.signupToken.finalize(guardian, function(err, learner) {
+            if (err)
+              return render(err);
+
+            redirectUser(req, res, guardian);
+          });
+        }
+
+        // Otherwise, unless there was an error, this is the first
+        // time the guardian has been visited.
+        render(err);
+      });
   });
 
   app.post('/signup/:signupToken', function (req, res, next) {
     var email = req.params.signupToken.email;
     var password = req.body['password'];
 
-    // This should probably be refactored to share code with standard guardian signup
-
     function fail (err) {
       req.flash('error', err || 'Unable to create an account. Please try again.')
-      res.render('auth/signup-parent.html', {
-        auto_email: email
+      res.render('auth/signup-guardian.html', {
+        auto_email: email,
+        errors: [err || new Error('Unable to create an account. Please try again.')]
       });
     }
 
-    function finalize (err, user) {
-      if (err || !user) return fail(err);
+    // This shouldn't happen, but just in case
+    if (!email)
+      return fail('Missing email address')
 
-      req.params.signupToken.getLearner()
-        .complete(function(err, learner) {
-          if (err) return failOut(err);
+    if (!password)
+      return fail('Missing password')
 
-          if (learner) {
-            // For now, just going to assume this works
-            learner.setGuardian(user);
-          }
-
-          // Set the token to be expired
-          req.params.signupToken.updateAttributes({
-            expired: true
-          }).complete(function(err) {
-            if (err) return fail(err);
-
-            redirectUser(req, res, user);
-          });
-        });
-    }
-
-    if (!email || !password)
-      return finalize(new Error('Missing email or password'));
+    if (!validatePassword(password))
+      return fail('Please enter a valid password')
 
     guardians.find({where: {email: email}})
-      .complete(function(err, user) {
-        if (user)
-          return finalize(new Error('Email address already in use.'));
+      .complete(function(err, guardian) {
+        if (err)
+          return fail(err);
 
+        // We've found a guardian already using this email address.
+        // Normally, we shouldn't get here, but just in case.
+        if (guardian)
+          return fail('This email address is already in use');
+
+        // Otherwise, we're all set.
         bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
           if (err || !hash)
-            return finalize(err);
+            return fail(err);
 
-          console.log('Password hashed:', hash);
           guardians.create({email: email, password: hash})
-            .complete(finalize);
+            .complete(function(err, guardian) {
+              if (err || !guardian)
+                return fail(err);
+
+              req.params.signupToken.finalize(guardian, function(err, learner) {
+                if (err)
+                  return fail(err);
+
+                redirectUser(req, res, guardian);
+              });
+            });
         });
-      });
+      })
   });
 
   app.get('/logout', function (req, res, next) {
