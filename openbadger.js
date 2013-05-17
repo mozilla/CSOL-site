@@ -37,7 +37,7 @@ function normalizeProgram(program, id) {
 var openbadger = new Api(ENDPOINT, {
   getBadges: {
     func: function getBadges (query, callback) {
-      this.get('/v2/badges', function(err, data) {
+      this.get('/badges', function(err, data) {
         if (err)
           return callback(err, data);
 
@@ -58,7 +58,7 @@ var openbadger = new Api(ENDPOINT, {
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
 
-    this.get('/v2/badge/' + id, function(err, data) {
+    this.get('/badge/' + id, function(err, data) {
       if (err)
         return callback(err, data);
 
@@ -74,7 +74,7 @@ var openbadger = new Api(ENDPOINT, {
 
   getPrograms: {
     func: function getPrograms (query, callback) {
-      this.get('/v2/programs', function(err, data) {
+      this.get('/programs', function(err, data) {
         if (err)
           return callback(err, data);
 
@@ -95,7 +95,7 @@ var openbadger = new Api(ENDPOINT, {
     if (!id)
       return callback(new errors.BadRequest('Invalid program key'));
 
-    this.get('/v2/program/' + id, function(err, data) {
+    this.get('/program/' + id, function(err, data) {
       if (err)
         return callback(err, data);
 
