@@ -19,7 +19,8 @@
     "injectr": "~0.4.0"
   },
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js"
+    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js",
+    "sync-db": "./bin/sync-db"
   },
   "repository": {
     "type": "git",

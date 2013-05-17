@@ -86,8 +86,6 @@ db.model = function(name) {
         model[type](relatedModel, relationship);
       });
     }
-
-    model.sync();
   }
 
   return modelCache[key];
