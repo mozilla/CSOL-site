@@ -141,12 +141,12 @@ function paginate(key, dataFn) {
       if (err)
         return callback(err, data);
 
-      if (!data[key].length) 
+      if (typeof data[key].length !== 'number') 
         return callback(new errors.BadGateway('Unpageable data returned from upstream'), data);
 
       var pages = Math.ceil(data[key].length / pageSize);
 
-      if (page > pages)
+      if (pages > 0 && page > pages)
         return callback(new errors.NotFound('Page not found'), {
           page: page,
           pages: pages
