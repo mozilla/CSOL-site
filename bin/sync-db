@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var path = require('path');
+var db = require(path.join(__dirname, '..', 'db'));
+
+var MODELS_DIR = path.join(__dirname, '..', 'models');
+
+fs.readdir(MODELS_DIR, function (err, files) {
+  if (err) {
+    console.error(err.message);
+    return process.exit(1);
+  }
+
+  files.forEach(function(file) {
+    var modelName = path.basename(file, '.js');
+    var model = db.model(modelName);
+    model.sync().success(function() {
+      console.log('Successfully synchronized model:', model.name);
+    }).error(function() {
+      console.error('Failed to synchronized model:', model.name);
+    });
+  });
+});
