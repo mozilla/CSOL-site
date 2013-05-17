@@ -97,7 +97,7 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   getOrgs: function getOrgs (query, callback) {
-    this.get('/v2/issuers/', function(err, data) {
+    this.get('/issuers/', function(err, data) {
       if (err)
         return callback(err, data);
 

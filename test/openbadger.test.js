@@ -243,7 +243,7 @@ test('getIssuers', function(t) {
       t.same(data.orgs.length, 2, 'data length');
       var org = data.orgs[0];
       t.ok(org.url && org.name, 'needed data');
-      t.ok(getStub.calledWithMatch('/v2/issuers'), 'endpoint');
+      t.ok(getStub.calledWithMatch('/issuers'), 'endpoint');
       t.end();
     });
   });
