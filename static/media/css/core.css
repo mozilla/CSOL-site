@@ -301,7 +301,7 @@ form .divider em {
   padding-left: 12px;
   padding-top: 9px;
 }
-.thumbnails figure {
+#content .thumbnails figure {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -316,13 +316,19 @@ form .divider em {
   margin: 0;
   border: none;
 }
-.thumbnails figure figcaption {
+#content .thumbnails figure figcaption {
   background: #555555 url(../images/chalkboard_bg_grey.jpg) center;
   color: white !important;
   text-shadow: none;
 }
-.thumbnails figure img {
-  padding: 15px ;
+#content .thumbnails figure img {
+  padding: 10px;
+  max-width: 100%;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 .btn {
   -webkit-border-radius: 0;
@@ -454,6 +460,39 @@ form .divider em {
   height: 78px;
   background-image: url(../images/footer_logo_mozilla.png);
   background-position: 10px 20px;
+}
+input[type="password"].metered {
+  padding-bottom: 9px;
+}
+input[type="password"].metered + .password-meter {
+  border: solid 1px #CCC;
+  border-top: none;
+  height: 6px;
+  margin: -6px 0 10px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: border linear .2s;
+  -moz-transition: border linear .2s;
+  -o-transition: border linear .2s;
+  transition: border linear .2s;
+}
+input[type="password"].metered + .password-meter .bar {
+  border-radius: 0 0 0 3px;
+  overflow: hidden;
+}
+input[type="password"].metered:focus + .password-meter {
+  border-color: rgba(82, 168, 236, 0.8);
+}
+input[type="password"].metered:focus:invalid + .password-meter {
+  border-color: #ee5f5b;
+}
+input[type="password"].metered:focus:invalid:focus + .password-meter {
+  border-color: #e9322d;
 }
 @media all and (max-width: 767px) {
   #header h1 {

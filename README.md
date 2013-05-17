@@ -12,3 +12,4 @@ Property        | Default  | Description
 `CSOL_DB_HOST`  | `null`   | Database host.
 `CSOL_DB_PORT`  | `null`   | Database port.
 `COOKIE_SECRET` | `null`   | Seed for session cookie.
+`CSOL_OPENBADGER_URL` | `null` | Openbadger API Location, http://obr.com/v2/

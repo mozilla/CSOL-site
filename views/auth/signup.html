@@ -1,25 +1,96 @@
 {% extends 'auth/layout.html' %}
 {% set bodyClass = 'sign-up' %}
 {% set pageTitle = 'Sign Up' %}
-{% set navItem = 'auth' %}
+{% set navItem = 'sign-up' %}
+{% set months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %}
 
 {% block content %}
-<div class="row">
-	<div class="span6">
-		<div class="well">
-			<a href="/signup/learners">
-				<h3>Learners</h3>
-				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</a>
-		</div>
-	</div>
-	<div class="span6">
-		<div class="well">
-			<a href="/signup/parents">
-				<h3>Parents &amp; Guardians</h3>
-				<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-			</a>
-		</div>
-	</div>
-</div>
+	<form class="form-horizontal span6 offset3" method="post">
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label" for="input-username">Nickname</label>
+				<div class="controls">
+					<input type="text" id="input-username" name="username" value="{{ username }}" required="required" placeholder="e.g. {{ example }}">
+					<span class="help-block"><strong>Please don't use your real name.</strong></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="input-birthday-month">Birthday</label>
+				<div class="controls">
+					<select id="input-birthday-month" name="birthday_month" class="input-small" required="required">
+						<option></option>
+						{% for month in months %}
+							<option value="{{ loop.index }}"{% if birthday_month == loop.index %} selected="selected"{% endif %}>{{ month }}</option>
+						{% endfor %}
+					</select>
+					<select id="input-birthday-day" name="birthday_day" class="input-mini" required="required">
+						<option></option>
+						{% for day in range(1, 32) %}
+							<option{% if birthday_day == day %} selected="selected"{% endif %}>{{ day }}</option>
+						{% endfor %}
+					</select>
+					<select id="input-birthday-year" name="birthday_year" class="input-mini" required="required">
+						<option></option>
+						{% for year in range(2012, 1979, (-1)) %}
+							<option {% if birthday_year == year %} selected="selected"{% endif %}>{{ year }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<p><button type="submit" class="btn">Sign Up</button></p>
+					<small>Already have an account? <a href="/login">Log in</a>.</small><br>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}
+
+{% block finally %}
+<script>
+	(function($) {
+		var $input = $(document.getElementById('input-username')),
+		    $container = $input.parent(),
+		    $help = $container.find('.help-block'),
+		    $wrapper = $(document.createElement('div')),
+		    $button = $(document.createElement('button')),
+		    $refresh = $(document.createElement('i')),
+		    generating = false;
+
+		$wrapper
+		    .addClass('input-append')
+		    .insertBefore($input);
+
+		$refresh.addClass('icon-refresh');
+
+		$button
+		    .addClass('btn')
+		    .attr({type: 'button', title: 'Create a nickname'})
+		    .append($refresh);
+
+		$button.click(function() {
+			if (generating) return;
+			generating = true;
+
+			$.ajax('/signup/generate_username', {
+				success: function (username) {
+					$input.val(username);
+				},
+				complete: function () {
+					generating = false;
+					$input.focus().select();
+				}
+			});
+		});
+
+		$wrapper
+		    .append($input)
+		    .append($button);
+
+		$help.html('Type in a name, or click the button<br>to have one generated for you.<br>' + $help.html());
+	})(jQuery);
+</script>
 {% endblock %}
