@@ -96,7 +96,7 @@ function processInitialLearnerSignup (req, res, next) {
   );
 
   function fail (err) {
-    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
     res.render('auth/signup-learner.html', signup);
   }
@@ -141,7 +141,7 @@ function processChildLearnerSignup (req, res, next) {
   signup.parent_email = req.body['parent_email'];
 
   function fail (err) {
-    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
     res.render('auth/signup-child.html', signup);
   }
@@ -192,7 +192,7 @@ function processStandardLearnerSignup (req, res, next) {
     signup.password = req.body['password'];
 
   function fail (err) {
-    signup.errors = [err || new Error('Unable to complete sign-up process. Please try again.')];
+    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
     res.render('auth/signup-learner-more.html', signup);
   }
@@ -250,9 +250,9 @@ module.exports = function (app) {
 
     function finalize (err, user) {
       if (err || !user) {
+        req.flash('error', err || 'Unable to log in. Please try again.')
         return res.render('auth/login.html', {
-          username: username,
-          errors: [err || new Error('Unable to log in. Please try again.')]
+          username: username
         });
       }
 
@@ -320,7 +320,6 @@ module.exports = function (app) {
 
   app.post('/signup/learners', function (req, res, next) {
     var signup = req.session.signup || {};
-    delete signup.errors;
 
     if (signup.state === 'child')
       return processChildLearnerSignup(req, res, next);
@@ -343,9 +342,9 @@ module.exports = function (app) {
 
     function finalize (err, user) {
       if (err || !user) {
+        req.flash('error', err || 'Unable to complete sign-up process. Please try again.')
         return res.render('auth/signup-parent.html', {
-          email: email,
-          errors: [err || new Error('Unable to complete sign-up process. Please try again.')]
+          email: email
         });
       }
 
@@ -414,9 +413,9 @@ module.exports = function (app) {
     // This should probably be refactored to share code with standard guardian signup
 
     function fail (err) {
+      req.flash('error', err || 'Unable to create an account. Please try again.')
       res.render('auth/signup-parent.html', {
-        auto_email: email,
-        errors: [err || new Error('Unable to create an account. Please try again.')]
+        auto_email: email
       });
     }
 
