@@ -6,3 +6,7 @@
 	{{ super() }}
 	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
 {% endblock %}
+
+{% block no_data %}
+  No programs or activities found.
+{% endblock %}
