@@ -4,11 +4,10 @@
 {% block content %}
 	{% block filter %}
 		{% if filters %}
-			<div class="navbar">
+			<div class="navbar filter">
 				<form class="navbar-inner navbar-form form-inline" method="get">
-					<div class="text-center">
 						{% for filter in filters %}
-							<label for="filter-{{ filter.name }}" class="filter-{{ filter.name }}">{{ filter.label }}</label>
+							<label for="filter-{{ filter.name }}" class="filter-icon filter-{{ filter.name }}">{{ filter.label }}</label>
 							{% if filter.options %}
 								<select id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-medium{% if filter.class %} {{ filter.class }}{% endif %}">
 									<option></option>
@@ -21,6 +20,7 @@
 												</optgroup>
 											{% endfor %}
 										{% else %}
+											<option selected="selected" value="{{ value }}">{{ filter.name }}</option>
 											{% for value, label in filter.options %}
 												<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
 											{% endfor %}
@@ -33,7 +33,6 @@
 						<noscript>
 							<input type="submit" value="Update" class="btn">
 						</noscript>
-					</div>
 				</form>
 			</div>
 		{% endif %}
@@ -50,7 +49,7 @@
 								<figure class="thumbnail">
 									<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
 									<figcaption class="caption">
-										<p>{{ item.description }}</p>
+										<p>{{ item.name }}</p>
 										{% block item_actions_wrapper %}
 											<p class="text-right">
 												{% block item_actions %}

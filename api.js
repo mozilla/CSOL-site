@@ -1,5 +1,8 @@
 var request = require('request');
+var errors = require('./lib/errors');
 var _ = require('underscore');
+var logger = require('./logger');
+var url = require('url');
 
 
 var DEFAULT_ERROR = 'There was a problem accessing this data.';
@@ -8,18 +11,15 @@ var DEFAULT_QUERY = {
   pageSize: 12
 };
 
+function middleware (method, default_query) {
+  if (!_.isFunction(method))
+    method = this[method]; 
 
-// Core API function
-// Loads data into `request.remote`, and intercepts XHR requests
-function api (method, default_query) {
+  if (!_.isFunction(method)) {
+    throw new Error('Supplied method ' + method + ' not valid');
+  }
+
   return function (req, res, next) {
-    if (!_.isFunction(method))
-      method = api[method];
-
-    if (!_.isFunction(method)) {
-      console.error('Method supplied to API not a function');
-      return next('Supplied method not valid');
-    }
 
     // Build query from various inputs
     var query = _.extend(
@@ -31,19 +31,21 @@ function api (method, default_query) {
     );
 
     method(query, function(err, data) {
+      if (!data || _.isString(data))
+        data = {message: data || DEFAULT_ERROR};
+
       if (!_.isObject(data))
-        data = {};
+        data = {data: data};
 
-      if (err)
-        data.error = err;
-
-      if (req.xhr)
+      if (req.xhr) {
+        data.status = err ? err.status.toLowerCase() : 'ok';
         return res.json(data);
+      }
 
       req.remote = data;
 
-      if (data.error)
-        return next(data);
+      if (err)
+        return next(err);
 
       next();
     });
@@ -66,131 +68,131 @@ function apiMethod (method) {
     query = _.defaults(query, DEFAULT_QUERY);
 
     method(query, function(err, data) {
-      if (!err)
-        return callback(null, data);
-
-      if (!data || _.isString(data))
-        data = {message: data || DEFAULT_ERROR};
-
-      callback(err, data);
-    });
-  }
-}
-
-// Load data from remote endpoint
-var remote = (function() {
-  function remote (method, path, callback) {
-    // TODO - put this in settings somewhere
-    var origin = 'http://openbadger-csol.mofostaging.net';
-
-    if (!request[method])
-      return callback(500, 'Unknown method');
-
-    // TODO - need to add ability to pass data through
-    // TODO - might want to cache this at some point
-    request[method](origin + path, function(err, response, body) {
       if (err)
-        return callback(500, err);
-
-      if (response.statusCode !== 200)
-        return callback(500, 'Upstream error');
-
-      try {
-        var data = JSON.parse(body);
-      } catch (e) {
-        return callback(500, e.message);
-      }
-
-      if (data.status !== 'ok')
-        return callback(500, data.reason);
+        return callback(err, data);
 
       callback(null, data);
     });
   }
-
-  _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
-    Object.defineProperty(remote, method, {
-      enumerable: true,
-      value: function(path, callback) {
-        remote(method, path, callback);
-      }
-    });
-  });
-
-  return remote;
-})();
-
-// Make sure badges returned from remote API
-// contain all the information we need
-function normalizeBadge (badge, id) {
-  if (!id)
-    id = badge.shortname;
-
-  if (!badge.id)
-    badge.id = id;
-
-  if (!badge.url)
-    badge.url = '/badges/' + badge.id;
-
-  return badge;
 }
 
-api.getBadges = apiMethod(function getBadges (query, callback) {
-  var pageSize = parseInt(query.pageSize, 10),
-      page = parseInt(query.page, 10);
+function getFullUrl(origin, path) {
+  path = path || '';
+  path = path.replace(/^\/?/, '');
+  return url.format(_.extend(
+    origin,
+    { pathname: origin.path + path }));
+}
 
-  if (isNaN(pageSize) || pageSize < 1)
-    return callback(400, 'Invalid pageSize number');
+// Load data from remote endpoint
+function remote (method, path, callback) {
 
-  if (isNaN(page) || page < 1)
-    return callback(400, 'Invalid page number');
+  if (!request[method])
+    return callback(new errors.NotImplemented('Unknown method ' + method));
 
-  var start = (page - 1) * pageSize,
-      end = start + pageSize;
+  // TODO - need to add ability to pass data through
+  // TODO - might want to cache this at some point
+  var endpointUrl = getFullUrl(this.origin, path);
+  request[method](endpointUrl, function(err, response, body) {
 
-  remote.get('/v1/badges', function(err, data) {
+    logger.log('info', 'API request: "%s %s" %s',
+      method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
+
     if (err)
-      return callback(err, data);
+      return callback(new errors.Unknown(err));
 
-    var badges = _.map(data.badges, normalizeBadge);
-    var pages = Math.ceil(badges.length / pageSize);
+    if (response.statusCode !== 200)
+      // TODO - add logging so the upstream error can be debugged
+      return callback(new (errors.lookup(response.statusCode))());
 
-    if (page > pages)
-      return callback(404, {
-        message: 'Page not found',
+    try {
+      var data = JSON.parse(body);
+    } catch (e) {
+      return callback(new errors.Unknown(e.message));
+    }
+
+    if (data.status !== 'ok')
+      return callback(new errors.Unknown(data.reason), data);
+
+    callback(null, data);
+  });
+}
+
+function paginate(key, dataFn) {
+  if (!dataFn && _.isFunction(key)) {
+    dataFn = key;
+    key = 'data';
+  }
+
+  return function(query, callback) {
+    var pageSize = parseInt(query.pageSize, 10),
+        page = parseInt(query.page, 10);
+
+    if (isNaN(pageSize) || pageSize < 1)
+      return callback(new errors.BadRequest('Invalid pageSize number'));
+
+    if (isNaN(page) || page < 1)
+      return callback(new errors.BadRequest('Invalid page number'));
+
+    var start = (page - 1) * pageSize,
+        end = start + pageSize;
+
+    dataFn(query, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      if (!data[key].length) 
+        return callback(new errors.BadGateway('Unpageable data returned from upstream'), data);
+
+      var pages = Math.ceil(data[key].length / pageSize);
+
+      if (page > pages)
+        return callback(new errors.NotFound('Page not found'), {
+          page: page,
+          pages: pages
+        });
+
+      data[key] = data[key].slice(start, end);
+      callback(null, _.extend(data, {
         page: page,
-        pages: pages
-      });
-
-    callback(null, {
-      page: page,
-      pages: pages,
-      badges: badges.slice(start, end)
+        pages: pages,
+      }));
     });
-  });
-});
+  };
+}
 
-api.getBadge = apiMethod(function getBadge (query, callback) {
-  var id = query.id;
+module.exports = function Api(origin, config) {
+  config = config || {};
 
-  if (!id)
-    return callback(400, 'Invalid badge key');
+  origin = url.parse(origin);
+  this.origin = origin;
 
-  remote('get', '/v1/badges', function(err, data) {
-    if (err)
-      return callback(err, data);
-
-    var badge = data.badges[id];
-
-    if (!badge)
-      return callback(404, 'Badge not found');
-
-    normalizeBadge(badge, id);
-
-    callback(null, {
-      badge: badge
+  _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
+    Object.defineProperty(this, method, {
+      enumerable: true,
+      value: function(path, callback) {
+        this.remote(method, path, callback);
+      },
+      writable: true // This is needed for mocking
     });
-  });
-});
+  }, this);
 
-module.exports = api;
+  _.each(config, function(item, name) {
+    var methodConfig = _.isObject(item) ? item : {};
+    var method = _.isFunction(item) ? item : methodConfig.func;
+    method = method.bind(this);
+    if (methodConfig.paginate) {
+      var key = methodConfig.key || 'data';
+      method = paginate(key, method);
+    }
+    this[name] = apiMethod(method);
+  }, this);
+
+  _.extend(this, {
+    middleware: middleware,
+    remote: remote
+  });
+
+};
+
+

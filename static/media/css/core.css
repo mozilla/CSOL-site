@@ -71,7 +71,6 @@ body {
   display: inline-block;
 }
 #navigation .nav li > a {
-  text-transform: uppercase;
   margin: 0;
   padding: 10px 30px 10px 30px;
   font-size: 1.2em;
@@ -149,8 +148,7 @@ form .divider em {
   padding: 50px 0;
   min-height: 200px;
 }
-#content h2,
-#content h3 {
+#content h2 {
   text-transform: uppercase;
   font-family: "ff-meta-web-pro";
   font-weight: bold;
@@ -162,13 +160,11 @@ form .divider em {
   padding-top: 8px;
   position: relative;
 }
-#content h2 a,
-#content h3 a {
+#content h2 a {
   font-size: 1.3em;
   color: black;
 }
-#content h2::before,
-#content h3::before {
+#content h2::before {
   content: "";
   position: absolute;
   left: 0;
@@ -176,8 +172,7 @@ form .divider em {
   width: 35%;
   border-top: solid 1px black;
 }
-#content h2::after,
-#content h3::after {
+#content h2::after {
   content: "";
   position: absolute;
   right: 0;
@@ -185,9 +180,43 @@ form .divider em {
   width: 35%;
   border-top: solid 1px black;
 }
+#content h1.line30::before,
+#content h2.line30::before,
+#content h3.line30::before {
+  width: 30%;
+}
+#content h1.line30::after,
+#content h2.line30::after,
+#content h3.line30::after {
+  width: 30%;
+}
+#content h1.line20::before,
+#content h2.line20::before,
+#content h3.line20::before {
+  width: 20%;
+}
+#content h1.line20::after,
+#content h2.line20::after,
+#content h3.line20::after {
+  width: 20%;
+}
+#content h1.line10::before,
+#content h2.line10::before,
+#content h3.line10::before {
+  width: 10%;
+}
+#content h1.line10::after,
+#content h2.line10::after,
+#content h3.line10::after {
+  width: 10%;
+}
 #content h3 {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+#content h3.activity {
+  margin-bottom: 0;
+  margin-top: 0;
 }
 #content .container {
   border-bottom: 1px solid #404041;
@@ -197,15 +226,63 @@ form .divider em {
   margin-bottom: 20px;
 }
 #content .poster {
-  border: solid 20px #D9D9D9;
-  border-color: rgba(153, 153, 153, 0.09999999999999998);
-}
-#content .poster img {
-  width: 100%;
+  background: #cfd4d1;
+  background: rgba(0, 0, 0, 0.1);
+  background-image: url(../images/splash_banner_topbg.gif);
+  background-position: top;
+  background-repeat: repeat-x;
+  padding-top: 30px;
+  text-align: center;
   display: block;
-  margin: 0;
-  padding: 0;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.09999999999999998);
+}
+#content .filter label {
+  text-indent: -1000%;
+  width: 26px;
+  height: 26px;
+  margin-right: 3px;
+  padding-top: 0;
+  background: url(../images/filter_icons_sprite.png);
+  background-position: 0 1px;
+}
+#content .filter label.filter-category {
+  background-position: 68px 2px;
+}
+#content .filter label.filter-age {
+  background-position: -72px 2px;
+}
+#content .filter label.filter-date {
+  background-position: -136px 2px;
+}
+#content .filter label.filter-search {
+  background-position: -229px 2px;
+}
+#content .filter select {
+  margin-right: 15px;
+}
+#content .filter .navbar-inner {
+  padding-left: 10px;
+}
+.home #content h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.home p {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.5em;
+}
+.home #content h2::before {
+  width: 12%;
+}
+.home #content h2::after {
+  width: 12%;
+}
+.activity p.activity-description {
+  margin: 20px 0 25px 0;
+}
+.activity .span8 {
+  padding-bottom: 30px;
 }
 .navbar-form {
   color: white;
@@ -297,6 +374,7 @@ form .divider em {
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   color: white;
   font-size: 1.1em;
+  text-shadow: none;
 }
 #footer .toprow {
   border-bottom: 1px solid white;
@@ -315,13 +393,15 @@ form .divider em {
 }
 #footer .nav {
   font-size: 1.2em;
-  text-transform: uppercase;
   margin: 0;
   padding: 0;
 }
 #footer .nav li {
   margin-bottom: 0;
   padding: 0;
+}
+#footer .nav li:last-child a {
+  padding-right: 0;
 }
 #footer .nav li a {
   display: inline-block;
@@ -343,6 +423,11 @@ form .divider em {
 }
 #footer .logos {
   text-align: center;
+}
+#footer .copytxt {
+  font-size: .9em;
+  line-height: 1.8em;
+  text-align: right;
 }
 #footer .description {
   margin-bottom: 20px;
@@ -395,6 +480,9 @@ form .divider em {
   #footer {
     padding: 0 20px;
   }
+  #footer #content {
+    text-shadow: none;
+  }
   #footer .pull-left {
     float: none;
     text-align: center;
@@ -409,6 +497,9 @@ form .divider em {
   #footer .nav-pills li {
     display: inline-block;
     font-size: .8em;
+  }
+  #footer .copytxt {
+    text-align: center;
   }
 }
 @media all and (max-width: 480px) {
