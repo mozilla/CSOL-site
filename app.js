@@ -5,6 +5,7 @@ const nunjucks = require('nunjucks');
 const middleware = require('./middleware');
 const helpers = require('./helpers');
 const flash = require('connect-flash');
+const logger = require('./logger');
 
 const app = express();
 const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: true});
@@ -12,7 +13,11 @@ env.express(app);
 
 app.use(express.cookieParser());
 app.use(middleware.session());
-app.use(express.logger());
+app.use(express.logger({stream:{
+  write: function(msg, encoding) {
+    logger.info(msg.trim());
+  }
+}}));
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.csrf());

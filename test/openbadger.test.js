@@ -64,6 +64,19 @@ const DATA = {
       image: "http://some.org/prog-a/img.png",
       name: "Program A"
     }
+  },
+  'issuers': {
+    status: 'ok',
+    issuers: {
+      'issuer-a': {
+        name: "Issuer A",
+        url: "http://issuer-a.org"
+      },
+      'issuer-b': {
+        name: "Issuer B",
+        url: "http://issuer-b.org"
+      }
+    }
   }
 };
 
@@ -129,7 +142,7 @@ test('getBadges', function(t){
       t.same(data.badges.length, 3, 'data length');
       var badge = data.badges[0];
       t.ok(badge.id && badge.url && badge.name && badge.behaviors, 'looks like normalized badge');
-      t.ok(getStub.calledWithMatch('/v2/badges'), 'endpoint');
+      t.ok(getStub.calledWithMatch('/badges'), 'endpoint');
       t.end();
     });
   });
@@ -203,7 +216,7 @@ test('getPrograms', function(t) {
       t.same(data.programs.length, 3, 'data length');
       var program = data.programs[0];
       t.ok(program.id && program.url && program.name, 'looks like normalized program');
-      t.ok(getStub.calledWithMatch('/v2/programs'), 'endpoint');
+      t.ok(getStub.calledWithMatch('/programs'), 'endpoint');
       t.end();
     });
   });
@@ -214,6 +227,23 @@ test('getPrograms', function(t) {
     openbadger.getPrograms({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.programs.length, 2, 'paginated');
+      t.end();
+    });
+  });
+
+});
+
+test('getIssuers', function(t) {
+
+  t.test('with data', function(t) {
+    var getStub = mock.expects('get');
+    getStub.callsArgWith(1, null, DATA['issuers']);
+    openbadger.getOrgs(DEFAULT_QUERY, function(err, data) {
+      t.notOk(err, 'no error');
+      t.same(data.orgs.length, 2, 'data length');
+      var org = data.orgs[0];
+      t.ok(org.url && org.name, 'needed data');
+      t.ok(getStub.calledWithMatch('/issuers'), 'endpoint');
       t.end();
     });
   });

@@ -3,9 +3,9 @@ const errors = require('./lib/errors');
 const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
+if (!ENDPOINT)
+  throw new Error('Must specify CSOL_OPENBADGER_URL in the environment');
 
-// Make sure badges returned from remote API
-// contain all the information we need
 function normalizeBadge (badge, id) {
   if (!id)
     id = badge.shortname;
@@ -33,16 +33,15 @@ function normalizeProgram(program, id) {
 }
 
 var openbadger = new Api(ENDPOINT, {
+
   getBadges: {
     func: function getBadges (query, callback) {
-      this.get('/v2/badges', function(err, data) {
+      this.get('/badges', function(err, data) {
         if (err)
           return callback(err, data);
 
-        var badges = _.map(data.badges, normalizeBadge);
-
         return callback(null, {
-          badges: badges
+          badges: _.map(data.badges, normalizeBadge)
         });
       });
     },
@@ -56,30 +55,24 @@ var openbadger = new Api(ENDPOINT, {
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
 
-    this.get('/v2/badge/' + id, function(err, data) {
+    this.get('/badge/' + id, function(err, data) {
       if (err)
         return callback(err, data);
 
-      var badge = data.badge;
-
-      normalizeBadge(badge, id);
-
-      callback(null, {
-        badge: badge
+      return callback(null, {
+        badge: normalizeBadge(data.badge, id)
       });
     });
   },
 
   getPrograms: {
     func: function getPrograms (query, callback) {
-      this.get('/v2/programs', function(err, data) {
+      this.get('/programs', function(err, data) {
         if (err)
           return callback(err, data);
 
-        var programs = _.map(data.programs, normalizeProgram);
-
         return callback(null, {
-          programs: programs
+          programs: _.map(data.programs, normalizeProgram)
         });
       });
     },
@@ -93,16 +86,23 @@ var openbadger = new Api(ENDPOINT, {
     if (!id)
       return callback(new errors.BadRequest('Invalid program key'));
 
-    this.get('/v2/program/' + id, function(err, data) {
+    this.get('/program/' + id, function(err, data) {
       if (err)
         return callback(err, data);
 
-      var program = data.program;
+      return callback(null, {
+        program: normalizeProgram(data.program, id)
+      });
+    });
+  },
 
-      normalizeProgram(program, id);
+  getOrgs: function getOrgs (query, callback) {
+    this.get('/issuers/', function(err, data) {
+      if (err)
+        return callback(err, data);
 
-      callback(null, {
-        program: program
+      return callback(null, {
+        orgs: _.values(data.issuers)
       });
     });
   }

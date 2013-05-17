@@ -1,3 +1,15 @@
 {% extends 'info/layout.html' %}
 {% set pageTitle = 'About' %}
 {% set navItem = 'about' %}
+
+{% block content %}
+  {% if orgs %}
+    {% set nearestTen = (orgs.length // 10) * 10 %}
+    <h4>Over {{ nearestTen }} Participating Organizations</h4>
+    <ul class="row">
+    {% for org in orgs %}
+      <li class="span4"><a href="{{ org.url }}">{{ org.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
