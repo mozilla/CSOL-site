@@ -1,6 +1,11 @@
 {% extends 'filter.html' %}
 {% set pageTitle = 'Badges' %}
 
+{% block content %}
+	<p>The City of Chicago Summer of Learning badges recognize the cool things you do over the summer. When you learn something new, you can earn a badge. As you earn more badges you can do more cool things. When you go back to school in the fall, you can show off all the badges you earned to your teachers, parents, potential employers and friends!</p>
+	{{ super() }}
+{% endblock %}
+
 {% block item_actions %}
 	{{ super() }}
 	<a class="btn" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
