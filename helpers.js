@@ -27,10 +27,10 @@ function extractMessageData (req) {
           msg = {value: ''+msg};
 
         if (type === 'modal') {
-          if (!_.isArray(msg.buttons))
+          if (!_.isArray(msg.buttons) && !_.isObject(msg.buttons))
             msg.buttons = [];
 
-          if (!msg.buttons.length)
+          if (_.isArray(msg.buttons) && !msg.buttons.length)
             msg.buttons.push('Close');
         }
 
@@ -47,7 +47,7 @@ function extractMessageData (req) {
             if (!_.isObject(value))
               value = {type: value};
 
-            value = _.defaults(value, {
+            return _.defaults(value, {
               label: '' + key
             });
           });
