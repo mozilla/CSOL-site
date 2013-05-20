@@ -194,62 +194,43 @@ form .divider {
 			color: black;
 		}
 
-		&::before {
-			content: "";
-			position: absolute;
-			left: 0;
-			top: 50%;
-			width: 35%;
-			border-top: solid 1px black;
-		}
-
 		&::after {
 			content: "";
-			position: absolute;
-			right: 0;
-			top: 50%;
-			width: 35%;
+			position: relative;
+			top: 20px;
+			display: block;
+			width: 100%;
 			border-top: solid 1px black;
 		}
 	}
 
-	h1.line30, h2.line30, h3.line30 {
-		&::before {
-			width: 30%;
-		}
-
-		&::after {
-			width: 30%;
-		}
-	}
-
-	h1.line20, h2.line20, h3.line20 {
-		&::before {
-			width: 20%;
-		}
-
-		&::after {
-			width: 20%;
-		}
-	}
-
-	h1.line10, h2.line10, h3.line10 {
-		&::before {
-			width: 10%;
-		}
-
-		&::after {
-			width: 10%;
-		}
-	}
+	
 
 	h3 {
 		margin-top: 20px; 
-		margin-bottom: 20px;
-	
+		font-family: "ff-meta-web-pro";
+		text-transform: uppercase;
+		margin-bottom: 50px;
+		text-align: center;
+		position: relative;
+		font-size: 2.2em;
+
+		a {
+			color: black;
+		}
+
 		&.activity {
 			margin-bottom: 0;
 			margin-top: 0;
+		}
+
+		&::after {
+			content: "";
+			position: relative;
+			top: 20px;
+			display: block;
+			width: 100%;
+			border-top: solid 1px black;
 		}
 
 	}
@@ -333,17 +314,6 @@ form .divider {
 		margin-bottom: 30px;
 		line-height: 1.5em;
 	}
-
-
-	#content h2 {
-		&::before {
-			width: 12%;
-		}
-
-		&::after {
-			width: 12%;
-		}
-	}
 	
 }
 
@@ -381,12 +351,29 @@ form .divider {
 		padding: 0;
 		margin: 0;
 		border:none;
+		
+
+		a {
+			position: relative;
+
+			.new {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				text-transform: uppercase;
+				color: white;
+				background: #b82237;
+				padding: 3px 8px;
+			}
+
+		}
 
 		figcaption {
 
 			background: #555 url(../images/chalkboard_bg_grey.jpg) center;
 			color: white !important;
 			text-shadow:none;
+			border-top: 1px solid black;
 		}
 
 		img {
@@ -398,7 +385,61 @@ form .divider {
 			box-sizing: border-box;
 			margin: 0 auto;
 		}
+
+
+		.status {
+			text-align: center;
+			padding: 3px 0 0 0;
+			color: white;
+			text-shadow: none;
+			text-transform: uppercase;
+			font-size: 1.2em;
+			vertical-align: middle;
+			position: relative;
+
+			img {
+				margin-right: 5px;
+				display: inline-block;
+				padding: 5px 0;
+				margin-top: -5px;
+
+			}
+
+
+			&.awarded {
+				background: #90bfdb;
+				border-bottom: 1px solid #09465d;
+			}
+
+			&.queued {
+				background: #ecd16a;
+				border-bottom: 1px solid #79692f;
+			}
+
+			&.reviewed {
+				background: #d3644d;
+				border-bottom: 1px solid #76311e;
+			}
+
+			&.favorite {
+				background: #6c9f6b;
+				border-bottom: 1px solid #234b25;
+			}
+
+			.favorite {
+				position: absolute;
+				background: rgba(0,0,0,0.1) url(../images/icon_status_favorite.png) 5px 4px no-repeat;
+				width: 32px;
+				height: 30px;
+				right: 0;
+				top: 0;
+			}
+
+		}
+
 	}
+
+
 
 } // end .thumbnails
 
@@ -622,9 +663,7 @@ input[type="password"].metered {
 	#content {
 		padding: 30px 20px;
 
-		h2:before, h2:after, h3:before, h3:after {
-			border:none;
-		}
+
 	}
 
 	#footer {
