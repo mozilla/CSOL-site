@@ -179,6 +179,16 @@ function processChildLearnerSignup (req, res, next) {
             if (err) return fail(err);
 
             delete req.session.signup;
+            req.flash('modal', {
+              title: 'Welcome to the Chicago Summer of Learning',
+              value:
+                '<p>You have been given a temporary account for 10 days.</p>' +
+                '<p>Please make sure that your guardian checks their email so that they can register you for a permanent account.</p>'
+              ,
+              buttons: {
+                'Get Started!': 'primary'
+              }
+            });
             redirectUser(req, res, user);
           });
         });
@@ -251,6 +261,7 @@ module.exports = function (app) {
 
   app.post('/login', function (req, res, next) {
     var username = req.body['username'];
+    var normalizedUsername = normalizeUsername(username);
     var password = req.body['password'];
 
     function finalize (err, user) {
@@ -280,7 +291,7 @@ module.exports = function (app) {
       return finalize(new Error('Missing nickname or password'));
 
     // Annoying redundancy here, but no other obvious way to generate OR queries
-    learners.find({where: ["`email`=? OR `username`=?", username, username]})
+    learners.find({where: ["`email`=? OR `username`=?", normalizedUsername, normalizedUsername]})
       .complete(function(err, user) {
         if (err) return finalize(err);
         if (user) return validateUser(user);
