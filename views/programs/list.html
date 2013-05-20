@@ -1,8 +1,18 @@
 {% extends 'filter.html' %}
-{% set pageTitle = 'Programs' %}
-{% set navItem = 'programs' %}
+{% set pageTitle = 'Learn' %}
+{% set navItem = 'learn' %}
+
+{% block content %}
+	<p>Find cool things to learn this summer. You can participate in a program run by a local organization like the parks, the library or the zoo. You can do something online and at your own pace like learning how to make websites or how to manage your money.</p>
+	<p>There are even some city-wide games you can participate in. Use the filters to find the ones that might interest you. Click on the details button to get more information on how to participate.</p>
+	{{ super() }}
+{% endblock %}
 
 {% block item_actions %}
 	{{ super() }}
 	<a class="btn show-tooltip" title="Save this to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+{% endblock %}
+
+{% block no_data %}
+  No programs or activities found.
 {% endblock %}

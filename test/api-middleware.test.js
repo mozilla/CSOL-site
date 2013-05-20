@@ -503,6 +503,19 @@ test('paginate', function(t) {
     t.end();
   });
 
+  t.test('don\'t error out on no data', function(t) {
+    var method = sinon.stub().callsArgWith(1, null, { data: [] });; 
+    var api = new Api(ORIGIN, {
+      method: { func: method, paginate: true }
+    });
+    var callback = sinon.stub();
+    api.method(callback);
+    var args = callback.getCall(0).args;
+    t.notOk(args[0], 'no error');
+    t.similar(args[1], { data: [], pages: 0 }, 'data');
+    t.end();
+  });
+
   t.test('calls paginated method with query and callback', function(t) {
     var method = sinon.stub(); 
     var api = new Api(ORIGIN, {
