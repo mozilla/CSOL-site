@@ -20,7 +20,7 @@
 	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
 	                    </p> 
 	                    <p class="pull-right">
-	                    	<a href="/badges/ae784f" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
+	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
 	                    	<a href="/badges/ae784f" class="btn">Details</a>
 	                    </p> 
                     </figcaption>
@@ -44,7 +44,7 @@
 	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
 	                    </p> 
 	                    <p class="pull-right">
-	                    	<a href="/badges/ae784f" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
+	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
 	                    	<a href="/badges/ae784f" class="btn">Details</a>
 	                    </p> 
                     </figcaption>
@@ -69,7 +69,7 @@
 	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
 	                    </p> 
 	                    <p class="pull-right">
-	                    	<a href="/badges/ae784f" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
+	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
 	                    	<a href="/badges/ae784f" class="btn">Details</a>
 	                    </p> 
                     </figcaption>
@@ -93,7 +93,7 @@
 	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
 	                    </p> 
 	                    <p class="pull-right">
-	                    	<a href="/badges/ae784f" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
+	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
 	                    	<a href="/badges/ae784f" class="btn">Details</a>
 	                    </p> 
                     </figcaption>
@@ -111,4 +111,21 @@
 		</a>
 	</li>
 	
+{% endblock %}
+
+{% block modal %}
+
+	<!-- Modal -->
+		<div id="shareModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Share This Badge</h3>
+		  </div>
+		  <div class="modal-body">
+		    <a href="#" class="btn btn-block">Twitter</a>
+		    <a href="#" class="btn btn-block">Facebook</a>
+		    <a href="#" class="btn btn-block">Backpack</a>
+		  </div>
+		</div>
+
 {% endblock %}
