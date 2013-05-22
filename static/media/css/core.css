@@ -494,6 +494,61 @@ input[type="password"].metered:focus:invalid + .password-meter {
 input[type="password"].metered:focus:invalid:focus + .password-meter {
   border-color: #e9322d;
 }
+#evidence-upload.activated {
+  padding: 30px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  border-radius: 10px;
+}
+#evidence-upload.activated input {
+  position: absolute;
+  left: -999em;
+}
+#evidence-upload.activated .btn,
+#evidence-upload.activated p {
+  font-size: 1.5em;
+}
+#evidence-upload.activated .btn {
+  padding: 8px 16px;
+}
+#evidence-upload.droppable {
+  border: dashed 3px #CCC;
+  background: none;
+}
+#evidence-upload.droppable em {
+  display: block;
+  margin: 10px 0 0;
+  font-size: 0.8em;
+}
+.upload-list {
+  list-style: none;
+  margin: 20px 0;
+}
+.upload-list li {
+  margin: 5px 0 0;
+}
+.upload-list .details {
+  position: relative;
+}
+.upload-list .details .meta {
+  position: relative;
+  z-index: 1;
+  padding: 3px 10px;
+}
+.upload-list .details .filename {
+  font-weight: bold;
+}
+.upload-list .details .progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+.upload-list .details .progress .bar {
+  opacity: 0.5;
+}
 @media all and (max-width: 767px) {
   #header h1 {
     padding: 0 5%;

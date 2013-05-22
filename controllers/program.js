@@ -1,4 +1,7 @@
 var badger = require('../openbadger');
+var db = require('../db');
+
+var applications = db.model('Application');
 
 module.exports = function (app) {
 
@@ -157,6 +160,61 @@ module.exports = function (app) {
     res.render('badges/single.html', {
       badge: req.params.badge
     });
+  });
+
+  app.get('/earn/:badgeName/apply', function (req, res, next) {
+    var badge = req.params.badge;
+
+    // if (!req.session.user)
+    //   return res.redirect(badge.url);
+
+    applications.findOrCreate({
+      badgeId: badge.id,
+      LearnerId: 1 // req.session.user.id
+    })
+      .complete(function(err, application) {
+        if (err || !application)
+          return next(err || new Error('There was a problem loading your application'));
+
+        application.getEvidence()
+          .complete(function(err, evidence) {
+            if (err)
+              return next(err);
+
+            var state = evidence.length ? application.state : 'new';
+
+            res.render('applications/' + state + '.html', {
+              evidence: evidence,
+              application: application,
+              badge: badge
+            })
+          });
+
+      });
+  });
+
+  app.post('/earn/:badgeName/apply', function (req, res, next) {
+    var badge = req.params.badge;
+
+    // if (!req.session.user)
+    //   return res.redirect(badge.url);
+
+    applications.find({where: {
+      badgeId: badge.id,
+      LearnerId: 1 // req.session.user.id
+    }})
+      .complete(function(err, application) {
+        if (err || !application) {
+          if (err)
+            req.flash('error', err);
+          return res.redirect(badge.url + '/apply');
+        }
+
+        // Deal with req.files
+        console.log('Dealing with files');
+
+        res.redirect(badge.url + '/apply');
+      });
   });
 
   app.get('/earn/:badgeName/claim', function (req, res, next) {

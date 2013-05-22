@@ -592,6 +592,75 @@ input[type="password"].metered {
 	}
 }
 
+#evidence-upload {
+	&.activated {
+		padding: 30px;
+		text-align: center;
+		background: rgba(255,255,255,0.5);
+		overflow: hidden;
+		border-radius: 10px;
+
+		input {
+			position: absolute;
+			left: -999em;
+		}
+
+		.btn, p {
+			font-size: 1.5em;
+		}
+
+		.btn {
+			padding: 8px 16px;
+		}
+	}
+
+	&.droppable {
+		border: dashed 3px #CCC;
+		background: none;
+		
+		em {
+			display: block;
+			margin: 10px 0 0;
+			font-size: 0.8em;
+		}
+	}
+}
+
+.upload-list {
+	list-style: none;
+	margin: 20px 0;
+
+	li {
+		margin: 5px 0 0;
+	}
+
+	.details {
+		position: relative;
+
+		.meta {
+			position: relative;
+			z-index: 1;
+			padding: 3px 10px;
+		}
+
+		.filename {
+			font-weight: bold;
+		}
+
+		.progress {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 100%;
+
+			.bar {
+				opacity: 0.5;
+			}
+		}
+	}
+}
+
 // custom responsive styles 
 
 @media all and (max-width: 767px) {

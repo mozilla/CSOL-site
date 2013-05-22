@@ -1,0 +1,173 @@
+{% extends 'applications/layout.html' %}
+{% set pageTitle = 'Apply for the ' + badge.name + ' badge' %}
+
+{% block content %}
+	<form method="post" class="form-horizontal span6 offset3" enctype="multipart/form-data" id="application-form">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		{% block intro %}
+			<p>Before submitting your work, check out the requirements for this badge</p>
+			<pre>{{ badge }}</pre>
+		{% endblock %}
+		{% block fields %}
+		<p>Start by uploading photos and videos of your work</p>
+		<div class="control-group" id="evidence-upload">
+			<label class="control-label" for="input-file">File</label>
+			<div class="controls">
+				<input type="file" id="input-file" name="file">
+			</div>
+		</div>
+		{#
+		<p>Or add a URL for work already on the internet</p>
+		<div class="control-group">
+			<label class="control-label" for="input-url">URL</label>
+			<div class="controls">
+				<input type="url" id="input-url" name="url" placeholder="http://">
+			</div>
+		</div>
+		#}
+		{% endblock %}
+		<div class="control-group">
+			<div class="controls">
+				{% block buttons %}
+					<button type="submit" value="upload" class="btn">Upload your evidence</button>
+				{% endblock %}
+			</div>
+		</div>
+	</form>
+{% endblock %}
+
+{% block finally %}
+<script src="/media/js/dropzone.js"></script>
+<script>
+	(function() {
+		try {
+			var evidence = document.getElementById('evidence-upload'),
+			    input = evidence.getElementsByTagName('input')[0],
+			    form = input.form;
+		} catch (e) {
+			return false;
+		}
+
+		var button = document.createElement('label');
+		button.className = 'btn';
+		button.appendChild(document.createTextNode('Choose Photos and Videos to upload'));
+
+		var uploadList = document.createElement('ul');
+		uploadList.className = 'upload-list';
+
+		evidence.className += ' activated';
+		evidence.innerHTML = '';
+		evidence.appendChild(button);
+
+		var dropzone = new Dropzone(evidence, {
+			url: form.action || document.location.href,
+			paramName: input.name,
+			acceptedMimeTypes: input.accept,
+			method: form.method,
+			clickable: true,
+			previewsContainer: uploadList,
+			createImageThumbnails: false,
+			previewTemplate: [
+				'<li>',
+				'  <div class="details">',
+				'    <div class="meta"><span data-dz-name class="filename"></span> (<span data-dz-size></span>)</div>',
+				'    <div class="progress"><span class="bar" data-dz-uploadprogress></span></div>',
+				'  </div>',
+				'  <div class="feedback"><span data-dz-errormessage></span></div>',
+				'</li>'
+			].join('\n'),
+			// forceFallback: true,
+			thumbnail: function () {},
+			init: function () {
+				var id = this.hiddenFileInput.id;
+				if (!id) id = this.hiddenFileInput.id = 'hidden-file-input';
+				button.setAttribute('for', id);
+
+				evidence.innerHTML = '<p>Drag and Drop photos and videos here <em>or</em></p>';
+				evidence.appendChild(button);
+				console.dir(this);
+				console.dir(arguments);
+				evidence.className += ' droppable';
+
+				evidence.parentNode.insertBefore(uploadList, evidence.nextSibling);
+			},
+			fallback: function () {
+				evidence.appendChild(input);
+				input.onchange = function() {
+					form.className += ' submitting';
+					form.submit();
+					alert('Submitted!');
+				}
+				button.setAttribute('for', input.id);
+				uploadList.parentNode.removeChild(uploadList);
+			}
+		});
+	})();
+</script>
+{#
+<script>
+	(function($) {
+		var $evidence = $('#evidence-upload'),
+		    $selector = $evidence.find('input[type="file"]'),
+		    $button = $(document.createElement('label'));
+
+		if (!$evidence.length || !$selector.length) return;
+
+		function handleFileUpload () {
+		    var e = event.originalEvent || event,
+		        files = (e.dataTransfer||{}).files || $selector[0].files,
+		        data = new FormData();
+
+			if (!files || !files.length)
+				console.dir(e.dataTransfer);
+
+			e.preventDefault();
+			console.log(files);
+
+			replaceFileInput();
+
+			return false;
+		}
+
+		function replaceFileInput () {
+			var $clone = $selector.clone()
+				.insertBefore($selector)
+				.on('change', handleFileUpload);
+
+			$selector.remove();
+			$selector = $clone;
+		}
+
+		function noop (event) {
+			event.preventDefault();
+			return false;
+		}
+
+		$button
+			.addClass('btn')
+			.attr('for', $selector.attr('id'))
+			.text('Choose Photos and Videos to upload');
+
+		var xhr = new XMLHttpRequest(),
+		    html = xhr.upload ? '<p>Drag and Drop photos and videos here <em>or</em></p>' : '';
+
+		replaceFileInput();
+
+		$evidence
+			.addClass('activated')
+			.html(html)
+			.append($button)
+			.append($selector);
+
+		if (!xhr.upload) return;
+
+		$evidence
+			.on('dragenter', noop)
+			.on('dragleave', noop)
+			.on('dragover', noop)
+			.on('drop', handleFileUpload)
+			.addClass('droppable');
+	})(jQuery);
+</script>
+#}
+{% endblock %}
