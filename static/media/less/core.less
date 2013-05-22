@@ -2,673 +2,220 @@
 
 @import "mixins.less";
 
-html,
+/*general*/
+html, body {
+  height: 100%;
+ }
 body {
-	margin: 0;
-	padding: 0;
-	.at2x('../images/billie_holiday.png',100px,100px);
+  margin: 0px;
+  padding: 0px;
+  .container {
+  	& > br {
+			display:none;
+  	}
+  }
+ }
+#main {
+	padding-top:45px;
+	padding-bottom:25px;
+	& > h1:first-child, & > h2:first-child, & > h3:first-child, & > h4:first-child, & > p:first-child {
+		margin-top:0px;
+		padding-top:0px;
+	}
+	& > div > h1:first-child, & > div > h2:first-child, & > div > h3:first-child, & > div > h4:first-child, & > div > p:first-child {
+		margin-top:0px;
+		padding-top:0px;
+	}
+} 
+ul, ol {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.row,
+[class*="span"] {
+  margin-left:0px;
 }
 
-#notes {
-	position: fixed;
-	bottom: 1em;
-	right: 1em;
-	max-width: 300px;
-	padding: 1em;
-	background: rgba(255,255,255,0.75);
-	color: #333;
-	border: solid 1px #999;
-	box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-}
-
-#header {
-	background: url(../images/chalkboard_bg_green.jpg) center;
-	position: relative;
-	-webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, .25);
-	-moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, .25);
-	box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, .25);
-
-	&::after {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		width: 100%;
-		height: 5px;
-		background: -webkit-linear-gradient(top, rgba(0,0,0,0.25), rgba(0,0,0,0));
-	}
-
-	h1 {
-		margin: 0;
-		overflow: hidden;
-		font-size: 2em;
-		line-height: 2em;
-		display: block;
-	
-
-		a {
-			display: block;
-			max-width: 671px;
-			height: 220px;
-			background: url(../images/csol_logo_illustration.png) center no-repeat;
-			background-size: 100%;
-			text-indent: -999em;
-			position: relative;
-			margin: 23px auto 0 auto;
-
-		}
-	}
-
-} // end #header
-
-#navigation {
-	margin: 0 auto;
-	position: relative;
-	bottom: -16px;
-	margin-top: -12px;
-	.drop-shadow (0, 0, 8px, 3px, 0.25);
-	text-align: center;
-	background: white;
-	text-align: center;
-	line-height: .8em;
-
+/*navbar*/
+.navbar {
 	.nav {
-		margin-bottom: 0;
-		display: inline-block;
-
-		li {
-
-			& > a {
-				margin: 0;
-				padding: 10px 30px 10px 30px;
-				font-size: 1.2em;
-				.border-radius(0);
-				color: #404041;
-				border: none;
-				border-left: 1px solid #404041;
-
-				&:hover {
-					background: #eee;
-				}
-
-			}
-
-			&.active {
-				a {
-					background: #eee;
-				}
-		
-			}
-
-			&:first-child{
-				a {
-					border-left: none;
-				}
-			}
-		}
-
-		ul li a {
-			border: none;
-		}
-
-		form {
-			padding: 10px;
-			text-align: left;
-
-			.btn {
-				display: block;
-				width: 100%;
-			}
-
-			small {
-				margin-top: 10px;
-				border-top: solid 1px #CCC;
-				display: block;
-				clear: both;
-				text-align: center;
-			}
-		}
-	}
-
-
-} // end #navigation
-
-ul.row {
-	list-style: none;
-}
-
-figure.thumbnail {
-	margin: 0;
-}
-
-.thumbnail img {
-	margin-top: 5px;
-}
-
-.thumbnail > a {
-	display: block;
-	text-align: center;
-}
-
-form .divider {
-	display: block;
-	margin: 2em 0;
-	text-align: center;
-	position: relative;
-
-	&::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		top: 50%;
-		width: 100%;
-		border-top: solid 1px #CCC;
-	}
-
-	em {
-		background: #FFF;
-		padding: 0 1em;
-		position: relative;
+	  float:none;
+	  &  > li {
+	  	& > a {
+	  		border-left:none;
+	  		border-right:none;
+	  	}
+	  	& > a:hover, & > a:focus {
+	  		background-color:inherit;
+	  		border-left:none;
+	  		border-right:none;
+	  	}
+	  }
+		& > li:nth-child(even) {
+  		border-left:1px solid #c0c0c0;
+  		border-right:1px solid #c0c0c0;
+  	}
+  	& > .navbar .nav > li:last-child {
+  		border-right:none;
+  	}
+  	.active {
+  		a,a:hover,a:focus {
+ 				background-color:white;
+  			box-shadow:none;
+  		}
+  	}
+ 	}
+ 	.navbar-inner {
+ 		background-image:url('../img/chalkboard_bg.jpg');
+  	-webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  	-moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  	box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  	padding-top:1em;
+  }
+  .nav-wrap {
+  	width:100%;
+  	padding:0 0 0 0;
+  	margin:0 0 0 0;
+  	width:940px;
+  	margin-bottom:-24px;
+  	-webkit-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  	-moz-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  	background: white;
+  	text-align: center;
+  	ul {
+ 			display:inline-block;
+  		margin:0 0 0 0;
+  		& > li {
+  		  float:none;
+  			display: inline-block;
+  			& > a {
+  				text-shadow:none;
+  				color:#333333;
+  				text-transform:uppercase;
+  			}
+  			& > a:focus, & > a:hover {
+  				color:#c0c0c0;
+  			}
+  		}
+  		& > li:last-child {
+  			border-right:none;
+  		}
+  	}
+  }
+  .brand {
+	  display: block;
+	  width:671px;
+	  height:220px;
+	  background-image:url('../img/csol_logo.png');
+	  background-repeat: no-repeat;
+	  margin:0 auto;
+	  float:none;
+	  text-indent: -9000px;  
 	}
 }
 
-#content {
-
-	text-shadow: 1px 1px 0px rgba(255,255,255,0.4);
-	padding: 50px 0;
-	min-height: 200px;
-
-	h2 {
-		text-transform: uppercase;
-		font-family: "ff-meta-web-pro";
-		font-weight: bold;
-		display: block;
-		margin: 0 auto;
-		text-align: center;
-		margin-bottom: 40px;
-		padding-bottom: 8px;
-		padding-top: 8px;
-		position: relative;
-
-		a {
-			font-size: 1.3em;
-			color: black;
-		}
-
-		&::before {
-			content: "";
-			position: absolute;
-			left: 0;
-			top: 50%;
-			width: 35%;
-			border-top: solid 1px black;
-		}
-
-		&::after {
-			content: "";
-			position: absolute;
-			right: 0;
-			top: 50%;
-			width: 35%;
-			border-top: solid 1px black;
-		}
-	}
-
-	h1.line30, h2.line30, h3.line30 {
-		&::before {
-			width: 30%;
-		}
-
-		&::after {
-			width: 30%;
-		}
-	}
-
-	h1.line20, h2.line20, h3.line20 {
-		&::before {
-			width: 20%;
-		}
-
-		&::after {
-			width: 20%;
-		}
-	}
-
-	h1.line10, h2.line10, h3.line10 {
-		&::before {
-			width: 10%;
-		}
-
-		&::after {
-			width: 10%;
-		}
-	}
-
-	h3 {
-		margin-top: 20px; 
-		margin-bottom: 20px;
-	
-		&.activity {
-			margin-bottom: 0;
-			margin-top: 0;
-		}
-
-	}
-
-	.container {
-		border-bottom: 1px solid #404041;
-		padding-bottom: 15px;
-	}
-
-	img {
-		margin-bottom: 20px;
-	}
-
-
-	.poster {
-		background: #cfd4d1;
-		background: rgba(0,0,0,0.1);
-		background-image: url(../images/splash_banner_topbg.gif);
-		background-position: top;
-		background-repeat: repeat-x;
-		padding-top: 30px;
-		text-align: center;
-		display: block;
-
-		img {
-			
-		}
-	}
-
-	.filter {
-		label {
-			text-indent: -1000%;
-			width: 26px;
-			height: 26px;
-			margin-right: 3px;
-			padding-top: 0;
-			background: url(../images/filter_icons_sprite.png);
-			background-position: 0 1px;
-
-			&.filter-category {
-				background-position: 68px 2px;
-			}
-
-			&.filter-age {
-				background-position: -72px 2px;
-			}
-
-			&.filter-date {
-				background-position: -136px 2px;
-			}
-
-			&.filter-search {
-				background-position: -229px 2px;
-			}
-
-			
-		}
-
-		select {
-			margin-right: 15px;
-		}
-
-		.navbar-inner {
-			padding-left: 10px;
-		}
-
-	}
-
-} // end #content
-
-.home {
-
-	#content h3 {
-		text-align: center;
-		margin-bottom: 10px;
-	}
-
-	p {
-		font-size: 16px;
-		text-align: center;
-		margin-bottom: 30px;
-		line-height: 1.5em;
-	}
-
-
-	#content h2 {
-		&::before {
-			width: 12%;
-		}
-
-		&::after {
-			width: 12%;
-		}
-	}
-	
-}
-
-.activity {
-
-	p.activity-description {
-		margin: 20px 0 25px 0;
-	}
-
-	.span8 {
-		padding-bottom: 30px;
-	}
-}
-
-.navbar-form {
-	color: white;
-	text-shadow: 1px 1px 0px black;
-	.border-radius(0);
-	border:none;
-	background: url(../images/chalkboard_bg_grey.jpg) center;
-
-	.brand {
-		text-transform: uppercase;
-		padding-left: 12px;
-		padding-top: 9px
-	}
-}
-
-#content .thumbnails {
-
-	figure {
-		.border-radius(0);
-		background: white;
-		.drop-shadow (0, 0, 5px,1px, 0.3);
-		padding: 0;
-		margin: 0;
-		border:none;
-
-		figcaption {
-
-			background: #555 url(../images/chalkboard_bg_grey.jpg) center;
-			color: white !important;
-			text-shadow:none;
-		}
-
-		img {
-			padding: 10px;
-			max-width: 100%;
-			display: block;
-			-webkit-box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
-			margin: 0 auto;
-		}
-	}
-
-} // end .thumbnails
-
-.btn {
-	.border-radius(0);
-}
-
-
-.pagination {
-
-	ul {
-		background: white;
-		.border-radius(0);
-
-		li {
-
-			&:first-child, &:last-child, &:first-child span, &:last-child span {
-				.border-radius(0);
-			}
-
-			a {
-				color: #404041;
-				
-				&:first-child, &:last-child {
-					.border-radius(0);
-				}
-			}
-		}
-	}
-
-
-}
-
-#footer {
-	border-top: solid 1px #CCC;
-	min-height: 100px;
-	background: url(../images/chalkboard_bg_green.jpg) center;
-	position: relative;
-	-webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, .25);
-	-moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, .25);
-	box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, .25);
-	color: white;
-	font-size: 1.1em;
-	text-shadow: none;
-
-	.toprow {
-		border-bottom: 1px solid white;
-		padding-bottom: 20px;
-		margin-bottom: 25px;
-
-		.pull-left {
-			font-size: 1.1em;
-			padding-top: 10px;
-		}
-
-	}
-
+/*footer*/
+.footer {
+  -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
 	a {
-		color: white;
-
-		&:hover {
-			background-color: none;
-		}
+		color:#fff;
 	}
-
-
-	.nav {
-
-		font-size: 1.2em;
-		margin: 0;
-		padding: 0;
-
-		li {
-			margin-bottom: 0;
-			padding: 0;
-
-			&:last-child {
-				a {
-					padding-right: 0;
-				}
-			}
-
-			a {
-				display: inline-block;
-
-				&:hover {
-					background: none;
-				}
-			}
-		}
-	}
-
-	
-
-	.container {
-		padding: 40px 0;
-	}
-
-	.logo-csol {
-		width: 100%;
-		height: 131px;
-		background: url(../images/csol_logo_footer.png) center no-repeat;
-		text-indent: -999em;
-		display: block;
-		margin-bottom: 20px;
-		margin-right: 15px;
-
-	}
-
-	.logos {
-		text-align: center;
-	}
-
-	.copytxt {
-			font-size: .9em;
-			line-height: 1.8em;
-			text-align: right;
-	}
-
-	.description {
-		margin-bottom: 20px;
-	}
-
-	.logo {
-		text-indent: -999em;
-		display: inline-block;
-		padding: 10px;
-		margin: 5px;
+	a.logo {
+		text-indent: -9000px;
+		width:82px;
+		height:82px;
+		display:block;
+		background-position: center center;
 		background-repeat: no-repeat;
-
-		&.macarthur {
-			width: 78px;
-			height: 78px;
-			background-image: url(../images/footer_logo_macarthur.png);
+	}
+	a.logo.chi {
+  background-image:url('../img/chi.png');
+	}
+	a.logo.mac {
+  background-image:url('../img/mac.png');
+	}
+	a.logo.moz {
+  background-image:url('../img/moz.png');
+	}
+	a:hover {
+	  color:#c0c0c0;
+	  text-decoration: none;	
+  }
+  .lower {
+	  border-top:1px solid white;
+	  padding-top:20px;
+	  p {
+	    background-image: url('../img/csol_logo_sm.png');
+		  padding-left:209px;
+		  background-repeat: no-repeat;
+		  background-position: top left;
+		  width:400px;
+		  min-height:131px;
+		  margin-bottom:20px;
+	  }
+	  li {
+  		border-left:none;
+  		border-right:none;	  
+  	}
+  }
+  .upper {
+  	padding:1em 0;
+  }
+  ul {
+  	li {
+			display: inline-block;
+			& > a, & > span {
+			margin:10px;
+			}
 		}
-
-		&.city {
-			width: 78px;
-			height: 78px;
-			background-image: url(../images/footer_logo_cityofchi.png);
+		li:first-child {
+			a {
+				margin-left:0px;
+			}
 		}
+		li.nth-child(even) {
+  		border-left:1px solid #fff;
+  		border-right:1px solid #fff;		
+  	}
+  	li.last-child {
+  		border-right:none;
+  	}
+  }
+}
 
-		&.mozilla {
-			width: 82px;
-			height: 78px;
-			background-image: url(../images/footer_logo_mozilla.png);
-			background-position: 10px 20px; 
+/*sticky footer*/
+.wrapper {
+	width:100%;
+	.inner-wrapper {
+			width:100%
+	}
+	&.primary {
+		min-height: 100%;
+		height: auto !important;
+		height: 100%;
+		margin: 0px 0px -250px 0px;
+		.inner-wrapper {
+			padding: 0px 0px 250px 0px;
 		}
-
-
 	}
-
-} // end #footer
-
-input[type="password"].metered {
-	padding-bottom: 9px;
-
-	& + .password-meter {
-		border: solid 1px #CCC;
-		border-top: none;
-		height: 6px;
-		margin: -6px 0 10px;
-		-webkit-border-radius: 0 0 4px 4px;
-		-moz-border-radius: 0 0 4px 4px;
-		border-radius: 0 0 4px 4px;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-		position: relative;
-		overflow: hidden;
-		-webkit-transition: border linear .2s;
-		-moz-transition: border linear .2s;
-		-o-transition: border linear .2s;
-		transition: border linear .2s;
-	}
-
-	& + .password-meter .bar {
-		border-radius: 0 0 0 3px;
-		overflow: hidden;
-	}
-
-	&:focus + .password-meter {
-		border-color: rgba(82, 168, 236, 0.8);
-	}
-
-	&:focus:invalid + .password-meter {
-		border-color: #ee5f5b;
-	}
-
-	&:focus:invalid:focus + .password-meter {
-		border-color: #e9322d;
+	&.secondary {
+		color:#fff;
+		height: 250px;
+		background-image:url('../img/chalkboard_bg.jpg');
 	}
 }
 
-// custom responsive styles 
-
-@media all and (max-width: 767px) {
-	
-	#header h1 {
-		padding: 0 5%;
-
-		
-
-		a {
-			padding: 15% 0;
-			height: auto;
-			margin: 0;
-		}
-	}
-
-	#navigation {
-		.nav {
-			li {
-				a {
-					padding: 10px 10px;
-					font-size: .9em;
-				}
-			}
-		}
-	}
-
-	#content {
-		padding: 30px 20px;
-
-		h2:before, h2:after, h3:before, h3:after {
-			border:none;
-		}
-	}
-
-	#footer {
-		padding: 0 20px;
-
-		#content {
-			text-shadow: none;
-		}
-		
-
-		.pull-left {
-			float: none;
-			text-align: center;
-			margin-bottom: 20px;
-		}
-
-		nav, .nav-pills {
-			float: none;
-			text-align: center;
-
-			li {
-				display: inline-block;
-				font-size: .8em;
-			}
-		}
-
-		.copytxt {
-			text-align: center;	
-		}
-	}
+/*CSOL-site specific*/
+.poster a,
+.poster img {
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
 }
-
-@media all and (max-width: 480px) {
-
-	#navigation {
-		.nav {
-			
-
-			li {
-				a {
-					padding: 10px 5px;
-					font-size: .8em;
-				}
-			}
-		}
-	}
+#menu-login-form {
+	padding:10px;
+	text-align:left;
 }
