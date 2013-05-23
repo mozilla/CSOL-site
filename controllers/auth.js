@@ -167,8 +167,6 @@ function processChildLearnerSignup (req, res, next) {
       }).complete(function(err, token) {
         if (err || !token) return fail(err);
 
-        // TODO - send an email
-
         token.setLearner(user); // Assuming this worked
 
         bcrypt.hash(signup.password, BCRYPT_SEED_ROUNDS, function(err, hash) {
@@ -180,7 +178,11 @@ function processChildLearnerSignup (req, res, next) {
           }).complete(function(err) {
             if (err) return fail(err);
 
-            email.send('<13 learner signup', {}, signup.parent_email);
+            var confirmationUrl = req.protocol + '://' + req.get('Host')
+              + '/signup/' + token.token;
+            email.send('<13 learner signup', {
+              confirmationUrl: confirmationUrl
+            }, signup.parent_email);
             delete req.session.signup;
             req.flash('modal', {
               title: 'Welcome to the Chicago Summer of Learning',
