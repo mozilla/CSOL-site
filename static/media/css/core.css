@@ -164,59 +164,37 @@ form .divider em {
   font-size: 1.3em;
   color: black;
 }
-#content h2::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 35%;
-  border-top: solid 1px black;
-}
 #content h2::after {
   content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 35%;
+  position: relative;
+  top: 20px;
+  display: block;
+  width: 100%;
   border-top: solid 1px black;
-}
-#content h1.line30::before,
-#content h2.line30::before,
-#content h3.line30::before {
-  width: 30%;
-}
-#content h1.line30::after,
-#content h2.line30::after,
-#content h3.line30::after {
-  width: 30%;
-}
-#content h1.line20::before,
-#content h2.line20::before,
-#content h3.line20::before {
-  width: 20%;
-}
-#content h1.line20::after,
-#content h2.line20::after,
-#content h3.line20::after {
-  width: 20%;
-}
-#content h1.line10::before,
-#content h2.line10::before,
-#content h3.line10::before {
-  width: 10%;
-}
-#content h1.line10::after,
-#content h2.line10::after,
-#content h3.line10::after {
-  width: 10%;
 }
 #content h3 {
   margin-top: 20px;
-  margin-bottom: 20px;
+  font-family: "ff-meta-web-pro";
+  text-transform: uppercase;
+  margin-bottom: 50px;
+  text-align: center;
+  position: relative;
+  font-size: 2.2em;
+}
+#content h3 a {
+  color: black;
 }
 #content h3.activity {
   margin-bottom: 0;
   margin-top: 0;
+}
+#content h3::after {
+  content: "";
+  position: relative;
+  top: 20px;
+  display: block;
+  width: 100%;
+  border-top: solid 1px black;
 }
 #content .container {
   border-bottom: 1px solid #404041;
@@ -272,12 +250,6 @@ form .divider em {
   margin-bottom: 30px;
   line-height: 1.5em;
 }
-.home #content h2::before {
-  width: 12%;
-}
-.home #content h2::after {
-  width: 12%;
-}
 .activity p.activity-description {
   margin: 20px 0 25px 0;
 }
@@ -316,10 +288,23 @@ form .divider em {
   margin: 0;
   border: none;
 }
+#content .thumbnails figure a {
+  position: relative;
+}
+#content .thumbnails figure a .new {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-transform: uppercase;
+  color: white;
+  background: #b82237;
+  padding: 3px 8px;
+}
 #content .thumbnails figure figcaption {
   background: #555555 url(../images/chalkboard_bg_grey.jpg) center;
   color: white !important;
   text-shadow: none;
+  border-top: 1px solid black;
 }
 #content .thumbnails figure img {
   padding: 10px;
@@ -329,6 +314,46 @@ form .divider em {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0 auto;
+}
+#content .thumbnails figure .status {
+  text-align: center;
+  padding: 3px 0 0 0;
+  color: white;
+  text-shadow: none;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  vertical-align: middle;
+  position: relative;
+}
+#content .thumbnails figure .status img {
+  margin-right: 5px;
+  display: inline-block;
+  padding: 5px 0;
+  margin-top: -5px;
+}
+#content .thumbnails figure .status.awarded {
+  background: #90bfdb;
+  border-bottom: 1px solid #09465d;
+}
+#content .thumbnails figure .status.queued {
+  background: #ecd16a;
+  border-bottom: 1px solid #79692f;
+}
+#content .thumbnails figure .status.reviewed {
+  background: #d3644d;
+  border-bottom: 1px solid #76311e;
+}
+#content .thumbnails figure .status.favorite {
+  background: #6c9f6b;
+  border-bottom: 1px solid #234b25;
+}
+#content .thumbnails figure .status .favorite {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.1) url(../images/icon_status_favorite.png) 5px 4px no-repeat;
+  width: 32px;
+  height: 30px;
+  right: 0;
+  top: 0;
 }
 .btn {
   -webkit-border-radius: 0;
@@ -509,12 +534,6 @@ input[type="password"].metered:focus:invalid:focus + .password-meter {
   }
   #content {
     padding: 30px 20px;
-  }
-  #content h2:before,
-  #content h2:after,
-  #content h3:before,
-  #content h3:after {
-    border: none;
   }
   #footer {
     padding: 0 20px;

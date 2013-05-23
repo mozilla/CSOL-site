@@ -7,7 +7,10 @@
 		<title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
 		<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="/media/bootstrap/css/responsive.css">
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 		<link rel="stylesheet" href="/media/css/core.css">
+		<link rel="icon" type="image/png" href="/media/images/favicon.png">
 		<script type="text/javascript" src="//use.typekit.net/nht7hbp.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
@@ -138,8 +141,12 @@
 				</div>
 			</div>
 		</footer>
+
+		{% block modal %}{% endblock %}
+
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="/media/bootstrap/js/bootstrap.js"></script>
+		<script src="/media/js/custom_logic.js"></script>
 		{% if _messages.modal %}
 		<script>
 			(function($) {
