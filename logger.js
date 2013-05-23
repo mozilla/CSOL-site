@@ -1,4 +1,11 @@
-var winston = require('winston');
-/* This space reserved for future config/transports */
-/* e.g. winston.add(winston.transports.File, { filename: 'somelog.log' }); */
-module.exports = winston;
+const winston = require('winston');
+
+var logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)({ 
+      level: ('DEBUG' in process.env) ? 'debug' : 'info' 
+    }),
+  ]
+});
+
+module.exports = logger;
