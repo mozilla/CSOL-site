@@ -103,7 +103,76 @@
 
             <textarea>Some helper text</textarea>
 
-            <a href="#" class="btn btn-primary btn-block">Apply</a>
+            <a href="#applySuccess" class="btn btn-primary btn-block" data-dismiss="modal" data-toggle="modal">Apply</a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="applySuccess" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Badge submission success!</h3>
+        </div>
+        <div class="modal-body">
+            {% if user.underage %}
+                <p>You are trying to apply for the {{badge.name}} badge. We just want to make sure your parent or guardian is OK with this. We've sent an email to your parent/guardian and as soon as they give their approval of your badge application, it will be sent to a mentor.</p>
+                <p>The mentor will then review your application and get back to you about your badge.</p>
+                <p>In the mean time, keep on learning, earning and leveling up</p>
+            {% else %}
+                <p>You have applied for the {{badge.name}} badge. Your application will be sent to a mentor who will review it and get back to you about your badge.</p>
+                <p>In the mean time, check out these badges and programs and keep on learning, earning and leveling up!</p>
+            {% endif %}
+
+            <ul class="thumbnails">
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}
