@@ -68,7 +68,8 @@ function extractUserData (user) {
     type: userType,
     favorites: [],
     dependents: [],
-    home: userHome
+    home: userHome,
+    underage: user.underage
   };
 }
 
