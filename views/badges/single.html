@@ -78,15 +78,19 @@
 		<div id="applyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Apply for this badge</h3>
+		    <h3 id="myModalLabel">Apply for the {{badge.name}} badge</h3>
 
 		  </div>
 		  <div class="modal-body">
-		    <h4>Before submitting your work check out the requirements for this badge:</h4>
+		    <h4>In order to earn this badge you need to make sure you have met the following requirements:</h4>
 
-		    <p>Ac dignissim turpis mattis tristique in, nunc non. Magna amet diam odio hac ultrices? Mus! Adipiscing pulvinar elementum, cum arcu, sagittis magnis sit nascetur, habitasse amet nascetur, vel sociis non placerat, tortor sit etiam? Cras, nisi? Magna porttitor turpis, nec? Rhoncus magnis parturient dictumst ac pulvinar cursus aliquam, ac scelerisque. Velit tincidunt urna magna pulvinar velit, urna. Purus turpis nunc, non tincidunt augue proin montes non! Nascetur turpis cum mauris, mus elit. Porta in natoque quis est sociis nascetur turpis, augue amet egestas egestas, ut, in penatibus urna aliquam aenean, integer egestas velit tempor augue, enim mattis mattis amet, nec. Aliquam amet nisi et, augue sagittis porttitor nisi nec nascetur urna sit! Pulvinar adipiscing vel scelerisque sociis ac sed mauris.</p>
+            <ul>
+                {% for req in badge.prerequisites %}
+                <li>{{req}}</li>
+                {% endfor %}
+            </ul>
 
-		    <h4>Start by uploading photos and videos of your work</h4>
+            <h4>Upload photos or videos that show your work</h4>
 
 		    <div id="draggable-upload-area">
 		    	Drag and Drop Photos and Videos here or
@@ -94,6 +98,7 @@
 		    </div><!-- .draggable-upload-area -->
 
 		    <h4>Tell us more about your work</h4>
+			<p>Think about and describe how the work you uploaded demonstrates what is required to earn this badge and why you think you deserve to earn it.</p>
 
 		    <textarea>Some helper text</textarea>
 
