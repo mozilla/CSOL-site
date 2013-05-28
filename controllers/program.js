@@ -1,7 +1,12 @@
+var async = require('async');
 var badger = require('../openbadger');
 var db = require('../db');
+var errors = require('../lib/errors');
+var mime = require('mime');
+var _ = require('underscore');
 
 var applications = db.model('Application');
+var evidence = db.model('Evidence');
 
 module.exports = function (app) {
 
@@ -135,6 +140,110 @@ module.exports = function (app) {
     return res.redirect('/login', 303);
   });
 
+  app.param('evidenceSlug', function (req, res, next, slug) {
+    var parts = /^([a-z0-9]+?)(?:_(thumb))?$/.exec(slug);
+
+    if (!parts)
+      return next(new errors.NotFound());
+
+    if (!req.session.user)
+      return next(new errors.Forbidden());
+
+    var key = parts[1],
+        thumb = !!parts[2];
+
+    evidence.find({where: {key: key}})
+      .complete(function (err, instance) {
+        if (err)
+          return next(err);
+
+        if (!instance)
+          return next(new errors.NotFound());
+
+        req.params.evidence = instance;
+        req.params.thumb = thumb;
+
+        instance.getApplication()
+          .complete(function (err, application) {
+            if (err)
+              return next(err);
+
+            req.params.application = application;
+
+            // We'll need to decide how to authenticate external services
+            // like, for example, Aestimia. For now, restrict access to either
+            // the learner who uploaded it, or their guardian
+
+            application.getLearner()
+              .complete(function (err, learner) {
+                if (err)
+                  return next(err);
+
+                if (learner.id === req.session.user.id)
+                  return next();
+
+                learner.getGuardian()
+                  .complete(function (err, guardian) {
+                    if (err)
+                      return next(err);
+
+                    if (!guardian || guardian.id !== req.session.user.id)
+                      return next(new errors.Forbidden());
+
+                    return next();
+                  });
+              });
+          });
+      });
+  });
+
+  app.get('/evidence/:evidenceSlug', function (req, res, next) {
+    var evidence = req.params.evidence,
+        thumb = req.params.thumb;
+
+    res.type(evidence.mediaType);
+    res.header('Vary', 'Cookie');
+    res.header('Cache-Control', 'max-age=2419200'); // 4 weeks
+    res.header('Last-Modified', evidence.updatedAt);
+
+    evidence[thumb ? 'fetchThumb' : 'fetch'](function (remote) {
+      remote
+        .on('response', function(proxy) {
+          proxy.pipe(res);
+        })
+        .end();
+    });
+  });
+
+  app.post('/evidence/:evidenceSlug', function (req, res, next) {
+    var evidence = req.params.evidence,
+        application = req.params.application,
+        thumb = req.params.thumb;
+
+    if (thumb)
+      return next(new errors.NotAllowed());
+
+    if (!req.body.action || req.body.action !== 'delete')
+      return next(new errors.NotAllowed());
+
+    if (application.status !== 'open')
+      return next(new errors.NotAllowed());
+
+    evidence.destroy()
+      .complete(function (err) {
+        if (err)
+          return next(err);
+
+        evidence.getApplication()
+          .complete(function (err, application) {
+            if (err)
+              return next(err);
+
+            return res.redirect('/earn/' + application.badgeId + '/apply');
+          });
+      })
+  });
+
   app.param('badgeName', function (req, res, next, badgeName) {
     badger.getBadge(badgeName, function(err, data) {
       if (err)
@@ -165,8 +274,8 @@ module.exports = function (app) {
   app.get('/earn/:badgeName/apply', function (req, res, next) {
     var badge = req.params.badge;
 
-    // if (!req.session.user)
-    //   return res.redirect(badge.url);
+    if (!req.session.user)
+      return res.redirect('/login');
 
     applications.findOrCreate({
       badgeId: badge.id,
@@ -196,24 +305,62 @@ module.exports = function (app) {
   app.post('/earn/:badgeName/apply', function (req, res, next) {
     var badge = req.params.badge;
 
-    // if (!req.session.user)
-    //   return res.redirect(badge.url);
+    if (!req.session.user)
+      return res.redirect(badge.url);
+
+    function finish (err, evidence) {
+      if (req.xhr) {
+        return res.json({
+          status: err ? 'failed' : 'ok',
+          message: err || null,
+          evidence: evidence || []
+        });
+      }
+
+      if (err)
+        req.flash('error', err);
+
+      res.redirect(badge.url + '/apply');
+    }
 
     applications.find({where: {
       badgeId: badge.id,
-      LearnerId: 1 // req.session.user.id
+      LearnerId: req.session.user.id
     }})
       .complete(function(err, application) {
-        if (err || !application) {
-          if (err)
-            req.flash('error', err);
-          return res.redirect(badge.url + '/apply');
+        if (err || !application)
+          return finish(err);
+
+        if (req.body.action === 'apply')
+          return application.submit(finish);
+
+        if ('description' in req.body) {
+          application.updateAttributes({
+            description: req.body.description
+          });
         }
 
-        // Deal with req.files
-        console.log('Dealing with files');
+        var files = (req.files||{}).media;
 
-        res.redirect(badge.url + '/apply');
+        if (!files)
+          return finish();
+
+        if (!_.isArray(files))
+          files = [files];
+
+        async.map(files, function (file, callback) {
+          application.process(file, function (err, item) {
+            if (err || !item)
+              return callback(err);
+
+            callback(null, {
+              type: item.mediaType,
+              thumbnail: item.getThumbnailUrl(),
+              location: item.getLocationUrl(),
+              original: item.original
+            });
+          });
+        }, finish);
       });
   });
 
