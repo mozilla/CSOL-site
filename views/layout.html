@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="/media/css/core.css">
 		<script type="text/javascript" src="//use.typekit.net/nht7hbp.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		{% block head %}{% endblock %}
 	</head>
 	<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
 		<header id="header">

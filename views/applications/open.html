@@ -1,1 +1,55 @@
 {% extends 'applications/new.html' %}
+
+{% block intro %}
+	<div class="well" id="application-review">
+		<h3>Review your application</h3>
+		{% if application.description %}
+			<pre>{{ application.description }}</pre>
+		{% endif %}
+{% endblock %}
+
+{% block items %}
+		{{ super() }}
+		<h3>Confirm the requirements for this badge</h3>
+		<pre>{{ badge }}</pre>
+		<h3>All set?</h3>
+		<form method="post">
+			<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+			<input type="hidden" name="action" value="apply">
+			<p class="text-center"><button type="submit" class="btn btn-large">Apply for this badge!</button></p>
+		</form>
+	</div>
+{% endblock %}
+
+{% block descriptionTitle %}<h3>Edit your description</h3>{% endblock %}
+{% block evidenceTitle %}<h3>Upload more badges and videos</h3>{% endblock %}
+
+{% block finally %}
+	{{ super() }}
+	<script>
+		(function ($) {
+			var $review = $('#application-review'),
+			    $form = $('#edit-application'),
+			    $p = $(document.createElement('p')),
+			    $button = $(document.createElement('button'));
+
+			$form.hide();
+
+			$button
+				.addClass('btn')
+				.html('<i class="icon-pencil"></i> Edit your application')
+				.appendTo($p)
+				.click(function() {
+					$button.remove();
+					$form.show();
+					$('html, body').animate({
+						scrollTop: $form.offset().top
+					}, 500);
+				});
+
+			$p
+				.addClass('text-right edit-footer')
+				.appendTo($review);
+		})(jQuery);
+	</script>
+{% endblock %}

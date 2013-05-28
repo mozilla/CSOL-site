@@ -1,173 +1,128 @@
 {% extends 'applications/layout.html' %}
-{% set pageTitle = 'Apply for the ' + badge.name + ' badge' %}
+
+{% block head %}
+<link rel="stylesheet" href="/media/css/jquery.fancybox.css">
+{% endblock %}
 
 {% block content %}
-	<form method="post" class="form-horizontal span6 offset3" enctype="multipart/form-data" id="application-form">
-		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		{% block intro %}
-			<p>Before submitting your work, check out the requirements for this badge</p>
-			<pre>{{ badge }}</pre>
+	<div class="span8 offset2">
+		<div id="application-review">
+			{% block intro %}
+			{% endblock %}
+			{% block items %}
+				<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
+					{% for item in evidence %}
+						<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
+							{% if item.saved %}
+								<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+								</a>
+							{% else %}
+								<span class="thumbnail processing" title="{{ item.original }}">
+									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+								</span>
+							{% endif %}
+							<form method="post" action="{{ item.getLocationUrl() }}">
+								<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+								<input type="hidden" name="action" value="delete">
+								<label title="Delete"><input type="submit" value="Delete"></label>
+							</form>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endblock %}
+		</div>
+		{% block form %}
+			<form id="edit-application" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
+				<textarea name="description" class="span8" rows="7" id="edit-description">{{ application.description }}</textarea>
+				<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
+				{% block evidenceTitle %}<h3>Then upload your pictures and videos</h3>{% endblock %}
+				<ul class="items">
+					<li class="item">
+						<input type="file" name="media" accept="image/*, video/*" multiple="multiple">
+					</li>
+				</ul>
+				<p class="text-right buttons"><button type="submit" value="upload" class="btn">Upload</button></p>
+			</form>
 		{% endblock %}
-		{% block fields %}
-		<p>Start by uploading photos and videos of your work</p>
-		<div class="control-group" id="evidence-upload">
-			<label class="control-label" for="input-file">File</label>
-			<div class="controls">
-				<input type="file" id="input-file" name="file">
-			</div>
-		</div>
-		{#
-		<p>Or add a URL for work already on the internet</p>
-		<div class="control-group">
-			<label class="control-label" for="input-url">URL</label>
-			<div class="controls">
-				<input type="url" id="input-url" name="url" placeholder="http://">
-			</div>
-		</div>
-		#}
-		{% endblock %}
-		<div class="control-group">
-			<div class="controls">
-				{% block buttons %}
-					<button type="submit" value="upload" class="btn">Upload your evidence</button>
-				{% endblock %}
-			</div>
-		</div>
-	</form>
+	</div>
 {% endblock %}
 
 {% block finally %}
-<script src="/media/js/dropzone.js"></script>
-<script>
-	(function() {
-		try {
-			var evidence = document.getElementById('evidence-upload'),
-			    input = evidence.getElementsByTagName('input')[0],
-			    form = input.form;
-		} catch (e) {
-			return false;
-		}
+	<script src="/media/js/jquery.uploader.js"></script>
+	<script src="/media/js/jquery.fancybox.js"></script>
+	<script>
+		(function ($) {
+			var deleteTemplate = [
+				'<input type="hidden" name="_csrf" value="{{ csrfToken }}">',
+				'<input type="hidden" name="action" value="delete">',
+				'<label title="Delete"><input type="submit" value="Delete"></label>',
+			].join('\n');
 
-		var button = document.createElement('label');
-		button.className = 'btn';
-		button.appendChild(document.createTextNode('Choose Photos and Videos to upload'));
-
-		var uploadList = document.createElement('ul');
-		uploadList.className = 'upload-list';
-
-		evidence.className += ' activated';
-		evidence.innerHTML = '';
-		evidence.appendChild(button);
-
-		var dropzone = new Dropzone(evidence, {
-			url: form.action || document.location.href,
-			paramName: input.name,
-			acceptedMimeTypes: input.accept,
-			method: form.method,
-			clickable: true,
-			previewsContainer: uploadList,
-			createImageThumbnails: false,
-			previewTemplate: [
-				'<li>',
-				'  <div class="details">',
-				'    <div class="meta"><span data-dz-name class="filename"></span> (<span data-dz-size></span>)</div>',
-				'    <div class="progress"><span class="bar" data-dz-uploadprogress></span></div>',
-				'  </div>',
-				'  <div class="feedback"><span data-dz-errormessage></span></div>',
-				'</li>'
-			].join('\n'),
-			// forceFallback: true,
-			thumbnail: function () {},
-			init: function () {
-				var id = this.hiddenFileInput.id;
-				if (!id) id = this.hiddenFileInput.id = 'hidden-file-input';
-				button.setAttribute('for', id);
-
-				evidence.innerHTML = '<p>Drag and Drop photos and videos here <em>or</em></p>';
-				evidence.appendChild(button);
-				console.dir(this);
-				console.dir(arguments);
-				evidence.className += ' droppable';
-
-				evidence.parentNode.insertBefore(uploadList, evidence.nextSibling);
-			},
-			fallback: function () {
-				evidence.appendChild(input);
-				input.onchange = function() {
-					form.className += ' submitting';
-					form.submit();
-					alert('Submitted!');
-				}
-				button.setAttribute('for', input.id);
-				uploadList.parentNode.removeChild(uploadList);
+			function addLightbox ($collection) {
+				$collection.fancybox({
+					openEffect	: 'none',
+					closeEffect	: 'none'
+				});
 			}
-		});
-	})();
-</script>
-{#
-<script>
-	(function($) {
-		var $evidence = $('#evidence-upload'),
-		    $selector = $evidence.find('input[type="file"]'),
-		    $button = $(document.createElement('label'));
 
-		if (!$evidence.length || !$selector.length) return;
+			var $evidence = $('#evidence');
 
-		function handleFileUpload () {
-		    var e = event.originalEvent || event,
-		        files = (e.dataTransfer||{}).files || $selector[0].files,
-		        data = new FormData();
+			addLightbox($evidence.find('a.thumbnail'));
 
-			if (!files || !files.length)
-				console.dir(e.dataTransfer);
+			$evidence.on('submit', 'form', function () {
+				var $form = $(this),
+				    $item = $form.parent('.item');
 
-			e.preventDefault();
-			console.log(files);
+				$.ajax({
+					url: $form.attr('action') || document.location.href,
+					type: $form.attr('method'),
+					data: $form.serialize()
+				});
 
-			replaceFileInput();
+				$item.fadeOut(500, function() {
+					$item.remove();
+				});
 
-			return false;
-		}
+				return false;
+			});
 
-		function replaceFileInput () {
-			var $clone = $selector.clone()
-				.insertBefore($selector)
-				.on('change', handleFileUpload);
+			var uploader = $('#edit-application').uploader();
 
-			$selector.remove();
-			$selector = $clone;
-		}
+			uploader.on('uploaded', function (e, data) {
+				var $list = $('#evidence'),
+				    $item = $(document.createElement('li')),
+				    $wrapper = $(document.createElement('span')),
+				    $form = $(document.createElement('form'));
 
-		function noop (event) {
-			event.preventDefault();
-			return false;
-		}
+				$wrapper
+					.html('<img src="' + data.evidence.thumbnail + '" width="150" height="150">')
+					.attr('title', data.evidence.original)
+					.addClass('thumbnail processing');
 
-		$button
-			.addClass('btn')
-			.attr('for', $selector.attr('id'))
-			.text('Choose Photos and Videos to upload');
+				$form
+					.attr('method', 'post')
+					.attr('action', data.evidence.location)
+					.html(deleteTemplate);
 
-		var xhr = new XMLHttpRequest(),
-		    html = xhr.upload ? '<p>Drag and Drop photos and videos here <em>or</em></p>' : '';
+				$item
+					.attr('id', 'uploaded-item-' + data.key)
+					.addClass('span2 item item-' + data.evidence.type.split('/')[0])
+					.append($wrapper)
+					.append($form)
+					.appendTo($list);
 
-		replaceFileInput();
+				addLightbox($item.find('.thumbnail'));
+			});
 
-		$evidence
-			.addClass('activated')
-			.html(html)
-			.append($button)
-			.append($selector);
+			uploader.on('removed', function (e, data) {
+				var id = 'uploaded-item-' + data.key;
 
-		if (!xhr.upload) return;
-
-		$evidence
-			.on('dragenter', noop)
-			.on('dragleave', noop)
-			.on('dragover', noop)
-			.on('drop', handleFileUpload)
-			.addClass('droppable');
-	})(jQuery);
-</script>
-#}
+				$('#' + id).find('form').submit();
+				console.log('Removed', this, arguments);
+			});
+		})(jQuery);
+	</script>
 {% endblock %}
