@@ -85,7 +85,7 @@ function getFullUrl(origin, path) {
 }
 
 // Load data from remote endpoint
-function remote (method, path, callback) {
+function remote (method, path, options, callback) {
 
   if (!request[method])
     return callback(new errors.NotImplemented('Unknown method ' + method));
@@ -93,7 +93,7 @@ function remote (method, path, callback) {
   // TODO - need to add ability to pass data through
   // TODO - might want to cache this at some point
   var endpointUrl = getFullUrl(this.origin, path);
-  request[method](endpointUrl, function(err, response, body) {
+  request[method](endpointUrl, options, function(err, response, body) {
 
     logger.log('info', 'API request: "%s %s" %s',
       method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
@@ -106,7 +106,9 @@ function remote (method, path, callback) {
       return callback(new (errors.lookup(response.statusCode))());
 
     try {
-      var data = JSON.parse(body);
+      var data = body;
+      if (!_.isObject(body))
+        data = JSON.parse(data);
     } catch (e) {
       return callback(new errors.Unknown(e.message));
     }
@@ -170,8 +172,12 @@ module.exports = function Api(origin, config) {
   _.each(['get', 'post', 'put', 'patch', 'head', 'del'], function(method) {
     Object.defineProperty(this, method, {
       enumerable: true,
-      value: function(path, callback) {
-        this.remote(method, path, callback);
+      value: function(path, opts, callback) {
+        if (_.isFunction(opts)) {
+          callback = opts;
+          opts = {};
+        }
+        this.remote(method, path, opts, callback);
       },
       writable: true // This is needed for mocking
     });

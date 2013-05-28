@@ -319,6 +319,8 @@ test('api.middleware(method)', function(t) {
 
 });
 
+/* Implicitly testing the wrapped request methods just by
+   testing get, which is a bit lame but quicker. */
 test('api.get', function(t) {
   var api = new Api(ORIGIN);
 
@@ -329,6 +331,21 @@ test('api.get', function(t) {
     api.get('/foo', function(){});
     t.ok(get.calledOnce, 'called');
     t.ok(get.calledWith(sinon.match(ORIGIN + '/foo')), 'with origin and endpoint');
+    requestMock.restore();
+    t.end();
+  });
+
+  t.test('passes optional params through', function(t) {
+    var requestMock = sinon.mock(request);
+    var get = requestMock.expects('get');
+
+    api.get('/foo', { some: 'params' }, function(){});
+    t.ok(get.calledOnce, 'called');
+    console.log(get.args);
+    t.ok(get.calledWith(
+      sinon.match(ORIGIN + '/foo'),
+      sinon.match({ some: 'params' })
+    ), 'with params too');
     requestMock.restore();
     t.end();
   });
@@ -363,7 +380,7 @@ test('api.get', function(t) {
 
   t.test('calls callback with 500 if request.get errors', function(t) {
     var requestMock = sinon.mock(request);
-    var get = requestMock.expects('get').callsArgWith(1, 'Error');
+    var get = requestMock.expects('get').callsArgWith(2, 'Error');
 
     api.get('/foo', function(err, data){
       t.similar(err, { code: 500, name: 'Internal', message: 'Error' }, 'error');
@@ -375,7 +392,7 @@ test('api.get', function(t) {
 
   t.test('calls callback with 500 if request.get response is not 200', function(t) {
     var requestMock = sinon.mock(request);
-    var get = requestMock.expects('get').callsArgWith(1, null, { statusCode: 404 });
+    var get = requestMock.expects('get').callsArgWith(2, null, { statusCode: 404 });
 
     api.get('/foo', function(err, data){
       t.similar(err, { code: 404, name: 'NotFound' }, 'error');
@@ -388,7 +405,7 @@ test('api.get', function(t) {
   t.test('calls callback with 500 if request.get response is not json', function(t) {
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get')
-      .callsArgWith(1, null, { statusCode: 200 }, "NOPE!");
+      .callsArgWith(2, null, { statusCode: 200 }, "NOPE!");
 
     api.get('/foo', function(err, data){
       t.similar(err, { code: 500, name: 'Internal', message: 'Unexpected token N' }, 'error');
@@ -406,7 +423,7 @@ test('api.get', function(t) {
 
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get')
-      .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(response));
+      .callsArgWith(2, null, { statusCode: 200 }, JSON.stringify(response));
 
     api.get('/foo', function(err, data){
       t.similar(err, { code: 500, name: 'Internal', message: 'It broke.' }, 'error');
@@ -416,7 +433,7 @@ test('api.get', function(t) {
     });
   });
 
-  t.test('successful call passes data through', function(t) {
+  t.test('stringified JSON data gets parsed', function(t) {
     var response = {
       status: 'ok',
       data: 'Stuff.'
@@ -424,7 +441,26 @@ test('api.get', function(t) {
 
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get')
-      .callsArgWith(1, null, { statusCode: 200 }, JSON.stringify(response));
+      .callsArgWith(2, null, { statusCode: 200 }, JSON.stringify(response));
+
+    api.get('/foo', function(err, data){
+      t.notOk(err, 'no error');
+      t.same(data, { status: 'ok', data: 'Stuff.' }, 'data');
+      requestMock.restore();
+      t.end(); 
+    });
+  });
+
+  /* request parses for you if you post with { json: ... } */
+  t.test('pre-parsed data is passed through', function(t) {
+    var response = {
+      status: 'ok',
+      data: 'Stuff.'
+    };
+
+    var requestMock = sinon.mock(request);
+    var get = requestMock.expects('get')
+      .callsArgWith(2, null, { statusCode: 200 }, response);
 
     api.get('/foo', function(err, data){
       t.notOk(err, 'no error');
