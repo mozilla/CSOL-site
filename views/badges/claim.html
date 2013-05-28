@@ -3,28 +3,28 @@
 {% set user = {} %}
 
 {% block content %}
-	<div class="row">
-		<div class="span4">
-			<img src="/media/images/badge-large.png">
-		</div>
-		<div class="span8">
-			<p>To claim the badge you've earned, enter the "claim code" written on the paper badge you received from your teacher, counselor or mentor.</p>
+    <div class="row">
+        <div class="span4">
+            <img src="/media/images/badge-large.png">
+        </div>
+        <div class="span8">
+            <p>To claim the badge you've earned, enter the "claim code" written on the paper badge you received from your teacher, counselor or mentor.</p>
             <p>Then hit the "Claim This Badge" button on your screen. Once you do this, the badge will be added to your dashboard and you can throw the piece of paper away (better yet, recycle it!).</p>
-			<form method="get" class="form-horizontal well">
-				<fieldset>
-					<div class="control-group">
-						<label class="control-label" for="input-code">Claim Code</label>
-						<div class="controls">
-							<input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM">
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="submit" class="btn">Claim this badge</button>
-						</div>
-					</div>
-				</fieldset>
-			</form>
-		</div>
-	</div>
+            <form method="get" class="form-horizontal well">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="input-code">Claim Code</label>
+                        <div class="controls">
+                            <input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn">Claim this badge</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 {% endblock %}
