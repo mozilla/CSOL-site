@@ -199,6 +199,7 @@ ol {
   padding: 0px 0px 250px 0px;
 }
 .wrapper.secondary {
+  position: relative;
   color: #fff;
   height: 250px;
   background-image: url('../img/chalkboard_bg.jpg');
@@ -294,7 +295,7 @@ body.home .footer .upper {
   padding-top: 5em;
   padding-bottom: 1em;
 }
-body.home .footer .upper > .pull-left {
+body.home .footer .upper > p.pull-left {
   display: none;
 }
 body.home .footer .upper > .pull-right {
