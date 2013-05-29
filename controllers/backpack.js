@@ -1,11 +1,28 @@
+const openbadger = require('../openbadger');
+
 module.exports = function (app) {
 
   app.get('/claim', function (req, res, next) {
-    res.render('claim.html');
-  });
+    var claimCode = req.query.code;
+    var user = res.locals.user;
 
-  app.get('/claim/:badgeName', function (req, res, next) {
-    return res.redirect('/badges/'+req.params.badgeName+'/claim');
+    if (!user)
+      return res.redirect('/login');
+
+    if (!claimCode)
+      return res.render('claim.html');
+
+    openbadger.claim({
+      code: claimCode.trim(),
+      email: user.email
+    }, function(err, data) {
+      if (err)
+        req.flash('error', "Unable to claim badge.");
+      else
+        req.flash('success', 'Badge claimed!');
+      return res.redirect('/backpack');
+    });
+
   });
 
   app.get('/backpack', function (req, res, next) {
