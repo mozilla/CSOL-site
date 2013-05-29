@@ -181,7 +181,9 @@ module.exports = function Api(origin, config) {
       value: function(path, opts, callback) {
         this.remote(method, path, opts, callback);
       },
-      writable: true // This is needed for mocking
+      /* TODO: writable is set to true for mocking, but it would
+         be nice to revisit and try to remove that line. */
+      writable: true 
     });
   }, this);
 
