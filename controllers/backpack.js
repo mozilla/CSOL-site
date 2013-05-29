@@ -6,8 +6,10 @@ module.exports = function (app) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
-    if (!user)
+    if (!user) {
+      req.session.afterLogin = req.originalUrl;
       return res.redirect('/login');
+    }
 
     if (!claimCode)
       return res.render('claim.html');
