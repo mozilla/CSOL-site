@@ -10,6 +10,15 @@ body {
 body {
   margin: 0px;
   padding: 0px;
+  background-image: url('../img/background-chalkboard-green.jpg');
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
+  overflow: visible;
 }
 body .container > br {
   display: none;
@@ -209,16 +218,6 @@ ol {
 .wrapper.secondary {
   position: relative;
   color: #fff;
-  height: 250px;
-  background-image: url('../img/background-chalkboard-green.jpg');
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
-  overflow: visible;
 }
 /*CSOL-site specific*/
 .poster a,
@@ -232,9 +231,6 @@ ol {
   text-align: left;
 }
 /*landing page specific*/
-body.home {
-  background-image: url('../img/chalkboard_bg.jpg');
-}
 body.home .container {
   width: 960px;
 }
