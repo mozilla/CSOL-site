@@ -1,3 +1,4 @@
+var aestimia = require('../aestimia');
 var async = require('async');
 var errors = require('../lib/errors');
 var db = require('../db');
@@ -80,11 +81,14 @@ module.exports = {
             }).complete(callback);
           }
 
-          // TO DO - call aestimia service
+          aestimia.submit(application, function (err, id) {
+            if (err)
+              return callback(err);
 
-          application.updateAttributes({
-            state: 'submitted'
-          }).complete(callback);
+            application.updateAttributes({
+              state: 'submitted'
+            }).complete(callback);
+          })
         });
       });
     },
