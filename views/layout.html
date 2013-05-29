@@ -6,141 +6,151 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
 		<link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
-		<link rel="stylesheet" href="/media/bootstrap/css/responsive.css">
 		<link rel="stylesheet" href="/media/css/core.css">
+		<link rel="icon" type="image/png" href="/media/images/favicon.png">
 		<script type="text/javascript" src="//use.typekit.net/nht7hbp.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 		{% block head %}{% endblock %}
 	</head>
 	<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
-		<header id="header">
-			<div class="container">
-				<h1><a href="/">Chicago Summer of Learning</a></h1>
-				<nav id="navigation">
-					<ul class="nav nav-pills">
-						<li class="learn{% if navItem == 'learn' %} active{% endif %}">
-							<a href="/learn">Learn</a>
-						</li>
-						<li class="badges{% if navItem == 'badges' %} active{% endif %}">
-							<a href="/earn">Earn</a>
-						</li>
-						<li class="challenges{% if navItem == 'challenges' %} active{% endif %}">
-							<a href="/challenges">Challenges</a>
-						</li>
-						{% if user %}
-							{% if user.type == 'learner' %}
-								<li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
-									<a href="/backpack" class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My Backpack <i class="caret"></i></a>
-									<ul class="dropdown-menu" role="menu" id="backpack-menu" aria-labelledby="backpack-menu-toggle">
-										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-											<a role="menuitem" tabindex="-1" href="/backpack/badges">My Badges</a>
-										</li>
-										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-											<a role="menuitem" tabindex="-1" href="/backpack/favorites">My Favorites</a>
-										</li>
-										<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
-											<a role="menuitem" tabindex="-1" href="/backpack/applications">My Applications</a>
-										</li>
-										<li class="divider" role="presentation" aria-hidden="true"></li>
-										<li role="presentation">
-											<a role="menuitem" tabindex="-1" href="/logout">Log Out</a>
-										</li>
-									</ul>
-								</li>
-							{% else %}
-								<li class="dashboard{% if navItem == 'dashboard' %} active{% endif %}">
-									<a href="/dashboard">My Dashboard</a>
-								</li>
-							{% endif %}
-						{% else %}
-							<li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
-								<a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" id="menu-login-form-toggle">Log In / Sign Up <i class="caret"></i></a>
-								<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
-									<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-									<label for="menu-login-username">Email or Nickname:</label>
-									<input type="text" id="menu-login-username" name="username" required="required">
-									<label for="menu-login-password">Password:</label>
-									<input type="password" id="menu-login-password" name="password" required="required">
-									<button type="submit" class="btn">Submit</button>
-									<small>Don't have an account? <a href="/signup">Sign up.</a></small>
-								</form>
-							</li>
-						{% endif %}
-					</ul>
-				</nav>
-			</div>
-		</header>
-		<div id="content">
-			<div class="container">
-				{% block notices %}
-					{% for type, messages in _messages %}
-						{% if type != 'modal' %}
-							{% for message in messages %}
-								<div class="alert alert-{{ type }}">
-									{{ message.value }}
+		<div class="wrapper primary">
+  		<div class="inner-wrapper">
+				<div class="navbar navbar-static-top">
+      		<div class="navbar-inner">
+        		<div class="container">
+							<a class="brand" href="/">Chicago Summer of Learning</a>
+						  <div class="nav-wrap">
+            		<ul class="nav">
+									<li class="learn{% if navItem == 'learn' %} active{% endif %}">
+										<a href="/learn">Learn</a>
+									</li>
+									<li class="badges{% if navItem == 'badges' %} active{% endif %}">
+										<a href="/earn">Earn</a>
+									</li>
+									<li class="challenges{% if navItem == 'challenges' %} active{% endif %}">
+										<a href="/challenges">Level Up</a>
+									</li>
+									{% if user %}
+									{% if user.type == 'learner' %}
+									<li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
+										<a href="/backpack" class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My Backpack <i class="caret"></i></a>
+										<ul class="dropdown-menu" role="menu" id="backpack-menu" aria-labelledby="backpack-menu-toggle">
+											<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+												<a role="menuitem" tabindex="-1" href="/backpack/badges">My Badges</a>
+											</li>
+											<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+												<a role="menuitem" tabindex="-1" href="/backpack/favorites">My Favorites</a>
+											</li>
+											<li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
+												<a role="menuitem" tabindex="-1" href="/backpack/applications">My Applications</a>
+											</li>
+											<li class="divider" role="presentation" aria-hidden="true"></li>
+											<li role="presentation">
+												<a role="menuitem" tabindex="-1" href="/logout">Log Out</a>
+											</li>
+										</ul>
+									</li>
+									{% else %}
+									<li class="dashboard{% if navItem == 'dashboard' %} active{% endif %}">
+										<a href="/dashboard">My Dashboard</a>
+									</li>
+									{% endif %}
+									{% else %}
+									<li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
+										<a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" id="menu-login-form-toggle">Log In / Sign Up <i class="caret"></i></a>
+										<form class="dropdown-menu" id="menu-login-form" aria-label="Log In" method="post" action="/login">
+											<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+											<label for="menu-login-username">Email or Nickname:</label>
+											<input type="text" id="menu-login-username" name="username" required="required">
+											<label for="menu-login-password">Password:</label>
+											<input type="password" id="menu-login-password" name="password" required="required">
+											<button type="submit" class="btn">Submit</button>
+											<small>Don't have an account? <a href="/signup">Sign up.</a></small>
+										</form>
+									</li>
+									{% endif %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<div id="main" class="container">
+					<div class="container">
+						{% block notices %}
+							{% for type, messages in _messages %}
+								{% if type != 'modal' %}
+									{% for message in messages %}
+										<div class="alert alert-{{ type }}">
+											{{ message.value }}
+										</div>
+									{% endfor %}
+								{% endif %}
+							{% endfor %}
+						{% endblock %}
+						{% if _messages.modal %}
+							{% for message in _messages.modal %}
+								<div class="modal hide initial" tabindex="-1" role="dialog" aria-hidden="true">
+									{% if message.title %}
+										<div class="modal-header">
+											<h3>{{ message.title }}</h3>
+										</div>
+									{% endif %}
+									<div class="modal-body">
+										{{ message.value }}
+									</div>
+									<div class="modal-footer">
+										{% for button in message.buttons %}
+											<button class="btn {% if button.type %}btn-{{ button.type }}{% endif %}" data-dismiss="modal" aria-hidden="true">{{ button.label }}</button>
+										{% endfor %}
+									</div>
 								</div>
 							{% endfor %}
 						{% endif %}
-					{% endfor %}
-				{% endblock %}
-				{% if _messages.modal %}
-					{% for message in _messages.modal %}
-						<div class="modal hide initial" tabindex="-1" role="dialog" aria-hidden="true">
-							{% if message.title %}
-								<div class="modal-header">
-									<h3>{{ message.title }}</h3>
-								</div>
-							{% endif %}
-							<div class="modal-body">
-								{{ message.value }}
-							</div>
-							<div class="modal-footer">
-								{% for button in message.buttons %}
-									<button class="btn {% if button.type %}btn-{{ button.type }}{% endif %}" data-dismiss="modal" aria-hidden="true">{{ button.label }}</button>
-								{% endfor %}
-							</div>
-						</div>
-					{% endfor %}
-				{% endif %}
-				{% block pageTitleWrapper %}{% if pageTitle %}<h2>{% block pageTitle %}{{ pageTitle }}{% endblock %}</h2>{% endif %}{% endblock %}
-				{% block content %}{% endblock %}
+						{% block pageTitleWrapper %}{% if pageTitle %}<h2>{% block pageTitle %}{{ pageTitle }}{% endblock %}</h2>{% endif %}{% endblock %}
+						{% block content %}{% endblock %}
+					</div>
+				</div>
+
 			</div>
 		</div>
-		<footer id="footer">
-			<div class="container">
-				<div class="row-fluid toprow">
 
-					<nav class="pull-right">
-						<ul class="nav nav-pills">
-							<li class="about{% if navItem == 'about' %} active{% endif %}"><a href="/about">About</a> | </li>
-							<li class="terms{% if navItem == 'terms' %} active{% endif %}"><a href="/terms">Terms</a> | </li>
-							<li class="privacy{% if navItem == 'privacy' %} active{% endif %}"><a href="/privacy">Privacy</a> | </li>
-							<li class="vpat{% if navItem == 'vpat' %} active{% endif %}"><a href="/vpat">VPAT</a></li>
+		<div class="wrapper secondary footer">
+			<div class="inner-wrapper">
+		        <div class="container">
+					<div class="upper clearfix">
+						<ul class="pull-left">
+							<li><a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a></li>
+							<li><span>&copy; 2013</span></li>
 						</ul>
-					</nav>
-				</div><!-- .row-fluid -->
-				<div class="row-fluid">
-					<div class="span3 csol">
-						<a href="/" class="logo-csol">Chicago Summer of Learning</a>
-					</div><!-- .span -->
-					<div class="span5 description">
-						<p>This summer, Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning, a citywide effort to engage youth in hands-on learning opportunities - particularly in science, technology engineering, arts and math. School stops for the summer, but learning never should.</p>
-					</div><!-- .span -->
-					<div class="span4 logos">
-						<a href="#" class="logo city">City of Chicago</a>
-						<a href="#" class="logo macarthur">MacArthur Foundation</a>
-						<a href="#" class="logo mozilla">Mozilla</a>
-					</div><!-- .span -->
-				</div><!-- .row-fluid -->
-				<div class="row-fluid">
-					<div class="copytxt span12">
-						<a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a> | &copy; 2013
+						<ul class="pull-right">
+							<li><a href="/about">About</a></li>
+							<li><a href="/terms">Terms</a></li>
+							<li><a href="/privacy">Privacy</a></li>
+							<li><a href="/vpat">VPAT</a></li>
+						</ul>
+					</div>
+					<div class="lower clearfix">
+						<p class="pull-left">
+							More than 100 organizations across the city have joined forces to integrate learning into summer activities for youth of all ages in every Chicago neighborhood.
+							<br><br>
+							With your help, we'll launch the largest citywide summer learning campaign in the nation.
+						</p>
+						<ul class="pull-right">
+							<li><a class="logo chi" href="#">City of Chicago</a></li>
+							<li><a class="logo mac" href="#">MacArthur Foundation</a></li>
+							<li><a class="logo moz" href="#">Mozilla</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
-		</footer>
+		</div>
+
+		{% block modal %}{% endblock %}
+
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="/media/bootstrap/js/bootstrap.js"></script>
+		<script src="/media/js/custom_logic.js"></script>
 		{% if _messages.modal %}
 		<script>
 			(function($) {
@@ -148,22 +158,22 @@
 					var modal = modals.shift();
 					if (!modal)
 						return;
+							$(modal)
+								.modal()
+								.on('hidden', next);
+						}
 
-					$(modal)
-						.modal()
-						.on('hidden', next);
-				}
+						var modals = [];
 
-				var modals = [];
+						$('.initial[role="dialog"]').each(function(index, modal) {
+							modals.push(modal);
+						});
 
-				$('.initial[role="dialog"]').each(function(index, modal) {
-					modals.push(modal);
-				});
+						next();
+					})(jQuery);
+				</script>
+				{% endif %}
+				{% block finally %}{% endblock %}
 
-				next();
-			})(jQuery);
-		</script>
-		{% endif %}
-		{% block finally %}{% endblock %}
 	</body>
 </html>
