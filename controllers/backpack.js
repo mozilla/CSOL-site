@@ -13,22 +13,53 @@ module.exports = function (app) {
 
     if (!claimCode)
       return res.render('claim.html');
+    claimCode = claimCode.trim();
 
-    openbadger.claim({
-      code: claimCode.trim(),
+    openbadger.getBadgeFromCode({
+      code: claimCode,
       email: user.email
     }, function(err, data) {
       if (err) {
-        if (err.code === 404 && err.message === 'unknown claim code')
+        if (err.code === 404)
           req.flash('error', "That claim code appears to be invalid.");
         else if (err.code === 409)
-          req.flash('warn', "You already have that badge.");
+          req.flash('warn', "You have already used that claim code.");
         else
-          req.flash('error', "Unable to claim badge.");
+          req.flash('error', "A problem was encountered.");
+        return res.render('claim.html', {
+          code: claimCode
+        });
       }
       else {
-        req.flash('success', 'Badge claimed!');
+        return res.render('claim.html', {
+          code: claimCode,
+          badge: data.badge
+        });
       }
+    });
+
+  });
+
+  app.post('/claim', function (req, res, next) {
+    var claimCode = req.query.code;
+    var user = res.locals.user;
+
+    if (!user) {
+      return res.redirect('/login');
+    }
+
+    openbadger.claim({
+      code: claimCode,
+      email: user.email
+    }, function(err, data) {
+      console.log(err, data);
+      if (err)
+        if (err.code === 409)
+          req.flash('warn', "You already have that badge.");
+        else
+          req.flash('error', "There has been an error claiming your badge.");
+      else
+        req.flash('success', "You've claimed a new badge!");
       return res.redirect('/backpack');
     });
 
