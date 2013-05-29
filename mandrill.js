@@ -27,7 +27,8 @@ module.exports = {
   /*  
     send(template, context, recipient, callback)
        
-      template    - internal template name, mapped to mandrill names above
+      template    - internal template name, mapped to mandrill names above, or 
+                    mandrill template name
       context     - merge variables (optional)
                     { foo: 'hi' } replaces *|foo|* or *|FOO|* 
                     in the template with "hi"
@@ -67,7 +68,7 @@ module.exports = {
 
     var payload = {
       key: KEY,
-      template_name: TEMPLATES[template],
+      template_name: TEMPLATES[template] || template,
       template_content: [],
       message: {
         to: recipients,
