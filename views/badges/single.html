@@ -2,104 +2,177 @@
 {% set pageTitle = badge.name %}
 
 {% block content %}
-	<div class="row">
-		<div class="span4">
-			<img src="{{ badge.image }}">
-		</div>
-		<div class="span8">
-			<p>{{ badge.description }}</p>
+    <div class="row">
+        <div class="span4">
+            <img src="{{ badge.image }}">
+        </div>
+        <div class="span8">
+            <h3>What is this badge about?</h3>
+            <p>{{ badge.description }}</p>
 
-			<p class="text-right">
-				<a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
-				<a href="#applyModal" data-toggle="modal" class="btn">Apply</a>
-				<a href="{{ badge.url }}/favorite" class="btn"><i class="icon-heart"></i> Add to your favorites</a>
-			</p>
-		</div>
-	</div>
+            <h3>How can you earn it?</h3>
 
-	<h3><a href="/badges">Similar or Related Badges</a></h3>
-	<p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
-	<ul class="thumbnails">
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-	</ul>
+            <p class="text-right">
+                <a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
+                <a href="#applyModal" data-toggle="modal" class="btn">Apply</a>
+                <a href="{{ badge.url }}/favorite" class="btn show-tooltip" title="Save this badge to your favorites"><i class="icon-heart"></i></a>
+            </p>
+        </div>
+    </div>
 
+    <h3><a href="/badges">Similar or Related Badges</a></h3>
+    <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
+    <ul class="thumbnails">
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+    </ul>
 {% endblock %}
 
 {% block modal %}
+    <!-- Modal -->
+    <div id="applyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Apply for the {{badge.name}} badge</h3>
+        </div>
+        <div class="modal-body">
+            {% if badge.prerequisites|length > 0 %}
+                <h4>In order to earn this badge you need to make sure you have met the following requirements:</h4>
+                <ul>
+                    {% for req in badge.prerequisites %}
+                        <li>{{req}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
-	<!-- Modal -->
-		<div id="applyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Apply for this badge</h3>
+            <h4>Upload photos or videos to show your work</h4>
 
-		  </div>
-		  <div class="modal-body">
-		    <h4>Before submitting your work check out the requirements for this badge:</h4>
+            <div id="draggable-upload-area">
+                Drag and Drop Photos and Videos here or
+                <a href="#" class="btn btn-primary btn-block">Choose Photos and Videos to Upload</a>
+            </div><!-- .draggable-upload-area -->
 
-		    <p>Ac dignissim turpis mattis tristique in, nunc non. Magna amet diam odio hac ultrices? Mus! Adipiscing pulvinar elementum, cum arcu, sagittis magnis sit nascetur, habitasse amet nascetur, vel sociis non placerat, tortor sit etiam? Cras, nisi? Magna porttitor turpis, nec? Rhoncus magnis parturient dictumst ac pulvinar cursus aliquam, ac scelerisque. Velit tincidunt urna magna pulvinar velit, urna. Purus turpis nunc, non tincidunt augue proin montes non! Nascetur turpis cum mauris, mus elit. Porta in natoque quis est sociis nascetur turpis, augue amet egestas egestas, ut, in penatibus urna aliquam aenean, integer egestas velit tempor augue, enim mattis mattis amet, nec. Aliquam amet nisi et, augue sagittis porttitor nisi nec nascetur urna sit! Pulvinar adipiscing vel scelerisque sociis ac sed mauris.</p>
+            <h4>Tell us more about the work you uploaded</h4>
+            <p>Describe how your work meets the badge requirements and why you think you deserve to earn the badge. If you're especially proud of something you did, here's your chance to let us know.</p>
 
-		    <h4>Start by uploading photos and videos of your work</h4>
+            <textarea>Some helper text</textarea>
 
-		    <div id="draggable-upload-area">
-		    	Drag and Drop Photos and Videos here or
-		    	<a href="#" class="btn btn-primary btn-block">Choose Photos and Videos to Upload</a>
-		    </div><!-- .draggable-upload-area -->
+            <a href="#applySuccess" class="btn btn-primary btn-block" data-dismiss="modal" data-toggle="modal">Apply</a>
+        </div>
+    </div>
 
-		    <h4>Tell us more about your work</h4>
+    <!-- Modal -->
+    <div id="applySuccess" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Badge submission success!</h3>
+        </div>
+        <div class="modal-body">
+            {% if user.underage %}
+                <p>You are trying to apply for the {{badge.name}} badge. We just want to make sure your parent or guardian is OK with this. We've sent an email to your parent/guardian and as soon as they give their approval of your badge application, it will be sent to a mentor.</p>
+                <p>The mentor will then review your application and get back to you about your badge.</p>
+                <p>In the mean time, keep on learning, earning and leveling up</p>
+            {% else %}
+                <p>You have applied for the {{badge.name}} badge. Your application will be sent to a mentor who will review it and get back to you about your badge.</p>
+                <p>In the mean time, check out these badges and programs and keep on learning, earning and leveling up!</p>
+            {% endif %}
 
-		    <textarea>Some helper text</textarea>
-
-		    <a href="#" class="btn btn-primary btn-block">Apply</a>
-
-		  </div>
-		</div>
-
+            <ul class="thumbnails">
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="span3">
+                    <figure class="thumbnail">
+                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                        <figcaption class="caption">
+                            <p>Badge blah in voluptate velit...</p>
+                            <p class="text-right">
+                                <a href="/badges/ae784f" class="btn">Details</a>
+                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
