@@ -7,7 +7,7 @@ const FAKE_EMAIL = ('DEBUG' in process.env)
 
 var request = require('request');
 if (FAKE_EMAIL) {
-  request = function(opts, cb) {
+  request.post = function(opts, cb) {
     logger.log('debug', 'FAKE EMAIL: request.post with opts', opts); 
     cb('EMAIL DISABLED');
   };
@@ -18,7 +18,8 @@ const ENDPOINT = process.env['CSOL_MANDRILL_URL'] ||
 const KEY = process.env['CSOL_MANDRILL_KEY'];
 
 const TEMPLATES = {
-  test: 'test'
+  '<13 learner signup': 'csol-13-signup',
+  'learner signup': 'csol-signup'
 }
 
 module.exports = {
@@ -26,7 +27,8 @@ module.exports = {
   /*  
     send(template, context, recipient, callback)
        
-      template    - internal template name, mapped to mandrill names above
+      template    - internal template name, mapped to mandrill names above, or 
+                    mandrill template name
       context     - merge variables (optional)
                     { foo: 'hi' } replaces *|foo|* or *|FOO|* 
                     in the template with "hi"
@@ -66,7 +68,7 @@ module.exports = {
 
     var payload = {
       key: KEY,
-      template_name: template,
+      template_name: TEMPLATES[template] || template,
       template_content: [],
       message: {
         to: recipients,
@@ -88,6 +90,21 @@ module.exports = {
 
       if (response.statusCode !== 200)
         return callback(body);
+
+      var unsent = [];
+      _.map(body, function(result) {
+        var level = 'info';
+        if (['sent', 'queued'].indexOf(result.status) === -1) {
+          level = 'error';
+          unsent.push(result);
+        }
+        logger.log(level, 'Learner signup email %s for %s', result.status, result.email);
+      });
+      if (unsent.length) 
+        return callback({ 
+          message: 'Some addresses not sent or queued',
+          results: unsent
+        });
 
       return callback(null, body);
     });
