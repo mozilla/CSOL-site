@@ -11,7 +11,7 @@
 
 			<p class="text-right">
 				<a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
-				<a href="#applyModal" data-toggle="modal" class="btn">Apply</a>
+				<a href="{{ badge.url }}/apply" class="btn">Apply</a>
 				<a href="{{ badge.url }}/favorite" class="btn"><i class="icon-heart"></i> Add to your favorites</a>
 			</p>
 		</div>
@@ -69,37 +69,5 @@
 			</figure>
 		</li>
 	</ul>
-
-{% endblock %}
-
-{% block modal %}
-
-	<!-- Modal -->
-		<div id="applyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Apply for this badge</h3>
-
-		  </div>
-		  <div class="modal-body">
-		    <h4>Before submitting your work check out the requirements for this badge:</h4>
-
-		    <p>Ac dignissim turpis mattis tristique in, nunc non. Magna amet diam odio hac ultrices? Mus! Adipiscing pulvinar elementum, cum arcu, sagittis magnis sit nascetur, habitasse amet nascetur, vel sociis non placerat, tortor sit etiam? Cras, nisi? Magna porttitor turpis, nec? Rhoncus magnis parturient dictumst ac pulvinar cursus aliquam, ac scelerisque. Velit tincidunt urna magna pulvinar velit, urna. Purus turpis nunc, non tincidunt augue proin montes non! Nascetur turpis cum mauris, mus elit. Porta in natoque quis est sociis nascetur turpis, augue amet egestas egestas, ut, in penatibus urna aliquam aenean, integer egestas velit tempor augue, enim mattis mattis amet, nec. Aliquam amet nisi et, augue sagittis porttitor nisi nec nascetur urna sit! Pulvinar adipiscing vel scelerisque sociis ac sed mauris.</p>
-
-		    <h4>Start by uploading photos and videos of your work</h4>
-
-		    <div id="draggable-upload-area">
-		    	Drag and Drop Photos and Videos here or
-		    	<a href="#" class="btn btn-primary btn-block">Choose Photos and Videos to Upload</a>
-		    </div><!-- .draggable-upload-area -->
-
-		    <h4>Tell us more about your work</h4>
-
-		    <textarea>Some helper text</textarea>
-
-		    <a href="#" class="btn btn-primary btn-block">Apply</a>
-
-		  </div>
-		</div>
 
 {% endblock %}
