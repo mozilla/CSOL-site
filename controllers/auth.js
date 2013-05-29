@@ -2,6 +2,8 @@ var bcrypt = require('bcrypt');
 var passwords = require('../lib/passwords');
 var usernames = require('../lib/usernames');
 var db = require('../db');
+var email = require('../mandrill');
+var logger = require('../logger');
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
@@ -175,8 +177,6 @@ function processChildLearnerSignup (req, res, next) {
       }).complete(function(err, token) {
         if (err || !token) return fail(err);
 
-        // TODO - send an email
-
         token.setLearner(user); // Assuming this worked
 
         bcrypt.hash(signup.password, BCRYPT_SEED_ROUNDS, function(err, hash) {
@@ -189,6 +189,11 @@ function processChildLearnerSignup (req, res, next) {
           }).complete(function(err) {
             if (err) return fail(err);
 
+            var confirmationUrl = req.protocol + '://' + req.get('Host')
+              + '/signup/' + token.token;
+            email.send('<13 learner signup', {
+              confirmationUrl: confirmationUrl
+            }, signup.parent_email);
             delete req.session.signup;
             req.flash('modal', {
               title: 'Welcome to the Chicago Summer of Learning',
@@ -250,6 +255,7 @@ function processStandardLearnerSignup (req, res, next) {
             return fail(err);
           }
 
+          email.send('learner signup', {}, signup.email);
           delete req.session.signup;
           redirectUser(req, res, user);
         });
