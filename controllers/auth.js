@@ -2,12 +2,18 @@ var bcrypt = require('bcrypt');
 var passwords = require('../lib/passwords');
 var usernames = require('../lib/usernames');
 var db = require('../db');
+var email = require('../mandrill');
+var logger = require('../logger');
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
 
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
+var CSOL_HOST = process.env.CSOL_HOST;
+
+if (!CSOL_HOST)
+  throw new Error('Must specify CSOL_HOST in the environment');
 
 function validateEmail (email) {
   // TODO - make sure email is valid
@@ -75,7 +81,12 @@ function extractUserData (user) {
 
 function redirectUser (req, res, user, status) {
   req.session.user = extractUserData(user);
-  return res.redirect(status || 303, req.session.user.home);
+  var target = req.session.user.home;
+  if (req.session.afterLogin) {
+    target = req.session.afterLogin;
+    delete req.session.afterLogin;
+  }
+  return res.redirect(status || 303, target);
 }
 
 function clearUser (req, res) {
@@ -166,8 +177,6 @@ function processChildLearnerSignup (req, res, next) {
       }).complete(function(err, token) {
         if (err || !token) return fail(err);
 
-        // TODO - send an email
-
         token.setLearner(user); // Assuming this worked
 
         bcrypt.hash(signup.password, BCRYPT_SEED_ROUNDS, function(err, hash) {
@@ -175,10 +184,16 @@ function processChildLearnerSignup (req, res, next) {
 
           user.updateAttributes({
             complete: true,
-            password: hash
+            password: hash,
+            email: normalizedUsername + '@' + CSOL_HOST
           }).complete(function(err) {
             if (err) return fail(err);
 
+            var confirmationUrl = req.protocol + '://' + req.get('Host')
+              + '/signup/' + token.token;
+            email.send('<13 learner signup', {
+              confirmationUrl: confirmationUrl
+            }, signup.parent_email);
             delete req.session.signup;
             req.flash('modal', {
               title: 'Welcome to the Chicago Summer of Learning',
@@ -240,6 +255,7 @@ function processStandardLearnerSignup (req, res, next) {
             return fail(err);
           }
 
+          email.send('learner signup', {}, signup.email);
           delete req.session.signup;
           redirectUser(req, res, user);
         });
