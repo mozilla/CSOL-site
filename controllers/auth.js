@@ -79,7 +79,12 @@ function extractUserData (user) {
 
 function redirectUser (req, res, user, status) {
   req.session.user = extractUserData(user);
-  return res.redirect(status || 303, req.session.user.home);
+  var target = req.session.user.home;
+  if (req.session.afterLogin) {
+    target = req.session.afterLogin;
+    delete req.session.afterLogin;
+  }
+  return res.redirect(status || 303, target);
 }
 
 function clearUser (req, res) {

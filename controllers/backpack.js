@@ -1,11 +1,37 @@
+const openbadger = require('../openbadger');
+
 module.exports = function (app) {
 
   app.get('/claim', function (req, res, next) {
-    res.render('claim.html');
-  });
+    var claimCode = req.query.code;
+    var user = res.locals.user;
 
-  app.get('/claim/:badgeName', function (req, res, next) {
-    return res.redirect('/badges/'+req.params.badgeName+'/claim');
+    if (!user) {
+      req.session.afterLogin = req.originalUrl;
+      return res.redirect('/login');
+    }
+
+    if (!claimCode)
+      return res.render('claim.html');
+
+    openbadger.claim({
+      code: claimCode.trim(),
+      email: user.email
+    }, function(err, data) {
+      if (err) {
+        if (err.code === 404 && err.message === 'unknown claim code')
+          req.flash('error', "That claim code appears to be invalid.");
+        else if (err.code === 409)
+          req.flash('warn', "You already have that badge.");
+        else
+          req.flash('error', "Unable to claim badge.");
+      }
+      else {
+        req.flash('success', 'Badge claimed!');
+      }
+      return res.redirect('/backpack');
+    });
+
   });
 
   app.get('/backpack', function (req, res, next) {

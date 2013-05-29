@@ -1,10 +1,16 @@
 const Api = require('./api');
 const errors = require('./lib/errors');
 const _ = require('underscore');
+const jwt = require('jwt-simple');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
+const JWT_SECRET = process.env['CSOL_OPENBADGER_SECRET'];
+const TOKEN_LIFETIME = process.env['CSOL_OPENBADGER_TOKEN_LIFETIME'] || 10000;
+
 if (!ENDPOINT)
   throw new Error('Must specify CSOL_OPENBADGER_URL in the environment');
+if (!JWT_SECRET)
+  throw new Error('Must specify CSOL_OPENBADGER_SECRET in the environment');
 
 function normalizeBadge (badge, id) {
   if (!id)
@@ -104,6 +110,24 @@ var openbadger = new Api(ENDPOINT, {
       return callback(null, {
         orgs: _.values(data.issuers)
       });
+    });
+  },
+
+  claim: function claim (query, callback) {
+    var email = query.email;
+    var code = query.code;
+    var claims = {
+      prn: email,
+      exp: Date.now() + TOKEN_LIFETIME
+    };
+    var token = jwt.encode(claims, JWT_SECRET);
+    var params = {
+      auth: token,
+      email: email,
+      code: code,
+    };
+    this.post('/claim', { json: params }, function(err, data) {
+      return callback(err, data);
     });
   }
 });
