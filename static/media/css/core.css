@@ -219,6 +219,22 @@ ol {
   margin-left: -20px;
   margin-right: -20px;
 }
+#application-review .rubric {
+  margin: 0 0 20px;
+}
+#application-review .rubric li {
+  white-space: pre-line;
+  list-style: none;
+  border-left: solid 5px #DDD;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+#application-review .rubric li.required {
+  border-color: #BBB;
+}
+#application-review .rubric li.required .note {
+  font-style: italic;
+}
 #edit-application {
   margin-bottom: 20px;
 }

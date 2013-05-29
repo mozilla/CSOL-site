@@ -11,7 +11,13 @@
 {% block items %}
 		{{ super() }}
 		<h3>Confirm the requirements for this badge</h3>
-		<pre>{{ badge }}</pre>
+		{% if badge.rubric %}
+			<ul class="rubric">
+			{% for item in badge.rubric.items %}
+				<li{% if item.required %} class="required"{% endif %}>{{ item.text }}{% if item.required %} <span class="note">(Required)</span>{% endif %}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
 		<h3>All set?</h3>
 		<form method="post">
 			<input type="hidden" name="_csrf" value="{{ csrfToken }}">

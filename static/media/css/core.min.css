@@ -33,6 +33,7 @@ ul,ol{padding:0 0 0 0;margin:0 0 0 0;}
 .poster a,.poster img{display:block;margin-left:auto;margin-right:auto;}
 #menu-login-form{padding:10px;text-align:left;}
 #application-review .well{margin-left:-20px;margin-right:-20px;}
+#application-review .rubric{margin:0 0 20px;}#application-review .rubric li{white-space:pre-line;list-style:none;border-left:solid 5px #DDD;padding-left:10px;margin-bottom:20px;}#application-review .rubric li.required{border-color:#BBB;}#application-review .rubric li.required .note{font-style:italic;}
 #edit-application{margin-bottom:20px;}#edit-application .items{list-style:none;margin:0;border:solid 1px #CCC;border-radius:4px 4px 0 0;}
 #edit-application .item{padding:9.5px;position:relative;border-top:solid 1px #DDD;margin:0;background:#F5F5F5;}#edit-application .item:first-child{border-top:none;border-radius:4px 4px 0 0;}
 #edit-application .item:nth-child(even){background:#F0F0F0;}
