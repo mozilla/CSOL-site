@@ -1,7 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
 /*general*/
 html,
 body {
   height: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  line-height: 18px;
 }
 body {
   margin: 0px;
@@ -43,6 +47,10 @@ ol {
 .navbar .nav {
   float: none;
 }
+.navbar .nav > li.dropdown.open > .dropdown-toggle {
+  background-color: inherit;
+  text-decoration: underline;
+}
 .navbar .nav > li > a {
   border-left: none;
   border-right: none;
@@ -71,7 +79,7 @@ ol {
   -webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
-  padding-top: 1em;
+  padding-top: 25px;
 }
 .navbar .nav-wrap {
   width: 100%;
@@ -146,7 +154,7 @@ ol {
   text-decoration: none;
 }
 .footer .upper {
-  padding: 2.5em 0 0 0;
+  padding: 50px 0 0 0;
 }
 .footer .upper p {
   background-image: url('../img/csol_logo_sm.png');
@@ -163,7 +171,7 @@ ol {
 }
 .footer .lower {
   border-top: 1px solid white;
-  padding: 1em 0 0 0;
+  padding: 25px 0 0 0;
 }
 .footer ul li {
   display: inline-block;
@@ -202,7 +210,15 @@ ol {
   position: relative;
   color: #fff;
   height: 250px;
-  background-image: url('../img/chalkboard_bg.jpg');
+  background-image: url('../img/background-chalkboard-green.jpg');
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
+  overflow: visible;
 }
 /*CSOL-site specific*/
 .poster a,
@@ -215,12 +231,15 @@ ol {
   padding: 10px;
   text-align: left;
 }
-/*home page*/
+/*landing page specific*/
 body.home {
   background-image: url('../img/chalkboard_bg.jpg');
 }
+body.home .container {
+  width: 960px;
+}
 body.home .navbar .navbar-inner {
-  background-image: url('../img/spacedimg.png');
+  background-image: url('../img/spacedimg.jpg');
   background-repeat: no-repeat;
   background-position: top center;
   -webkit-background-size: cover;
@@ -265,20 +284,51 @@ body.home .navbar .nav-wrap {
 }
 body.home .navbar .nav-wrap ul {
   padding-top: 200px;
+  left: -6px;
 }
 body.home .navbar .nav-wrap ul > li {
   text-align: left;
-  display: inline;
+  display: block;
+  line-height: 9px;
 }
 body.home .navbar .nav-wrap ul > li > a {
   text-transform: inherit;
-  font-size: 1.5em;
+  font-size: 22px;
   color: #f4fc00;
+  text-transform: lowercase;
 }
-body.home .navbar .nav-wrap ul > li.log-in a {
-  font-size: 1em;
+body.home .navbar .nav-wrap ul > li.learn > a:first-letter {
+  text-transform: capitalize;
+}
+body.home .navbar .nav-wrap ul > li.log-in > a {
+  font-size: 18px;
   color: #fff;
   text-transform: lowercase;
+  text-align: center;
+  line-height: 24px;
+}
+body.home .navbar .nav-wrap ul > li.video {
+  margin-top: 35px;
+}
+body.home .navbar .nav-wrap ul > li.video a {
+  color: #fff;
+  border-radius: 7px;
+  margin: auto;
+  display: block;
+  width: 140px;
+  text-align: center;
+  line-height: 20px;
+  background: #e82202;
+  background: -moz-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e82202), color-stop(44%, #e5381d), color-stop(100%, #e56854));
+  background: -webkit-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
+  background: -o-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
+  background: -ms-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
+  background: linear-gradient(to bottom, #e82202 0%, #e5381d 44%, #e56854 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e82202', endColorstr='#e56854', GradientType=0);
+}
+body.home .navbar .nav-wrap ul > li span {
+  color: #fff;
 }
 body.home .navbar .nav-wrap ul > li:nth-child(even) {
   border-left: none;
@@ -291,32 +341,76 @@ body.home #main {
 body.home .navbar-static-top .container {
   width: inherit;
 }
-body.home .footer .upper {
-  padding-top: 5em;
-  padding-bottom: 1em;
+body.home .secondary .upper {
+  padding-top: 15px;
+  position: relative;
 }
-body.home .footer .upper > p.pull-left {
+body.home .secondary .upper > p.pull-left {
   display: none;
 }
-body.home .footer .upper > .pull-right {
-  float: none;
+body.home .secondary .upper > .pull-right {
+  float: left;
   text-align: center;
+  width: 340px;
+  padding-top: 55px;
 }
-body.home .footer .lower {
+body.home .secondary .lower {
   border-top: none;
 }
-body.home .footer .lower .pull-right li:first-child {
+body.home .secondary .lower .pull-right li:first-child {
   display: none;
 }
-body.home .footer .lower .pull-right li:nth-child(3) {
+body.home .secondary .lower .pull-right li:nth-child(3) {
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-body.home .footer .lower .pull-left li:first-child {
+body.home .secondary .lower .pull-left li:first-child {
   border-right: 1px solid #fff;
 }
 body.home .footer {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+}
+body.home #rahm {
+  position: relative;
+  width: 210px;
+  padding-left: 100px;
+  padding-top: 15px;
+  background-image: url('../img/rahm.png');
+  background-repeat: no-repeat;
+  background-position: center left;
+  float: left;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  hyphens: none;
+}
+body.home #bubbles {
+  float: left;
+  background-image: url('../img/bubbles.png');
+  width: 310px;
+  height: 140px;
+  background-repeat: no-repeat;
+  background-position: 18px 0px;
+  margin-top: 15px;
+}
+body.home #bubbles span {
+  color: #000;
+  display: block;
+  width: 100px;
+}
+body.home #bubbles span.lt {
+  float: left;
+  margin-left: 34px;
+  margin-top: 12px;
+}
+body.home #bubbles span.lt a {
+  color: #3B5998;
+}
+body.home #bubbles span.rt {
+  margin-top: 52px;
+  margin-right: 7px;
+  float: right;
+  font-size: 24px;
+  line-height: 20px;
 }
