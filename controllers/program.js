@@ -226,7 +226,7 @@ module.exports = function (app) {
     if (!req.body.action || req.body.action !== 'delete')
       return next(new errors.NotAllowed());
 
-    if (application.status !== 'open')
+    if (application.state !== 'open')
       return next(new errors.NotAllowed());
 
     evidence.destroy()
