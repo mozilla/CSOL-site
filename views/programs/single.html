@@ -3,46 +3,46 @@
 {% set user = {} %}
 
 {% block content %}
-	<div class="row">
-		<div class="span4">
-			<img src="/media/images/program-large.png">
-		</div>
-		<div class="span8">
-			<p><strong>From <a href="/orgs/some-organisation">Some Organisation</a>.</strong></p>
+    <div class="row">
+        <div class="span4">
+            <img src="/media/images/program-large.png">
+        </div>
+        <div class="span8">
+            <p><strong>From <a href="/orgs/some-organisation">Some Organisation</a>.</strong></p>
             {% if program.description %}
                 <p>{{program.description}}</p>
             {% endif %}
 
-			<p class="text-right">
-				<a href="/programs/ae784f/favorite" class="btn"><i class="icon-heart"></i> Add to your favorites</a>
-			</p>
-		</div>
-	</div>
-	<h3><a href="/badges">Badges</a></h3>
-	<ul class="thumbnails">
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-		<li class="span3">
-			<figure class="thumbnail">
-				<a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-				<figcaption class="caption">
-					<p>Badge blah in voluptate velit...</p>
-					<p class="text-right">
-						<a href="/badges/ae784f" class="btn">Details</a>
-						<a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-					</p>
-				</figcaption>
-			</figure>
-		</li>
-	</ul>
+            <p class="text-right">
+                <a href="/programs/ae784f/favorite" class="btn"><i class="icon-heart"></i> Add to your favorites</a>
+            </p>
+        </div>
+    </div>
+    <h3><a href="/badges">Badges</a></h3>
+    <ul class="thumbnails">
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+        <li class="span3">
+            <figure class="thumbnail">
+                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <figcaption class="caption">
+                    <p>Badge blah in voluptate velit...</p>
+                    <p class="text-right">
+                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a class="btn show-tooltip" title="Add to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
+                    </p>
+                </figcaption>
+            </figure>
+        </li>
+    </ul>
 {% endblock %}
