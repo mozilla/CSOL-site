@@ -8,6 +8,10 @@ var signupTokens = db.model('SignupToken');
 
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
+var CSOL_HOST = process.env.CSOL_HOST;
+
+if (!CSOL_HOST)
+  throw new Error('Must specify CSOL_HOST in the environment');
 
 function validateEmail (email) {
   // TODO - make sure email is valid
@@ -175,7 +179,8 @@ function processChildLearnerSignup (req, res, next) {
 
           user.updateAttributes({
             complete: true,
-            password: hash
+            password: hash,
+            email: normalizedUsername + '@' + CSOL_HOST
           }).complete(function(err) {
             if (err) return fail(err);
 
