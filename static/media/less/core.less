@@ -144,9 +144,8 @@ ul, ol {
 	  color:#c0c0c0;
 	  text-decoration: none;	
   }
-  .lower {
-	  border-top:1px solid white;
-	  padding-top:20px;
+  .upper {
+  	  padding:2.5em 0 0 0;
 	  p {
 	    background-image: url('../img/csol_logo_sm.png');
 		  padding-left:209px;
@@ -161,8 +160,9 @@ ul, ol {
   		border-right:none;	  
   	}
   }
-  .upper {
-  	padding:1em 0;
+  .lower {
+  	border-top:1px solid white;
+  	padding:1em 0 0 0;
   }
   ul {
   	li {
@@ -202,6 +202,7 @@ ul, ol {
 		}
 	}
 	&.secondary {
+    position:relative;
 		color:#fff;
 		height: 250px;
 		background-image:url('../img/chalkboard_bg.jpg');
@@ -218,4 +219,124 @@ ul, ol {
 #menu-login-form {
 	padding:10px;
 	text-align:left;
+}
+
+/*home page*/
+body.home {
+  background-image:url('../img/chalkboard_bg.jpg');
+	.navbar {
+		.navbar-inner {
+  		background-image: url('../img/spacedimg.png');
+  		background-repeat: no-repeat;
+  		background-position: top center;
+  		-webkit-background-size: cover;
+  		-moz-background-size: cover;
+  		-o-background-size: cover;
+  		background-size: cover;
+  		padding-top:0px;
+  		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
+  		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";
+  		overflow:visible;
+  		max-height:515px;
+
+  		& > .container {
+  			background-image: url('../img/home_drawing.png');
+  			background-position: top center;
+  			background-repeat: no-repeat;  	
+  			}
+		}
+		.brand {
+			background-image: url('../img/csol_logo_sm.png');
+   			position: absolute;
+    		left:50%;
+    		margin-left:-102px;
+    		z-index: 2;
+    		top:50px;
+    		width:189px;
+    		height:131px;
+    		padding:0 0 0 0;	
+    	}
+		.nav-wrap {
+  			width:inherit;
+  			margin-bottom: 0px;
+    		height:600px;
+   			width:310px;
+    		margin:0 auto;
+    		background:none;
+   			background-image: url('../img/banner300.png');
+    		background-position:top center;
+    		background-repeat: no-repeat;
+   			position:relative;
+    		z-index:1;
+    		box-shadow: none;	
+    		ul {
+    			padding-top:200px;
+    			& > li {
+    				text-align: left;
+    				display: inline;
+    				& > a {
+    					text-transform:inherit;
+  						font-size:1.5em;
+  						color:#f4fc00;
+    					}
+    				&.log-in {
+    					a {
+    						font-size:1em;
+  							color:#fff;
+  							text-transform: lowercase;
+    					}
+    				}
+    			}
+    			& > li:nth-child(even) {
+    				border-left: none;
+  					border-right: none;
+    			}
+    		}
+    	}
+    }
+    #main {
+    	padding:0 0 0 0;
+      display:none;
+      
+    }
+    .navbar-static-top {
+    	.container {
+    		width:inherit;
+    	}
+    }
+    .footer {
+    	.upper {
+    		padding-top:5em;
+    		padding-bottom:1em;
+    		> p.pull-left {
+    			display:none;
+    		}
+    		> .pull-right {
+    			float:none;
+    			text-align:center;
+    		}
+    	}
+    	.lower {
+    		border-top:none;
+    		.pull-right {
+    			li:first-child {
+	    			display:none;
+	    		}
+	    	    li:nth-child(3) {
+	    			border-left:1px solid #fff;
+	    			border-right:1px solid #fff;
+	    		}
+	    	}
+	    	.pull-left {
+  				li:first-child {
+    				border-right:1px solid #fff;
+    			}
+	    	}
+    	}
+    }
+  .footer {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  }
 }
