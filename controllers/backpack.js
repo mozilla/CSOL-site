@@ -18,10 +18,17 @@ module.exports = function (app) {
       code: claimCode.trim(),
       email: user.email
     }, function(err, data) {
-      if (err)
-        req.flash('error', "Unable to claim badge.");
-      else
+      if (err) {
+        if (err.code === 404 && err.message === 'unknown claim code')
+          req.flash('error', "That claim code appears to be invalid.");
+        else if (err.code === 409)
+          req.flash('warn', "You already have that badge.");
+        else
+          req.flash('error', "Unable to claim badge.");
+      }
+      else {
         req.flash('success', 'Badge claimed!');
+      }
       return res.redirect('/backpack');
     });
 

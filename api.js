@@ -85,13 +85,13 @@ function getFullUrl(origin, path) {
 }
 
 // Load data from remote endpoint
+// TODO - need to add ability to pass data through
+// TODO - might want to cache this at some point
 function remote (method, path, options, callback) {
 
   if (!request[method])
     return callback(new errors.NotImplemented('Unknown method ' + method));
 
-  // TODO - need to add ability to pass data through
-  // TODO - might want to cache this at some point
   var endpointUrl = getFullUrl(this.origin, path);
   request[method](endpointUrl, options, function(err, response, body) {
 
@@ -101,9 +101,12 @@ function remote (method, path, options, callback) {
     if (err)
       return callback(new errors.Unknown(err));
 
-    if (response.statusCode !== 200)
-      // TODO - add logging so the upstream error can be debugged
-      return callback(new (errors.lookup(response.statusCode))());
+    if (response.statusCode !== 200) {
+      var msg;
+      if (body && body.reason)
+        msg = body.reason;
+      return callback(new (errors.lookup(response.statusCode))(msg));
+    }
 
     try {
       var data = body;
