@@ -50,6 +50,31 @@ module.exports = function (app) {
       return res.redirect('/login');
     }
 
+    openbadger.claim({
+      code: claimCode,
+      email: user.email
+    }, function(err, data) {
+      console.log(err, data);
+      if (err)
+        if (err.code === 409)
+          req.flash('warn', "You already have that badge.");
+        else
+          req.flash('error', "There has been an error claiming your badge.");
+      else
+        req.flash('success', "You've claimed a new badge!");
+      return res.redirect('/backpack');
+    });
+
+  });
+
+  app.post('/claim', function (req, res, next) {
+    var claimCode = req.query.code;
+    var user = res.locals.user;
+
+    if (!user) {
+      return res.redirect('/login');
+    }
+
     claim.findOrCreate({
       code: claimCode,
       LearnerId: user.id
