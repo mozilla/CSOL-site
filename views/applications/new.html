@@ -79,11 +79,15 @@
 				$.ajax({
 					url: $form.attr('action') || document.location.href,
 					type: $form.attr('method'),
-					data: $form.serialize()
-				});
+					data: $form.serialize(),
+					complete: function () {
+						$item.fadeOut(500, function() {
+							$item.remove();
 
-				$item.fadeOut(500, function() {
-					$item.remove();
+							if (!$evidence.find('.item').length && $('#application-review .well').length)
+								window.location.reload();
+						});
+					}
 				});
 
 				return false;
