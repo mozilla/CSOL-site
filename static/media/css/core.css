@@ -215,6 +215,9 @@ ol {
   text-align: left;
 }
 /*home page*/
+body.home {
+  background-image: url('../img/chalkboard_bg.jpg');
+}
 body.home .navbar .navbar-inner {
   background-image: url('../img/spacedimg.png');
   background-repeat: no-repeat;
@@ -281,6 +284,7 @@ body.home .navbar .nav-wrap ul > li:nth-child(even) {
   border-right: none;
 }
 body.home #main {
+  padding: 0 0 0 0;
   display: none;
 }
 body.home .navbar-static-top .container {
@@ -309,4 +313,9 @@ body.home .footer .lower .pull-right li:nth-child(3) {
 }
 body.home .footer .lower .pull-left li:first-child {
   border-right: 1px solid #fff;
+}
+body.home .footer {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
