@@ -88,9 +88,12 @@ function getFullUrl(origin, path) {
 // TODO - need to add ability to pass data through
 // TODO - might want to cache this at some point
 function remote (method, path, options, callback) {
-
   if (!request[method])
     return callback(new errors.NotImplemented('Unknown method ' + method));
+  if (_.isFunction(options)) {
+    callback = options;
+    options = {};
+  }
 
   var endpointUrl = getFullUrl(this.origin, path);
   request[method](endpointUrl, options, function(err, response, body) {
@@ -176,10 +179,6 @@ module.exports = function Api(origin, config) {
     Object.defineProperty(this, method, {
       enumerable: true,
       value: function(path, opts, callback) {
-        if (_.isFunction(opts)) {
-          callback = opts;
-          opts = {};
-        }
         this.remote(method, path, opts, callback);
       },
       writable: true // This is needed for mocking

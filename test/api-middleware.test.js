@@ -321,6 +321,7 @@ test('api.middleware(method)', function(t) {
 
 /* Implicitly testing the wrapped request methods just by
    testing get, which is a bit lame but quicker. */
+/* TODO: also test the underlying api.remote()? */
 test('api.get', function(t) {
   var api = new Api(ORIGIN);
 
