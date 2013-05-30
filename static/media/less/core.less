@@ -230,7 +230,15 @@ ul, ol {
 figure.thumbnail {
   margin:0 0 0 0;
   a.show-tooltip {
-  display:none;
+    display:none;
+  }
+  .caption {
+    p:first-child {
+      height:40px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
 .navbar {

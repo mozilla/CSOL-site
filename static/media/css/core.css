@@ -228,6 +228,12 @@ figure.thumbnail {
 figure.thumbnail a.show-tooltip {
   display: none;
 }
+figure.thumbnail .caption p:first-child {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .navbar .nav .active a,
 .navbar .nav .active a:hover {
   color: #000;
