@@ -8,6 +8,7 @@ $(document).ready(function(){
 					$('#i_vid_wrap').fadeOut(function(){
 						$(this).remove();
 					});
+					return false;
 				});
 				$('body').prepend(vidWrap.append('<iframe id="i_vid" width="640" height="360" src="http://www.youtube.com/embed/6WwpwtYNsNk?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>', vidClose)).find('#i_vid_wrap').fadeIn();
 			}
