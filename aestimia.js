@@ -5,12 +5,19 @@ const errors = require('./lib/errors');
 const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_AESTIMIA_URL'];
+const SECRET = process.env['CSOL_AESTIMIA_SECRET'];
+
 if (!ENDPOINT)
   throw new Error('Must specify CSOL_AESTIMIA_URL in the environment');
+
+if (!SECRET)
+  throw new Error('Must specify CSOL_AESTIMIA_SECRET in the environment');
 
 var aestimia = new Api(ENDPOINT, {
 
   submit: function (application, callback) {
+    var api = this;
+
     application.getLearner()
       .complete(function (err, learner) {
         if (err)
@@ -44,21 +51,37 @@ var aestimia = new Api(ENDPOINT, {
                 if (learner.email)
                   submission.learner = learner.email;
 
-                evidence.forEach(function(item) {
-                  submission.evidence.push({
+                evidence.forEach(function(item, index) {
+                  var obj = {
                     url: item.getLocationUrl(),
                     mediaType: item.mediaType
-                  });
+                  };
+
+                  if (!index && application.description)
+                    obj.reflection = application.description;
+
+                  submission.evidence.push(obj);
                 });
 
-                console.log(submission);
+                api.post('/submission', submission, function (err, rsp) {
+                  console.log(err);
+                  console.log(rsp);
 
-                return callback('Not working yet');
+                  callback(err);
+                });
               });
             });
       });
   }
 
 });
+
+aestimia.defaultOptions = {
+  auth: {
+    username: 'api',
+    password: SECRET,
+    sentImmediately: false
+  }
+};
 
 module.exports = aestimia;
