@@ -146,6 +146,27 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  getUserBadges: {
+    func: function getUserBadges (query, callback) {
+      var email = query.session.user.email;
+      var code = query.code;
+      var params = {
+        auth: getJWTToken(email),
+        email: email
+      };
+      this.get('/user', { qs: params }, function(err, data) {
+        if (err)
+          return callback(err, data);
+
+        return callback(null, {
+          badges: _.map(data.badges, normalizeBadge)
+        });
+      });
+    },
+    paginate: true,
+    key: 'badges'
+  },
+
   getBadgeFromCode: function getBadgeFromCode (query, callback) {
     var email = query.email;
     var code = query.code;
@@ -170,7 +191,7 @@ var openbadger = new Api(ENDPOINT, {
     this.post('/claim', { json: params }, function(err, data) {
       return callback(err, data);
     });
-  }
+  },
 });
 
 module.exports = openbadger;

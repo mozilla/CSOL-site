@@ -67,7 +67,7 @@ function extractUserData (user) {
   if ('home' in user) return user;
 
   var userType = user.daoFactoryName.toLowerCase();
-  var userHome = (userType === 'learner') ? '/backpack' : '/dashboard';
+  var userHome = (userType === 'learner') ? '/mybadges' : '/dashboard';
 
   return {
     id: user.id,

@@ -1,17 +1,13 @@
 const openbadger = require('../openbadger');
 const db = require('../db');
 const claim = db.model('Claim');
+const loggedIn = require('../middleware').loggedIn;
 
 module.exports = function (app) {
 
-  app.get('/claim', function (req, res, next) {
+  app.get('/claim', [loggedIn], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
-
-    if (!user) {
-      req.session.afterLogin = req.originalUrl;
-      return res.redirect('/login');
-    }
 
     if (!claimCode)
       return res.render('claim.html');
@@ -42,38 +38,9 @@ module.exports = function (app) {
 
   });
 
-  app.post('/claim', function (req, res, next) {
+  app.post('/claim', [loggedIn], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
-
-    if (!user) {
-      return res.redirect('/login');
-    }
-
-    openbadger.claim({
-      code: claimCode,
-      email: user.email
-    }, function(err, data) {
-      console.log(err, data);
-      if (err)
-        if (err.code === 409)
-          req.flash('warn', "You already have that badge.");
-        else
-          req.flash('error', "There has been an error claiming your badge.");
-      else
-        req.flash('success', "You've claimed a new badge!");
-      return res.redirect('/backpack');
-    });
-
-  });
-
-  app.post('/claim', function (req, res, next) {
-    var claimCode = req.query.code;
-    var user = res.locals.user;
-
-    if (!user) {
-      return res.redirect('/login');
-    }
 
     claim.findOrCreate({
       code: claimCode,
@@ -96,25 +63,17 @@ module.exports = function (app) {
             else
               req.flash('success', "You've claimed a new badge!");
           }
-          return res.redirect('/backpack');
+          return res.redirect('/mybadges');
         });
       }
     });
   });
 
-  app.get('/backpack', function (req, res, next) {
-    var badges = [];
-
-    for (var i = 0; i < 7; ++i) {
-      badges.push({
-        thumbnail: '/media/images/badge.png',
-        description: 'Badge blah in voluptate velit...',
-        url: '/badges/ae784f'
-      });
-    }
+  app.get('/mybadges', [loggedIn], openbadger.middleware('getUserBadges'), function (req, res, next) {
+    var data = req.remote;
 
     res.render('user/backpack.html', {
-      items: badges
+      items: data.badges
     });
   });
 
