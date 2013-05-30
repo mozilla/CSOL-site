@@ -283,7 +283,7 @@ module.exports = function (app) {
 
     applications.findOrCreate({
       badgeId: badge.id,
-      LearnerId: 1 // req.session.user.id
+      LearnerId: req.session.user.id
     })
       .complete(function(err, application) {
         if (err || !application)
