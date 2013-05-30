@@ -1,9 +1,11 @@
 var bcrypt = require('bcrypt');
-var passwords = require('../lib/passwords');
-var usernames = require('../lib/usernames');
 var db = require('../db');
 var email = require('../mandrill');
 var logger = require('../logger');
+var passwords = require('../lib/passwords');
+var usernames = require('../lib/usernames');
+var _ = require('underscore');
+
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
@@ -266,8 +268,33 @@ function processStandardLearnerSignup (req, res, next) {
 module.exports = function (app) {
 
   app.use(function(req, res, next) {
-    res.locals.user = req.session.user;
-    next();
+    if (!req.session.user) {
+      res.locals.user = undefined;
+      return next();
+    }
+
+    var user = req.session.user,
+        model = db.model(user.type);
+
+    model.find(user.id)
+      .complete(function (err, dbUser) {
+        if (err)
+          console.log('Error loading user:', err);
+
+        if (!dbUser) {
+          console.log('Could not find user "' + user.name + '" in database');
+          clearUser(req, res);
+          return next();
+        }
+
+        _.functions(dbUser).forEach(function(method) {
+          if (/^(get|set|add|remove|has)[A-Z]/.test(method))
+            user[method] = dbUser[method].bind(dbUser);
+        });
+
+        res.locals.user = user;
+        next();
+      });
   });
 
   app.get('/login', function (req, res, next) {
