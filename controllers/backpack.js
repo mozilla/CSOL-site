@@ -1,4 +1,6 @@
 const openbadger = require('../openbadger');
+const db = require('../db');
+const claim = db.model('Claim');
 
 module.exports = function (app) {
 
@@ -48,21 +50,31 @@ module.exports = function (app) {
       return res.redirect('/login');
     }
 
-    openbadger.claim({
+    claim.findOrCreate({
       code: claimCode,
-      email: user.email
-    }, function(err, data) {
-      console.log(err, data);
-      if (err)
-        if (err.code === 409)
-          req.flash('warn', "You already have that badge.");
-        else
-          req.flash('error', "There has been an error claiming your badge.");
-      else
-        req.flash('success', "You've claimed a new badge!");
-      return res.redirect('/backpack');
+      LearnerId: user.id
+    }).complete(function(err, claim) {
+      if (err) {
+        return next(err);
+      }
+      else {
+        claim.submit(function(err, claim){
+          if (err) {
+            if (err.code === 409)
+              req.flash('warn', "You already have that badge.");
+            else
+              req.flash('error', "There has been an error claiming your badge.");
+          }
+          else {
+            if (claim.state === 'waiting')
+              req.flash('info', "Your badge claim is awaiting approval from your parent or guardian.");
+            else
+              req.flash('success', "You've claimed a new badge!");
+          }
+          return res.redirect('/backpack');
+        });
+      }
     });
-
   });
 
   app.get('/backpack', function (req, res, next) {
