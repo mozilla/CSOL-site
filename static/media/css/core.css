@@ -231,6 +231,15 @@ ol {
   padding: 10px;
   text-align: left;
 }
+#menu-login-form button {
+  display: block;
+  width: 100%;
+}
+#menu-login-form small {
+  display: block;
+  padding: 15px 0 5px;
+  text-align: center;
+}
 /*landing page specific*/
 body.home {
   background-image: url('../img/chalkboard_bg.jpg');
