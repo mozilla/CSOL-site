@@ -77,6 +77,10 @@ const DATA = {
         url: "http://issuer-b.org"
       }
     }
+  },
+  'claim': {
+    status: 'ok',
+    url: 'http://some-url.org/assertion'
   }
 };
 
@@ -244,6 +248,26 @@ test('getIssuers', function(t) {
       var org = data.orgs[0];
       t.ok(org.url && org.name, 'needed data');
       t.ok(getStub.calledWithMatch('/issuers'), 'endpoint');
+      t.end();
+    });
+  });
+
+});
+
+test('claim', function(t) {
+
+  t.test('with data', function(t) {
+    var postStub = mock.expects('post');
+    postStub.callsArgWith(2, null, DATA['claim']);
+    openbadger.claim({
+      code: 'CLAIMCODE',
+      email: 'EMAIL'
+    }, function(err, data) {
+      t.notOk(err, 'no error');
+      var opts = postStub.args[0][1];
+      t.ok(opts.json, 'post with json data');
+      t.ok(opts.json.auth, 'contains auth');
+      t.similar(opts.json, { email: 'EMAIL', code: 'CLAIMCODE' }, 'params');
       t.end();
     });
   });
