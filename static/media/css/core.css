@@ -249,7 +249,7 @@ figure.thumbnail .caption p:first-child {
   color: #000;
   border-left: inherit;
   border-right: inherit;
-=======
+}
 /*Evidence uploading / application*/
 #application-review .well {
   margin-left: -20px;
@@ -411,7 +411,6 @@ figure.thumbnail .caption p:first-child {
 }
 .upload-list .details .progress .bar {
   opacity: 0.5;
->>>>>>> 6d558fac85b71c2f1a353963a78431eb0ecc73c0
 }
 /*landing page specific*/
 body.home {
