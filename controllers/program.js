@@ -142,11 +142,12 @@ module.exports = function (app) {
 
   app.param('evidenceSlug', function (req, res, next, slug) {
     var parts = /^([a-z0-9]+?)(?:_(thumb))?$/.exec(slug);
+    var shouldAuthenticate = (req.method !== 'GET');
 
     if (!parts)
       return next(new errors.NotFound());
 
-    if (!req.session.user)
+    if (shouldAuthenticate && !req.session.user)
       return next(new errors.Forbidden());
 
     var key = parts[1],
@@ -173,6 +174,9 @@ module.exports = function (app) {
             // We'll need to decide how to authenticate external services
             // like, for example, Aestimia. For now, restrict access to either
             // the learner who uploaded it, or their guardian
+
+            if (!shouldAuthenticate)
+              return next();
 
             application.getLearner()
               .complete(function (err, learner) {
