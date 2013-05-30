@@ -42,6 +42,10 @@ module.exports = {
     {
       model: 'Guardian',
       type: 'belongsTo'
+    },
+    {
+      model: 'Application',
+      type: 'hasMany'
     }
   ]
 };

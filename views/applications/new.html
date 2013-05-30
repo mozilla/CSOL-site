@@ -1,0 +1,132 @@
+{% extends 'applications/layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/media/css/jquery.fancybox.css">
+{% endblock %}
+
+{% block content %}
+	<div class="span8 offset2">
+		<div id="application-review">
+			{% block intro %}
+			{% endblock %}
+			{% block items %}
+				<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
+					{% for item in evidence %}
+						<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
+							{% if item.saved %}
+								<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+								</a>
+							{% else %}
+								<span class="thumbnail processing" title="{{ item.original }}">
+									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+								</span>
+							{% endif %}
+							<form method="post" action="{{ item.getLocationUrl() }}">
+								<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+								<input type="hidden" name="action" value="delete">
+								<label title="Delete"><input type="submit" value="Delete"></label>
+							</form>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endblock %}
+		</div>
+		{% block form %}
+			<form id="edit-application" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
+				<textarea name="description" class="span8" rows="7" id="edit-description">{{ application.description }}</textarea>
+				<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
+				{% block evidenceTitle %}<h3>Then upload your pictures and videos</h3>{% endblock %}
+				<ul class="items">
+					<li class="item">
+						<input type="file" name="media" accept="image/*, video/*" multiple="multiple">
+					</li>
+				</ul>
+				<p class="text-right buttons"><button type="submit" value="upload" class="btn">Upload</button></p>
+			</form>
+		{% endblock %}
+	</div>
+{% endblock %}
+
+{% block finally %}
+	<script src="/media/js/jquery.uploader.js"></script>
+	<script src="/media/js/jquery.fancybox.js"></script>
+	<script>
+		(function ($) {
+			var deleteTemplate = [
+				'<input type="hidden" name="_csrf" value="{{ csrfToken }}">',
+				'<input type="hidden" name="action" value="delete">',
+				'<label title="Delete"><input type="submit" value="Delete"></label>',
+			].join('\n');
+
+			function addLightbox ($collection) {
+				$collection.fancybox({
+					openEffect	: 'none',
+					closeEffect	: 'none'
+				});
+			}
+
+			var $evidence = $('#evidence');
+
+			addLightbox($evidence.find('a.thumbnail'));
+
+			$evidence.on('submit', 'form', function () {
+				var $form = $(this),
+				    $item = $form.parent('.item');
+
+				$.ajax({
+					url: $form.attr('action') || document.location.href,
+					type: $form.attr('method'),
+					data: $form.serialize(),
+					complete: function () {
+						$item.fadeOut(500, function() {
+							$item.remove();
+
+							if (!$evidence.find('.item').length && $('#application-review .well').length)
+								window.location.reload();
+						});
+					}
+				});
+
+				return false;
+			});
+
+			var uploader = $('#edit-application').uploader();
+
+			uploader.on('uploaded', function (e, data) {
+				var $list = $('#evidence'),
+				    $item = $(document.createElement('li')),
+				    $wrapper = $(document.createElement('span')),
+				    $form = $(document.createElement('form'));
+
+				$wrapper
+					.html('<img src="' + data.evidence.thumbnail + '" width="150" height="150">')
+					.attr('title', data.evidence.original)
+					.addClass('thumbnail processing');
+
+				$form
+					.attr('method', 'post')
+					.attr('action', data.evidence.location)
+					.html(deleteTemplate);
+
+				$item
+					.attr('id', 'uploaded-item-' + data.key)
+					.addClass('span2 item item-' + data.evidence.type.split('/')[0])
+					.append($wrapper)
+					.append($form)
+					.appendTo($list);
+
+				addLightbox($item.find('.thumbnail'));
+			});
+
+			uploader.on('removed', function (e, data) {
+				var id = 'uploaded-item-' + data.key;
+
+				$('#' + id).find('form').submit();
+				console.log('Removed', this, arguments);
+			});
+		})(jQuery);
+	</script>
+{% endblock %}
