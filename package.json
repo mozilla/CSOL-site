@@ -25,6 +25,7 @@
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js",
     "sync-db": "./bin/sync-db",
+    "migrate-db": "./bin/migrate-db",
     "start": "./node_modules/.bin/up -w -n 1 -p 8888 app.js"
   },
   "repository": {
