@@ -14,7 +14,7 @@
 
             <p class="text-right">
                 <a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
-                <a href="#applyModal" data-toggle="modal" class="btn">Apply</a>
+                <a href="{{ badge.url }}/apply" class="btn">Apply</a>
                 <a href="{{ badge.url }}/favorite" class="btn show-tooltip" title="Save this badge to your favorites"><i class="icon-heart"></i></a>
             </p>
         </div>
@@ -72,107 +72,4 @@
             </figure>
         </li>
     </ul>
-{% endblock %}
-
-{% block modal %}
-    <!-- Modal -->
-    <div id="applyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Apply for the {{badge.name}} badge</h3>
-        </div>
-        <div class="modal-body">
-            {% if badge.prerequisites|length > 0 %}
-                <h4>In order to earn this badge you need to make sure you have met the following requirements:</h4>
-                <ul>
-                    {% for req in badge.prerequisites %}
-                        <li>{{req}}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
-            <h4>Upload photos or videos to show your work</h4>
-
-            <div id="draggable-upload-area">
-                Drag and Drop Photos and Videos here or
-                <a href="#" class="btn btn-primary btn-block">Choose Photos and Videos to Upload</a>
-            </div><!-- .draggable-upload-area -->
-
-            <h4>Tell us more about the work you uploaded</h4>
-            <p>Describe how your work meets the badge requirements and why you think you deserve to earn the badge. If you're especially proud of something you did, here's your chance to let us know.</p>
-
-            <textarea>Some helper text</textarea>
-
-            <a href="#applySuccess" class="btn btn-primary btn-block" data-dismiss="modal" data-toggle="modal">Apply</a>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div id="applySuccess" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3>Badge submission success!</h3>
-        </div>
-        <div class="modal-body">
-            {% if user.underage %}
-                <p>You are trying to apply for the {{badge.name}} badge. We just want to make sure your parent or guardian is OK with this. We've sent an email to your parent/guardian and as soon as they give their approval of your badge application, it will be sent to a mentor.</p>
-                <p>The mentor will then review your application and get back to you about your badge.</p>
-                <p>In the mean time, keep on learning, earning and leveling up</p>
-            {% else %}
-                <p>You have applied for the {{badge.name}} badge. Your application will be sent to a mentor who will review it and get back to you about your badge.</p>
-                <p>In the mean time, check out these badges and programs and keep on learning, earning and leveling up!</p>
-            {% endif %}
-
-            <ul class="thumbnails">
-                <li class="span3">
-                    <figure class="thumbnail">
-                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                        <figcaption class="caption">
-                            <p>Badge blah in voluptate velit...</p>
-                            <p class="text-right">
-                                <a href="/badges/ae784f" class="btn">Details</a>
-                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-                <li class="span3">
-                    <figure class="thumbnail">
-                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                        <figcaption class="caption">
-                            <p>Badge blah in voluptate velit...</p>
-                            <p class="text-right">
-                                <a href="/badges/ae784f" class="btn">Details</a>
-                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-                <li class="span3">
-                    <figure class="thumbnail">
-                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                        <figcaption class="caption">
-                            <p>Badge blah in voluptate velit...</p>
-                            <p class="text-right">
-                                <a href="/badges/ae784f" class="btn">Details</a>
-                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-                <li class="span3">
-                    <figure class="thumbnail">
-                        <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                        <figcaption class="caption">
-                            <p>Badge blah in voluptate velit...</p>
-                            <p class="text-right">
-                                <a href="/badges/ae784f" class="btn">Details</a>
-                                <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                            </p>
-                        </figcaption>
-                    </figure>
-                </li>
-            </ul>
-        </div>
-    </div>
 {% endblock %}
