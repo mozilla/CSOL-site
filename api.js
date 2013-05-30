@@ -95,6 +95,10 @@ function remote (method, path, options, callback) {
     options = {};
   }
 
+  if (this.defaultOptions && _.isObject(this.defaultOptions)) {
+    options = _.defaults(options, this.defaultOptions);
+  }
+
   var endpointUrl = getFullUrl(this.origin, path);
   request[method](endpointUrl, options, function(err, response, body) {
 
