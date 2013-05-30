@@ -278,8 +278,10 @@ module.exports = function (app) {
   app.get('/earn/:badgeName/apply', function (req, res, next) {
     var badge = req.params.badge;
 
-    if (!req.session.user)
+    if (!req.session.user) {
+      req.session.afterLogin = '/earn/' + req.params.badgeName + '/apply';
       return res.redirect('/login');
+    }
 
     applications.findOrCreate({
       badgeId: badge.id,
