@@ -439,3 +439,16 @@ body.home #bubbles span.rt {
 body.home .footer {
   background-image: none;
 }
+body.home #i_vid_wrap {
+  width: 640px;
+  height: 360px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -204px;
+  margin-left: -348px;
+  z-index: 3;
+  background-color: black;
+  padding: 28px;
+  border-radius: 7px;
+}
