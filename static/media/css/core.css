@@ -228,6 +228,12 @@ figure.thumbnail {
 figure.thumbnail a.show-tooltip {
   display: none;
 }
+.navbar .nav .active a,
+.navbar .nav .active a:hover {
+  color: #000;
+  border-left: inherit;
+  border-right: inherit;
+}
 /*landing page specific*/
 body.home {
   background-image: url('../img/background-chalkboard-green.jpg');
