@@ -192,7 +192,7 @@ function processChildLearnerSignup (req, res, next) {
             var confirmationUrl = req.protocol + '://' + req.get('Host')
               + '/signup/' + token.token;
             email.send('<13 learner signup', {
-              childname: signup.username,
+              earnername: signup.username,
               confirmationUrl: confirmationUrl
             }, signup.parent_email);
             delete req.session.signup;
@@ -256,7 +256,7 @@ function processStandardLearnerSignup (req, res, next) {
             return fail(err);
           }
 
-          email.send('learner signup', { childname:signup.username }, signup.email);
+          email.send('learner signup', { earnername:signup.username }, signup.email);
           delete req.session.signup;
           redirectUser(req, res, user);
         });
