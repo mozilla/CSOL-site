@@ -67,19 +67,19 @@ module.exports = {
 
       var application = this;
 
-      application.getEvidence().complete(function (err, items) {
-        if (err || !items || !items.length)
+      application.getLearner().complete(function (err, learner) {
+        if (err || !learner)
           return callback(err);
 
-        application.getLearner().complete(function (err, learner) {
-          if (err || !learner)
-            return callback(err);
+        if (learner.underage && !force) {
+          return application.updateAttributes({
+            state: 'waiting'
+          }).complete(callback);
+        }
 
-          if (learner.underage && !force) {
-            return application.updateAttributes({
-              state: 'waiting'
-            }).complete(callback);
-          }
+        application.getEvidence().complete(function (err, items) {
+          if (err || !items || !items.length)
+            return callback(err || 'No evidence found for this application');
 
           aestimia.submit(application, function (err, id) {
             if (err)
