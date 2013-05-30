@@ -12,6 +12,14 @@ module.exports = {
       allowNull: false,
       defaultValue: true
     },
+    firstName: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    lastName: {
+      type: db.type.STRING,
+      allowNull: true
+    },
     email: {
       type: db.type.STRING,
       allowNull: true,
@@ -43,5 +51,10 @@ module.exports = {
       model: 'Guardian',
       type: 'belongsTo'
     }
-  ]
+  ],
+  instanceMethods: {
+    getFullName: function () {
+      return this.firstName + ' ' + this.lastName;
+    }
+  }
 };
