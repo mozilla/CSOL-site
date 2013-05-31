@@ -3,15 +3,19 @@ $(document).ready(function(){
 	if($('body.home').length != 0) {
 		var vidLink = $('<a href="#">watch video</a>').click(function(){
 			if($('#i_vid').length == 0) {
-				var bkgFade = $('<div id="bkg_fade"></div>');
+				var bkgFade = $('<div id="bkg_fade" style="display:none;"></div>');
 				var vidWrap = $('<div id="i_vid_wrap" style="display:none;"></div>');
 				var vidClose = $('<a id="cl_i_vid" href="#">Close</a>').click(function(){
 					$('#i_vid_wrap').fadeOut(function(){
-						$(this).parent().remove();
+						$(this).parent().fadeOut(function(){
+							$(this).remove();
+						});
 					});
 					return false;
 				});
-				$('body').prepend(bkgFade.append(vidWrap.append('<iframe id="i_vid" width="640" height="360" src="http://www.youtube.com/embed/6WwpwtYNsNk?autoplay=1&feature=player_detailpage" frameborder="0" allowfullscreen></iframe>', vidClose))).find('#i_vid_wrap').fadeIn();
+				$('body').prepend($(bkgFade).fadeIn(function() {
+					$(this).append(vidWrap.append('<iframe id="i_vid" width="640" height="360" src="http://www.youtube.com/embed/6WwpwtYNsNk?autoplay=1&feature=player_detailpage" frameborder="0" allowfullscreen></iframe>', vidClose)).find('#i_vid_wrap').fadeIn();
+				}));
 			}
 			return false;
 		});
