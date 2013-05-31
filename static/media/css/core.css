@@ -66,6 +66,9 @@ ol {
   border-left: none;
   border-right: none;
 }
+.navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #000;
+}
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
@@ -81,6 +84,11 @@ ol {
 }
 .navbar .navbar-inner {
   background-image: url('../img/chalkboard_bg.jpg');
+}
+.navbar form.navbar-inner {
+  padding: 7px;
+}
+.navbar div.navbar-inner {
   -webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
@@ -129,6 +137,12 @@ ol {
   text-indent: -9000px;
 }
 /*footer*/
+.footer {
+  background-image: url('../img/chalkboard_bg.jpg');
+  -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
 .footer a {
   color: #fff;
 }
@@ -166,28 +180,29 @@ ol {
   margin-bottom: 20px;
 }
 .footer .upper li {
+  display: inline-block;
   border-left: none;
   border-right: none;
 }
 .footer .lower {
   border-top: 1px solid white;
-  padding: 25px 0 0 0;
+  padding: 15px 0;
 }
-.footer ul li {
+.footer .lower ul li {
   display: inline-block;
 }
-.footer ul li > a,
-.footer ul li > span {
+.footer .lower ul li > a,
+.footer .lower ul li > span {
   margin: 10px;
 }
-.footer ul li:first-child a {
+.footer .lower ul li:first-child a {
   margin-left: 0px;
 }
-.footer ul li:nth-child(even) {
+.footer .lower ul li:nth-child(even) {
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-.footer ul li:last-child {
+.footer .lower ul li:last-child {
   border-right: none;
 }
 /*sticky footer*/
@@ -209,16 +224,6 @@ ol {
 .wrapper.secondary {
   position: relative;
   color: #fff;
-  height: 250px;
-  background-image: url('../img/background-chalkboard-green.jpg');
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
-  overflow: visible;
 }
 /*CSOL-site specific*/
 .poster a,
@@ -230,6 +235,15 @@ ol {
 #menu-login-form {
   padding: 10px;
   text-align: left;
+}
+#menu-login-form button {
+  display: block;
+  width: 100%;
+}
+#menu-login-form small {
+  display: block;
+  padding: 15px 0 5px;
+  text-align: center;
 }
 /*Evidence uploading / application*/
 #application-review .well {
@@ -393,9 +407,74 @@ ol {
 .upload-list .details .progress .bar {
   opacity: 0.5;
 }
+figure.thumbnail {
+  margin: 0 0 0 0;
+}
+figure.thumbnail > a img {
+  display: block;
+  width: 210px;
+  height: 210px;
+}
+figure.thumbnail a.show-tooltip {
+  display: none;
+}
+figure.thumbnail .caption p:first-child {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navbar .nav .active a,
+.navbar .nav .active a:hover {
+  color: #000;
+  border-left: inherit;
+  border-right: inherit;
+}
+/*Password fields with feedback bar*/
+input[type="password"].metered {
+  padding-bottom: 9px;
+}
+input[type="password"].metered + .password-meter {
+  border: solid 1px #CCC;
+  border-top: none;
+  height: 6px;
+  margin: -6px 0 10px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: border linear .2s;
+  -moz-transition: border linear .2s;
+  -o-transition: border linear .2s;
+  transition: border linear .2s;
+}
+input[type="password"].metered + .password-meter .bar {
+  border-radius: 0 0 0 3px;
+  overflow: hidden;
+}
+input[type="password"].metered:focus + .password-meter {
+  border-color: rgba(82, 168, 236, 0.8);
+}
+input[type="password"].metered:focus:invalid + .password-meter {
+  border-color: #ee5f5b;
+}
+input[type="password"].metered:focus:invalid:focus + .password-meter {
+  border-color: #e9322d;
+}
 /*landing page specific*/
 body.home {
-  background-image: url('../img/chalkboard_bg.jpg');
+  background-image: url('../img/background-chalkboard-green.jpg');
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
+  overflow: visible;
 }
 body.home .container {
   width: 960px;
@@ -418,6 +497,9 @@ body.home .navbar .navbar-inner > .container {
   background-image: url('../img/home_drawing.png');
   background-position: top center;
   background-repeat: no-repeat;
+}
+body.home .navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #fff;
 }
 body.home .navbar .brand {
   background-image: url('../img/csol_logo_sm.png');
@@ -522,12 +604,8 @@ body.home .secondary .lower {
 body.home .secondary .lower .pull-right li:first-child {
   display: none;
 }
-body.home .secondary .lower .pull-right li:nth-child(3) {
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
-}
-body.home .secondary .lower .pull-left li:first-child {
-  border-right: 1px solid #fff;
+body.home .secondary .lower .pull-right li:nth-child(2) {
+  border-left: none;
 }
 body.home .footer {
   -webkit-box-shadow: none;
@@ -575,4 +653,29 @@ body.home #bubbles span.rt {
   float: right;
   font-size: 24px;
   line-height: 20px;
+}
+body.home .footer {
+  background-image: none;
+}
+body.home #bkg_fade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/65pb.png');
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  z-index: 3;
+}
+body.home #i_vid_wrap {
+  width: 640px;
+  height: 360px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -204px;
+  margin-left: -348px;
+  z-index: 4;
+  background-color: black;
+  padding: 28px;
+  border-radius: 7px;
 }
