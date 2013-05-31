@@ -177,6 +177,7 @@ ol {
   margin-bottom: 20px;
 }
 .footer .upper li {
+  display: inline-block;
   border-left: none;
   border-right: none;
 }
@@ -184,21 +185,21 @@ ol {
   border-top: 1px solid white;
   padding: 15px 0;
 }
-.footer ul li {
+.footer .lower ul li {
   display: inline-block;
 }
-.footer ul li > a,
-.footer ul li > span {
+.footer .lower ul li > a,
+.footer .lower ul li > span {
   margin: 10px;
 }
-.footer ul li:first-child a {
+.footer .lower ul li:first-child a {
   margin-left: 0px;
 }
-.footer ul li:nth-child(even) {
+.footer .lower ul li:nth-child(even) {
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-.footer ul li:last-child {
+.footer .lower ul li:last-child {
   border-right: none;
 }
 /*sticky footer*/
@@ -231,24 +232,6 @@ ol {
 #menu-login-form {
   padding: 10px;
   text-align: left;
-}
-figure.thumbnail {
-  margin: 0 0 0 0;
-}
-figure.thumbnail a.show-tooltip {
-  display: none;
-}
-figure.thumbnail .caption p:first-child {
-  height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.navbar .nav .active a,
-.navbar .nav .active a:hover {
-  color: #000;
-  border-left: inherit;
-  border-right: inherit;
 }
 /*Evidence uploading / application*/
 #application-review .well {
@@ -412,6 +395,29 @@ figure.thumbnail .caption p:first-child {
 .upload-list .details .progress .bar {
   opacity: 0.5;
 }
+figure.thumbnail {
+  margin: 0 0 0 0;
+}
+figure.thumbnail > a img {
+  display: block;
+  width: 210px;
+  height: 210px;
+}
+figure.thumbnail a.show-tooltip {
+  display: none;
+}
+figure.thumbnail .caption p:first-child {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navbar .nav .active a,
+.navbar .nav .active a:hover {
+  color: #000;
+  border-left: inherit;
+  border-right: inherit;
+}
 /*landing page specific*/
 body.home {
   background-image: url('../img/background-chalkboard-green.jpg');
@@ -549,12 +555,8 @@ body.home .secondary .lower {
 body.home .secondary .lower .pull-right li:first-child {
   display: none;
 }
-body.home .secondary .lower .pull-right li:nth-child(3) {
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
-}
-body.home .secondary .lower .pull-left li:first-child {
-  border-right: 1px solid #fff;
+body.home .secondary .lower .pull-right li:nth-child(2) {
+  border-left: none;
 }
 body.home .footer {
   -webkit-box-shadow: none;
