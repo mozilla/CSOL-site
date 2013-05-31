@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var db = require(path.join(__dirname, '..', 'db'));
+var migrationsPath = path.join(__dirname, '..', 'migrations');
+
+db.getMigrator({
+  path: migrationsPath
+}).migrate();
