@@ -14,7 +14,7 @@ body {
   margin:0px;
   padding:0px;
   .container {
-  	& > br {
+  & > br {
 			display:none;
   	}
   }
@@ -58,7 +58,7 @@ ol {
 .navbar {
 	.nav {
 	  float:none;
-	  &  > li {
+	  & > li {
       &.dropdown.open > .dropdown-toggle {
       background-color:inherit;
       text-decoration:underline;
@@ -71,6 +71,9 @@ ol {
 	  		background-color:inherit;
 	  		border-left:none;
 	  		border-right:none;
+	  	}
+	  	&.dropdown.open > .dropdown-toggle {
+	  		color:#000;
 	  	}
 	  }
 		& > li:nth-child(even) {
@@ -87,8 +90,13 @@ ol {
   		}
   	}
  	}
- 	.navbar-inner {
- 		background-image:url('../img/chalkboard_bg.jpg');
+  .navbar-inner {
+    background-image:url('../img/chalkboard_bg.jpg');
+  }
+  form.navbar-inner {
+    padding:7px;
+  }
+ 	div.navbar-inner {
   	-webkit-box-shadow:inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   	-moz-box-shadow:inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   	box-shadow:inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
@@ -139,6 +147,10 @@ ol {
 
 /*footer*/
 .footer {
+  background-image:url('../img/chalkboard_bg.jpg');
+  -webkit-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
 	a {
 		color: #fff;
 	}
@@ -180,35 +192,33 @@ ol {
 		  margin-bottom:20px;
 	  }
 	  li {
+	  	display:inline-block;
   		border-left:none;
   		border-right:none;
   	}
   }
   .lower {
   	border-top:1px solid white;
-  	padding:25px 0 0 0;
-  }
-  ul {
-  	li {
-			display:inline-block;
-			& > a, & > span {
-			margin:10px;
+  	padding:15px 0;
+    ul {
+ 			li {
+				display:inline-block;
+				& > a, & > span {
+				margin:10px;
+				}
 			}
-		}
-
-		li:first-child {
-			a {
-				margin-left: 0px;
+			li:first-child {
+				a {
+					margin-left: 0px;
+				}
 			}
-		}
-
-		li:nth-child(even) {
-			border-left: 1px solid #fff;
-			border-right: 1px solid #fff;
-		}
-
-		li:last-child {
-			border-right: none;
+			li:nth-child(even) {
+				border-left: 1px solid #fff;
+				border-right: 1px solid #fff;
+			}
+			li:last-child {
+				border-right: none;
+			}
 		}
 	}
 }
@@ -234,16 +244,6 @@ ol {
 	&.secondary {
     position:relative;
 		color:#fff;
-		height:250px;
-		background-image:url('../img/background-chalkboard-green.jpg');
-    background-repeat:no-repeat;
-    -webkit-background-size:cover;
-    -moz-background-size:cover;
-    -o-background-size:cover;
-    background-size:cover;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
-    overflow:visible;
 	}
 }
 
@@ -459,10 +459,48 @@ ol {
 		}
 	}
 }
+figure.thumbnail {
+  margin:0 0 0 0;
+  & > a img {
+    display:block;
+    width:210px;
+    height:210px;
+  }
+  a.show-tooltip {
+    display:none;
+  }
+  .caption {
+    p:first-child {
+      height:40px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+.navbar {
+  .nav { 
+    .active {
+      a, a:hover {
+        color:#000;
+        border-left:inherit;
+        border-right:inherit;
+      }
+    }
+  }
+}
 
 /*landing page specific*/
 body.home {
-  background-image:url('../img/chalkboard_bg.jpg');
+  background-image:url('../img/background-chalkboard-green.jpg');
+  background-repeat:no-repeat;
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-size:cover;
+  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";  
+  overflow:visible;
   .container {
     width:960px;
   }
@@ -486,6 +524,13 @@ body.home {
   			background-position:top center;
   			background-repeat:no-repeat;
   			}
+		}
+		.nav {
+			& > li {
+				&.dropdown.open > .dropdown-toggle {
+					color:#fff;
+				}
+			}
 		}
 		.brand {
 			background-image:url('../img/csol_logo_sm.png');
@@ -595,15 +640,9 @@ body.home {
     			li:first-child {
 	    			display:none;
 	    		}
-	    	    li:nth-child(3) {
-	    			border-left:1px solid #fff;
-	    			border-right:1px solid #fff;
+	    		li:nth-child(2) {
+	    			border-left:none;
 	    		}
-	    	}
-	    	.pull-left {
-  				li:first-child {
-    				border-right:1px solid #fff;
-    			}
 	    	}
     	}
     }
@@ -653,5 +692,30 @@ body.home {
         line-height:20px;
       }
     }
+  }
+  .footer {
+  background-image: none;
+  }
+  #bkg_fade {
+  	position:fixed;
+  	width:100%;
+  	height:100%;
+    background-image:url('../img/65pb.png');
+  	margin:0 0 0 0;
+  	padding:0 0 0 0;
+    z-index:3;
+  }
+  #i_vid_wrap {
+    width:640px;
+    height:360px;
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top:-204px;
+    margin-left:-348px;
+    z-index:4;
+    background-color:black;
+    padding:28px;
+    border-radius:7px;
   }
 }
