@@ -62,6 +62,14 @@ function filterBadges(data, query) {
   return data;
 }
 
+function getJWTToken(email) {
+  var claims = {
+    prn: email,
+    exp: Date.now() + TOKEN_LIFETIME
+  };
+  return jwt.encode(claims, JWT_SECRET);
+}
+
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
@@ -138,16 +146,24 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  getBadgeFromCode: function getBadgeFromCode (query, callback) {
+    var email = query.email;
+    var code = query.code;
+    var params = {
+      auth: getJWTToken(email),
+      email: email,
+      code: code,
+    };
+    this.get('/unclaimed', { qs: params }, function(err, data) {
+      return callback(err, data);
+    });
+  },
+
   claim: function claim (query, callback) {
     var email = query.email;
     var code = query.code;
-    var claims = {
-      prn: email,
-      exp: Date.now() + TOKEN_LIFETIME
-    };
-    var token = jwt.encode(claims, JWT_SECRET);
     var params = {
-      auth: token,
+      auth: getJWTToken(email),
       email: email,
       code: code,
     };
