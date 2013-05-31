@@ -25,7 +25,6 @@ module.exports = {
     },
     lastReminder: {
       type: db.type.DATE,
-      defaultValue: db.type.NOW,
       allowNull: true
     }
   },

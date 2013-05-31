@@ -33,7 +33,13 @@ signupTokens.findAll({ where: { expired: 0 } }).success(function(activeTokens) {
     }
     else {
       var expireTime = Date.now() + timeToExpiration;
-      var timeRemainingAtLastReminder = expireTime - activeToken.lastReminder.getTime();
+      var timeRemainingAtLastReminder;
+      if (activeToken.lastReminder) {
+        timeRemainingAtLastReminder = expireTime - activeToken.lastReminder.getTime();
+      }
+      else {
+        timeRemainingAtLastReminder = expireTime - activeToken.createdAt.getTime();
+      }
 
       REMINDER_EMAILS.forEach(function(reminder) {
         if ((reminder.timeRemaining > timeToExpiration) &&
