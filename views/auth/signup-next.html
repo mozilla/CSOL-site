@@ -8,6 +8,13 @@
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset>
 			<div class="control-group">
+				<label class="control-label" for="input-email">Your Name</label>
+				<div class="controls">
+					<input type="text" id="input-first-name" name="first_name" value="{{ first_name }}" class="input-small" required="required" placeholder="First">
+					<input type="text" id="input-last-name" name="last_name" value="{{ last_name }}" class="input-small" required="required" placeholder="Last">
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label" for="input-email">Email</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="email" value="{{ email }}" required="required">
