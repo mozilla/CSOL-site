@@ -38,6 +38,30 @@ function normalizeProgram(program, id) {
   return program;
 }
 
+function filterBadges(data, query) {
+  // TO DO - We should probably be a little less naive about this, and make sure
+  // that these values are from an allowed list
+
+  var category = query.category,
+      ageGroup = query.age,
+      program = query.program;
+
+  data = _.filter(data, function(item) {
+    if (category && !_.contains(item.categories, category))
+      return false;
+
+    if (ageGroup && !_.contains(item.ageRange, ageGroup))
+      return false;
+
+    if (program && item.program !== program)
+      return false;
+
+    return true;
+  });
+
+  return data;
+}
+
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
@@ -51,6 +75,7 @@ var openbadger = new Api(ENDPOINT, {
         });
       });
     },
+    filters: filterBadges,
     paginate: true,
     key: 'badges'
   },
