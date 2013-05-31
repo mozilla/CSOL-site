@@ -554,6 +554,11 @@ body.home .secondary .upper > .pull-right {
   text-align: center;
   width: 340px;
   padding-top: 55px;
+  position: relative;
+  left: -7px;
+}
+body.home .secondary .upper > .pull-right li:nth-child(even) {
+  margin: 12px;
 }
 body.home .secondary .lower {
   border-top: none;
