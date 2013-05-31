@@ -255,6 +255,12 @@ ol {
 #edit-application {
   margin-bottom: 20px;
 }
+#edit-application textarea {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #edit-application .items {
   list-style: none;
   margin: 0;
@@ -329,6 +335,12 @@ ol {
 }
 #evidence .item {
   position: relative;
+  width: 33%;
+  margin-left: 0;
+  padding-left: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #evidence .thumbnail {
   background: #FFF;
@@ -348,8 +360,6 @@ ol {
 #evidence img {
   display: block;
   width: 100%;
-  min-width: 150px;
-  min-height: 150px;
   margin: 0;
 }
 #evidence form {
