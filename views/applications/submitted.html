@@ -17,6 +17,8 @@
 		<div class="span1"></div>
 		<div class="span7">
 			<div id="application-review">
+				{% block notes %}
+				{% endblock %}
 				<div class="well">
 					<h3>Your application</h3>
 					{% if application.description %}
