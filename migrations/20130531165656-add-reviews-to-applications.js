@@ -1,7 +1,7 @@
 module.exports = {
   up: function(migration, DataTypes) {
     migration.addColumn('Applications', 'latestReview', {
-      type: DataTypes.STRING(1024),
+      type: DataTypes.TEXT,
       allowNull: true
     });
   },

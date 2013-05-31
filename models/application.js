@@ -47,7 +47,7 @@ module.exports = {
       allowNull: true
     },
     latestReview: {
-      type: db.type.STRING(1024),
+      type: db.type.TEXT,
       allowNull: true
     }
   },
@@ -65,6 +65,14 @@ module.exports = {
   instanceMethods: {
     getReview: function () {
       return JSON.parse(this.latestReview || "{}");
+    },
+    reopen: function (callback) {
+      if (this.state !== 'rejected')
+        return callback();
+
+      this.updateAttributes({
+        state: 'open'
+      }).complete(callback);
     },
     submit: function (force, callback) {
       if (typeof force === 'function') {
