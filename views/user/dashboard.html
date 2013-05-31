@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div class="row">
+		<div class="span3">
+			<ul>
+				{% if dependants.length > 1 %}
+					<li>
+						{%- if currentDependant -%}
+							<a href="/dashboard">All</a>
+						{%- else -%}
+							<strong>All</strong>
+						{%- endif -%}
+					</li>
+				{% endif %}
+				{% for dependant in dependants %}
+					<li>
+						{%- if dependant.username == currentDependant -%}
+							<strong>{{ dependant.getDisplayName() }}</strong>
+						{%- else -%}
+							<a href="/dashboard/{{ dependant.username }}">{{ dependant.getDisplayName() }}</a>
+						{%- endif -%}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endblock %}
