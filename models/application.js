@@ -46,8 +46,8 @@ module.exports = {
       type: db.type.STRING,
       allowNull: true
     },
-    lastReviewId: {
-      type: db.type.STRING,
+    latestReview: {
+      type: db.type.STRING(1024),
       allowNull: true
     }
   },
@@ -63,6 +63,9 @@ module.exports = {
     }
   ],
   instanceMethods: {
+    getReview: function () {
+      return JSON.parse(this.latestReview || "{}");
+    },
     submit: function (force, callback) {
       if (typeof force === 'function') {
         callback = force;
