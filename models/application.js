@@ -86,7 +86,8 @@ module.exports = {
               return callback(err);
 
             application.updateAttributes({
-              state: 'submitted'
+              state: 'submitted',
+              submissionId: id
             }).complete(callback);
           })
         });
