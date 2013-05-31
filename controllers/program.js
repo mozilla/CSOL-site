@@ -363,6 +363,9 @@ module.exports = function (app) {
         if (req.body.action === 'apply')
           return application.submit(finish);
 
+        if (req.body.action === 'reopen')
+          return application.reopen(finish);
+
         if ('description' in req.body) {
           application.updateAttributes({
             description: req.body.description
