@@ -23,3 +23,13 @@ Property          | Default  | Description
 Note that instead of providing AWS credentials, you can specify a pathname
 in `CSOL_AWS_FAKE_S3_DIR`. This is for development purposes only, and
 will store all uploaded files in the local filesystem instead of S3.
+
+## Database
+
+The database can be sync'd by running
+
+    npm run-script sync-db
+
+Any migrations can be run with
+
+    npm run-script migrate-db
