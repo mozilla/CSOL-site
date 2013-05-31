@@ -58,7 +58,7 @@ ol {
 .navbar {
 	.nav {
 	  float:none;
-	  &  > li {
+	  & > li {
       &.dropdown.open > .dropdown-toggle {
       background-color:inherit;
       text-decoration:underline;
@@ -71,6 +71,9 @@ ol {
 	  		background-color:inherit;
 	  		border-left:none;
 	  		border-right:none;
+	  	}
+	  	&.dropdown.open > .dropdown-toggle {
+	  		color:#000;
 	  	}
 	  }
 		& > li:nth-child(even) {
@@ -521,6 +524,13 @@ body.home {
   			background-position:top center;
   			background-repeat:no-repeat;
   			}
+		}
+		.nav {
+			& > li {
+				&.dropdown.open > .dropdown-toggle {
+					color:#fff;
+				}
+			}
 		}
 		.brand {
 			background-image:url('../img/csol_logo_sm.png');

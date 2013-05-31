@@ -66,6 +66,9 @@ ol {
   border-left: none;
   border-right: none;
 }
+.navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #000;
+}
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
@@ -451,6 +454,9 @@ body.home .navbar .navbar-inner > .container {
   background-image: url('../img/home_drawing.png');
   background-position: top center;
   background-repeat: no-repeat;
+}
+body.home .navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #fff;
 }
 body.home .navbar .brand {
   background-image: url('../img/csol_logo_sm.png');
