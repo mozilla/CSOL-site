@@ -416,6 +416,7 @@ figure.thumbnail > a img {
   display: block;
   width: 210px;
   height: 210px;
+  background-image: url('../img/badge-default.png');
 }
 figure.thumbnail a.show-tooltip {
   display: none;
