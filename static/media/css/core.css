@@ -266,6 +266,12 @@ ol {
 #application-review .rubric li.required .note {
   font-style: italic;
 }
+#application-review .rubric li.satisfied {
+  border-color: #B7E8B6;
+}
+#application-review .rubric li.not-satisfied {
+  border-color: #F8D0D4;
+}
 #edit-application {
   margin-bottom: 20px;
 }
