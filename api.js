@@ -190,8 +190,39 @@ function paginate(key, dataFn) {
   };
 }
 
-module.exports = function Api(origin, config) {
+function addFilters(filters, key, dataFn) {
+  if (!dataFn && _.isFunction(key)) {
+    dataFn = key;
+    key = 'data';
+  }
+
+  return function(query, callback) {
+    dataFn(query, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      if (typeof data[key].length === 'number') {
+        _.each(filters, function (filter) {
+          data[key] = filter(data[key], query);
+        });
+      }
+
+      callback(null, data);
+    })
+  }
+}
+
+module.exports = function Api(origin, globalFilters, config) {
+  if (!config) {
+    config = globalFilters;
+    globalFilters = [];
+  }
+
   config = config || {};
+  globalFilters = globalFilters || [];
+
+  if (_.isFunction(globalFilters))
+    globalFilters = [globalFilters];
 
   origin = url.parse(origin);
   this.origin = origin;
@@ -211,11 +242,23 @@ module.exports = function Api(origin, config) {
   _.each(config, function(item, name) {
     var methodConfig = _.isObject(item) ? item : {};
     var method = _.isFunction(item) ? item : methodConfig.func;
+    var key = methodConfig.key || 'data';
+    var filters = methodConfig.filters || [];
+
+    if (_.isFunction(filters))
+      filters = [filters];
+
     method = method.bind(this);
-    if (methodConfig.paginate) {
-      var key = methodConfig.key || 'data';
+
+    if (filters.length)
+      method = addFilters(filters, key, method);
+
+    if (globalFilters.length)
+      method = addFilters(globalFilters, key, method);
+
+    if (methodConfig.paginate)
       method = paginate(key, method);
-    }
+
     this[name] = apiMethod(method);
   }, this);
 

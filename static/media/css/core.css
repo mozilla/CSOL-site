@@ -236,6 +236,15 @@ ol {
   padding: 10px;
   text-align: left;
 }
+#menu-login-form button {
+  display: block;
+  width: 100%;
+}
+#menu-login-form small {
+  display: block;
+  padding: 15px 0 5px;
+  text-align: center;
+}
 /*Evidence uploading / application*/
 #application-review .well {
   margin-left: -20px;
