@@ -477,23 +477,48 @@ nav.pagination {
 		}
 	}
 }
-figure.thumbnail {
-  margin:0 0 0 0;
-  & > a img {
-    display:block;
-    width:210px;
-    height:210px;
-    background-image:url('../img/badge-default.png');
+ul.thumbnails {
+  li { 
+    figure.thumbnail {
+      margin:0 0 0 0;
+      & > a img {
+        display:block;
+        width:210px;
+        height:210px;
+        background-image:url('../img/badge-default.png');
+      }
+      a.show-tooltip {
+        display:none;
+      }
+      .caption {
+        p:first-child {
+          height:40px;
+          overflow:hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
   }
-  a.show-tooltip {
-    display:none;
+  li:nth-child(2n+2) {
+    figure.thumbnail {
+      & > a img {
+        background-position:0 -210px;
+      }
+    }
   }
-  .caption {
-    p:first-child {
-      height:40px;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  li:nth-child(3n+3) {
+    figure.thumbnail {
+      & > a img {
+        background-position:-210px 0px;
+      }
+    }
+  }
+  li:nth-child(4n+4) {
+    figure.thumbnail {
+      & > a img {
+        background-position:-210px -210px;
+      }
     }
   }
 }
