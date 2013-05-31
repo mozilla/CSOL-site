@@ -657,3 +657,13 @@ body.home #i_vid_wrap {
   padding: 28px;
   border-radius: 7px;
 }
+body.home #cl_i_vid {
+  background-image: url('../img/close.png');
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  display: block;
+  width: 25px;
+  height: 25px;
+  text-indent: -9000px;
+}
