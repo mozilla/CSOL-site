@@ -25,6 +25,17 @@ function normalizeBadge (badge, id) {
   return badge;
 }
 
+function normalizeBadgeInstance (badge, id) {
+  /*  This is dumb, but let's us reuse current templates to
+      build out a single-level object. */
+  _.extend(badge, badge.badgeClass);    
+
+  if (!badge.url)
+    badge.url = '/mybadges/' + id;
+
+  return badge;  
+}
+
 function normalizeProgram(program, id) {
   if (!id)
     id = program.shortname;
@@ -146,6 +157,51 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  getUserBadges: {
+    func: function getUserBadges (query, callback) {
+      var email = query.session.user.email;
+      var params = {
+        auth: getJWTToken(email),
+        email: email
+      };
+      this.get('/user', { qs: params }, function(err, data) {
+        if (err)
+          return callback(err, data);
+
+      
+        console.log(data);
+        badges = _.map(data.badges, normalizeBadgeInstance)
+
+        return callback(null, {
+          badges: badges.sort(function(a, b) {
+            return b.issuedOn - a.issuedOn;
+          })
+        });
+      });
+    },
+    paginate: true,
+    key: 'badges'
+  },
+
+  getUserBadge: function getUserBadge (query, callback) {
+    var id = query.id;
+
+    var email = query.session.user.email;
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    };
+
+    this.get('/user/badge/' + id, { qs: params }, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        badge: normalizeBadgeInstance(data.badge, id)
+      });
+    });
+  },
+
   getBadgeFromCode: function getBadgeFromCode (query, callback) {
     var email = query.email;
     var code = query.code;
@@ -170,7 +226,7 @@ var openbadger = new Api(ENDPOINT, {
     this.post('/claim', { json: params }, function(err, data) {
       return callback(err, data);
     });
-  }
+  },
 });
 
 module.exports = openbadger;
