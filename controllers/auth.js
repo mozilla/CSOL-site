@@ -154,13 +154,21 @@ function processChildLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.parent_email = req.body['parent_email'];
+  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
+  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
+  signup.parent_email = req.body['parent_email'].replace(/^\s*|\s*$/g, '');
 
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
     req.session.signup = signup;
     res.render('auth/signup-next-child.html', signup);
   }
+
+  if (!signup.first_name)
+    return fail(new Error('Missing first name'));
+
+  if (!signup.last_name)
+    return fail(new Error('Missing last name'));
 
   if (!signup.parent_email)
     return fail(new Error('Missing email address'));
@@ -174,7 +182,7 @@ function processChildLearnerSignup (req, res, next) {
 
       signupTokens.create({
         email: signup.parent_email,
-        token: generateToken(),
+        token: generateToken()
       }).complete(function(err, token) {
         if (err || !token) return fail(err);
 
@@ -186,6 +194,8 @@ function processChildLearnerSignup (req, res, next) {
           user.updateAttributes({
             complete: true,
             password: hash,
+            firstName: signup.first_name,
+            lastName: signup.last_name,
             email: normalizedUsername + '@' + CSOL_HOST
           }).complete(function(err) {
             if (err) return fail(err);
@@ -217,7 +227,10 @@ function processStandardLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.email = req.body['email'];
+  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
+  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
+  signup.email = req.body['email'].replace(/^\s*|\s*$/g, '');
+
   if ('password' in req.body)
     signup.password = req.body['password'];
 
@@ -229,8 +242,17 @@ function processStandardLearnerSignup (req, res, next) {
     res.render('auth/signup-next.html', signup);
   }
 
-  if (!signup.email || !signup.password)
-    return fail(new Error('Missing email address or password'));
+  if (!signup.first_name)
+    return fail(new Error('Missing first name'));
+
+  if (!signup.last_name)
+    return fail(new Error('Missing last name'));
+
+  if (!signup.email)
+    return fail(new Error('Missing email address'));
+
+  if (!signup.password)
+    return fail(new Error('Missing password'));
 
   if (!validateEmail(signup.email))
     return fail(new Error('Invalid email address'));
@@ -247,6 +269,8 @@ function processStandardLearnerSignup (req, res, next) {
 
         user.updateAttributes({
           complete: true,
+          firstName: signup.first_name,
+          lastName: signup.last_name,
           email: signup.email,
           password: hash
         }).complete(function(err) {
@@ -267,8 +291,33 @@ function processStandardLearnerSignup (req, res, next) {
 module.exports = function (app) {
 
   app.use(function(req, res, next) {
-    res.locals.user = req.session.user;
-    next();
+    if (!req.session.user) {
+      res.locals.user = undefined;
+      return next();
+    }
+
+    var user = req.session.user,
+        model = db.model(user.type);
+
+    model.find(user.id)
+      .complete(function (err, dbUser) {
+        if (err)
+          console.log('Error loading user:', err);
+
+        if (!dbUser) {
+          console.log('Could not find user "' + user.name + '" in database');
+          clearUser(req, res);
+          return next();
+        }
+
+        _.functions(dbUser).forEach(function(method) {
+          if (/^(get|set|add|remove|has)[A-Z]/.test(method))
+            user[method] = dbUser[method].bind(dbUser);
+        });
+
+        res.locals.user = user;
+        next();
+      });
   });
 
   app.get('/login', function (req, res, next) {
