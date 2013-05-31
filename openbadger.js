@@ -38,6 +38,38 @@ function normalizeProgram(program, id) {
   return program;
 }
 
+function filterBadges(data, query) {
+  // TO DO - We should probably be a little less naive about this, and make sure
+  // that these values are from an allowed list
+
+  var category = query.category,
+      ageGroup = query.age,
+      program = query.program;
+
+  data = _.filter(data, function(item) {
+    if (category && !_.contains(item.categories, category))
+      return false;
+
+    if (ageGroup && !_.contains(item.ageRange, ageGroup))
+      return false;
+
+    if (program && item.program !== program)
+      return false;
+
+    return true;
+  });
+
+  return data;
+}
+
+function getJWTToken(email) {
+  var claims = {
+    prn: email,
+    exp: Date.now() + TOKEN_LIFETIME
+  };
+  return jwt.encode(claims, JWT_SECRET);
+}
+
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
@@ -51,6 +83,7 @@ var openbadger = new Api(ENDPOINT, {
         });
       });
     },
+    filters: filterBadges,
     paginate: true,
     key: 'badges'
   },
@@ -113,16 +146,24 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  getBadgeFromCode: function getBadgeFromCode (query, callback) {
+    var email = query.email;
+    var code = query.code;
+    var params = {
+      auth: getJWTToken(email),
+      email: email,
+      code: code,
+    };
+    this.get('/unclaimed', { qs: params }, function(err, data) {
+      return callback(err, data);
+    });
+  },
+
   claim: function claim (query, callback) {
     var email = query.email;
     var code = query.code;
-    var claims = {
-      prn: email,
-      exp: Date.now() + TOKEN_LIFETIME
-    };
-    var token = jwt.encode(claims, JWT_SECRET);
     var params = {
-      auth: token,
+      auth: getJWTToken(email),
       email: email,
       code: code,
     };

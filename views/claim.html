@@ -3,22 +3,44 @@
 {% set navItem = 'claim' %}
 
 {% block content %}
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  {% if badge %}
+    <div class="row">
+      <div class="span4">
+        <img src="{{ badge.image }}">
+      </div>
+      <div class="span8">
+        <h3>{{ badge.name }}</h3>
+        <form method="post" class="form-horizontal well">
+		      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+          <input type="hidden" id="input-code" name="code" value="{{ code }}">
+          <fieldset>
+            <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn">Claim this badge</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-	<h3>Already have a claim code?</h3>
-	<form method="get" class="form-horizontal well span6 offset3">
-		<fieldset>
-			<div class="control-group">
-				<label class="control-label" for="input-code">Claim Code</label>
-				<div class="controls">
-					<input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM">
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" class="btn">Claim this badge</button>
-				</div>
-			</div>
-		</fieldset>
-	</form>
+    <h3>Already have a claim code?</h3>
+    <form method="get" class="form-horizontal well span6 offset3">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label" for="input-code">Claim Code</label>
+          <div class="controls">
+            <input type="text" id="input-code" name="code" placeholder="e.g. AE198QPM" value="{{ code }}">
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn">Claim this badge</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  {% endif %}
 {% endblock %}

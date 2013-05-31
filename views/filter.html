@@ -30,9 +30,7 @@
 								<input type="{{ filter.type | default('text') }}" id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-medium{% if filter.class %} {{ filter.class }}{% endif %}"{% if filter.value %} value="{{ filter.value }}"{% endif %}>
 							{% endif %}
 						{% endfor %}
-						<noscript>
-							<input type="submit" value="Update" class="btn">
-						</noscript>
+						<input type="submit" value="Update" class="btn">
 				</form>
 			</div>
 		{% endif %}
