@@ -8,7 +8,6 @@ function mkPath(abspath) {
 
   for (var i = 0; i < parts.length; i++) {
     currPath += parts[i];
-    console.log("CURRPATH", currPath);
     if (!fs.existsSync(currPath))
       fs.mkdirSync(currPath);
     currPath += '/';
@@ -27,7 +26,6 @@ FakeS3.prototype._toFilePath = function(urlPath) {
 };
 
 FakeS3.prototype.putFile = function(filePath, urlPath, headers, cb) {
-  console.log("putFile", filePath);
   return this.putBuffer(fs.readFileSync(filePath), urlPath, headers, cb);
 };
 
