@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var bcrypt = require('bcrypt');
 var passwords = require('../lib/passwords');
 var usernames = require('../lib/usernames');
