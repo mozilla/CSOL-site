@@ -63,10 +63,12 @@ db.model = function(name) {
 
     var definition = require(path.join(MODEL_PATH, normalized)),
         properties = definition.properties,
-        relationships = definition.relationships;
+        relationships = definition.relationships,
+        setup = definition.setup;
 
     delete definition.properties;
     delete definition.relationships;
+    delete definition.setup;
 
     var model = db.define(name, properties, definition);
     // We need to cache the model before resolving any relationships, so that it
@@ -86,6 +88,9 @@ db.model = function(name) {
         model[type](relatedModel, relationship);
       });
     }
+
+    if (typeof setup === 'function')
+      setup(model);
   }
 
   return modelCache[key];
