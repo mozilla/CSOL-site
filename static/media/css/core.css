@@ -247,6 +247,15 @@ nav.pagination ul li a {
   padding: 10px;
   text-align: left;
 }
+#menu-login-form button {
+  display: block;
+  width: 100%;
+}
+#menu-login-form small {
+  display: block;
+  padding: 15px 0 5px;
+  text-align: center;
+}
 /*Evidence uploading / application*/
 #application-review .well {
   margin-left: -20px;
@@ -441,6 +450,40 @@ ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
   color: #000;
   border-left: inherit;
   border-right: inherit;
+}
+/*Password fields with feedback bar*/
+input[type="password"].metered {
+  padding-bottom: 9px;
+}
+input[type="password"].metered + .password-meter {
+  border: solid 1px #CCC;
+  border-top: none;
+  height: 6px;
+  margin: -6px 0 10px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: border linear .2s;
+  -moz-transition: border linear .2s;
+  -o-transition: border linear .2s;
+  transition: border linear .2s;
+}
+input[type="password"].metered + .password-meter .bar {
+  border-radius: 0 0 0 3px;
+  overflow: hidden;
+}
+input[type="password"].metered:focus + .password-meter {
+  border-color: rgba(82, 168, 236, 0.8);
+}
+input[type="password"].metered:focus:invalid + .password-meter {
+  border-color: #ee5f5b;
+}
+input[type="password"].metered:focus:invalid:focus + .password-meter {
+  border-color: #e9322d;
 }
 /*landing page specific*/
 body.home {

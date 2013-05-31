@@ -3,115 +3,25 @@
 {% set navItem = 'backpack' %}
 
 {% block list %}
-   		<li class="span3">
-            <figure class="thumbnail">
-            	<div class="status awarded">
-   					<img src="/media/images/icon_status_awarded.png" alt="Awarded"/>Awarded
-   				</div><!-- .status -->
-
-                <a href="/badges/ae784f">
-                	<img src="http://placehold.it/180x180">
-                	<span class="new">New</span>
-                </a>
-                    <figcaption class="caption clearfix">
-	                    <p>Pulvinar? Phasellus eu sagittis adipiscing tristique massa.</p>
-	                    
-	                    <p class="pull-left">
-	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
-	                    </p> 
-	                    <p class="pull-right">
-	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
-	                    	<a href="/badges/ae784f" class="btn">Details</a>
-	                    </p> 
-                    </figcaption>
-            </figure>
-        </li>
-
-        <li class="span3">
-            <figure class="thumbnail">
-            	<div class="status queued">
-   					<img src="/media/images/icon_status_queue.png" alt="In Queue"/>In Queue
-   				</div><!-- .status -->
-
-                <a href="/badges/ae784f">
-                	<img src="http://placehold.it/180x180">
-                	<span class="new">New</span>
-                </a>
-                    <figcaption class="caption clearfix">
-	                    <p>Pulvinar? Phasellus eu sagittis adipiscing tristique massa.</p>
-	                    
-	                    <p class="pull-left">
-	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
-	                    </p> 
-	                    <p class="pull-right">
-	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
-	                    	<a href="/badges/ae784f" class="btn">Details</a>
-	                    </p> 
-                    </figcaption>
-            </figure>
-        </li>
-
-        <li class="span3">
-            <figure class="thumbnail">
-            	<div class="status reviewed">
-   					<img src="/media/images/icon_status_reviewed.png" alt="Reviewed"/>Reviewed
-   					<div class="favorite"></div>
-   				</div><!-- .status -->
-
-                <a href="/badges/ae784f">
-                	<img src="http://placehold.it/180x180">
-                	<span class="new">New</span>
-                </a>
-                    <figcaption class="caption clearfix">
-	                    <p>Pulvinar? Phasellus eu sagittis adipiscing tristique massa.</p>
-	                    
-	                    <p class="pull-left">
-	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
-	                    </p> 
-	                    <p class="pull-right">
-	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
-	                    	<a href="/badges/ae784f" class="btn">Details</a>
-	                    </p> 
-                    </figcaption>
-            </figure>
-        </li>
-
-        <li class="span3">
-            <figure class="thumbnail">
-            	<div class="status favorite">
-   					<img src="/media/images/icon_status_favorite.png" alt="Favorite"/>Favorite
-   				</div><!-- .status -->
-
-                <a href="/badges/ae784f">
-                	<img src="http://placehold.it/180x180">
-                	<span class="new">New</span>
-                </a>
-                    <figcaption class="caption clearfix">
-	                    <p>Pulvinar? Phasellus eu sagittis adipiscing tristique massa.</p>
-	                    
-	                    <p class="pull-left">
-	                    	<a href="#" class="btn show-tooltip" title="Trash"><i class="icon-trash"></i></a>
-	                    </p> 
-	                    <p class="pull-right">
-	                    	<a href="#shareModal" data-toggle="modal" class="btn show-tooltip" title="Share"><i class="icon-share-alt"></i></a>
-	                    	<a href="/badges/ae784f" class="btn">Details</a>
-	                    </p> 
-                    </figcaption>
-            </figure>
-        </li>
-
-        <li class="span3">
-			<figure class="thumbnail">
-				<a href="/claim"><img src="/media/images/add-badge.png"></a>
-				<figcaption class="caption">
-					<p>Claim another badge!</p>
-					<p class="text-right"><a href="/claim" class="btn">+1</a></p>
-				</figcaption>
-			</figure>
-		</a>
-	</li>
-	
+  {{ super() }}
+  <li class="span3">
+    <figure class="thumbnail">
+      <a href="/claim"><img src="/media/images/add-badge.png"></a>
+      <figcaption class="caption">
+        <p>Claim another badge!</p>
+        <p class="text-right"><a href="/claim" class="btn">+1</a></p>
+      </figcaption>
+    </figure>
+  </li>
 {% endblock %}
+
+{% block item_actions %}
+{#
+  {{ super() }}
+	<a class="btn show-tooltip" title="Add to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
+#}
+{% endblock %}
+
 
 {% block modal %}
 
@@ -124,8 +34,18 @@
 		  <div class="modal-body">
 		    <a href="#" class="btn btn-block"><i class="icon-twitter"></i> Twitter</a>
 		    <a href="#" class="btn btn-block"><i class="icon-facebook"></i> Facebook</a>
-		    <a href="#" class="btn btn-block">Backpack</a>
+		    <a href="#" class="btn btn-block">Mozilla Backpack</a>
 		  </div>
 		</div>
+    <div id="trashModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Are you sure you want to delete this badge?</h3>
+        </div>
+        <div class="modal-body">
+            <a href="#" class="btn btn-block">Cancel</a>
+            <a href="#" class="btn btn-block">Yes</a>
+        </div>
+    </div>
 
 {% endblock %}
