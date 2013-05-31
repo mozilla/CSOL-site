@@ -1,6 +1,8 @@
 var db = require('../db');
 var guardians = db.model('Guardian');
 
+const EXPIRATION_TIME = 14 * 24 * 60 * 60 * 1000;
+
 module.exports = {
   properties: {
     token: {
@@ -20,6 +22,10 @@ module.exports = {
       type: db.type.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    lastReminder: {
+      type: db.type.DATE,
+      allowNull: true
     }
   },
   relationships: [
@@ -34,6 +40,10 @@ module.exports = {
       if (this.expired) return false;
       // Could potentially invalidate tokens that are too old at this point
       return true;
+    },
+
+    timeToExpiration: function () {
+      return ( EXPIRATION_TIME - (Date.now() - this.createdAt.getTime()) );
     },
     // Close out token, looking up guardian if none given
     finalize: function (guardian, callback) {

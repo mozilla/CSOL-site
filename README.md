@@ -19,3 +19,4 @@ Property          | Default  | Description
 `COOKIE_SECRET`   | `null`   | Seed for session cookie.
 `CSOL_OPENBADGER_URL`    | `null` | Openbadger API Location, http://obr.com/v2/
 `CSOL_OPENBADGER_SECRET` | `null` | A shared secret with Open Badger. Should match the OPENBADGER_JWT_SECRET variable on open badger
+`CSOL_MANDRILL_KEY` | `null` | The Mandrill key to use for mailings. 
