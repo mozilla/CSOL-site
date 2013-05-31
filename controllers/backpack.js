@@ -69,11 +69,26 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/mybadges', [loggedIn], openbadger.middleware('getUserBadges'), function (req, res, next) {
+  app.get('/mybadges', [
+    loggedIn, 
+    openbadger.middleware('getUserBadges')
+  ], function (req, res, next) {
     var data = req.remote;
 
     res.render('user/backpack.html', {
       items: data.badges
+    });
+  });
+
+  app.get('/mybadges/:id', [
+    loggedIn,
+    openbadger.middleware('getUserBadge')
+  ], function (req, res, next) {
+    var data = req.remote;
+
+    console.log(data.badge);
+    res.render('user/badge.html', {
+      badge: data.badge
     });
   });
 

@@ -3,5 +3,13 @@
 {% set pageTitle = badge.name %}
 
 {% block content %}
-  hooray
+    <div class="row">
+        <div class="span4">
+            <img src="{{ badge.image }}">
+        </div>
+        <div class="span8">
+            <h3>What is this badge about?</h3>
+            <p>{{ badge.description }}</p>
+        </div>
+    </div>
 {% endblock %}
