@@ -1,11 +1,11 @@
 const openbadger = require('../openbadger');
 const db = require('../db');
 const claim = db.model('Claim');
-const loggedIn = require('../middleware').loggedIn;
+const isLearner = require('../middleware').isLearner;
 
 module.exports = function (app) {
 
-  app.get('/claim', [loggedIn], function (req, res, next) {
+  app.get('/claim', [isLearner], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -38,7 +38,7 @@ module.exports = function (app) {
 
   });
 
-  app.post('/claim', [loggedIn], function (req, res, next) {
+  app.post('/claim', [isLearner], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -70,7 +70,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
-    loggedIn, 
+    isLearner, 
     openbadger.middleware('getUserBadges')
   ], function (req, res, next) {
     var data = req.remote;
@@ -81,7 +81,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges/:id', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getUserBadge')
   ], function (req, res, next) {
     var data = req.remote;
