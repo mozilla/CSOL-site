@@ -35,6 +35,7 @@ exports.loggedIn = function loggedIn(req, res, next) {
     return res.redirect('/login');
   }
   return next();
+};
 
 exports.csrf = function (options) {
   options = options || {};
@@ -88,5 +89,4 @@ function uid (len) {
 
 function getRandomInt (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-
 }
