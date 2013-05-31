@@ -22,3 +22,7 @@ Property            | Default  | Description
 `CSOL_OPENBADGER_SECRET` | `null` | A shared secret with Open Badger. Should match the OPENBADGER_JWT_SECRET variable on open badger
 `CSOL_AESTIMIA_URL`      | `null` | Aestimia API Location
 `CSOL_AESTIMIA_SECRET`   | `null` | A shared secret with Aestimia
+
+Note that instead of providing AWS credentials, you can specify a pathname
+in `CSOL_AWS_FAKE_S3_DIR`. This is for development purposes only, and
+will store all uploaded files in the local filesystem instead of S3.

@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var bcrypt = require('bcrypt');
 var db = require('../db');
 var email = require('../mandrill');
@@ -10,6 +11,7 @@ var _ = require('underscore');
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
+var passwordTokens = db.model('PasswordToken');
 
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
@@ -382,11 +384,160 @@ module.exports = function (app) {
   });
 
   app.get('/login/password', function (req, res, next) {
-    res.render('auth/password.html')
+    res.render('auth/password.html');
   });
 
   app.post('/login/password', function(req, res, next) {
-    res.send('POST /login/password')
+    var username = req.body.username;
+    var normalizedUsername = normalizeUsername(username);
+
+    if (!normalizedUsername)
+      return res.redirect('/login/password');
+
+    function finalize (err, user) {
+      if (err || !user) {
+        err && req.flash('error', err);
+        return res.redirect('/login/password');
+      }
+
+      var userId = user.id,
+          userType = user.daoFactoryName.toLowerCase();
+
+      passwordTokens.find({where: {
+        userId: userId,
+        userType: userType
+      }})
+        .complete(function (err, token) {
+          if (token) {
+            token.updateAttributes({
+              expired: true
+            });
+          }
+
+          var token = generateToken();
+
+          passwordTokens.create({
+            token: token,
+            userId: userId,
+            userType: userType
+          })
+            .complete(function(err, token) {
+              if (err || !token)
+                return finalize(err);
+
+              var resetLink = '/login/password/' + token
+              // TO DO - send an email to user (or guardian) with reset link
+
+              res.render('/auth/password-notified.html', {
+                notifyUser: user
+              });
+            });
+        });
+    }
+
+    learners.find({where: ["`email`=? OR `username`=?", normalizedUsername, normalizedUsername]})
+      .complete(function(err, user) {
+        if (err)
+          return finalize(err);
+
+        if (user)
+          return finalize(null, user);
+
+        guardians.find({where: {email: username}})
+          .complete(finalize);
+      });
+  });
+
+  app.param('passwordToken', function (req, res, next, token) {
+    passwordTokens.find({where: {token: token}})
+      .complete(function(err, token) {
+        if (err || !token || !token.isValid()) {
+          req.flash('error', 'Sorry, that link has expired. Please start again.');
+          return res.redirect('/login/password');
+        }
+
+        req.params.passwordToken = token;
+        next();
+      });
+  });
+
+  app.get('/login/password/:passwordToken', function (req, res, next) {
+    var token = req.params.passwordToken;
+
+    token.getUser(function (err, user) {
+      if (err) {
+        req.flash('error', 'Sorry, that link has expired. Please start again.');
+        return res.redirect('/login/password');
+      }
+
+      if (token.userType === 'learner') {
+        var password = generatePassword();
+      } else {
+        var password = null;
+      }
+
+      req.session.generatedPassword = password;
+
+      res.render('/auth/password-reset.html', {
+        passwordGenerated: (password !== null),
+        password: password
+      });
+    })
+  });
+
+  app.post('/login/password/:passwordToken', function (req, res, next) {
+    var generatedPassword = req.session.generatedPassword;
+    var token = req.params.passwordToken;
+    var username = req.body.username;
+    var password = 'password' in req.body ? req.body.password : generatedPassword;
+
+    function finalize (err) {
+      delete req.session.generatedPassword;
+
+      if (err) {
+        req.flash('error', err);
+        return res.redirect(301, '/login/password');
+      }
+
+      req.flash('success', 'Your password has been reset.');
+      res.redirect(303, '/login');
+    }
+
+    if (!validatePassword(password)) {
+      req.flash('error', 'This is not a valid password');
+      return res.redirect('/login/password/' + token.token);
+    }
+
+    token.updateAttributes({
+      expired: true
+    })
+      .complete(function (err) {
+        if (err)
+          return finalize(err);
+
+        token.getUser(function (err, user) {
+          if (user.email !== username && user.username !== normalizeUsername(username))
+            return finalize('Invalid nickname or email address');
+
+          if (user.underage) {
+            password = generatedPassword;
+          }
+
+          bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
+            if (err || !hash)
+              return finalize(err || 'Failed to generate new password - please try again.');
+
+            user.updateAttributes({
+              password: hash
+            }).complete(function(err) {
+              if (err)
+                return finalize(err);
+
+              finalize();
+            });
+          });
+        });
+      });
   });
 
   app.get('/signup', function (req, res, next) {
