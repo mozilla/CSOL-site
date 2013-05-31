@@ -66,6 +66,9 @@ ol {
   border-left: none;
   border-right: none;
 }
+.navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #000;
+}
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
@@ -177,6 +180,7 @@ ol {
   margin-bottom: 20px;
 }
 .footer .upper li {
+  display: inline-block;
   border-left: none;
   border-right: none;
 }
@@ -184,21 +188,21 @@ ol {
   border-top: 1px solid white;
   padding: 15px 0;
 }
-.footer ul li {
+.footer .lower ul li {
   display: inline-block;
 }
-.footer ul li > a,
-.footer ul li > span {
+.footer .lower ul li > a,
+.footer .lower ul li > span {
   margin: 10px;
 }
-.footer ul li:first-child a {
+.footer .lower ul li:first-child a {
   margin-left: 0px;
 }
-.footer ul li:nth-child(even) {
+.footer .lower ul li:nth-child(even) {
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-.footer ul li:last-child {
+.footer .lower ul li:last-child {
   border-right: none;
 }
 /*sticky footer*/
@@ -232,23 +236,14 @@ ol {
   padding: 10px;
   text-align: left;
 }
-figure.thumbnail {
-  margin: 0 0 0 0;
+#menu-login-form button {
+  display: block;
+  width: 100%;
 }
-figure.thumbnail a.show-tooltip {
-  display: none;
-}
-figure.thumbnail .caption p:first-child {
-  height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.navbar .nav .active a,
-.navbar .nav .active a:hover {
-  color: #000;
-  border-left: inherit;
-  border-right: inherit;
+#menu-login-form small {
+  display: block;
+  padding: 15px 0 5px;
+  text-align: center;
 }
 /*Evidence uploading / application*/
 #application-review .well {
@@ -412,6 +407,29 @@ figure.thumbnail .caption p:first-child {
 .upload-list .details .progress .bar {
   opacity: 0.5;
 }
+figure.thumbnail {
+  margin: 0 0 0 0;
+}
+figure.thumbnail > a img {
+  display: block;
+  width: 210px;
+  height: 210px;
+}
+figure.thumbnail a.show-tooltip {
+  display: none;
+}
+figure.thumbnail .caption p:first-child {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navbar .nav .active a,
+.navbar .nav .active a:hover {
+  color: #000;
+  border-left: inherit;
+  border-right: inherit;
+}
 /*landing page specific*/
 body.home {
   background-image: url('../img/background-chalkboard-green.jpg');
@@ -445,6 +463,9 @@ body.home .navbar .navbar-inner > .container {
   background-image: url('../img/home_drawing.png');
   background-position: top center;
   background-repeat: no-repeat;
+}
+body.home .navbar .nav > li.dropdown.open > .dropdown-toggle {
+  color: #fff;
 }
 body.home .navbar .brand {
   background-image: url('../img/csol_logo_sm.png');
@@ -549,12 +570,8 @@ body.home .secondary .lower {
 body.home .secondary .lower .pull-right li:first-child {
   display: none;
 }
-body.home .secondary .lower .pull-right li:nth-child(3) {
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
-}
-body.home .secondary .lower .pull-left li:first-child {
-  border-right: 1px solid #fff;
+body.home .secondary .lower .pull-right li:nth-child(2) {
+  border-left: none;
 }
 body.home .footer {
   -webkit-box-shadow: none;
@@ -606,6 +623,15 @@ body.home #bubbles span.rt {
 body.home .footer {
   background-image: none;
 }
+body.home #bkg_fade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/65pb.png');
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  z-index: 3;
+}
 body.home #i_vid_wrap {
   width: 640px;
   height: 360px;
@@ -614,7 +640,7 @@ body.home #i_vid_wrap {
   left: 50%;
   margin-top: -204px;
   margin-left: -348px;
-  z-index: 3;
+  z-index: 4;
   background-color: black;
   padding: 28px;
   border-radius: 7px;
