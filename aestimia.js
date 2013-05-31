@@ -97,6 +97,7 @@ var aestimia = new Api(ENDPOINT, {
     var api = this;
 
     var submissionId = application.submissionId;
+    var latestReview = application.getReview();
 
     if (!submissionId)
       return callback('Application has not yet been submitted');
@@ -105,9 +106,11 @@ var aestimia = new Api(ENDPOINT, {
       var rubrics = submission.rubric.items;
       var reviews = submission.reviews;
 
+      // Bail early, if there are no reviews
       if (!reviews.length)
         return callback(null, application);
 
+      // Sort the reviews by (ascending) date, if required
       if (reviews.length > 1) {
         reviews.sort(function(a, b) {
           if (a.date === b.date)
@@ -116,19 +119,23 @@ var aestimia = new Api(ENDPOINT, {
         });
       }
 
+      // Take the most recent review
       var review = reviews.pop();
 
-      if (review._id === application.lastReviewId)
+      // If we've already seen it, bail
+      if (review._id === latestReview._id)
         return callback(null, application);
 
       var satisfiedRubrics = review.satisfiedRubrics;
       var satisfied = false;
 
+      // If something is satisfied, see if it's enough to award the badge
       if (satisfiedRubrics.length) {
         satisfied = true;
 
         rubrics.forEach(function (rubric, index) {
-          satisfied &= (!rubric.required || (satisfiedRubrics.indexOf[index] >= 0));
+          var rubricSatisfied = !rubric.required || (satisfiedRubrics.indexOf(index) >= 0);
+          satisfied &= rubricSatisfied;
         });
       }
 
@@ -140,7 +147,7 @@ var aestimia = new Api(ENDPOINT, {
 
       application.updateAttributes({
         state: state,
-        lastReviewId: review._id
+        latestReview: JSON.stringify(review)
       })
         .complete(function(err) {
           if (err)
