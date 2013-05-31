@@ -35,6 +35,7 @@ module.exports = {
       values: [
         'open',       // This application is being worked on 
         'waiting',    // This application is waiting for guardian approval (where applicable)
+        'denied',     // This application has been denied by the guardian (where applicable)
         'submitted',  // This application has been submitted for review
         'rejected',   // This application has been rejected
         'accepted'    // This application has been accepted
