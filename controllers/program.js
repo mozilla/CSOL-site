@@ -1,4 +1,5 @@
 var async = require('async');
+var aestimia = require('../aestimia');
 var badger = require('../openbadger');
 var db = require('../db');
 var errors = require('../lib/errors');
@@ -138,6 +139,28 @@ module.exports = function (app) {
 
   app.get('/learn/:programName/unfavorite', function (req, res, next) {
     return res.redirect('/login', 303);
+  });
+
+  app.post('/applications', function (req, res, next) {
+    function finish (err) {
+      if (err)
+        return res.json({status: err.message || err});
+
+      return res.json({status: 'ok'});
+    }
+
+    if (!req.body['_id'])
+      return finish('Could not find submission ID in request');
+
+    applications.find({where: {submissionId: req.body['_id']}})
+      .complete(function(err, application) {
+        if (err)
+          return finish(err);
+
+        aestimia.update(application);
+
+        finish();
+      });
   });
 
   app.param('evidenceSlug', function (req, res, next, slug) {

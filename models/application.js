@@ -45,6 +45,10 @@ module.exports = {
     submissionId: {
       type: db.type.STRING,
       allowNull: true
+    },
+    lastReviewId: {
+      type: db.type.STRING,
+      allowNull: true
     }
   },
   relationships: [

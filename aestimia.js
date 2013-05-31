@@ -17,8 +17,6 @@ if (!SECRET)
 if (!CSOL_HOST)
   throw new Error('Must specify CSOL_HOST in the environment');
 
-const CSOL_ORIGIN = 'http://' + CSOL_HOST;
-
 var aestimia = new Api(ENDPOINT, {
 
   submit: function (application, callback) {
@@ -43,23 +41,38 @@ var aestimia = new Api(ENDPOINT, {
                 // console.log('Badge:', badge);
 
                 var submission = {
-                  criteriaUrl: api.getFullUrl(CSOL_ORIGIN, badge.url),
+                  criteriaUrl: api.getFullUrl(CSOL_HOST, badge.url),
+                  onChangeUrl: api.getFullUrl(CSOL_HOST, '/applications'),
                   achievement: {
                     name: badge.name,
                     description: badge.description,
                     imageUrl: badge.image
                   },
-                  classifications: badge.tags || [],
+                  classifications: badge.categories || [],
                   evidence: [],
-                  rubric: badge.rubric
+                  rubric: badge.rubric || {items: [{text: 'Has done some work', required: true}]}
                 };
 
                 if (learner.email)
                   submission.learner = learner.email;
 
+                if (learner.underage)
+                  submission.cannedResponses = [
+                    'You did a great job!',
+                    'You went above and beyond.',
+                    'Keep up the good work!',
+                    'Good job.',
+                    'You met all the criteria needed to earn this badge.',
+                    'Creative and thoughtful work.',
+                    'Nice reflection of your work.',
+                    'You didn\'t submit relevant evidence.',
+                    'Your evidence did not properly reflect the criteria.',
+                    'Good work! But you still have a few criteria to meet to earn this badge. Make sure you take a look at all the criteria before reapplying.'
+                  ];
+
                 evidence.forEach(function(item, index) {
                   var obj = {
-                    url: api.getFullUrl(CSOL_ORIGIN, item.getLocationUrl()),
+                    url: api.getFullUrl(CSOL_HOST, item.getLocationUrl()),
                     mediaType: item.mediaType.split('/')[0]
                   };
 
@@ -78,6 +91,64 @@ var aestimia = new Api(ENDPOINT, {
               });
             });
       });
+  },
+
+  update: function (application, callback) {
+    var api = this;
+
+    var submissionId = application.submissionId;
+
+    if (!submissionId)
+      return callback('Application has not yet been submitted');
+
+    this.get('/submissions/' + submissionId, function (err, submission) {
+      var rubrics = submission.rubric.items;
+      var reviews = submission.reviews;
+
+      if (!reviews.length)
+        return callback(null, application);
+
+      if (reviews.length > 1) {
+        reviews.sort(function(a, b) {
+          if (a.date === b.date)
+            return 0;
+          return a.date < b.date;
+        });
+      }
+
+      var review = reviews.pop();
+
+      if (review._id === application.lastReviewId)
+        return callback(null, application);
+
+      var satisfiedRubrics = review.satisfiedRubrics;
+      var satisfied = false;
+
+      if (satisfiedRubrics.length) {
+        satisfied = true;
+
+        rubrics.forEach(function (rubric, index) {
+          satisfied &= (!rubric.required || (satisfiedRubrics.indexOf[index] >= 0));
+        });
+      }
+
+      var state = satisfied ? 'accepted' : 'rejected';
+
+      if (state !== application.state) {
+        // TO DO - email applicant about change of application state
+      }
+
+      application.updateAttributes({
+        state: state,
+        lastReviewId: review._id
+      })
+        .complete(function(err) {
+          if (err)
+            return callback(err, application);
+
+          callback(null, application);
+        });
+    });
   }
 
 });
