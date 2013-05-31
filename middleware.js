@@ -27,6 +27,16 @@ exports.session = function session (config) {
   });
 };
 
+
+exports.loggedIn = function loggedIn(req, res, next) {
+  var user = req.session.user;
+  if (!user) {
+    req.session.afterLogin = req.originalUrl;
+    return res.redirect('/login');
+  }
+  return next();
+};
+
 exports.csrf = function (options) {
   options = options || {};
   var value = options.value || defaultCsrfValue;

@@ -77,7 +77,7 @@ function extractUserData (user) {
   if ('home' in user) return user;
 
   var userType = user.daoFactoryName.toLowerCase();
-  var userHome = (userType === 'learner') ? '/backpack' : '/dashboard';
+  var userHome = (userType === 'learner') ? '/mybadges' : '/dashboard';
 
   return {
     id: user.id,
@@ -214,6 +214,7 @@ function processChildLearnerSignup (req, res, next) {
             var confirmationUrl = req.protocol + '://' + req.get('Host')
               + '/signup/' + token.token;
             email.send('<13 learner signup', {
+              earnername: signup.username,
               confirmationUrl: confirmationUrl
             }, signup.parent_email);
             delete req.session.signup;
@@ -291,7 +292,7 @@ function processStandardLearnerSignup (req, res, next) {
             return fail(err);
           }
 
-          email.send('learner signup', {}, signup.email);
+          email.send('learner signup', { earnername:signup.username }, signup.email);
           delete req.session.signup;
           redirectUser(req, res, user);
         });

@@ -27,7 +27,8 @@ function middleware (method, default_query) {
       default_query || {},
       req.query || {},
       req.body || {},
-      req.params || {}
+      req.params || {},
+      { session: req.session || {} } // TODO: move session to separate arg
     );
 
     method(query, function(err, data) {
