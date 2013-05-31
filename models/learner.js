@@ -78,6 +78,9 @@ module.exports = {
     },
     getFullName: function () {
       return this.firstName + ' ' + this.lastName;
+    },
+    getDisplayName: function () {
+      return this.firstName || this.username;
     }
   }
 };
