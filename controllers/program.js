@@ -1,4 +1,5 @@
 var async = require('async');
+var aestimia = require('../aestimia');
 var badger = require('../openbadger');
 var db = require('../db');
 var errors = require('../lib/errors');
@@ -140,6 +141,28 @@ module.exports = function (app) {
     return res.redirect('/login', 303);
   });
 
+  app.post('/applications', function (req, res, next) {
+    function finish (err) {
+      if (err)
+        return res.json({status: err.message || err});
+
+      return res.json({status: 'ok'});
+    }
+
+    if (!req.body['_id'])
+      return finish('Could not find submission ID in request');
+
+    applications.find({where: {submissionId: req.body['_id']}})
+      .complete(function(err, application) {
+        if (err)
+          return finish(err);
+
+        aestimia.update(application);
+
+        finish();
+      });
+  });
+
   app.param('evidenceSlug', function (req, res, next, slug) {
     var parts = /^([a-z0-9]+?)(?:_(thumb))?$/.exec(slug);
     var shouldAuthenticate = (req.method !== 'GET');
@@ -278,8 +301,10 @@ module.exports = function (app) {
   app.get('/earn/:badgeName/apply', function (req, res, next) {
     var badge = req.params.badge;
 
-    if (!req.session.user)
+    if (!req.session.user) {
+      req.session.afterLogin = '/earn/' + req.params.badgeName + '/apply';
       return res.redirect('/login');
+    }
 
     applications.findOrCreate({
       badgeId: badge.id,
@@ -337,6 +362,9 @@ module.exports = function (app) {
 
         if (req.body.action === 'apply')
           return application.submit(finish);
+
+        if (req.body.action === 'reopen')
+          return application.reopen(finish);
 
         if ('description' in req.body) {
           application.updateAttributes({

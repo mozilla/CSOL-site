@@ -5,31 +5,41 @@
 {% endblock %}
 
 {% block content %}
-	<div class="span8 offset2">
-		{% block notice %}
-			<div class="alert">
-				Your application is waiting to be reviewed.
-			</div>
-		{% endblock %}
-		<div class="well">
+	{% block notice %}
+		<div class="alert">
+			Your application is waiting to be reviewed.
+		</div>
+	{% endblock %}
+	<div class="row">
+		<div class="span4">
+			<a href="{{ badge.url }}"><img src="{{ badge.image }}"></a>
+		</div>
+		<div class="span1"></div>
+		<div class="span7">
 			<div id="application-review">
-				<h3>Your application</h3>
-				<pre>{{ application.description }}</pre>
-				<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
-					{% for item in evidence %}
-						<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
-							{% if item.saved %}
-								<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
-									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-								</a>
-							{% else %}
-								<span class="thumbnail processing" title="{{ item.original }}">
-									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-								</span>
-							{% endif %}
-						</li>
-					{% endfor %}
-				</ul>
+				{% block notes %}
+				{% endblock %}
+				<div class="well">
+					<h3>Your application</h3>
+					{% if application.description %}
+						<pre>{{ application.description }}</pre>
+					{% endif %}
+					<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
+						{% for item in evidence %}
+							<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
+								{% if item.saved %}
+									<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</a>
+								{% else %}
+									<span class="thumbnail processing" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</span>
+								{% endif %}
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -13,6 +13,11 @@ env.express(app);
 
 app.use(express.cookieParser());
 app.use(middleware.session());
+app.use(middleware.csrf({
+  whitelist: [
+    '/applications'
+  ]
+}));
 app.use(express.logger({stream:{
   write: function(msg, encoding) {
     logger.info(msg.trim());
@@ -20,7 +25,6 @@ app.use(express.logger({stream:{
 }}));
 app.use(express.compress());
 app.use(express.bodyParser());
-app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(flash());
 
