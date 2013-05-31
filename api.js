@@ -77,8 +77,12 @@ function apiMethod (method) {
 }
 
 function getFullUrl(origin, path) {
+  if (!_.isObject(origin))
+    origin = url.parse(origin);
+
   path = path || '';
   path = path.replace(/^\/?/, '');
+
   return url.format(_.extend(
     origin,
     { pathname: origin.path + path }));
@@ -90,6 +94,7 @@ function getFullUrl(origin, path) {
 function remote (method, path, options, callback) {
   if (!request[method])
     return callback(new errors.NotImplemented('Unknown method ' + method));
+
   if (_.isFunction(options)) {
     callback = options;
     options = {};
@@ -106,13 +111,22 @@ function remote (method, path, options, callback) {
       method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
 
     if (err)
-      return callback(new errors.Unknown(err));
+      return callback(errors.Unknown(err));
 
-    if (response.statusCode !== 200) {
+    if (response.statusCode >= 300) {
       var msg;
-      if (body && body.reason)
-        msg = body.reason;
-      return callback(new (errors.lookup(response.statusCode))(msg));
+
+      if (!_.isObject(body)) {
+        try {
+          body = JSON.parse(body)
+        } catch (e) {
+          msg = {message: body};
+        };
+      }
+
+      msg = body.message || body.reason || response.statusCode
+
+      return callback((errors.lookup(response.statusCode))(msg, body));
     }
 
     try {
@@ -120,11 +134,11 @@ function remote (method, path, options, callback) {
       if (!_.isObject(body))
         data = JSON.parse(data);
     } catch (e) {
-      return callback(new errors.Unknown(e.message));
+      return callback(errors.Unknown(e.message));
     }
 
-    if (data.status !== 'ok')
-      return callback(new errors.Unknown(data.reason), data);
+    if ('status' in data && data.status !== 'ok')
+      return callback(errors.Unknown(data.reason || body.message), data);
 
     callback(null, data);
   });
@@ -204,7 +218,8 @@ module.exports = function Api(origin, config) {
 
   _.extend(this, {
     middleware: middleware,
-    remote: remote
+    remote: remote,
+    getFullUrl: getFullUrl
   });
 
 };

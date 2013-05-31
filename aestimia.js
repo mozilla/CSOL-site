@@ -6,12 +6,18 @@ const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_AESTIMIA_URL'];
 const SECRET = process.env['CSOL_AESTIMIA_SECRET'];
+const CSOL_HOST = process.env['CSOL_HOST'];
 
 if (!ENDPOINT)
   throw new Error('Must specify CSOL_AESTIMIA_URL in the environment');
 
 if (!SECRET)
   throw new Error('Must specify CSOL_AESTIMIA_SECRET in the environment');
+
+if (!CSOL_HOST)
+  throw new Error('Must specify CSOL_HOST in the environment');
+
+const CSOL_ORIGIN = 'http://' + CSOL_HOST;
 
 var aestimia = new Api(ENDPOINT, {
 
@@ -37,7 +43,7 @@ var aestimia = new Api(ENDPOINT, {
                 // console.log('Badge:', badge);
 
                 var submission = {
-                  criteriaUrl: badge.url,
+                  criteriaUrl: api.getFullUrl(CSOL_ORIGIN, badge.url),
                   achievement: {
                     name: badge.name,
                     description: badge.description,
@@ -53,8 +59,8 @@ var aestimia = new Api(ENDPOINT, {
 
                 evidence.forEach(function(item, index) {
                   var obj = {
-                    url: item.getLocationUrl(),
-                    mediaType: item.mediaType
+                    url: api.getFullUrl(CSOL_ORIGIN, item.getLocationUrl()),
+                    mediaType: item.mediaType.split('/')[0]
                   };
 
                   if (!index && application.description)
@@ -63,11 +69,11 @@ var aestimia = new Api(ENDPOINT, {
                   submission.evidence.push(obj);
                 });
 
-                api.post('/submission', submission, function (err, rsp) {
-                  console.log(err);
-                  console.log(rsp);
+                api.post('/submission', {json:submission}, function (err, rsp) {
+                  if (err)
+                    return callback(err);
 
-                  callback(err);
+                  callback(null, (rsp||{}).id);
                 });
               });
             });
@@ -80,7 +86,7 @@ aestimia.defaultOptions = {
   auth: {
     username: 'api',
     password: SECRET,
-    sentImmediately: false
+    sendImmediately: false
   }
 };
 
