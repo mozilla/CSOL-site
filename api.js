@@ -61,6 +61,9 @@ function apiMethod (method) {
       query = {};
     }
 
+    if (!_.isFunction(callback))
+      callback = function() {};
+
     // Assume any non-object query is being passed in as an ID
     if (!_.isObject(query))
       query = {id: query};
