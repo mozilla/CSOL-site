@@ -1,6 +1,10 @@
 var db = require('../db');
+var applications;
 
 module.exports = {
+  setup: function () {
+    applications = db.model('Application');
+  },
   properties: {
     id: {
       type: db.type.INTEGER,
@@ -57,6 +61,21 @@ module.exports = {
     }
   ],
   instanceMethods: {
+    getBadgeApplicationState: function (badgeId, callback) {
+      if (badgeId.id)
+        badgeId = badgeId.id;
+
+      applications.find({where: {LearnerId: this.id, badgeId: badgeId}})
+        .complete(function (err, application) {
+          if (err)
+            return callback(err);
+
+          if (!application)
+            return callback(null);
+
+          callback(null, application.state);
+        });
+    },
     getFullName: function () {
       return this.firstName + ' ' + this.lastName;
     }

@@ -1,10 +1,13 @@
 var _ = require('underscore');
 var bcrypt = require('bcrypt');
-var passwords = require('../lib/passwords');
-var usernames = require('../lib/usernames');
 var db = require('../db');
 var email = require('../mandrill');
 var logger = require('../logger');
+var passwords = require('../lib/passwords');
+var usernames = require('../lib/usernames');
+var url = require('url');
+var _ = require('underscore');
+
 var learners = db.model('Learner');
 var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
@@ -13,9 +16,16 @@ var passwordTokens = db.model('PasswordToken');
 var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 var CSOL_HOST = process.env.CSOL_HOST;
+try {
+  var CSOL_EMAIL_DOMAIN = process.env.CSOL_EMAIL_DOMAIN || url.parse(CSOL_HOST).hostname;
+} catch (e) {
+  console.log(e);
+  var CSOL_EMAIL_DOMAIN = ''
+}
 
-if (!CSOL_HOST)
-  throw new Error('Must specify CSOL_HOST in the environment');
+if (!CSOL_EMAIL_DOMAIN)
+  throw new Error('Must specify valid CSOL_HOST or CSOL_EMAIL_DOMAIN in the environment');
+
 
 function validateEmail (email) {
   // TODO - make sure email is valid
@@ -197,7 +207,7 @@ function processChildLearnerSignup (req, res, next) {
             password: hash,
             firstName: signup.first_name,
             lastName: signup.last_name,
-            email: normalizedUsername + '@' + CSOL_HOST
+            email: normalizedUsername + '@' + CSOL_EMAIL_DOMAIN
           }).complete(function(err) {
             if (err) return fail(err);
 

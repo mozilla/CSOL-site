@@ -5,48 +5,54 @@
 {% endblock %}
 
 {% block content %}
-	<div class="span8 offset2">
-		<div id="application-review">
-			{% block intro %}
-			{% endblock %}
-			{% block items %}
-				<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
-					{% for item in evidence %}
-						<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
-							{% if item.saved %}
-								<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
-									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-								</a>
-							{% else %}
-								<span class="thumbnail processing" title="{{ item.original }}">
-									<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-								</span>
-							{% endif %}
-							<form method="post" action="{{ item.getLocationUrl() }}">
-								<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-								<input type="hidden" name="action" value="delete">
-								<label title="Delete"><input type="submit" value="Delete"></label>
-							</form>
+	<div class="row">
+		<div class="span4">
+			<a href="{{ badge.url }}"><img src="{{ badge.image }}"></a>
+		</div>
+		<div class="span1"></div>
+		<div class="span7">
+			<div id="application-review">
+				{% block intro %}
+				{% endblock %}
+				{% block items %}
+					<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
+						{% for item in evidence %}
+							<li class="item item-{{ item.mediaType.split('/')[0] }}">
+								{% if item.saved %}
+									<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</a>
+								{% else %}
+									<span class="thumbnail processing" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</span>
+								{% endif %}
+								<form method="post" action="{{ item.getLocationUrl() }}">
+									<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+									<input type="hidden" name="action" value="delete">
+									<label title="Delete"><input type="submit" value="Delete"></label>
+								</form>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endblock %}
+			</div>
+			{% block form %}
+				<form id="edit-application" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+					{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
+					<textarea name="description" rows="7" id="edit-description">{{ application.description }}</textarea>
+					<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
+					{% block evidenceTitle %}<h3>Then upload your pictures and videos</h3>{% endblock %}
+					<ul class="items">
+						<li class="item">
+							<input type="file" name="media" accept="image/*, video/*" multiple="multiple">
 						</li>
-					{% endfor %}
-				</ul>
+					</ul>
+					<p class="text-right buttons"><button type="submit" value="upload" class="btn">Upload</button></p>
+				</form>
 			{% endblock %}
 		</div>
-		{% block form %}
-			<form id="edit-application" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-				{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
-				<textarea name="description" class="span8" rows="7" id="edit-description">{{ application.description }}</textarea>
-				<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
-				{% block evidenceTitle %}<h3>Then upload your pictures and videos</h3>{% endblock %}
-				<ul class="items">
-					<li class="item">
-						<input type="file" name="media" accept="image/*, video/*" multiple="multiple">
-					</li>
-				</ul>
-				<p class="text-right buttons"><button type="submit" value="upload" class="btn">Upload</button></p>
-			</form>
-		{% endblock %}
 	</div>
 {% endblock %}
 
@@ -113,7 +119,7 @@
 
 				$item
 					.attr('id', 'uploaded-item-' + data.key)
-					.addClass('span2 item item-' + data.evidence.type.split('/')[0])
+					.addClass('item item-' + data.evidence.type.split('/')[0])
 					.append($wrapper)
 					.append($form)
 					.appendTo($list);
