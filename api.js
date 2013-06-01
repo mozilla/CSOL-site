@@ -115,22 +115,22 @@ function remote (method, path, options, callback) {
       method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
 
     if (err)
-      return callback(errors.Unknown(err));
+      return callback(new errors.Unknown(err));
 
     if (response.statusCode >= 300) {
       var msg;
 
       if (!_.isObject(body)) {
         try {
-          body = JSON.parse(body)
+          body = JSON.parse(body) || {};
         } catch (e) {
-          msg = {message: body};
+          body = {};
         };
       }
 
-      msg = body.message || body.reason || response.statusCode
+      msg = body.message || body.reason || errors.lookup(response.statusCode).status;
 
-      return callback((errors.lookup(response.statusCode))(msg, body));
+      return callback(new errors.BadGateway(msg, body));
     }
 
     try {
@@ -138,11 +138,11 @@ function remote (method, path, options, callback) {
       if (!_.isObject(body))
         data = JSON.parse(data);
     } catch (e) {
-      return callback(errors.Unknown(e.message));
+      return callback(new errors.Unknown(e.message));
     }
 
     if ('status' in data && data.status !== 'ok')
-      return callback(errors.Unknown(data.reason || body.message), data);
+      return callback(new errors.Unknown(data.reason || body.message), data);
 
     callback(null, data);
   });
