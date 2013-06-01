@@ -21,6 +21,9 @@
                             <a class="brand" href="/">Chicago Summer of Learning</a>
                             <div class="nav-wrap">
                                 <ul class="nav">
+                                    <li class="about{% if navItem == 'about' %} active{% endif %}">
+                                        <a href="/about">About</a>
+                                    </li>
                                     <li class="learn{% if navItem == 'learn' %} active{% endif %}">
                                         <a href="/explore">Explore</a>
                                     </li>
@@ -32,9 +35,6 @@
                                     </li>
                                     <li class="claim{% if navItem == 'claim' %} active{% endif %}">
                                         <a href="/claim">Claim</a>
-                                    </li>
-                                    <li class="about{% if navItem == 'about' %} active{% endif %}">
-                                        <a href="/about">About</a>
                                     </li>
                                     {% if user %}
                                         {% if user.type == 'learner' %}
