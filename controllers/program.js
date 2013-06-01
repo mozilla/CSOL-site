@@ -41,7 +41,7 @@ module.exports = function (app) {
         case 'org':
           filters.push({
             name: 'org',
-            label: 'Organisation',
+            label: 'Organization',
             options: {
               'org1': 'Org 1',
               'org2': 'Org 2',
@@ -414,8 +414,8 @@ module.exports = function (app) {
     for (var i = 0; i < 12; ++i) {
       orgs.push({
         thumbnail: '/media/images/org.png',
-        description: 'Organisation blah irure...',
-        url: '/orgs/some-organisation'
+        description: 'Organization blah irure...',
+        url: '/orgs/some-organization'
       });
     }
 

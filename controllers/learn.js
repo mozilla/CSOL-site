@@ -44,8 +44,8 @@ module.exports = function(app) {
 
     var itemOptions = [{
       thumbnail: '/media/images/org.png',
-      description: 'Organisation blah irure...',
-      url: '/learn/orgs/some-organisation'
+      description: 'Organization blah irure...',
+      url: '/learn/orgs/some-organization'
     },{
       thumbnail: '/media/images/program.png',
       description: 'Program blah sed eiusmod...',
