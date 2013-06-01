@@ -33,7 +33,7 @@ If you want to tackle a bigger ticket, find a core developer and ask them what t
 
 These variables should be configured in your applications environment through env variables. An easy way to do that is create a config.env in your application directly that looks something like,
 
-'''
+```
 #MySQL Config
 export CSOL_DB_PASS=db
 
@@ -56,7 +56,7 @@ export CSOL_HOST='http://chicagosummeroflearning.org'
 
 #Mandrill
 export CSOL_MANDRILL_KEY=''
-'''
+```
 
 Then you can source the file like `. config.env`.
 
