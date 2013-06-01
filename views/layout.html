@@ -33,6 +33,9 @@
                                     <li class="claim{% if navItem == 'claim' %} active{% endif %}">
                                         <a href="/claim">Claim</a>
                                     </li>
+                                    <li class="about{% if navItem == 'about' %} active{% endif %}">
+                                        <a href="/about">About</a>
+                                    </li>
                                     {% if user %}
                                         {% if user.type == 'learner' %}
                                             <li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
