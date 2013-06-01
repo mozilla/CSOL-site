@@ -1,7 +1,21 @@
 {% extends 'applications/submitted.html' %}
+{% set review = application.getReview() %}
+{% set satisfied = review.satisfiedRubrics %}
 
 {% block notice %}
 	<div class="alert alert-success">
 		Your application has been approved!
 	</div>
+{% endblock %}
+
+{% block notes %}
+	<pre>{{ review.response }}</pre>
+	<ul class="rubric">
+		{% for item in badge.rubric.items %}
+			<li class="
+				{%- if item.required %}required {% endif -%}
+				{%- if satisfied.indexOf(loop.index0) == -1 %} not-{% endif -%}
+			satisfied">{{ item.text }}{% if item.required %} <span class="note">(Required)</span>{% endif %}</li>
+		{% endfor %}
+	</ul>
 {% endblock %}

@@ -28,8 +28,11 @@ function fakeRequest(func, config, callback) {
 
   // TODO: translating config object to req data is sloppy
   var req = _.extend(
-    { __proto__: express.request,
-      headers: {} },
+    {
+      __proto__: express.request,
+      headers: {} ,
+      session: config.session || {}
+    },
     config
   );
   req.headers = {'x-requested-with': config.xhr ? 'XmlHttpRequest' : 'Whatever'};
@@ -194,6 +197,25 @@ test('api.middleware(method)', function(t) {
     );
   });
 
+  t.test('query object contains session', function(t) {
+    var method = sinon.stub();
+    var api = new Api(ORIGIN, {
+      method: method
+    });
+    fakeRequest(
+      api.middleware('method'),
+      {
+        session: { some: 'sessionstuff' }
+      },
+      function(req, res, next) {
+        t.ok(method.calledWith(
+          sinon.match({ session: { some: 'sessionstuff' }})
+        ), 'session in query obj');
+        t.end();
+      }
+    );
+  });
+
   t.test('query object contains default params', function(t) {
     var method = sinon.stub();
     var api = new Api(ORIGIN, {
@@ -216,7 +238,6 @@ test('api.middleware(method)', function(t) {
     fakeRequest(
       api.middleware('method'),
       function(req, res, next) {
-        console.log(req);
         t.same(req.remote, { result: 1 }, 'req.remote');
         t.ok(next.calledOnce, 'next');
         t.end();
@@ -342,7 +363,6 @@ test('api.get', function(t) {
 
     api.get('/foo', { some: 'params' }, function(){});
     t.ok(get.calledOnce, 'called');
-    console.log(get.args);
     t.ok(get.calledWith(
       sinon.match(ORIGIN + '/foo'),
       sinon.match({ some: 'params' })

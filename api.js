@@ -27,7 +27,8 @@ function middleware (method, default_query) {
       default_query || {},
       req.query || {},
       req.body || {},
-      req.params || {}
+      req.params || {},
+      { session: req.session || {} } // TODO: move session to separate arg
     );
 
     method(query, function(err, data) {
@@ -61,6 +62,9 @@ function apiMethod (method) {
       query = {};
     }
 
+    if (!_.isFunction(callback))
+      callback = function() {};
+
     // Assume any non-object query is being passed in as an ID
     if (!_.isObject(query))
       query = {id: query};
@@ -77,8 +81,12 @@ function apiMethod (method) {
 }
 
 function getFullUrl(origin, path) {
+  if (!_.isObject(origin))
+    origin = url.parse(origin);
+
   path = path || '';
   path = path.replace(/^\/?/, '');
+
   return url.format(_.extend(
     origin,
     { pathname: origin.path + path }));
@@ -90,9 +98,14 @@ function getFullUrl(origin, path) {
 function remote (method, path, options, callback) {
   if (!request[method])
     return callback(new errors.NotImplemented('Unknown method ' + method));
+
   if (_.isFunction(options)) {
     callback = options;
     options = {};
+  }
+
+  if (this.defaultOptions && _.isObject(this.defaultOptions)) {
+    options = _.defaults(options, this.defaultOptions);
   }
 
   var endpointUrl = getFullUrl(this.origin, path);
@@ -102,13 +115,22 @@ function remote (method, path, options, callback) {
       method.toUpperCase(), endpointUrl, response ? response.statusCode : "Error", err);
 
     if (err)
-      return callback(new errors.Unknown(err));
+      return callback(errors.Unknown(err));
 
-    if (response.statusCode !== 200) {
+    if (response.statusCode >= 300) {
       var msg;
-      if (body && body.reason)
-        msg = body.reason;
-      return callback(new (errors.lookup(response.statusCode))(msg));
+
+      if (!_.isObject(body)) {
+        try {
+          body = JSON.parse(body)
+        } catch (e) {
+          msg = {message: body};
+        };
+      }
+
+      msg = body.message || body.reason || response.statusCode
+
+      return callback((errors.lookup(response.statusCode))(msg, body));
     }
 
     try {
@@ -116,11 +138,11 @@ function remote (method, path, options, callback) {
       if (!_.isObject(body))
         data = JSON.parse(data);
     } catch (e) {
-      return callback(new errors.Unknown(e.message));
+      return callback(errors.Unknown(e.message));
     }
 
-    if (data.status !== 'ok')
-      return callback(new errors.Unknown(data.reason), data);
+    if ('status' in data && data.status !== 'ok')
+      return callback(errors.Unknown(data.reason || body.message), data);
 
     callback(null, data);
   });
@@ -169,8 +191,39 @@ function paginate(key, dataFn) {
   };
 }
 
-module.exports = function Api(origin, config) {
+function addFilters(filters, key, dataFn) {
+  if (!dataFn && _.isFunction(key)) {
+    dataFn = key;
+    key = 'data';
+  }
+
+  return function(query, callback) {
+    dataFn(query, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      if (typeof data[key].length === 'number') {
+        _.each(filters, function (filter) {
+          data[key] = filter(data[key], query);
+        });
+      }
+
+      callback(null, data);
+    })
+  }
+}
+
+module.exports = function Api(origin, globalFilters, config) {
+  if (!config) {
+    config = globalFilters;
+    globalFilters = [];
+  }
+
   config = config || {};
+  globalFilters = globalFilters || [];
+
+  if (_.isFunction(globalFilters))
+    globalFilters = [globalFilters];
 
   origin = url.parse(origin);
   this.origin = origin;
@@ -190,17 +243,30 @@ module.exports = function Api(origin, config) {
   _.each(config, function(item, name) {
     var methodConfig = _.isObject(item) ? item : {};
     var method = _.isFunction(item) ? item : methodConfig.func;
+    var key = methodConfig.key || 'data';
+    var filters = methodConfig.filters || [];
+
+    if (_.isFunction(filters))
+      filters = [filters];
+
     method = method.bind(this);
-    if (methodConfig.paginate) {
-      var key = methodConfig.key || 'data';
+
+    if (filters.length)
+      method = addFilters(filters, key, method);
+
+    if (globalFilters.length)
+      method = addFilters(globalFilters, key, method);
+
+    if (methodConfig.paginate)
       method = paginate(key, method);
-    }
+
     this[name] = apiMethod(method);
   }, this);
 
   _.extend(this, {
     middleware: middleware,
-    remote: remote
+    remote: remote,
+    getFullUrl: getFullUrl
   });
 
 };
