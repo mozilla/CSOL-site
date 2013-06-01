@@ -57,6 +57,9 @@ function filterBadges(data, query) {
       ageGroup = query.age,
       program = query.program;
 
+  if (!category && !ageGroup && !program)
+    return data;
+
   data = _.filter(data, function(item) {
     if (category && !_.contains(item.categories, category))
       return false;
