@@ -193,7 +193,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/learn/some-id' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', url: '/explore/some-id' }, 'normalized');
       t.end();
     });
   });

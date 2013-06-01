@@ -13,9 +13,11 @@
             <h3>How can you earn it?</h3>
 
             <p class="text-right">
-                <a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
-                <a href="{{ badge.url }}/apply" class="btn">Apply</a>
-                <a href="{{ badge.url }}/favorite" class="btn show-tooltip" title="Save this badge to your favorites"><i class="icon-heart"></i></a>
+                {% if badge.activityType == 'offline' %}
+                    <a href="{{ badge.url }}/claim" class="btn">Claim this badge</a>
+                {% else %}
+                    <a href="{{ badge.url }}/apply" class="btn">Apply</a>
+                {% endif %}
             </p>
         </div>
     </div>

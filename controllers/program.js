@@ -41,7 +41,7 @@ module.exports = function (app) {
         case 'org':
           filters.push({
             name: 'org',
-            label: 'Organisation',
+            label: 'Organization',
             options: {
               'org1': 'Org 1',
               'org2': 'Org 2',
@@ -116,7 +116,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/learn', badger.middleware('getPrograms'), function (req, res, next) {
+  app.get('/explore', badger.middleware('getPrograms'), function (req, res, next) {
     var data = req.remote;
 
     res.render('programs/list.html', {
@@ -127,17 +127,17 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/learn/:programName', function (req, res, next) {
+  app.get('/explore/:programName', function (req, res, next) {
     res.render('programs/single.html', {
       program: req.params.program
     });
   });
 
-  app.get('/learn/:programName/favorite', function (req, res, next) {
+  app.get('/explore/:programName/favorite', function (req, res, next) {
     return res.redirect('/login', 303);
   });
 
-  app.get('/learn/:programName/unfavorite', function (req, res, next) {
+  app.get('/explore/:programName/unfavorite', function (req, res, next) {
     return res.redirect('/login', 303);
   });
 
@@ -414,8 +414,8 @@ module.exports = function (app) {
     for (var i = 0; i < 12; ++i) {
       orgs.push({
         thumbnail: '/media/images/org.png',
-        description: 'Organisation blah irure...',
-        url: '/orgs/some-organisation'
+        description: 'Organization blah irure...',
+        url: '/orgs/some-organization'
       });
     }
 
