@@ -22,7 +22,9 @@ module.exports = function (app) {
           return res.redirect('/dashboard/' + dependants[0].username);
         }
 
-        res.render('/user/dashboard.html', {
+        var template = learnerName ? 'dashboard-single' : 'dashboard';
+
+        res.render('/user/' + template + '.html', {
           dependants: dependants,
           currentDependant: learnerName
         });

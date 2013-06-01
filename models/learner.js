@@ -81,6 +81,13 @@ module.exports = {
     },
     getDisplayName: function () {
       return this.firstName || this.username;
+    },
+    getActivities: function () {
+      return [];
+    },
+    getRecentActivities: function (count) {
+      count = count || 4;
+      return [];
     }
   }
 };

@@ -1,28 +1,13 @@
-{% extends 'layout.html' %}
+{% extends 'user/layout.html' %}
 
 {% block content %}
-	<div class="row">
-		<div class="span3">
-			<ul>
-				{% if dependants.length > 1 %}
-					<li>
-						{%- if currentDependant -%}
-							<a href="/dashboard">All</a>
-						{%- else -%}
-							<strong>All</strong>
-						{%- endif -%}
-					</li>
-				{% endif %}
-				{% for dependant in dependants %}
-					<li>
-						{%- if dependant.username == currentDependant -%}
-							<strong>{{ dependant.getDisplayName() }}</strong>
-						{%- else -%}
-							<a href="/dashboard/{{ dependant.username }}">{{ dependant.getDisplayName() }}</a>
-						{%- endif -%}
-					</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
+	{% for dependant in dependants %}
+		<h3>{{ dependant.getDisplayName() }}'s recent activity</h3>
+		<ul class="activity">
+			{% for activity in dependant.getRecentActivities() %}
+				<li>{{ activity }}</li>
+			{% endfor %}
+		</ul>
+		<p class="text-right"><a href="/dashboard/{{ dependant.username }}" class="btn">See all activity &raquo;</a></p>
+	{% endfor %}
 {% endblock %}

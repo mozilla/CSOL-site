@@ -1,0 +1,10 @@
+{% extends 'user/layout.html' %}
+
+{% block content %}
+	<h3>{{ dependant.getDisplayName() }}'s activity</h3>
+	<ul class="activity">
+		{% for activity in dependant.getActivities() %}
+			<li>{{ activity }}</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
