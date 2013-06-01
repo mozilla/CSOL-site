@@ -1,8 +1,66 @@
 # Chicago Summer of Learning
 
-The website for the Chicago Summer of Learning, developed by Ocupop and Mozilla.
+Learning happens everywhere in the city—in libraries, parks, museums and cultural institutions, community-based organizations, colleges and universities, schools, and beyond. This summer, Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning, a citywide effort to engage youth in hands-on learning opportunities—particularly in science, technology, engineering, arts, and math. School stops for the summer, but learning never should.
+
+More than 100 organizations across the city have joined forces to integrate learning into summer activities for youth of all ages in every Chicago neighborhood.
+
+*This is the code that makes all that possible*
+
+## Overview
+
+The CSOL site depends on two backend services, [OpenBadger](http://github.com/mozilla/openbadger) to issue the badges and [Aestimia](http://github.com/mozilla/aestimia) to assess online learning. All three applications are written in Node.js and use Express as a web framework. CSOL uses MySQL as a data store, while OpenBadger and Aestimia use Mongoose. We also use the really excellent [Mandrill](http://mandrillapp.com) to send emails via their API, and Amazon S3 to host uploaded work.
+
+Each app is developed with Heroku's [12 factor app](http://www.12factor.net/) structure in mind. The entire environment is hosted on Amazon EC2, but is highly portable.
+
+## Get Involved
+
+There's a lot of organizations involved with launching the Chicago Summer of Learning, the Chicago Mayor's Office, the MacArthur Foundation, the Digital Youth Network and the Mozilla Foundation, plus 100+ organizations offering youth opportunities to learn this summer.
+
+Our code is open source, because we want this to be a community driven project. If you're interested in the goals of this project - we'd love your contributions.
+
+Contributing is relatively easy,
+
+1. Set up a development environment. Each app is Node.js, so if you're familiar with the firing up a Node app, you're in good shape. All configuration is passed to the app via environment variables, see below for how to define your environment.
+2. Fork the code.
+3. Find an issue to work on. We're actively marking issues that should be easy to grab as a first or second ticket as [onboarding](https://github.com/mozilla/csol-site/issues?labels=onboard&state=open).
+4. Work on the issue in your fork.
+5. When you're done, submit the code as a pull request to the main repository (master branch). We'll review it and merge it asap!
+6. GOTO step 3
+
+If you want to tackle a bigger ticket, find a core developer and ask them what to work on. We hang out in IRC at irc.mozilla.org in the #badges room. Core devs include cmcavoy, arhayward, mlarsson, atul and brianloveswords. Any of those irc folks will be able to direct you towards meatier issues.
 
 ## Environment
+
+These variables should be configured in your applications environment through env variables. An easy way to do that is create a config.env in your application directly that looks something like,
+
+```
+#MySQL Config
+export CSOL_DB_PASS=db
+
+#Local Config
+export COOKIE_SECRET='chris is cool'
+export CSOL_HOST='chicagosummeroflearning.org'
+
+
+#Location of OpenBadger
+export CSOL_OPENBADGER_URL='http://localhost:8000/v2/'
+export CSOL_OPENBADGER_SECRET='lecarre'
+
+#Amazon S3
+export CSOL_AWS_FAKE_S3_DIR='csol-s3'
+
+#Aestimia
+export CSOL_AESTIMIA_URL='http://localhost:8001'
+export CSOL_AESTIMIA_SECRET='lksdafjjtitiejrwejjjresfs'
+export CSOL_HOST='http://chicagosummeroflearning.org'
+
+#Mandrill
+export CSOL_MANDRILL_KEY=''
+```
+
+Then you can source the file like `. config.env`.
+
+Here's the full list of variables,
 
 Property            | Default  | Description
 --------------------|----------|-------------------------
