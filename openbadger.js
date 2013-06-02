@@ -70,9 +70,9 @@ var badgeTypes = [
   {label: 'Skill', value: 'skill'},
   {label: 'Activity', value: 'activity'}
 ];
-var issuers = [];
+var orgs = [];
 
-function updateIssuers (callback) {
+function updateOrgs (callback) {
   if (typeof callback !== 'function')
     callback = function () {};
 
@@ -80,16 +80,23 @@ function updateIssuers (callback) {
     if (err)
       return callback(err);
 
-    issuers = [];
+    orgs = [];
 
-    (data.issuers || data.orgs).forEach(function (issuer) {
-      issuers.push({
-        label: issuer.name,
-        value: issuer.shortname
+    (data.orgs || data.issuers).forEach(function (org) {
+      orgs.push({
+        label: org.name,
+        value: org.shortname
       });
     });
 
-    callback(null, issuers);
+    orgs.sort(function(a, b) {
+      var aVal = (a && a.label || '').toLowerCase().replace(/^\s*the\s+/, ''),
+          bVal = (b && b.label || '').toLowerCase().replace(/^\s*the\s+/, '');
+
+      return aVal.localeCompare(bVal);
+    });
+
+    callback(null, orgs);
   });
 }
 
@@ -160,11 +167,11 @@ function filterBadges (data, query) {
 
 function filterPrograms (data, query) {
   var category = confirmFilterValue(query.category, categories),
-      org = confirmFilterValue(query.org, issuers),
+      org = confirmFilterValue(query.org, orgs),
       ageGroup = confirmFilterValue(query.age, ageRanges),
       activityType = confirmFilterValue(query.activity, activityTypes);
 
-  if (!category && !ageGroup && !badgeType && !activityType)
+  if (!category && !org && !ageGroup && !activityType)
     return data;
 
   return applyFilter(data, {
@@ -332,16 +339,36 @@ var openbadger = new Api(ENDPOINT, {
   },
 });
 
-updateIssuers();
+updateOrgs();
 
 module.exports = openbadger;
 module.exports.getFilters = function getFilters () {
   return {
-    categories: categories,
-    ageRanges: ageRanges,
-    issuers: issuers,
-    activityTypes: activityTypes,
-    badgeTypes: badgeTypes
+    categories: {
+      name: 'category',
+      label: 'Category',
+      options: categories
+    },
+    ageRanges: {
+      name: 'age',
+      label: 'Age',
+      options: ageRanges
+    },
+    orgs: {
+      name: 'org',
+      label: 'Organization',
+      options: orgs
+    },
+    activityTypes: {
+      name: 'activity',
+      label: 'Activity',
+      options: activityTypes
+    },
+    badgeTypes: {
+      name: 'type',
+      label: 'Type',
+      options: badgeTypes
+    }
   };
 }
-module.exports.updateIssuers = updateIssuers;
+module.exports.updateOrgs = updateOrgs;
