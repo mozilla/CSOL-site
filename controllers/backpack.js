@@ -98,7 +98,7 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var data = req.remote;
 
-    res.render('user/backpack.html', {
+    res.render('user/applications.html', {
       items: data.badges
     });
   });
