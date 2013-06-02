@@ -736,3 +736,17 @@ body.home #cl_i_vid {
   height: 25px;
   text-indent: -9000px;
 }
+.filter {
+  color: #EEE;
+}
+.filter select {
+  margin-right: 10px;
+  width: 115px;
+  vertical-align: baseline;
+}
+.filter input {
+  vertical-align: baseline;
+}
+.filter .navbar-inner {
+  padding-left: 10px;
+}
