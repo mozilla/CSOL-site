@@ -49,31 +49,130 @@ function normalizeProgram(program, id) {
   return program;
 }
 
-function filterBadges(data, query) {
-  // TO DO - We should probably be a little less naive about this, and make sure
-  // that these values are from an allowed list
+var categories = [
+  {label: 'Science', value: 'science'},
+  {label: 'Technology', value: 'technology'},
+  {label: 'Engineering', value: 'engineering'},
+  {label: 'Art', value: 'art'},
+  {label: 'Math', value: 'math'}
+];
+var ageRanges = [
+  {label: 'Under 13', value: '0-13'},
+  {label: '13-18', value: '13-18'},
+  {label: '19-24', value: '19-24'}
+];
+var activityTypes = [
+  {label: 'Online', value: 'online'},
+  {label: 'Offline', value: 'offline'}
+];
+var badgeTypes = [
+  {label: 'Participation', value: 'participation'},
+  {label: 'Skill', value: 'skill'},
+  {label: 'Activity', value: 'activity'}
+];
+var issuers = [];
 
-  var category = query.category,
-      ageGroup = query.age,
-      program = query.program;
+function updateIssuers (callback) {
+  if (typeof callback !== 'function')
+    callback = function () {};
 
-  if (!category && !ageGroup && !program)
+  openbadger.getOrgs(function (err, data) {
+    if (err)
+      return callback(err);
+
+    issuers = [];
+
+    (data.issuers || data.orgs).forEach(function (issuer) {
+      issuers.push({
+        label: issuer.name,
+        value: issuer.shortname
+      });
+    });
+
+    callback(null, issuers);
+  });
+}
+
+function confirmFilterValue (value, list) {
+  if (!value && value !== 0)
+    return null;
+
+  for (var i = 0, l = list.length; i < l; ++i)
+    if (list[i].value === value)
+      return value;
+
+  return null;
+}
+
+function applyFilter (data, query) {
+  return _.filter(data, function(item) {
+    var x = _.reduce(query, function(memo, value, field) {
+      console.log('Filtering:', value, field, item);
+
+      if (!memo) // We've already failed a test - no point in continuing
+        return memo;
+
+      if (!value && value !== 0)
+        return memo;
+
+      var data = item;
+
+      if (field.indexOf('.') > -1) {
+        var fieldParts = field.split('.').reverse();
+
+        while (data && fieldParts.length > 1) {
+          data = data[fieldParts.pop()];
+        }
+
+        field = fieldParts.reverse().join('.');
+      }
+
+      var itemValue = data ? data[field] : null;
+
+      if (_.isArray(itemValue))
+        return memo && _.contains(itemValue, value);
+
+      return memo && (itemValue === value);
+    }, true);
+    console.log(query, x);
+    return x;
+  })
+}
+
+function filterBadges (data, query) {
+  var category = confirmFilterValue(query.category, categories),
+      ageGroup = confirmFilterValue(query.age, ageRanges),
+      badgeType = confirmFilterValue(query.type, badgeTypes),
+      activityType = confirmFilterValue(query.activity, activityTypes);
+
+  if (!category && !ageGroup && !badgeType && !activityType)
     return data;
 
-  data = _.filter(data, function(item) {
-    if (category && !_.contains(item.categories, category))
-      return false;
-
-    if (ageGroup && !_.contains(item.ageRange, ageGroup))
-      return false;
-
-    if (program && item.program !== program)
-      return false;
-
-    return true;
+  return applyFilter(data, {
+    'categories': category,
+    'ageRange': ageGroup,
+    'badgeType': badgeType,
+    'activityType': activityType
   });
 
   return data;
+}
+
+function filterPrograms (data, query) {
+  var category = confirmFilterValue(query.category, categories),
+      org = confirmFilterValue(query.org, issuers),
+      ageGroup = confirmFilterValue(query.age, ageRanges),
+      activityType = confirmFilterValue(query.activity, activityTypes);
+
+  if (!category && !ageGroup && !badgeType && !activityType)
+    return data;
+
+  return applyFilter(data, {
+    'categories': category,
+    'issuer.shortname': org,
+    'ageRange': ageGroup,
+    'activityType': activityType
+  });
 }
 
 function getJWTToken(email) {
@@ -129,6 +228,7 @@ var openbadger = new Api(ENDPOINT, {
         });
       });
     },
+    filters: filterPrograms,
     paginate: true,
     key: 'programs'
   },
@@ -232,4 +332,16 @@ var openbadger = new Api(ENDPOINT, {
   },
 });
 
+updateIssuers();
+
 module.exports = openbadger;
+module.exports.getFilters = function getFilters () {
+  return {
+    categories: categories,
+    ageRanges: ageRanges,
+    issuers: issuers,
+    activityTypes: activityTypes,
+    badgeTypes: badgeTypes
+  };
+}
+module.exports.updateIssuers = updateIssuers;
