@@ -8,8 +8,23 @@
             <img src="{{ badge.image }}">
         </div>
         <div class="span8">
-            <h3>What is this badge about?</h3>
-            <p>{{ badge.description }}</p>
+          <p>
+            <b>Issued by:</b>
+            {% if badge.program.issuer.url %}
+              <a href="{{ badge.program.issuer.url }}">
+            {% endif %}
+            {{ badge.program.issuer.name }}
+            {% if badge.program.issuer.url %}
+              </a>
+            {% endif %}
+          </p>
+
+          <p>
+            <b>Issued to:</b> {{ user.email }}
+          </p>
+
+          <h3>What is this badge about?</h3>
+          <p>{{ badge.description }}</p>
         </div>
     </div>
 {% endblock %}

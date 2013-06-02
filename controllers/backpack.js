@@ -88,7 +88,8 @@ module.exports = function (app) {
 
     console.log(data.badge);
     res.render('user/badge.html', {
-      badge: data.badge
+      badge: data.badge,
+      user: req.session.user
     });
   });
 
