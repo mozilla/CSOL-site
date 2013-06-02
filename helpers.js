@@ -35,7 +35,7 @@ exports.addPaginateMethod = function addPaginateMethod (req, res, next) {
     query = querystring.stringify(query);
     href = path.href.replace(/\?.*$/, '') + (query ? '?' + query : '');
 
-    if (pageNum === null) {
+    if (!pageNum) {
       content = '<span>' + display + '</span>';
     } else {
       content = '<a href="' + href + '">' + (display || pageNum) + '</a>';
@@ -86,7 +86,7 @@ exports.addPaginateMethod = function addPaginateMethod (req, res, next) {
       pageNum = pageNums[i];
 
       if (pageNum === current)
-        pages.push(page({path:path, pageNum:pageNum, className:'active', el:el}));
+        pages.push(page({path:path, display:pageNum, className:'active', el:el}));
       else if (!parseInt(pageNum,10))
         pages.push(page({path:path, display:pageNum, el:el}));
       else
