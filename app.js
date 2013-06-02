@@ -1,3 +1,6 @@
+if ( process.env.NEW_RELIC_HOME ) {
+  require( 'newrelic' );
+}
 const path = require('path');
 const http = require('http');
 const express = require('express');
