@@ -92,6 +92,17 @@ module.exports = function (app) {
     });
   });
 
+  app.get('/myapplications', [
+    loggedIn,
+    openbadger.middleware('getUserBadge')
+  ], function (req, res, next) {
+    var data = req.remote;
+
+    res.render('user/backpack.html', {
+      items: data.badges
+    });
+  });
+
   app.get('/favorites/:view?', function (req, res, next) {
     var badge = {
       thumbnail: '/media/images/badge.png',
