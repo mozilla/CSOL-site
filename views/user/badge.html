@@ -30,4 +30,18 @@
           <p>{{ badge.description }}</p>
         </div>
     </div>
+
+    <div class="row">
+      <h3>Similar Badges</h3>
+      <p>Cupcake <a href="#">link to Badges page</a> something about badges
+      should go here.</p>
+
+
+      {% for item in similar %}
+      <div class="span3">
+        {% include "includes/badge-thumbnail.html" %}
+      </div>
+      {% endfor %}
+
+    </div>
 {% endblock %}
