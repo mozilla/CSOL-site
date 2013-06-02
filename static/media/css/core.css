@@ -586,15 +586,26 @@ body.home .navbar .nav-wrap ul > li > a {
 body.home .navbar .nav-wrap ul > li.learn > a:first-letter {
   text-transform: capitalize;
 }
-body.home .navbar .nav-wrap ul > li.log-in > a {
+body.home .navbar .nav-wrap ul > li.log-in > a,
+body.home .navbar .nav-wrap ul > li.about > a {
   font-size: 18px;
   color: #fff;
   text-transform: lowercase;
+  padding: 0 0 7px 0;
   text-align: center;
   line-height: 24px;
 }
+body.home .navbar .nav-wrap ul > li.claim > a {
+  text-align: center;
+  text-transform: capitalize;
+  margin-top: 5px;
+}
+body.home .navbar .nav-wrap ul > li.claim > a:before,
+body.home .navbar .nav-wrap ul > li.claim > a:after {
+  content: '-';
+}
 body.home .navbar .nav-wrap ul > li.video {
-  margin-top: 35px;
+  margin: 30px 0;
 }
 body.home .navbar .nav-wrap ul > li.video a {
   color: #fff;
