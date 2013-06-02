@@ -1,6 +1,8 @@
+const _ = require('underscore');
 const openbadger = require('../openbadger');
 const db = require('../db');
 const claim = db.model('Claim');
+const applications = db.model('Application');
 const loggedIn = require('../middleware').loggedIn;
 
 module.exports = function (app) {
@@ -94,12 +96,20 @@ module.exports = function (app) {
 
   app.get('/myapplications', [
     loggedIn,
-    openbadger.middleware('getUserBadge')
+    openbadger.middleware('getUserBadges')
   ], function (req, res, next) {
-    var data = req.remote;
-
-    res.render('user/applications.html', {
-      items: data.badges
+    var user = req.session.user;
+    applications.findAll({where: {LearnerId: user.id}}).success(function (applications) {
+      var badgenames = _.map(applications, function(app) { return app.badgeId; });
+      openbadger.getUserBadges(user.id, function (err, data) {
+        var appliedFor = _.map(data.badges, function(badge) { return badgenames.indexOf(badge.id) !== -1; });
+        res.render('user/applications.html', {
+          items: _.map(appliedFor, function(badge) {
+            badge.url = '/myapplications/foo' + badge.id;
+            return badge;
+          })
+        });
+      });
     });
   });
 
