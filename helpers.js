@@ -1,3 +1,5 @@
+const querystring = require('querystring');
+const url = require('url');
 const _ = require('underscore');
 
 
@@ -12,6 +14,95 @@ exports.addRangeMethod = function addRangeMethod (req, res, next) {
   res.locals.range = _.range;
   next();
 };
+
+exports.addPaginateMethod = function addPaginateMethod (req, res, next) {
+  function page (options) {
+    var path = options.path,
+        pageNum = options.pageNum,
+        display = options.display,
+        className = options.className,
+        el = options.el;
+
+    var query = querystring.parse(path.query),
+        content,
+        href;
+
+    if (pageNum === 1)
+      delete query.page
+    else
+      query.page = pageNum
+
+    query = querystring.stringify(query);
+    href = path.href.replace(/\?.*$/, '') + (query ? '?' + query : '');
+
+    if (pageNum === null) {
+      content = '<span>' + display + '</span>';
+    } else {
+      content = '<a href="' + href + '">' + (display || pageNum) + '</a>';
+    }
+
+    return '<' + el + (className ? ' class="' + className + '"' : '') + '>' + content + '</' + el + '>';
+  }
+
+  function generatePageNumbers (total, current, extraItems) {
+    extraItems = extraItems || 2;
+
+    var paged = {},
+        pages = [];
+
+    for (var i = 1; i <= Math.min(total, extraItems + 1); ++i)
+      (paged[i] = 1) && pages.push(i);
+
+    if (!paged[Math.max(1, current - extraItems - 1)])
+      pages.push('...');
+
+    for (var i = Math.max(1, current - extraItems); i <= Math.min(total, current + extraItems); ++i)
+      !paged[i] && (paged[i] = 1) && pages.push(i);
+
+    if (!paged[Math.max(1, total - extraItems - 1)])
+      pages.push('...');
+
+    for (var i = Math.max(1, total - extraItems); i <= total; ++i)
+      !paged[i] && (paged[i] = 1) && pages.push(i);
+
+    return pages;
+  }
+
+  res.locals.paginate = function (count, current, path, extraItems, el) {
+    current = current || 1;
+    path = url.parse(path || req.url);
+    el = el || 'li';
+
+    var pages = [],
+        pageNums = generatePageNumbers(count, current, extraItems),
+        pageNum;
+
+    if (current === 1)
+      pages.push(page({path:path, display:'&laquo;', className:'disabled', el:el}));
+    else
+      pages.push(page({path:path, pageNum:current - 1, display:'&laquo', el:el}));
+
+    for (var i = 0, l = pageNums.length; i < l; ++i) {
+      pageNum = pageNums[i];
+
+      if (pageNum === current)
+        pages.push(page({path:path, pageNum:pageNum, className:'active', el:el}));
+      else if (!parseInt(pageNum,10))
+        pages.push(page({path:path, display:pageNum, el:el}));
+      else
+        pages.push(page({path:path, pageNum:pageNum, el:el}));
+    }
+
+    if (current === pages)
+      pages.push(page({path:path, display:'&raquo;', className:'disabled', el:el}));
+    else
+      pages.push(page({path:path, pageNum:current + 1, display:'&raquo;', el:el}));
+
+    return pages.join('');
+  }
+
+  next();
+}
 
 function extractMessageData (req) {
   var messages = {};
