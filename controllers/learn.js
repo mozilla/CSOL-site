@@ -36,7 +36,7 @@ module.exports = function(app) {
     next();
   });
 
-  app.get('/learn/:section?/:item_id?', function(req, res) {
+  app.get('/explore/:section?/:item_id?', function(req, res) {
     var section = req.params.section;
     var item = req.params.item;
 
@@ -44,16 +44,16 @@ module.exports = function(app) {
 
     var itemOptions = [{
       thumbnail: '/media/images/org.png',
-      description: 'Organisation blah irure...',
-      url: '/learn/orgs/some-organisation'
+      description: 'Organization blah irure...',
+      url: '/explore/orgs/some-organization'
     },{
       thumbnail: '/media/images/program.png',
       description: 'Program blah sed eiusmod...',
-      url: '/learn/programs/some-program'
+      url: '/explore/programs/some-program'
     },{
       thumbnail: '/media/images/activity.png',
       description: 'Activity id est laborum...',
-      url: '/learn/activities/some-activity'
+      url: '/explore/activities/some-activity'
     }];
 
     if (item)
@@ -65,7 +65,7 @@ module.exports = function(app) {
       var category = req.query['category'];
       delete req.query['category'];
       var query = querystring.stringify(req.query);
-      return res.redirect('/learn/' + category + '?' + query);
+      return res.redirect('/explore/' + category + '?' + query);
     }
 
     for (var i = 0; i < 12; ++i) {
@@ -113,7 +113,7 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/learn/:section/:item_id/:action', function(req, res, next) {
+  app.get('/explore/:section/:item_id/:action', function(req, res, next) {
     var item = req.params.item;
     var action = req.params.action;
 

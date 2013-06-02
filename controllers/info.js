@@ -21,8 +21,8 @@ module.exports = function (app) {
     res.render('info/terms.html');
   });
 
-  app.get('/vpat', function (req, res, next) {
-    res.render('info/vpat.html');
+  app.get('/faq', function (req, res, next) {
+    res.render('info/faq.html');
   });
 
 };

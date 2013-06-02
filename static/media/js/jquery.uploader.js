@@ -89,7 +89,8 @@
 		$label
 			.addClass('btn')
 			.text('Choose photos and videos to upload')
-			.appendTo($description);
+			.appendTo($description)
+			.click(function() { $(this).parents('.item').find('input').click(); });
 
 		if (xhr.upload && window.FormData) {
 			goAsync();

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mozilla/CSOL-site.png?branch=master)](https://travis-ci.org/mozilla/CSOL-site)
+
 # Chicago Summer of Learning
 
 Learning happens everywhere in the city—in libraries, parks, museums and cultural institutions, community-based organizations, colleges and universities, schools, and beyond. This summer, Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning, a citywide effort to engage youth in hands-on learning opportunities—particularly in science, technology, engineering, arts, and math. School stops for the summer, but learning never should.
@@ -23,11 +25,31 @@ Contributing is relatively easy,
 1. Set up a development environment. Each app is Node.js, so if you're familiar with the firing up a Node app, you're in good shape. All configuration is passed to the app via environment variables, see below for how to define your environment.
 2. Fork the code.
 3. Find an issue to work on. We're actively marking issues that should be easy to grab as a first or second ticket as [onboarding](https://github.com/mozilla/csol-site/issues?labels=onboard&state=open).
-4. Work on the issue in your fork.
-5. When you're done, submit the code as a pull request to the main repository (master branch). We'll review it and merge it asap!
+4. Work on the issue in your fork. Be sure to write tests for any new code!
+5. When you're done, make sure all tests pass, submit the code as a pull request to the main repository (master branch). We'll review it and merge it asap!
 6. GOTO step 3
 
 If you want to tackle a bigger ticket, find a core developer and ask them what to work on. We hang out in IRC at irc.mozilla.org in the #badges room. Core devs include cmcavoy, arhayward, mlarsson, atul and brianloveswords. Any of those irc folks will be able to direct you towards meatier issues.
+
+## Running Tests
+
+You can use the following commands to run the entire suite:
+
+```bash
+$ bin/test.js          # normally you'd use this
+$ bin/test.js --debug  # if you want to see debugging
+```
+
+You can also run just a few of the tests:
+
+```bash
+$ bin/test.js tests/foo.test.js  # run only one test file
+$ bin/test.js -f bad             # run all test files w/ 'bad' in their name
+```
+
+This is useful for when one file (or area of code) is giving you trouble
+and you don't want to run through the whole suite to debug just that one
+thing.
 
 ## Environment
 
