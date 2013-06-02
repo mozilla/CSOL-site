@@ -81,6 +81,7 @@ ol {
 .navbar .nav .active a:focus {
   background-color: #fff;
   box-shadow: none;
+  color: #000;
 }
 .navbar .navbar-inner {
   background-image: url('../img/chalkboard_bg.jpg');
@@ -460,12 +461,6 @@ ul.thumbnails li:nth-child(3n+3) figure.thumbnail > a img {
 }
 ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
   background-position: -210px -210px;
-}
-.navbar .nav .active a,
-.navbar .nav .active a:hover {
-  color: #000;
-  border-left: inherit;
-  border-right: inherit;
 }
 /*Password fields with feedback bar*/
 input[type="password"].metered {
