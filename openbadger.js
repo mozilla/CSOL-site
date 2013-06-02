@@ -113,9 +113,7 @@ function confirmFilterValue (value, list) {
 
 function applyFilter (data, query) {
   return _.filter(data, function(item) {
-    var x = _.reduce(query, function(memo, value, field) {
-      console.log('Filtering:', value, field, item);
-
+    return _.reduce(query, function(memo, value, field) {
       if (!memo) // We've already failed a test - no point in continuing
         return memo;
 
@@ -141,8 +139,6 @@ function applyFilter (data, query) {
 
       return memo && (itemValue === value);
     }, true);
-    console.log(query, x);
-    return x;
   })
 }
 
@@ -278,8 +274,6 @@ var openbadger = new Api(ENDPOINT, {
         if (err)
           return callback(err, data);
 
-
-        console.log(data);
         badges = _.map(data.badges, normalizeBadgeInstance)
 
         return callback(null, {
