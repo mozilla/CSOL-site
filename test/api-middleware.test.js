@@ -411,12 +411,12 @@ test('api.get', function(t) {
     });
   });
 
-  t.test('calls callback with 500 if request.get response is not 200', function(t) {
+  t.test('calls callback with 502 if request.get response is not 200', function(t) {
     var requestMock = sinon.mock(request);
     var get = requestMock.expects('get').callsArgWith(2, null, { statusCode: 404 });
 
     api.get('/foo', function(err, data){
-      t.similar(err, { code: 404, name: 'NotFound' }, 'error');
+      t.similar(err, { code: 502, name: 'BadGateway' }, 'error');
       t.notOk(data, 'no data');
       requestMock.restore();
       t.end(); 
