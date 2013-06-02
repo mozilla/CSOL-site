@@ -31,6 +31,14 @@ Contributing is relatively easy,
 
 If you want to tackle a bigger ticket, find a core developer and ask them what to work on. We hang out in IRC at irc.mozilla.org in the #badges room. Core devs include cmcavoy, arhayward, mlarsson, atul and brianloveswords. Any of those irc folks will be able to direct you towards meatier issues.
 
+## Getting started
+
+Install the application dependencies:
+
+```bash
+$ npm install
+```
+
 ## Running Tests
 
 You can use the following commands to run the entire suite:
