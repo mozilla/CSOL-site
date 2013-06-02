@@ -39,6 +39,14 @@ Install the application dependencies:
 $ npm install
 ```
 
+Start the app server:
+
+```base
+$ node_modules/.bin/up -t 0 -n 1 -w -p 7000 app.js
+```
+
+Check out site in browser at [http://127.0.0.1:7000/](http://127.0.0.1:7000/)
+
 ## Running Tests
 
 You can use the following commands to run the entire suite:
