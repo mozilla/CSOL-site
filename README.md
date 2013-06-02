@@ -31,6 +31,8 @@ Contributing is relatively easy,
 
 If you want to tackle a bigger ticket, find a core developer and ask them what to work on. We hang out in IRC at irc.mozilla.org in the #badges room. Core devs include cmcavoy, arhayward, mlarsson, atul and brianloveswords. Any of those irc folks will be able to direct you towards meatier issues.
 
+If you're working on a ticket that needs copy, it's most likely in this [google doc](https://docs.google.com/document/d/1UJ1X5mMpFnleNeh58VALNLf7y1P2kuJIsQOqI7vSUWE/edit#) but if not, ping @threeqube in IRC, or through an issue.
+
 ## Getting started
 
 Install the application dependencies:
