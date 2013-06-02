@@ -23,10 +23,12 @@
   "devDependencies": {
     "sinon": "~1.7.2",
     "injectr": "~0.4.0",
+    "colors": "~0.6.0",
+    "optimist": "~0.5.2",
     "up": "~0.2.2"
   },
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js",
+    "test": "node bin/test.js",
     "sync-db": "./bin/sync-db",
     "migrate-db": "./bin/migrate-db",
     "start": "./node_modules/.bin/up -w -n 1 -p 8888 app.js"
