@@ -16,15 +16,12 @@
 {% endblock %}
 
 {% block item_actions %}
-{#
   {{ super() }}
+  <a href="#" title="Delete this badge"><i class="icon-trash"></i></a>
   <a class="btn show-tooltip" title="Add to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
-#}
 {% endblock %}
 
-
 {% block modal %}
-
   <!-- Modal -->
   <div id="shareModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -47,5 +44,4 @@
       <a href="#" class="btn btn-block">Yes</a>
     </div>
   </div>
-
 {% endblock %}
