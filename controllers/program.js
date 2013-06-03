@@ -292,9 +292,11 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/earn/:badgeName', function (req, res, next) {
+  app.get('/earn/:badgeName', badger.middleware('getBadgeRecommendations'), function (req, res, next) {
+    var data = req.remote;
     res.render('badges/single.html', {
-      badge: req.params.badge
+      badge: req.params.badge,
+      relatedBadges: data.badges
     });
   });
 
