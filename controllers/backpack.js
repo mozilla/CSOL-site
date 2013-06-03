@@ -100,17 +100,14 @@ module.exports = function (app) {
     var data = req.remote;
     var badge = data.badge;
     var user = res.locals.user;
+    var shortName = req.params.id; // assume if we got here id is valid input
 
-    favorite.findOrCreate({
-      type: 'badge',
-      itemId: req.params.id, // assume if we got here id is valid input
-      LearnerId: user.id
-    }).complete(function(err, fav) {
+    favorite.favoriteBadge(user, shortName, function(err, fav) {
         if (err) {
             return next(err);
         }
         res.render('user/badge-favorited.html', {
-          badge: badge
+            badge: badge
         });
     });
   });
