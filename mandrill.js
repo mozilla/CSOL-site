@@ -7,10 +7,10 @@ const FAKE_EMAIL = ('DEBUG' in process.env)
 
 var request = require('request');
 if (FAKE_EMAIL) {
-  request.post = function(opts, cb) {
+  request = { post : function(opts, cb) {
     logger.log('debug', 'FAKE EMAIL: request.post with opts', opts); 
     cb('EMAIL DISABLED');
-  };
+  } };
 }
 
 const ENDPOINT = process.env['CSOL_MANDRILL_URL'] || 
@@ -114,3 +114,22 @@ module.exports = {
     });
   }
 };
+
+module.exports.healthCheck = function(cb) {
+  var opts = {
+    url: url.resolve(ENDPOINT, 'users/ping.json'),
+    json: { key: KEY }
+  };
+
+  request.post(opts, function(err, response, body) {
+    if (err)
+      return cb(err);
+
+    if (body.code === -1)
+      return cb(body.message);
+
+    return cb();
+  });
+};
+
+
