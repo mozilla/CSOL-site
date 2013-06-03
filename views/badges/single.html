@@ -22,56 +22,23 @@
         </div>
     </div>
 
-    <h3><a href="/badges">Similar or Related Badges</a></h3>
-    <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
-    <ul class="thumbnails">
-        <li class="span3">
-            <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
-                    <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
-                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                    </p>
-                </figcaption>
-            </figure>
-        </li>
-        <li class="span3">
-            <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
-                    <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
-                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                    </p>
-                </figcaption>
-            </figure>
-        </li>
-        <li class="span3">
-            <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
-                    <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
-                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                    </p>
-                </figcaption>
-            </figure>
-        </li>
-        <li class="span3">
-            <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
-                    <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
-                        <a class="btn show-tooltip" title="Save this badge to your favorites" href="/badges/ae784f/favorite"><i class="icon-heart"></i></a>
-                    </p>
-                </figcaption>
-            </figure>
-        </li>
-    </ul>
+    {% if relatedBadges and relatedBadges|length > 0 %}
+      <h3><a href="/badges">Similar or Related Badges</a></h3>
+      <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
+      <ul class="thumbnails">
+          {% for relatedBadge in relatedBadges %}
+          <li class="span3">
+              <figure class="thumbnail">
+                  <a href=""><img src="{{relatedBadge.image}}"></a>
+                  <figcaption class="caption">
+                      <p>{{relatedBadge.description}}</p>
+                      <p class="text-right">
+                          <a href="" class="btn">Details</a>
+                      </p>
+                  </figcaption>
+              </figure>
+          </li>
+          {% endfor %}
+      </ul>
+    {% endif %}
 {% endblock %}
