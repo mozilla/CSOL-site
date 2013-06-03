@@ -16,10 +16,10 @@
 {% endblock %}
 
 {% block item_actions %}
-{#
   {{ super() }}
-	<a class="btn show-tooltip" title="Add to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
-#}
+  <form action="{{ item.url }}/favorite" method="POST" class="favorites-form">
+    <button type="submit" class="btn show-tooltip" title="Add to your favorites"><i class="icon-heart"></i></button>
+  </form>
 {% endblock %}
 
 

@@ -1,6 +1,7 @@
 const openbadger = require('../openbadger');
 const db = require('../db');
 const claim = db.model('Claim');
+const favorite = db.model('Favorite');
 const loggedIn = require('../middleware').loggedIn;
 
 module.exports = function (app) {
@@ -89,6 +90,28 @@ module.exports = function (app) {
     console.log(data.badge);
     res.render('user/badge.html', {
       badge: data.badge
+    });
+  });
+
+  app.post('/mybadges/:id/favorite', [
+    loggedIn,
+    openbadger.middleware('getUserBadge')
+  ], function (req, res, next) {
+    var data = req.remote;
+    var badge = data.badge;
+    var user = res.locals.user;
+
+    favorite.findOrCreate({
+      type: 'badge',
+      itemId: req.params.id, // assume if we got here id is valid input
+      LearnerId: user.id
+    }).complete(function(err, fav) {
+        if (err) {
+            return next(err);
+        }
+        res.render('user/badge-favorited.html', {
+          badge: data.badge
+        });
     });
   });
 
