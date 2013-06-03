@@ -47,10 +47,12 @@ FakeS3.prototype.get = function(urlPath) {
   var abspath = this._toFilePath(urlPath);
   var result = new EventEmitter();
 
-  process.nextTick(function() {
-    result.emit('response', fs.createReadStream(abspath));
-  });
-
+  result.end = function() {
+    process.nextTick(function() {
+      result.emit('response', fs.createReadStream(abspath));
+    });
+  };
+  
   return result;
 };
 

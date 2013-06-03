@@ -43,6 +43,6 @@ test('FakeS3 works', function(t) {
           t.end();
         });
       });
-    });
+    }).end();
   });
 });
