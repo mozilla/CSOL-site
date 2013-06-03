@@ -271,7 +271,6 @@ nav.pagination {
 
 /*mobile*/
 @media only screen 
-and (min-width : 320px) 
 and (max-width : 599px) {
   	.container p, .container h1, .container h2, .footer .upper p {
   		width:inherit;
@@ -296,6 +295,14 @@ and (max-width : 599px) {
   		padding:0 0 0 0;
 		margin-left:auto;
 		margin-right:auto;
+	}
+	.navbar .brand {
+		background-image:url('../img/csol_logo_sm.png');
+		height:150px;
+		background-position:top center;
+	}
+	.navbar-inner > .container {
+		width:100%;
 	}
 	.form-horizontal { 
 		.control-label {
@@ -713,10 +720,7 @@ input[type="password"].metered {
 @media only screen 
 and (min-width : 321px)
 and (max-width : 940px ) {
-  .navbar .brand {
-  	background-image: url('../img/csol_logo_480.png');
-  	height:166px;
-  }
+
 }
 
 /* ------------------------------ */
@@ -724,10 +728,7 @@ and (max-width : 940px ) {
 /* ------------------------------ */
 @media only screen 
 and (max-width : 320px) {
-  .navbar .brand {
-  	background-image: url('../img/csol_logo_320.png');
-  	height:116px;
-  }
+
 }
 
 /* ------------------------------ */
