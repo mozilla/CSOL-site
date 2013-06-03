@@ -236,8 +236,8 @@ var openbadger = new Api(ENDPOINT, {
       return callback(new errors.BadRequest('Invalid badge key'));
 
     this.get('/badge/' + id + '/recommendations', function(err, data) {
-      //if (err)
-      //  return callback(err, data);
+      if (err)
+        return callback(err, data);
 
       return callback(null, {
         badges: _.map(data.badges, normalizeBadge)
