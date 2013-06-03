@@ -36,27 +36,27 @@
 		{% endif %}
 	{% endblock %}
 	{% block list_wrapper %}
-    {% if items.length %}
-      <ul class="thumbnails">
-        {% block list %}
-          {% for item in items %}
-            {% block item %}
-              <li class="span3">
-                {% if item.template %}
-                  {% include item.template %}
-                {% else %}
-                  {% include "includes/badge-thumbnail.html" %}
-                {% endif %}
-              {% endblock %}
-            </li>
-          {% endfor %}
-        {% endblock %}
-      </ul>
-    {% else %}
-      {% block no_data %}
-        No data found.
-      {% endblock %}
-    {% endif %}
+		{% if items.length %}
+			<ul class="thumbnails">
+				{% block list %}
+					{% for item in items %}
+						{% block item %}
+							<li class="span3">
+								{% if item.template %}
+									{% include item.template %}
+								{% else %}
+									{% include "includes/badge-thumbnail.html" %}
+								{% endif %}
+							{% endblock %}
+						</li>
+					{% endfor %}
+				{% endblock %}
+			</ul>
+		{% else %}
+			{% block no_data %}
+				No data found.
+			{% endblock %}
+		{% endif %}
 	{% endblock %}
 	{% block pagination %}
 		{% if pages > 1 %}
