@@ -1,6 +1,12 @@
 $(document).ready(function(){
+
+var mob = 0;
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob = 1
+
 	$('.show-tooltip').tooltip();
 	if($('body.home').length != 0) {
+		
 		var vidLink = $('<a href="#">watch video</a>').click(function(){
 			if($('#i_vid').length == 0) {
 				var bkgFade = $('<div id="bkg_fade" style="display:none;"></div>');
@@ -23,6 +29,11 @@ $(document).ready(function(){
 		/*landing page menu rearrange*/
 		$('<p id="rahm">This summer Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning. School stops for the summer, but learning never should.</p>').prependTo('.footer .upper');
 		$('<div id="bubbles"><span class="lt">join the conversation on <a href="#">Facebook</a>.</span><span class="rt">share stories</span></div>').appendTo('.footer .upper');
+		
+		if(mob) { 
+			vidLink = '<a href="http://www.youtube.com/v/6WwpwtYNsNk">watch video</a>';
+		}
+
 		$('li.claim').after($('<li class="video"></li>').append(vidLink));
 		$('li.log-in').before($('.about'));
 
