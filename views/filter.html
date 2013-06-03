@@ -74,23 +74,7 @@
 		{% if pages > 1 %}
 			<nav class="pagination pagination-centered">
 				<ul>
-					{% if page == 1 %}
-						<li class="disabled"><span>&laquo;</span></li>
-					{% else %}
-						<li><a href="?page={{ page - 1 }}">&laquo;</a></li>
-					{% endif %}
-					{% for pageNum in range(1, (pages + 1)) %}
-						{% if page == pageNum %}
-							<li class="disabled"><span>{{ pageNum }}</span></li>
-						{% else %}
-							<li><a href="?page={{ pageNum }}">{{ pageNum }}</a></li>
-						{% endif %}
-					{% endfor %}
-					{% if page == pages %}
-						<li class="disabled"><span>&raquo;</span></li>
-					{% else %}
-						<li><a href="?page={{ page + 1 }}">&raquo;</a></li>
-					{% endif %}
+					{{ paginate(pages, page) }}
 				</ul>
 			</nav>
 		{% endif %}

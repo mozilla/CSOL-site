@@ -33,6 +33,7 @@ app.use(flash());
 
 app.use(helpers.addCsrfToken);
 app.use(helpers.addRangeMethod);
+app.use(helpers.addPaginateMethod);
 app.use(helpers.addMessages);
 
 require('./controllers/auth')(app);

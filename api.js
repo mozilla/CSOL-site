@@ -23,6 +23,7 @@ function middleware (method, default_query) {
 
     // Build query from various inputs
     var query = _.extend(
+      {},
       DEFAULT_QUERY,
       default_query || {},
       req.query || {},
