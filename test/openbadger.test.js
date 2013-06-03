@@ -1,3 +1,9 @@
+['CSOL_OPENBADGER_URL',
+ 'CSOL_OPENBADGER_SECRET'].forEach(function(name) {
+  if (!process.env[name])
+    process.env[name] = 'FAKEVALUE';
+});
+
 const path = require('path');
 const test = require('tap').test;
 const sinon = require('sinon');

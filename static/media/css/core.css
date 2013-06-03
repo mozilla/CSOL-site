@@ -81,6 +81,7 @@ ol {
 .navbar .nav .active a:focus {
   background-color: #fff;
   box-shadow: none;
+  color: #000;
 }
 .navbar .navbar-inner {
   background-image: url('../img/chalkboard_bg.jpg');
@@ -461,12 +462,6 @@ ul.thumbnails li:nth-child(3n+3) figure.thumbnail > a img {
 ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
   background-position: -210px -210px;
 }
-.navbar .nav .active a,
-.navbar .nav .active a:hover {
-  color: #000;
-  border-left: inherit;
-  border-right: inherit;
-}
 /*Password fields with feedback bar*/
 input[type="password"].metered {
   padding-bottom: 9px;
@@ -586,15 +581,26 @@ body.home .navbar .nav-wrap ul > li > a {
 body.home .navbar .nav-wrap ul > li.learn > a:first-letter {
   text-transform: capitalize;
 }
-body.home .navbar .nav-wrap ul > li.log-in > a {
+body.home .navbar .nav-wrap ul > li.log-in > a,
+body.home .navbar .nav-wrap ul > li.about > a {
   font-size: 18px;
   color: #fff;
   text-transform: lowercase;
+  padding: 0 0 7px 0;
   text-align: center;
   line-height: 24px;
 }
+body.home .navbar .nav-wrap ul > li.claim > a {
+  text-align: center;
+  text-transform: capitalize;
+  margin-top: 5px;
+}
+body.home .navbar .nav-wrap ul > li.claim > a:before,
+body.home .navbar .nav-wrap ul > li.claim > a:after {
+  content: '-';
+}
 body.home .navbar .nav-wrap ul > li.video {
-  margin-top: 35px;
+  margin: 30px 0;
 }
 body.home .navbar .nav-wrap ul > li.video a {
   color: #fff;
@@ -735,4 +741,18 @@ body.home #cl_i_vid {
   width: 25px;
   height: 25px;
   text-indent: -9000px;
+}
+.filter {
+  color: #EEE;
+}
+.filter select {
+  margin-right: 10px;
+  width: 115px;
+  vertical-align: baseline;
+}
+.filter input {
+  vertical-align: baseline;
+}
+.filter .navbar-inner {
+  padding-left: 10px;
 }

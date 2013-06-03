@@ -1,3 +1,6 @@
+if ( process.env.NEW_RELIC_HOME ) {
+  require( 'newrelic' );
+}
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -30,6 +33,7 @@ app.use(flash());
 
 app.use(helpers.addCsrfToken);
 app.use(helpers.addRangeMethod);
+app.use(helpers.addPaginateMethod);
 app.use(helpers.addMessages);
 
 require('./controllers/auth')(app);
