@@ -93,7 +93,7 @@ exports.addPaginateMethod = function addPaginateMethod (req, res, next) {
         pages.push(page({path:path, pageNum:pageNum, el:el}));
     }
 
-    if (current === pages)
+    if (current === count)
       pages.push(page({path:path, display:'&raquo;', className:'disabled', el:el}));
     else
       pages.push(page({path:path, pageNum:current + 1, display:'&raquo;', el:el}));
