@@ -49,28 +49,133 @@ function normalizeProgram(program, id) {
   return program;
 }
 
-function filterBadges(data, query) {
-  // TO DO - We should probably be a little less naive about this, and make sure
-  // that these values are from an allowed list
+var categories = [
+  {label: 'Science', value: 'science'},
+  {label: 'Technology', value: 'technology'},
+  {label: 'Engineering', value: 'engineering'},
+  {label: 'Art', value: 'art'},
+  {label: 'Math', value: 'math'}
+];
+var ageRanges = [
+  {label: 'Under 13', value: '0-13'},
+  {label: '13-18', value: '13-18'},
+  {label: '19-24', value: '19-24'}
+];
+var activityTypes = [
+  {label: 'Online', value: 'online'},
+  {label: 'Offline', value: 'offline'}
+];
+var badgeTypes = [
+  {label: 'Participation', value: 'participation'},
+  {label: 'Skill', value: 'skill'},
+  {label: 'Activity', value: 'activity'}
+];
+var orgs = [];
 
-  var category = query.category,
-      ageGroup = query.age,
-      program = query.program;
+function updateOrgs (callback) {
+  if (typeof callback !== 'function')
+    callback = function () {};
 
-  data = _.filter(data, function(item) {
-    if (category && !_.contains(item.categories, category))
-      return false;
+  openbadger.getOrgs(function (err, data) {
+    if (err)
+      return callback(err);
 
-    if (ageGroup && !_.contains(item.ageRange, ageGroup))
-      return false;
+    orgs = [];
 
-    if (program && item.program !== program)
-      return false;
+    (data.orgs || data.issuers).forEach(function (org) {
+      orgs.push({
+        label: org.name,
+        value: org.shortname
+      });
+    });
 
-    return true;
+    orgs.sort(function(a, b) {
+      var aVal = (a && a.label || '').toLowerCase().replace(/^\s*the\s+/, ''),
+          bVal = (b && b.label || '').toLowerCase().replace(/^\s*the\s+/, '');
+
+      return aVal.localeCompare(bVal);
+    });
+
+    callback(null, orgs);
+  });
+}
+
+function confirmFilterValue (value, list) {
+  if (!value && value !== 0)
+    return null;
+
+  for (var i = 0, l = list.length; i < l; ++i)
+    if (list[i].value === value)
+      return value;
+
+  return null;
+}
+
+function applyFilter (data, query) {
+  return _.filter(data, function(item) {
+    return _.reduce(query, function(memo, value, field) {
+      if (!memo) // We've already failed a test - no point in continuing
+        return memo;
+
+      if (!value && value !== 0)
+        return memo;
+
+      var data = item;
+
+      if (field.indexOf('.') > -1) {
+        var fieldParts = field.split('.').reverse();
+
+        while (data && fieldParts.length > 1) {
+          data = data[fieldParts.pop()];
+        }
+
+        field = fieldParts.reverse().join('.');
+      }
+
+      var itemValue = data ? data[field] : null;
+
+      if (_.isArray(itemValue))
+        return memo && _.contains(itemValue, value);
+
+      return memo && (itemValue === value);
+    }, true);
+  })
+}
+
+function filterBadges (data, query) {
+  var category = confirmFilterValue(query.category, categories),
+      ageGroup = confirmFilterValue(query.age, ageRanges),
+      badgeType = confirmFilterValue(query.type, badgeTypes),
+      activityType = confirmFilterValue(query.activity, activityTypes);
+
+  if (!category && !ageGroup && !badgeType && !activityType)
+    return data;
+
+  return applyFilter(data, {
+    'categories': category,
+    'ageRange': ageGroup,
+    'badgeType': badgeType,
+    'activityType': activityType
   });
 
   return data;
+}
+
+function filterPrograms (data, query) {
+  var category = confirmFilterValue(query.category, categories),
+      org = confirmFilterValue(query.org, orgs),
+      ageGroup = confirmFilterValue(query.age, ageRanges),
+      activityType = confirmFilterValue(query.activity, activityTypes);
+
+  if (!category && !org && !ageGroup && !activityType)
+    return data;
+
+  return applyFilter(data, {
+    'categories': category,
+    'issuer.shortname': org,
+    'ageRange': ageGroup,
+    'activityType': activityType
+  });
 }
 
 function getJWTToken(email) {
@@ -126,6 +231,7 @@ var openbadger = new Api(ENDPOINT, {
         });
       });
     },
+    filters: filterPrograms,
     paginate: true,
     key: 'programs'
   },
@@ -168,8 +274,6 @@ var openbadger = new Api(ENDPOINT, {
         if (err)
           return callback(err, data);
 
-
-        console.log(data);
         badges = _.map(data.badges, normalizeBadgeInstance)
 
         return callback(null, {
@@ -229,4 +333,36 @@ var openbadger = new Api(ENDPOINT, {
   },
 });
 
+updateOrgs();
+
 module.exports = openbadger;
+module.exports.getFilters = function getFilters () {
+  return {
+    categories: {
+      name: 'category',
+      label: 'Category',
+      options: categories
+    },
+    ageRanges: {
+      name: 'age',
+      label: 'Age',
+      options: ageRanges
+    },
+    orgs: {
+      name: 'org',
+      label: 'Organization',
+      options: orgs
+    },
+    activityTypes: {
+      name: 'activity',
+      label: 'Activity',
+      options: activityTypes
+    },
+    badgeTypes: {
+      name: 'type',
+      label: 'Type',
+      options: badgeTypes
+    }
+  };
+}
+module.exports.updateOrgs = updateOrgs;
