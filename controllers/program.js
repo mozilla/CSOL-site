@@ -11,96 +11,22 @@ var evidence = db.model('Evidence');
 
 module.exports = function (app) {
 
-  function getFilters() {
-    var filters = [],
-        requested;
+  function getFilters(query, subset) {
+    var all = badger.getFilters(),
+        filters = [];
 
-    if (arguments.length) {
-      requested = Array.prototype.splice.call(arguments, 0);
-    } else {
-      requested = ['categories', 'grouped_programs', 'ages'];
-    }
+    query = query || {};
 
-    requested.forEach(function(filter) {
-      switch (filter) {
-        case 'categories':
-        case 'category':
-          filters.push({
-            name: 'category',
-            label: 'Category',
-            options: {
-              science: 'Science',
-              technology: 'Technology',
-              engineering: 'Engineering',
-              art: 'Art',
-              math: 'Math'
-            }
-          });
-          break;
-        case 'orgs':
-        case 'org':
-          filters.push({
-            name: 'org',
-            label: 'Organization',
-            options: {
-              'org1': 'Org 1',
-              'org2': 'Org 2',
-              'org3': 'Org 3',
-            }
-          });
-          break;
-        case 'programs':
-        case 'program':
-          filters.push({
-            name: 'program',
-            label: 'Program',
-            options: {
-              'p1': 'Program 1',
-              'p2': 'Program 2',
-              'p3': 'Program 3',
-              'p4': 'Program 4',
-              'p5': 'Program 5',
-              'p6': 'Program 6'
-            }
-          });
-          break;
-        case 'grouped_programs':
-        case 'grouped_program':
-          filters.push({
-            name: 'program',
-            label: 'Program',
-            options: {
-              'Org 1': {
-                'p1': 'Program 1',
-                'p2': 'Program 2'
-              },
-              'Org 2': {
-                'p3': 'Program 3',
-                'p4': 'Program 4'
-              },
-              'Org 3': {
-                'p5': 'Program 5',
-                'p6': 'Program 6'
-              }
-            },
-            is_grouped: true
-          });
-          break;
-        case 'ages':
-        case 'age':
-          filters.push({
-            name: 'age',
-            label: 'Age Group',
-            options: {
-              'lt-13': 'Under 13',
-              '13-14': '13 to 14',
-              '15-16': '15 to 16',
-              '17-18': '17 to 18',
-              'gt-18': 'Over 18'
-            }
-          });
-          break;
-      }
+    if (!subset || !subset.length)
+      subset = _.keys(all);
+
+    if (subset && !_.isArray(subset))
+      subset = [subset];
+
+    _.each(subset, function (item) {
+      var filter = all[item] || {name:item, label: item, options: []};
+      filter.selected = query[filter.name];
+      filters.push(filter);
     });
 
     return filters;
@@ -120,7 +46,7 @@ module.exports = function (app) {
     var data = req.remote;
 
     res.render('programs/list.html', {
-      filters: getFilters('categories', 'orgs', 'ages'),
+      filters: getFilters(req.query, ['categories', 'orgs', 'ageRanges', 'activityTypes']),
       items: data.programs,
       page: data.page,
       pages: data.pages
@@ -285,7 +211,7 @@ module.exports = function (app) {
     var data = req.remote;
 
     res.render('badges/list.html', {
-      filters: getFilters(),
+      filters: getFilters(req.query, ['categories', 'ageRanges', 'badgeTypes', 'activityTypes']),
       items: data.badges,
       page: data.page,
       pages: data.pages

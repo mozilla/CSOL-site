@@ -8,8 +8,36 @@
             <img src="{{ badge.image }}">
         </div>
         <div class="span8">
-            <h3>What is this badge about?</h3>
-            <p>{{ badge.description }}</p>
+          <p>
+            <b>Issued by:</b>
+            {% if badge.program.issuer.url %}
+              <a href="{{ badge.program.issuer.url }}">
+            {% endif %}
+            {{ badge.program.issuer.name }}
+            {% if badge.program.issuer.url %}
+              </a>
+            {% endif %}
+          </p>
+
+          <p>
+            <b>Issued to:</b> {{ user.email }}
+          </p>
+
+          <h3>What is this badge about?</h3>
+          <p>{{ badge.description }}</p>
         </div>
+    </div>
+
+    <div class="row">
+      <h3>Similar Badges</h3>
+      <p>Cupcake <a href="#">link to Badges page</a> something about badges
+      should go here.</p>
+
+      {% for item in similar %}
+      <div class="span3">
+        {% include "includes/badge-thumbnail.html" %}
+      </div>
+      {% endfor %}
+
     </div>
 {% endblock %}
