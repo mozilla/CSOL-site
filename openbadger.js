@@ -168,8 +168,6 @@ var openbadger = new Api(ENDPOINT, {
         if (err)
           return callback(err, data);
 
-
-        console.log(data);
         badges = _.map(data.badges, normalizeBadgeInstance)
 
         return callback(null, {
