@@ -306,13 +306,29 @@ module.exports = function (app) {
       return res.redirect('/login');
     }
 
-    applications.findOrCreate({
+    function render (state, context) {
+      context = _.defaults(context || {}, {
+        application: applications.build({
+          badgeId: badge.id,
+          state: 'open'
+        }),
+        evidence: [],
+        badge: badge
+      });
+
+      res.render('applications/' + state + '.html', context);
+    }
+
+    applications.find({where: {
       badgeId: badge.id,
       LearnerId: req.session.user.id
-    })
+    }})
       .complete(function(err, application) {
-        if (err || !application)
-          return next(err || new Error('There was a problem loading your application'));
+        if (err)
+          return next(err);
+
+        if (!application)
+          return render('new');
 
         application.getEvidence()
           .complete(function(err, evidence) {
@@ -321,13 +337,11 @@ module.exports = function (app) {
 
             var state = evidence.length ? application.state : 'new';
 
-            res.render('applications/' + state + '.html', {
+            render(state, {
               evidence: evidence,
-              application: application,
-              badge: badge
-            })
+              application: application
+            });
           });
-
       });
   });
 
@@ -352,10 +366,10 @@ module.exports = function (app) {
       res.redirect(badge.url + '/apply');
     }
 
-    applications.find({where: {
+    applications.findOrCreate({
       badgeId: badge.id,
       LearnerId: req.session.user.id
-    }})
+    })
       .complete(function(err, application) {
         if (err || !application)
           return finish(err);
