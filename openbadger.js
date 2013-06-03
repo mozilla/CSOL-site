@@ -319,6 +319,7 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+
   claim: function claim (query, callback) {
     var email = query.email;
     var code = query.code;
@@ -329,6 +330,22 @@ var openbadger = new Api(ENDPOINT, {
     };
     this.post('/claim', { json: params }, function(err, data) {
       return callback(err, data);
+    });
+  },
+
+  getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
+    var id = query.badgeName;
+
+    if (!id)
+      return callback(new errors.BadRequest('Invalid badge key'));
+
+    this.get('/badge/' + id + '/recommendations', function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        badges: _.map(data.badges, normalizeBadge)
+      });
     });
   },
 });
