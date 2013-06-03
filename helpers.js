@@ -44,26 +44,47 @@ exports.addPaginateMethod = function addPaginateMethod (req, res, next) {
     return '<' + el + (className ? ' class="' + className + '"' : '') + '>' + content + '</' + el + '>';
   }
 
-  function generatePageNumbers (total, current, extraItems) {
-    extraItems = extraItems || 2;
+  function generatePageNumbers (total, current, maxItems) {
+    maxItems = maxItems || 12;
 
-    var paged = {},
-        pages = [];
+    if (total <= maxItems)
+      return Array(total).join(',').split(',').map(function(e,i){return i+1;});
 
-    for (var i = 1; i <= Math.min(total, extraItems + 1); ++i)
-      (paged[i] = 1) && pages.push(i);
+    var paged = {}
+        pages = [],
+        count = 1,
+        extraItems = Math.min(3, Math.floor((maxItems - 3) / 4));
 
-    if (!paged[Math.max(1, current - extraItems - 1)])
-      pages.push('...');
+    paged[current] = current;
 
-    for (var i = Math.max(1, current - extraItems); i <= Math.min(total, current + extraItems); ++i)
-      !paged[i] && (paged[i] = 1) && pages.push(i);
-
-    if (!paged[Math.max(1, total - extraItems - 1)])
-      pages.push('...');
+    for (var i = 1, max = Math.min(total, extraItems + 1); i <= max; ++i)
+      (paged[i] = i) && count++;
 
     for (var i = Math.max(1, total - extraItems); i <= total; ++i)
-      !paged[i] && (paged[i] = 1) && pages.push(i);
+      (paged[i] = i) && count++;
+
+    var i = 1;
+
+    while (count < maxItems - 1) {
+      if (!paged[current - i] && (current - i) >= 1)
+        (paged[current - i] = current - i) && count++;
+      if (!paged[current + i] && (current + i) <= total)
+        (paged[current + i] = current + i) && count++;
+      i++;
+    }
+
+    var previous,
+        current;
+
+    for (var i in paged) {
+      current = paged[i];
+      if (previous === current - 2)
+        pages.push(current - 1);
+      else if (previous <= current - 3)
+        pages.push('...');
+      pages.push(current);
+      previous = current;
+    }
 
     return pages;
   }
