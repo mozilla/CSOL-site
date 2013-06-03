@@ -49,6 +49,7 @@
                     <a href="{{ item.url }}"><img src="{{ item.image }}"></a>
                     <figcaption class="caption">
                       <p>{{ item.name }}</p>
+                      <p class="description">{{ item.description | default('description tbd') | truncate(20) }}</p>
                       {% block item_actions_wrapper %}
                         <p class="text-right">
                           {% block item_actions %}
