@@ -97,4 +97,12 @@ db.model = function(name) {
 }
 
 db.type = Sequelize;
+db.healthCheck = function(cb) {
+  db.model('Claim').find({
+    where: {id: 1234}
+  }).complete(function(err, claim) {
+    if (err) return cb(err);
+    cb();
+  });
+};
 module.exports = db;
