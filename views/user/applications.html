@@ -4,7 +4,7 @@
 
 {% block item %}
   <li class="span3">
-    <figure class="thumbnail">
+    <figure class="thumbnail {{ item.state }}">
       <a href="{{ item.url }}"><img src="{{ item.image }}"></a>
       <figcaption class="caption">
         <p>{{ item.name }}</p>
