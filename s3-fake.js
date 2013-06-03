@@ -54,4 +54,17 @@ FakeS3.prototype.get = function(urlPath) {
   return result;
 };
 
+FakeS3.prototype.deleteFile = function(urlPath, cb) {
+  var abspath = this._toFilePath(urlPath);
+
+  if (fs.existsSync(abspath))
+    fs.unlinkSync(abspath);
+
+  process.nextTick(function() {
+    // We don't currently do anything w/ the response, so we won't bother
+    // passing it in as the second param to the callback.
+    cb(null);
+  });
+};
+
 module.exports = FakeS3;

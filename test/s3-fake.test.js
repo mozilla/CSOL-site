@@ -8,7 +8,7 @@ const FAKE_S3_DIR = path.join(__dirname, 's3-fake-storage-test');
 
 function removeFakeS3Dir(t) {
   var root = FAKE_S3_DIR;
-  var pathParts = ['', 'evidence', 'lol.txt'];
+  var pathParts = ['', 'evidence'];
 
   for (var i = pathParts.length; i > 0; i--) {
     var relpath = pathParts.slice(0, i).join(path.sep);
@@ -27,7 +27,8 @@ test('FakeS3 works', function(t) {
   removeFakeS3Dir();
   s3.putBuffer(new Buffer('hai2u', 'binary'), '/evidence/lol.txt', {
     'Content-Type': 'text/plain'
-  }, function() {
+  }, function(err) {
+    t.equal(err, null);
     s3.get('/evidence/lol.txt').on('response', function(proxy) {
       var chunks = [];
       proxy.on('data', function(chunk) {
@@ -36,8 +37,11 @@ test('FakeS3 works', function(t) {
       proxy.on('end', function() {
         var buf = Buffer.concat(chunks);
         t.equal(buf.toString('ascii'), 'hai2u');
-        removeFakeS3Dir(t);
-        t.end();
+        s3.deleteFile('/evidence/lol.txt', function(err) {
+          t.equal(err, null);
+          removeFakeS3Dir(t);
+          t.end();
+        });
       });
     });
   });
