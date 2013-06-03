@@ -23,7 +23,8 @@ const TEMPLATES = {
   '10 day guardian reminder': 'csol-guardian-remind-10-day',
   '7 day guardian reminder': 'csol-guardian-remind-7-day',
   '3 day guardian reminder': 'csol-guardian-remind-3-day',
-  '1 day guardian reminder': 'csol-guardian-remind-1-day'
+  '1 day guardian reminder': 'csol-guardian-remind-1-day',
+  'badge claim': 'csol-badge-claim'
 }
 
 module.exports = {
