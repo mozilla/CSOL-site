@@ -3,6 +3,7 @@ const db = require('../db');
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
 const loggedIn = require('../middleware').loggedIn;
+const _ = require('underscore');
 
 module.exports = function (app) {
 
@@ -72,7 +73,8 @@ module.exports = function (app) {
 
   app.get('/mybadges', [
     loggedIn,
-    openbadger.middleware('getUserBadges')
+    openbadger.middleware('getUserBadges'),
+    _.bind(favorite.middleware, favorite)
   ], function (req, res, next) {
     var data = req.remote;
 

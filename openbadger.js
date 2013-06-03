@@ -30,6 +30,9 @@ function normalizeBadgeInstance (badge, id) {
       build out a single-level object. */
   _.extend(badge, badge.badgeClass);
 
+  if (!badge.id)
+    badge.id = id;
+
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
@@ -159,7 +162,8 @@ var openbadger = new Api(ENDPOINT, {
 
   getUserBadges: {
     func: function getUserBadges (query, callback) {
-      var email = query.session.user.email;
+      var user = query.session.user;
+      var email = user.email;
       var params = {
         auth: getJWTToken(email),
         email: email

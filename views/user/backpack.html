@@ -17,9 +17,13 @@
 
 {% block item_actions %}
   {{ super() }}
-  <form action="{{ item.url }}/favorite" method="POST" class="favorites-form">
-    <button type="submit" class="btn show-tooltip" title="Add to your favorites"><i class="icon-heart"></i></button>
-  </form>
+  {% if item.favorited %}
+    <i class="icon-heart"></i>
+  {% else %}
+    <form action="{{ item.url }}/favorite" method="POST" class="favorites-form">
+      <button type="submit" class="btn show-tooltip" title="Add to your favorites"><i class="icon-heart"></i></button>
+    </form>
+  {% endif %}
 {% endblock %}
 
 
