@@ -3,7 +3,7 @@
 {% block tabs %}
 	{{ super() }}
 	<li class="pull-right">
-		<span><a href="/dashboard/{{ current.username }}/delete" class="btn">Delete</a></span>
+		<span><a href="/dashboard/{{ current.username }}/delete" class="btn">Delete {{ current.getDisplayName() }}'s account</a></span>
 	</li>
 {% endblock %}
 
