@@ -1,4 +1,8 @@
 {% extends 'user/dashboard.html' %}
+{% set pageTitle = current.getDisplayName() %}
+{% block pageTitle -%}
+	{{ current.getDisplayName() }}'s {{ view | default('activity') }}
+{%- endblock %}
 
 {% block tabs %}
 	{{ super() }}
@@ -8,22 +12,15 @@
 {% endblock %}
 
 {% block activity %}
-	<h3>{{ current.getDisplayName() }}'s activity</h3>
 	{% if current.activities.length %}
 		<ul class="activity thumbnails">
 			{% for activity in current.activities %}
 				<li class="span3">
-					<figure class="thumbnail">
-						<a href=""><img src=""></a>
-						<figcaption class="caption">
-							<p></p>
-							<p class="text-right"><a href="" class="btn">Details</a></p>
-						</figcaption>
-					</figure>
+					{% include "includes/learner-activity.html" %}
 				</li>
 			{% endfor %}
 		</ul>
 	{% else %}
-		<p>{{ current.getDisplayName() }} does not have any recent activity.</p>
+		<p>{{ current.getDisplayName() }} does not have any {{ view | default('activity') }} to show.</p>
 	{% endif %}
 {% endblock %}
