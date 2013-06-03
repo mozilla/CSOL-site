@@ -1,6 +1,7 @@
 if ( process.env.NEW_RELIC_HOME ) {
   require( 'newrelic' );
 }
+const colors = require('colors');
 const path = require('path');
 const http = require('http');
 const express = require('express');
@@ -62,16 +63,20 @@ if (!module.parent)
   app.listen(port, function(err) {
     if (err) throw err;
     console.log("Listening on port " + port + ".");
-    console.log("Performing health check.");
+    console.log("Performing health check.\n");
 
     healthChecker.runChecks(function(results) {
+      var consoleStr = healthCheck.resultsToConsoleString(results);
+      console.log("Health check results:\n");
       if (results.status != "OK") {
-        console.error("Health check failed:",
-                      JSON.stringify(results, null, 2));
-        console.error("Please resolve the problem and restart the server.");
-        process.exit(1);
+        console.error(consoleStr + "\n");
+        console.error(("One or more critical services are down or " +
+                       "misconfigured. Please fix them!").red.bold);
+      } else {
+        console.log(consoleStr);
+        console.log(("\nHealth check indicates all systems are " +
+                     "functional.").green);
       }
-      console.log("Health check indicates all systems are functional.");
     });
   });
 else

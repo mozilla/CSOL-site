@@ -1,15 +1,16 @@
 // TODO: Separate this module out into its own npm module/git repo.
 
 var async = require('async');
+var colors = require('colors');
 
-const HEALTH_CHECK_TIMEOUT = 15000;
+const CHECKMARK = "\u2713";
 
 function checker(fn) {
   return function check(cb) {
     var timeout = setTimeout(function() {
       timeout = null;
       cb(null, {status: "FAILED", reason: "TIMEOUT"});
-    }, HEALTH_CHECK_TIMEOUT);
+    }, module.exports.TIMEOUT);
 
     try {
       fn(function(err) {
@@ -71,6 +72,25 @@ function runChecks(checks, cb) {
   });
 }
 
+function resultsToConsoleString(results) {
+  var lines = [];
+
+  Object.keys(results).forEach(function(name) {
+    var info = results[name];
+
+    if (info && typeof(info) == "object" && info.status) {
+      if (info.status == "OK") {
+        lines.push(CHECKMARK.green + " " + name.grey);
+      } else {
+        lines.push("x".red + " " + name.grey + " " +
+                   (info.reason ? info.reason : ""));
+      }
+    }
+  });
+
+  return lines.join('\n');
+}
+
 module.exports = function healthCheck(options) {
   var authenticate = options.auth || function(req, res, next) { next(); };
   var checks = options.checks;
@@ -92,6 +112,8 @@ module.exports = function healthCheck(options) {
   return healthChecker;
 };
 
+module.exports.TIMEOUT = 15000;
+module.exports.resultsToConsoleString = resultsToConsoleString;
 module.exports.runChecks = runChecks;
 module.exports.sessionStorageChecker = sessionStorageChecker;
 module.exports.checker = checker;
