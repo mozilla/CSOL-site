@@ -110,7 +110,7 @@ module.exports = function (app) {
             return next(err);
         }
         res.render('user/badge-favorited.html', {
-          badge: data.badge
+          badge: badge
         });
     });
   });
