@@ -99,15 +99,13 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var user = req.session.user;
     applications.findAll({where: {LearnerId: user.id}}).success(function (applications) {
-      var badgenames = _.map(applications, function(app) {
-        return app.badgeId;
-      });
-      openbadger.getUserBadges(function (err, data) {
-        var appliedFor = _.filter(data.badges, function(badge) {
-          return badgenames.indexOf(badge.id) !== -1;
+      openbadger.getBadges(function (err, data) {
+        _.each(applications, function(app) {
+          _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
         });
+        console.log(applications);
         res.render('user/applications.html', {
-          items: _.map(appliedFor, function(badge) {
+          items: _.map(applications, function(badge) {
             badge.url = '/myapplications/' + badge.id;
             return badge;
           })
