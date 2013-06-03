@@ -87,6 +87,7 @@ ol {
   		a,a:hover,a:focus {
  				background-color:#fff;
   			box-shadow:none;
+  			color:#000;
   		}
   	}
  	}
@@ -552,17 +553,6 @@ ul.thumbnails {
     }
   }
 }
-.navbar {
-  .nav { 
-    .active {
-      a, a:hover {
-        color:#000;
-        border-left:inherit;
-        border-right:inherit;
-      }
-    }
-  }
-}
 
 /*Password fields with feedback bar*/
 input[type="password"].metered {
@@ -675,57 +665,66 @@ body.home {
     		box-shadow:none;
     		ul {
     			padding-top:200px;
-          left:-6px;
+          		left:-6px;
     			& > li {
     				text-align:left;
     				display:block;
-            line-height:9px;
+            		line-height:9px;
     				& > a {
     					text-transform:inherit;
   						font-size:22px;
   						color:#f4fc00;
-              text-transform:lowercase;
+              			text-transform:lowercase;
     					}
-            &.learn > a:first-letter {
-              text-transform:capitalize;
-            }
-    				&.log-in > a {
-    						font-size:18px;
-  							color:#fff;
-  							text-transform:lowercase;
-                text-align:center;
-                line-height:24px;
-            }
-            &.video {
-              margin-top:35px;
-              a {
-                color:#fff;
-                border-radius:7px;
-                margin:auto;
-                display:block;
-                width:140px;
-                text-align:center;
-                line-height:20px;
-                background:#e82202;
-                background:-moz-linear-gradient(top,  #e82202 0%, #e5381d 44%, #e56854 100%);
-                background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e82202), color-stop(44%,#e5381d), color-stop(100%,#e56854));
-                background:-webkit-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                background:-o-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                background:-ms-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                background:linear-gradient(to bottom,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#e82202', endColorstr='#e56854',GradientType=0 );
-              }
-    				}
-            span {
-              color:#fff;
-            }
+            	&.learn > a:first-letter {
+					text-transform:capitalize;
+            	}
+    			&.log-in > a, &.about > a {
+    				font-size:18px;
+  					color:#fff;
+  					text-transform:lowercase;
+  					padding:0 0 7px 0;
+					text-align:center;
+            		line-height:24px;
+           		}
+           		&.claim > a {
+           			text-align:center;
+           			text-transform:capitalize;
+           			margin-top:5px;
+           			&:before, &:after {
+           				content: '-';
+           			}
+           		}
+            	&.video {
+              		margin:30px 0;
+					a {
+                		color:#fff;
+                		border-radius:7px;
+                		margin:auto;
+                		display:block;
+                		width:140px;
+                		text-align:center;
+                		line-height:20px;
+                		background:#e82202;
+                		background:-moz-linear-gradient(top,  #e82202 0%, #e5381d 44%, #e56854 100%);
+                		background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e82202), color-stop(44%,#e5381d), color-stop(100%,#e56854));
+                		background:-webkit-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+                		background:-o-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+                		background:-ms-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+                		background:linear-gradient(to bottom,  #e82202 0%,#e5381d 44%,#e56854 100%);
+                		filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#e82202', endColorstr='#e56854',GradientType=0 );
+					}
     			}
-    			& > li:nth-child(even) {
-    				border-left:none;
-  					border-right:none;
-    			}
-    		}
-    	}
+				span {
+					color:#fff;
+            	}
+			}
+			& > li:nth-child(even) {
+				border-left:none;
+				border-right:none;
+				}
+			}
+		}
     }
     #main {
     	padding:0 0 0 0;
