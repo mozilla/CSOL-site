@@ -88,7 +88,6 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var data = req.remote;
 
-    console.log(data.badge);
     res.render('user/badge.html', {
       badge: data.badge
     });
@@ -100,12 +99,16 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var user = req.session.user;
     applications.findAll({where: {LearnerId: user.id}}).success(function (applications) {
-      var badgenames = _.map(applications, function(app) { return app.badgeId; });
-      openbadger.getUserBadges(user.id, function (err, data) {
-        var appliedFor = _.map(data.badges, function(badge) { return badgenames.indexOf(badge.id) !== -1; });
+      var badgenames = _.map(applications, function(app) {
+        return app.badgeId;
+      });
+      openbadger.getUserBadges(function (err, data) {
+        var appliedFor = _.filter(data.badges, function(badge) {
+          return badgenames.indexOf(badge.id) !== -1;
+        });
         res.render('user/applications.html', {
           items: _.map(appliedFor, function(badge) {
-            badge.url = '/myapplications/foo' + badge.id;
+            badge.url = '/myapplications/' + badge.id;
             return badge;
           })
         });

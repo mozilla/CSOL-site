@@ -33,6 +33,8 @@ function normalizeBadgeInstance (badge, id) {
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
+  badge.id = id;
+
   return badge;
 }
 
@@ -168,8 +170,6 @@ var openbadger = new Api(ENDPOINT, {
         if (err)
           return callback(err, data);
 
-
-        console.log(data);
         badges = _.map(data.badges, normalizeBadgeInstance)
 
         return callback(null, {
