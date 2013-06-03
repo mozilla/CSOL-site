@@ -28,12 +28,12 @@ function normalizeBadge (badge, id) {
 function normalizeBadgeInstance (badge, id) {
   /*  This is dumb, but let's us reuse current templates to
       build out a single-level object. */
-  _.extend(badge, badge.badgeClass);    
+  _.extend(badge, badge.badgeClass);
 
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
-  return badge;  
+  return badge;
 }
 
 function normalizeProgram(program, id) {
@@ -44,7 +44,7 @@ function normalizeProgram(program, id) {
     program.id = id;
 
   if (!program.url)
-    program.url = '/learn/' + program.id;
+    program.url = '/explore/' + program.id;
 
   return program;
 }
@@ -168,8 +168,6 @@ var openbadger = new Api(ENDPOINT, {
         if (err)
           return callback(err, data);
 
-      
-        console.log(data);
         badges = _.map(data.badges, normalizeBadgeInstance)
 
         return callback(null, {

@@ -101,8 +101,8 @@ module.exports = function (app) {
 
     var org = {
       thumbnail: '/media/images/org.png',
-      description: 'Organisation blah irure...',
-      url: '/orgs/some-organisation'
+      description: 'Organization blah irure...',
+      url: '/orgs/some-organization'
     };
 
     var program = {

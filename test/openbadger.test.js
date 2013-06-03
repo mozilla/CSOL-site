@@ -1,3 +1,9 @@
+['CSOL_OPENBADGER_URL',
+ 'CSOL_OPENBADGER_SECRET'].forEach(function(name) {
+  if (!process.env[name])
+    process.env[name] = 'FAKEVALUE';
+});
+
 const path = require('path');
 const test = require('tap').test;
 const sinon = require('sinon');
@@ -193,7 +199,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/learn/some-id' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', url: '/explore/some-id' }, 'normalized');
       t.end();
     });
   });

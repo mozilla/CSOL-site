@@ -7,15 +7,9 @@ var path = require('path');
 var s3 = require('../s3');
 var thumbs = require('../lib/thumbs');
 
-// We'll set this when we're done
-var evidence;
-
 var ALLOWED_TYPES = ['image', 'video'];
 
 module.exports = {
-  setup: function () {
-    evidence = db.model('Evidence');
-  },
   properties: {
     id: {
       type: db.type.INTEGER,
@@ -156,7 +150,7 @@ module.exports = {
             filePath = '/' + prefix + '/' + key + '.' + format,
             thumbPath = '/' + prefix + '/' + key + '_thumb.png';
 
-        evidence.create({
+        db.model('Evidence').create({
           key: key,
           mediaType: file.type,
           location: filePath,
