@@ -2,7 +2,7 @@
 {% set pageTitle = badge.name %}
 
 {% block content %}
-    <div class="row">
+    <div class="row-fluid">
         <div class="span4">
             <img src="{{ badge.image }}">
         </div>
@@ -10,15 +10,17 @@
             <h3>What is this badge about?</h3>
             <p>{{ badge.description }}</p>
 
-            <h3>How can you earn it?</h3>
+            {% if not user or user.type == 'learner' %}
+                <h3>How can you earn it?</h3>
 
-            <p class="text-right">
-                {% if badge.activityType == 'offline' %}
-                    <a href="/claim" class="btn">Claim this badge</a>
-                {% else %}
-                    <a href="{{ badge.url }}/apply" class="btn">Apply</a>
-                {% endif %}
-            </p>
+                <p class="text-right">
+                    {% if badge.activityType == 'offline' %}
+                        <a href="/claim" class="btn">Claim this badge</a>
+                    {% else %}
+                        <a href="{{ badge.url }}/apply" class="btn">Apply</a>
+                    {% endif %}
+                </p>
+            {% endif %}
         </div>
     </div>
 
