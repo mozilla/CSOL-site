@@ -52,12 +52,19 @@ module.exports = {
 			});
 		},
 		// favorites middleware takes the array of user's badges and decorates each
-		// badge with a "favd" flag if the user had favorited it previously
+		// badge with a "favd" flag if the user had favorited it previously. It also
+		// adds a filtered array of favorited badges to the `req' object as
+		// "favorites".
+		//
+		// The middleware assumes that `req.remote.badges' exists and has been
+		// populated with badge objects, presumably from a previous API call to
+		// openbadger.
 		middleware: function (req, res, next) {
 			var badges = req.remote.badges;
 			var user = res.locals.user;
 			var _this = this;
 
+			// Add a "favd" flag property to each badge as the favorited status by the user
 			async.each(badges, function(badge, cb) {
 				_this.favoritedBadge(user, badge.id, function(err, favd) {
 					if (err) cb(err);
@@ -65,8 +72,14 @@ module.exports = {
 					cb(null);
 				});
 			}, function(err) {
-				if (err) next(err);
-				next();
+				// Add a filtered array of favorited badges as "favorites" to the `req'
+				async.filter(badges, function(badge, cb) {
+					cb(badge.favd);
+				}, function(favorites) {
+					if (err) next(err);
+					req.favorites = favorites;
+					next();
+				});
 			});
 		}
 	}
