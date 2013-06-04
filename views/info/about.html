@@ -3,6 +3,21 @@
 {% set navItem = 'about' %}
 {% set bodyClass = 'about' %}
 
+{% block head %}
+  <!--[if (gt IE 9)|!(IE)]><!-->
+  <style>
+    .org-list {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+    }
+    .org-list [class*="span"] {
+      float: none;
+    }
+  </style>
+  <!--<![endif]-->
+{% endblock %}
+
 {% block content %}
   <p class="lead">
     Join Mayor Rahm Emanuel in challenging Chicago youth to participate in the Summer of Learning, a citywide effort to engage young people in hands-on learning. School stops for the summer, but learning never should.
