@@ -127,7 +127,6 @@ ol {
 .navbar .nav-wrap ul.nav > li > a {
   text-shadow: none;
   color: #333333;
-  text-transform: uppercase;
 }
 .navbar .nav-wrap ul.nav > li > a:focus,
 .navbar .nav-wrap ul.nav > li > a:hover {
@@ -1087,7 +1086,7 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 /* FAQ MAKE LOOK GOOD STYLES HERE */
 .faq {
   /* "Split numbering" is what I'm calling the following
-     ordered list numbering: 
+     ordered list numbering:
        1.  ...
        2a. ...
        2b. ...
@@ -1125,4 +1124,12 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 .faq li.split-item li:before {
   counter-increment: subsection;
   content: counter(section) counter(subsection, lower-alpha) ". ";
+}
+/* ABOUT STYLES */
+.about .video {
+  text-align: center;
+  margin: 20px 0;
+}
+.about li.org {
+  list-style: none;
 }
