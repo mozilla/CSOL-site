@@ -16,6 +16,10 @@ module.exports = {
       allowNull: false,
       defaultValue: true
     },
+    birthday: {
+      type: db.type.DATE,
+      allowNull: false
+    },
     firstName: {
       type: db.type.STRING,
       allowNull: true
