@@ -1080,12 +1080,12 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 }
 /* FAQ MAKE LOOK GOOD STYLES HERE */
 .faq {
-  /* For ordered list numbering unacheivable with
-     CSS list counters, e.g. 1a, 1b, etc.
-     <ul class="ol">
-       <li><span>1a.</span> ... </li>
-       <li><span>1b.</span> ... </li>
-     </ul>
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering: 
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
    */
 
 }
@@ -1097,9 +1097,26 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 .faq ul li {
   list-style-position: inside;
 }
-.faq ul.ol {
-  list-style: none;
+.faq .split-numbering,
+.faq .split-numbering ol {
+  counter-reset: section;
+  list-style-type: none;
 }
-.faq ul.ol li span {
+.faq .split-numbering li ol {
+  counter-reset: subsection;
+}
+.faq .split-numbering li:before {
+  counter-increment: section;
+  content: counter(section) ". ";
   width: 2em;
+  display: inline-block;
+}
+.faq li.split-item:before {
+  visibility: hidden;
+  position: absolute;
+  left: -999em;
+}
+.faq li.split-item li:before {
+  counter-increment: subsection;
+  content: counter(section) counter(subsection, lower-alpha) ". ";
 }

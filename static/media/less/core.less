@@ -1102,7 +1102,6 @@ body.home {
 	}
 }
 
-<<<<<<< HEAD
 /* ------------------------------ */
 /* Landing page : mobile -------- */
 /* ------------------------------ */
@@ -1184,18 +1183,38 @@ and (max-width : 599px) {
     }
   }
 
-  /* For ordered list numbering unacheivable with
-     CSS list counters, e.g. 1a, 1b, etc.
-     <ul class="ol">
-       <li><span>1a.</span> ... </li>
-       <li><span>1b.</span> ... </li>
-     </ul>
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering: 
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
    */
-  ul.ol {
-    list-style: none;
+  .split-numbering,
+  .split-numbering ol {
+      counter-reset: section;
+      list-style-type: none;
+  }
 
-    li span {
+  .split-numbering li ol {
+      counter-reset: subsection;
+  }
+
+  .split-numbering li:before {
+      counter-increment: section;
+      content: counter(section) ". ";
       width: 2em;
-    }
+      display: inline-block;
+  }
+
+  li.split-item:before {
+      visibility: hidden;
+      position: absolute;
+      left: -999em;
+  }
+
+  li.split-item li:before {
+      counter-increment: subsection;
+      content: counter(section) counter(subsection, lower-alpha) ". ";
   }
 }
