@@ -93,6 +93,7 @@ ol {
  	}
   .navbar-inner {
     background-image:url('../img/chalkboard_bg.jpg');
+    background-repeat:repeat;
   }
   form.navbar-inner {
     padding:7px;
@@ -114,8 +115,8 @@ ol {
   	box-shadow:0 0 8px 3px rgba(0, 0, 0, 0.25);
   	background:#fff;
   	text-align:center;
-  	ul {
- 			display:inline-block;
+  	ul.nav {
+ 		display:inline-block;
   		margin:0 0 0 0;
   		& > li {
   		  float:none;
@@ -170,6 +171,7 @@ nav.pagination {
   -webkit-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  background-repeat:repeat;
 	a {
 		color: #fff;
 	}
@@ -261,12 +263,123 @@ nav.pagination {
 	}
 
 	&.secondary {
-    position:relative;
+    	position:relative;
 		color:#fff;
+		overflow:hidden;
 	}
 }
 
-/*CSOL-site specific*/
+/*mobile*/
+@media only screen 
+and (min-width : 320px) 
+and (max-width : 599px) {
+  	.container p, .container h1, .container h2, .footer .upper p {
+  		width:inherit;
+  	}
+  	#main {
+  		padding-top:15px;
+  	}
+  	.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
+  		display:block;
+  	}
+  	.filter label {
+  		display:none;
+  	}
+	.navbar .nav-wrap,
+	.container,
+	.navbar-static-top .container,
+	.navbar-fixed-top .container,
+	.navbar-fixed-bottom .container,
+	.navbar .brand {
+		width:95%;
+  		margin:0 0 0 0;
+  		padding:0 0 0 0;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.form-horizontal { 
+		.control-label {
+			text-align:left;
+			float:none;
+		}
+		.controls {
+			margin-left:0px;
+		}
+	}
+	.span6 {
+		width:inherit;
+	}
+
+	
+/*mobile navbar*/
+	.navbar { 
+		div.navbar-inner {
+  			padding-left:0px;
+			padding-right:0px;
+			padding-top:10px;
+			padding-bottom:10px;
+			border:none;
+  		}
+  		.nav-wrap {
+  			width:90%;
+  			margin:0 auto;
+  			ul.nav {
+  				li {
+  					display:block;
+  					a {
+  						padding: 5px 0;
+  					}
+  				}
+  				li:nth-child(even),
+  				& > .active > a,
+  				& > .active > a:hover,
+  				 {
+  					border-left:none;
+  					border-right:none;
+  				}
+  			}
+  		}
+  	}
+/*mobile footer*/
+ 	.footer {
+ 		.upper {
+ 			padding-top:15px;
+ 			p {
+				width:inherit;
+				background-image:none;
+  				padding-left:0px;			
+  			}
+				ul.pull-right {
+					width:270px;
+					display:block;
+					float:none;
+					margin:0 auto;
+					li {
+						width:90px;
+						float:left;
+						a {
+							margin: 0 auto;
+						}
+					}
+				}
+
+		}
+		.lower {
+			border-top:none;
+			ul.pull-left {
+				display:none;
+			}
+			ul.pull-right {
+				float:none;
+				text-align:center;
+				li {
+					display:inline;
+				}
+			}
+		}
+	}
+}
+
 .poster a,
 .poster img {
 	display: block;
@@ -591,43 +704,96 @@ input[type="password"].metered {
 	}
 }
 
-/*landing page specific*/
-body.home {
-  background-image:url('../img/background-chalkboard-green.jpg');
-  background-repeat:no-repeat;
-  -webkit-background-size:cover;
-  -moz-background-size:cover;
-  -o-background-size:cover;
-  background-size:cover;
-  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-  -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";  
-  overflow:visible;
-  .container {
-    width:960px;
+/* ------------------------------ */
+/* Mobile : width > iphone ------ */
+/* ------------------------------ */
+@media only screen 
+and (min-width : 321px)
+and (max-width : 940px ) {
+  .navbar .brand {
+  	background-image: url('../img/csol_logo_480.png');
+  	height:166px;
   }
-	.navbar {
-    -webkit-box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-    box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-		.navbar-inner {
-  		background-image:url('../img/spacedimg.jpg');
-  		background-repeat:no-repeat;
-  		background-position:top center;
-  		-webkit-background-size:cover;
-  		-moz-background-size:cover;
-  		-o-background-size:cover;
-  		background-size:cover;
-  		padding-top:0px;
-  		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
-  		-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";
-  		overflow:visible;
-  		max-height:515px;
+}
 
-  		& > .container {
-  			background-image:url('../img/home_drawing.png');
-  			background-position:top center;
-  			background-repeat:no-repeat;
-  			}
+/* ------------------------------ */
+/* Mobile : width <= iphone ----- */
+/* ------------------------------ */
+@media only screen 
+and (max-width : 320px) {
+  .navbar .brand {
+  	background-image: url('../img/csol_logo_320.png');
+  	height:116px;
+  }
+}
+
+/* ------------------------------ */
+/* CSOL-site SPECIFIC ----------- */
+/* ------------------------------ */
+
+/* ------------------------------ */
+/* Mobile : width <= iphone  ---- */
+/* ------------------------------ */
+@media only screen 
+and (max-width : 320px) {
+  .span3 {
+  width:150px;
+  }
+  ul.thumbnails li figure.thumbnail > a img {
+  width:140px;
+  }
+ul.thumbnails {
+  	li { 
+    	figure.thumbnail {
+      		margin:0 0 0 0;
+      		& > a img {
+        		display:block;
+        		width:140px;
+        		height:140px;
+        		background-image:url('../img/badge-default-320.png');
+      		}
+      	}
+	}
+   	li:nth-child(2n+2) {
+    	figure.thumbnail {
+      		& > a img {
+        		background-position:0 -140px;
+      		}
+    	}
+  	}
+  	li:nth-child(3n+3) {
+    	figure.thumbnail {
+      			& > a img {
+        			background-position:-140px 0px;
+      			}
+    		}
+  		}
+  	li:nth-child(4n+4) {
+    	figure.thumbnail {
+      			& > a img {
+        			background-position:-140px -140px;
+				}
+			}
+		}
+	}
+}
+
+/* ------------------------------ */
+/* Landing page  ---------------- */
+/* ------------------------------ */
+body.home {
+	#main {
+	    padding:0 0 0 0;
+	    display:none;
+	}
+	.navbar {
+    	-webkit-box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+    	-moz-box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+    	box-shadow:0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+		.navbar-inner {
+  			overflow:visible;
+  			max-height:515px;
+
 		}
 		.nav {
 			& > li {
@@ -640,7 +806,7 @@ body.home {
 			background-image:url('../img/csol_logo_sm.png');
    			position:absolute;
     		left:50%;
-    		margin-left:-102px;
+    		margin-left:-93px;
     		z-index:2;
     		top:50px;
     		width:189px;
@@ -651,18 +817,17 @@ body.home {
   			width:inherit;
   			margin-bottom:0px;
     		height:600px;
-   			width:310px;
+   			width:314px;
     		margin:0 auto;
     		background:none;
-   			background-image:url('../img/banner300.png');
+   			background-image:url('../img/banner314.png');
     		background-position:top center;
     		background-repeat:no-repeat;
    			position:relative;
     		z-index:1;
     		box-shadow:none;
-    		ul {
+    		ul.nav {
     			padding-top:200px;
-          		left:-6px;
     			& > li {
     				text-align:left;
     				display:block;
@@ -723,145 +888,217 @@ body.home {
 			}
 		}
     }
-    #main {
-    	padding:0 0 0 0;
-      display:none;
-
-    }
-    .navbar-static-top {
-    	.container {
-    		width:inherit;
-    	}
-    }
-    .secondary {
-    	.upper {
-    		padding-top:15px;
-        position:relative;
-    		> p.pull-left {
-    			display:none;
-    		}
-    		> .pull-right {
-    			float:left;
-    			text-align:center;
-          width:340px;
-          padding-top:55px;
-          position:relative;
-          left:-7px;
-          li:nth-child(even){
-            margin:12px;
-          }
-    		}
-    	}
-    	.lower {
-    		border-top:none;
-    		.pull-right {
-    			li:first-child {
-	    			display:none;
-	    		}
-	    		li:nth-child(2) {
-	    			border-left:none;
-	    		}
-	    	}
-    	}
-    }
-  .footer {
-  -webkit-box-shadow:none;
-  -moz-box-shadow:none;
-  box-shadow:none;
-  }
-  #rahm {
-    position:relative;
-    width:210px;
-    padding-left:100px;
-    padding-top:15px;
-    background-image:url('../img/rahm.png');
-    background-repeat:no-repeat;
-    background-position:center left;
-    float:left;
-    -webkit-hyphens:none;
-    -moz-hyphens:none;
-    hyphens:none;
-  }
-  #bubbles {
-    float:left;
-    background-image:url('../img/bubbles.png');
-    width:310px;
-    height:140px;
-    background-repeat:no-repeat;
-    background-position:18px 0px;
-    margin-top:15px;
-    span {
-      color:#000;
-      display:block;
-      width:100px;
-      &.lt {
-        float:left;
-        margin-left:34px;
-        margin-top:12px;
-        a {
-          color:#3B5998;
-        }
-      }
-      &.rt {
-        margin-top:52px;
-        margin-right:7px;
-        float:right;
-        font-size:24px;
-        line-height:20px;
-      }
-    }
-  }
-  .footer {
-  background-image: none;
-  }
-  #bkg_fade {
-  	position:fixed;
-  	width:100%;
-  	height:100%;
-    background-image:url('../img/65pb.png');
-  	margin:0 0 0 0;
-  	padding:0 0 0 0;
-    z-index:3;
-  }
-  #i_vid_wrap {
-    width:640px;
-    height:360px;
-    position:fixed;
-    top:50%;
-    left:50%;
-    margin-top:-204px;
-    margin-left:-348px;
-    z-index:4;
-    background-color:#000;
-    padding:28px;
-    border-radius:7px;
-  }
-  #cl_i_vid {
-    background-image:url('../img/close.png');
-    position:absolute;
-    top:-7px;
-    right:-7px;
-    display:block;
-    width:25px;
-    height:25px;
-    text-indent:-9000px;
-  }
 }
 
-.filter {
-	color: #EEE;
-
-	select {
-		margin-right: 10px;
-		width: 115px;
-		vertical-align: baseline;
+/* ------------------------------ */
+/* Landing page : larger displays */
+/* ------------------------------ */
+@media screen and (min-width: 600px) {
+	body.home {
+		.navbar {
+			.navbar-inner {
+				background-image:url('../img/spacedimg.jpg');
+				background-repeat:no-repeat;
+				background-position:top center;
+				-webkit-background-size:cover;
+				-moz-background-size:cover;
+				-o-background-size:cover;
+				background-size:cover;
+				padding-top:0px;
+				filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
+				-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";	
+				& > .container {
+					background-image:url('../img/home_drawing.png');
+					background-position:top center;
+					background-repeat:no-repeat;
+				}		
+			}
+		}
+		background-image:url('../img/background-chalkboard-green.jpg');
+		background-repeat:no-repeat;
+		-webkit-background-size:cover;
+		-moz-background-size:cover;
+		-o-background-size:cover;
+		background-size:cover;
+		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
+		-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";  
+		overflow:visible;
+	  	.container {
+	    	width:960px;
+	  	}
+	    .navbar-static-top {
+	    	.container {
+	    		width:inherit;
+	    	}
+	    }
+	    .secondary {
+	    	.upper {
+				padding-top:15px;
+				position:relative;
+				> p.pull-left {
+					display:none;
+				}
+				> .pull-right {
+					float:left;
+					text-align:center;
+					width:340px;
+					padding-top:55px;
+					position:relative;
+					li:nth-child(even){
+						margin:12px;
+					}
+				}
+			}
+			.lower {
+				border-top:none;
+				.pull-right {
+					li:first-child {
+						display:none;
+					}
+					li:nth-child(2) {
+						border-left:none;
+					}
+				}
+			}
+		}
+		.footer {
+		-webkit-box-shadow:none;
+		-moz-box-shadow:none;
+		box-shadow:none;
+		}
+		#rahm {
+			position:relative;
+			width:210px;
+			padding-left:100px;
+			padding-top:15px;
+			background-image:url('../img/rahm.png');
+			background-repeat:no-repeat;
+			background-position:center left;
+			float:left;
+			-webkit-hyphens:none;
+			-moz-hyphens:none;
+			hyphens:none;
+		}
+		#bubbles {
+			float:left;
+			background-image:url('../img/bubbles.png');
+			width:310px;
+			height:140px;
+			background-repeat:no-repeat;
+			background-position:18px 0px;
+			margin-top:15px;
+			span {
+				color:#000;
+				display:block;
+				width:100px;
+				&.lt {
+					float:left;
+					margin-left:34px;
+					margin-top:12px;
+					a {
+						color:#3B5998;
+					}
+				}	
+				&.rt {
+					margin-top:52px;
+					margin-right:7px;
+					float:right;
+					font-size:24px;
+					line-height:20px;
+				}
+			}
+		}
+		.footer {
+			background-image: none;
+		}
+		#bkg_fade {
+	  		position:fixed;
+	  		width:100%;
+	  		height:100%;
+	  		background-image:url('../img/65pb.png');
+	  		margin:0 0 0 0;
+	  		padding:0 0 0 0;
+	  		z-index:3;
+		}
+		#i_vid_wrap {
+	  		width:640px;
+	  		height:360px;
+	  		position:fixed;
+	  		top:50%;
+	  		left:50%;
+	  		margin-top:-204px;
+	  		margin-left:-348px;
+	  		z-index:4;
+	  		background-color:#000;
+	  		padding:28px;
+	  		border-radius:7px;
+		}
+		#cl_i_vid {
+	  		background-image:url('../img/close.png');
+	  		position:absolute;
+	  		top:-7px;
+	  		right:-7px;
+	  		display:block;
+	  		width:25px;
+	  		height:25px;
+	  		text-indent:-9000px;
+		}
 	}
+}
 
-	input {
-		vertical-align: baseline;
-	}
+/* ------------------------------ */
+/* Landing page : mobile -------- */
+/* ------------------------------ */
+@media only screen 
+and (min-width : 320px) 
+and (max-width : 599px) {
+	body.home {
+    	background-image:url('../img/chalkboard_bg.jpg');
+		.navbar {
+		-webkit-box-shadow:none;
+		-moz-box-shadow:none;
+		box-shadow:none;
+			div.navbar-inner  {
+				padding-top:0px;
+				background-image:none;
+				background:none;
+				border:none;
+				-webkit-box-shadow:none;
+				-moz-box-shadow:none;
+				box-shadow:none;
+			}
+			.nav-wrap {
+				ul.nav {
+  					li {
+  						display:block;
+  						a {
+  							padding: 10px 15px 10px;
+  						}
+  					}
+				}
+			}
+		}
+		.footer {
+			background-image:none;
+			box-shadow:none;
+			.upper {
+				padding-top:70px;
+				padding-bottom:20px;
+				p, div {
+					display:none;
+				}
+				ul {
+					width:90%;
+					display:block;
+					li {
+						width:32%;
+						a {
+							margin: 0 auto;
+						}
+					}
+				}
+			}
 
-	.navbar-inner {
-		padding-left: 10px;
+		}
 	}
 }
