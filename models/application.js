@@ -29,6 +29,7 @@ module.exports = {
       values: [
         'open',       // This application is being worked on 
         'waiting',    // This application is waiting for guardian approval (where applicable)
+        'denied',     // This application has been denied by the guardian (where applicable)
         'submitted',  // This application has been submitted for review
         'rejected',   // This application has been rejected
         'accepted'    // This application has been accepted
@@ -61,11 +62,19 @@ module.exports = {
       return JSON.parse(this.latestReview || "{}");
     },
     reopen: function (callback) {
-      if (this.state !== 'rejected')
+      if (['rejected','denied'].indexOf(this.state) < 0)
         return callback();
 
       this.updateAttributes({
         state: 'open'
+      }).complete(callback);
+    },
+    deny: function (callback) {
+      if (this.state !== 'waiting')
+        return callback();
+
+      this.updateAttributes({
+        state: 'denied'
       }).complete(callback);
     },
     submit: function (force, callback) {

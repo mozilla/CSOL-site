@@ -1,0 +1,9 @@
+<figure class="thumbnail activity-type-{{ activity.type }} activity-{{ activity.state }}">
+	<a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id }}">
+		<img src="{{ activity.badge.image }}">
+	</a>
+	<figcaption class="caption">
+		<p>{{ activity.badge.name }}</p>
+		<p class="text-right"><a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id }}" class="btn">Details</a></p>
+	</figcaption>
+</figure>
