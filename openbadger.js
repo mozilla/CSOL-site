@@ -192,18 +192,22 @@ var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
     func: function getBadges (query, callback) {
-      this.get('/badges', function(err, data) {
-        if (err)
-          return callback(err, data);
-
-        return callback(null, {
-          badges: _.map(data.badges, normalizeBadge)
-        });
-      });
+      this.getAllBadges(query, callback);
     },
     filters: filterBadges,
     paginate: true,
     key: 'badges'
+  },
+
+  getAllBadges: function getAllBadges (query, callback) {
+    this.get('/badges', function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        badges: _.map(data.badges, normalizeBadge)
+      });
+    })
   },
 
   getBadge: function getBadge (query, callback) {
@@ -267,7 +271,7 @@ var openbadger = new Api(ENDPOINT, {
 
   getUserBadges: {
     func: function getUserBadges (query, callback) {
-      var email = query.session.user.email;
+      var email = query.email || query.session.user.email;
       var params = {
         auth: getJWTToken(email),
         email: email

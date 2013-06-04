@@ -10,12 +10,11 @@
 			Your application is waiting to be reviewed.
 		</div>
 	{% endblock %}
-	<div class="row">
+	<div class="row-fluid">
 		<div class="span4">
 			<a href="{{ badge.url }}"><img src="{{ badge.image }}"></a>
 		</div>
-		<div class="span1"></div>
-		<div class="span7">
+		<div class="span8">
 			<div id="application-review">
 				{% block notes %}
 				{% endblock %}

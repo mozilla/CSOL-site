@@ -57,6 +57,9 @@
                                             <li class="dashboard{% if navItem == 'dashboard' %} active{% endif %}">
                                                 <a href="/dashboard">My Dashboard</a>
                                             </li>
+                                            <li class="logout">
+                                                <a href="/logout">Log out</a>
+                                            </li>
                                         {% endif %}
                                     {% else %}
                                         <li class="dropdown log-in{% if navItem == 'log-in' %} active{% endif %}">
@@ -130,7 +133,6 @@
                             <li><a class="logo mac" href="#">MacArthur Foundation</a></li>
                         </ul>
                     </div>
-
                     <div class="lower clearfix">
                         <ul class="pull-left">
                             <li><a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a></li>
@@ -153,28 +155,28 @@
         <script src="/media/bootstrap/js/bootstrap.js"></script>
         <script src="/media/js/custom_logic.js"></script>
         {% if _messages.modal %}
-        <script>
-            (function($) {
-                function next () {
-                    var modal = modals.shift();
-                    if (!modal)
-                        return;
-                            $(modal)
-                                .modal()
-                                .on('hidden', next);
-                        }
+            <script>
+                (function($) {
+                    function next () {
+                        var modal = modals.shift();
+                        if (!modal)
+                            return;
 
-                        var modals = [];
+                        $(modal)
+                            .modal()
+                            .on('hidden', next);
+                    }
 
-                        $('.initial[role="dialog"]').each(function(index, modal) {
-                        	modals.push(modal);
-                        });
+                    var modals = [];
 
-                        next();
-                    })(jQuery);
-                </script>
-                {% endif %}
-                {% block finally %}{% endblock %}
+                    $('.initial[role="dialog"]').each(function(index, modal) {
+                    	modals.push(modal);
+                    });
 
+                    next();
+                })(jQuery);
+            </script>
+        {% endif %}
+        {% block finally %}{% endblock %}
     </body>
 </html>

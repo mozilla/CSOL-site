@@ -409,10 +409,6 @@ nav.pagination ul li a {
   text-align: center;
 }
 /*Evidence uploading / application*/
-#application-review .well {
-  margin-left: -20px;
-  margin-right: -20px;
-}
 #application-review .rubric {
   margin: 0 0 20px;
 }
@@ -516,9 +512,12 @@ nav.pagination ul li a {
   right: 200%;
   opacity: 0;
 }
+#evidence {
+  margin-left: -20px;
+}
 #evidence .item {
   position: relative;
-  width: 33%;
+  width: 33.333%;
   margin-left: 0;
   padding-left: 20px;
   -webkit-box-sizing: border-box;

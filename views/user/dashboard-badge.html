@@ -1,0 +1,8 @@
+{% extends 'user/dashboard.html' %}
+{% set pageTitle = current.getDisplayName() %}
+{% block pageTitle -%}
+	{{ current.getDisplayName() }}'s badge: {{ badge.name }}
+{%- endblock %}
+
+{% block activity %}
+{% endblock %}
