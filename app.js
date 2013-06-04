@@ -22,7 +22,8 @@ const healthChecker = healthCheck({
     s3: healthCheck.checker(require('./s3').healthCheck),
     database: healthCheck.checker(require('./db').healthCheck),
     openbadger: healthCheck.checker(require('./openbadger').healthCheck),
-    aestimia: healthCheck.checker(require('./aestimia').healthCheck)
+    aestimia: healthCheck.checker(require('./aestimia').healthCheck),
+    email: healthCheck.checker(require('./mandrill').healthCheck)
   }
 });
 
@@ -78,6 +79,9 @@ if (!module.parent)
         console.log(("\nHealth check indicates all systems are " +
                      "functional.").green);
       }
+      if (!process.env.NODE_ENV)
+        console.warn(("You don't seem to have the NODE_ENV environment " +
+                      "variable set.\nPlease consult README.md.").yellow);
     });
   });
 else

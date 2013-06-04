@@ -5,8 +5,9 @@ const S3_REQUIRED_ENV_VARS = [
   "CSOL_AWS_SECRET",
   "CSOL_AWS_BUCKET"
 ];
-
-if (process.env["CSOL_AWS_FAKE_S3_DIR"]) {
+const USE_FAKE_S3 = process.env['NODE_ENV'] == 'development' &&
+                    process.env["CSOL_AWS_FAKE_S3_DIR"];
+if (USE_FAKE_S3) {
   var FakeS3 = require('./s3-fake');
   s3 = new FakeS3(process.env["CSOL_AWS_FAKE_S3_DIR"]);
 } else {
@@ -24,10 +25,15 @@ if (process.env["CSOL_AWS_FAKE_S3_DIR"]) {
   });
 }
 
-s3.healthCheck = function(cb) {
+s3.healthCheck = function(meta, cb) {
   var async = require('async');
   var rnd = Math.floor(Math.random() * 100000).toString();
   var url = '/healthChecker_test_' + rnd;
+
+  if (USE_FAKE_S3)
+    meta.notes = 'fake s3';
+  else
+    meta.notes = process.env["CSOL_AWS_BUCKET"] + '.s3.amazonaws.com';
 
   async.series([
     s3.putBuffer.bind(s3, new Buffer(rnd), url, {
