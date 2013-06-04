@@ -251,14 +251,15 @@ nav.pagination ul li a {
   #main {
     padding-top: 15px;
   }
+  #main .navbar-form select {
+    margin: 0 auto;
+    display: block;
+  }
   .form-search label,
   .form-inline label,
   .form-search .btn-group,
   .form-inline .btn-group {
     display: block;
-  }
-  .filter label {
-    display: none;
   }
   .navbar .nav-wrap,
   .container,
@@ -301,16 +302,40 @@ nav.pagination ul li a {
   .navbar .nav-wrap {
     width: 90%;
     margin: 0 auto;
+    border-radius: 5px;
   }
-  .navbar .nav-wrap ul.nav li {
+  .navbar .nav-wrap ul.nav li,
+  .navbar .nav-wrap #dynWrap li,
+  .navbar .nav-wrap ul.nav li.active,
+  .navbar .nav-wrap #dynWrap li.active {
     display: block;
   }
-  .navbar .nav-wrap ul.nav li a {
-    padding: 5px 0;
+  .navbar .nav-wrap ul.nav li a,
+  .navbar .nav-wrap #dynWrap li a,
+  .navbar .nav-wrap ul.nav li.active a,
+  .navbar .nav-wrap #dynWrap li.active a,
+  .navbar .nav-wrap ul.nav li a:visited,
+  .navbar .nav-wrap #dynWrap li a:visited,
+  .navbar .nav-wrap ul.nav li.active a:visited,
+  .navbar .nav-wrap #dynWrap li.active a:visited,
+  .navbar .nav-wrap ul.nav li a:hover,
+  .navbar .nav-wrap #dynWrap li a:hover,
+  .navbar .nav-wrap ul.nav li.active a:hover,
+  .navbar .nav-wrap #dynWrap li.active a:hover {
+    padding: 7px 0;
+    text-transform: capitalize;
+    line-height: 14px;
+    color: #000;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
   }
   .navbar .nav-wrap ul.nav li:nth-child(even),
+  .navbar .nav-wrap #dynWrap li:nth-child(even),
   .navbar .nav-wrap ul.nav > .active > a,
-  .navbar .nav-wrap ul.nav > .active > a:hover {
+  .navbar .nav-wrap #dynWrap > .active > a,
+  .navbar .nav-wrap ul.nav > .active > a:hover,
+  .navbar .nav-wrap #dynWrap > .active > a:hover {
     border-left: none;
     border-right: none;
   }

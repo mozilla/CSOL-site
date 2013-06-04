@@ -277,12 +277,15 @@ and (max-width : 599px) {
   	}
   	#main {
   		padding-top:15px;
+  		.navbar-form {
+  			select {
+  				margin:0 auto;
+  				display:block;
+  			}
+  		}
   	}
   	.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
   		display:block;
-  	}
-  	.filter label {
-  		display:none;
   	}
 	.navbar .nav-wrap,
 	.container,
@@ -330,11 +333,18 @@ and (max-width : 599px) {
   		.nav-wrap {
   			width:90%;
   			margin:0 auto;
-  			ul.nav {
-  				li {
+ 			border-radius:5px;
+  			ul.nav, #dynWrap {
+  				li, li.active {
   					display:block;
-  					a {
-  						padding: 5px 0;
+  					a, a:visited, a:hover {
+  						padding: 7px 0;
+  						text-transform:capitalize;
+  						line-height:14px;
+  						color:#000;
+  						text-decoration:none;
+  						display:block;
+  						font-weight:400;
   					}
   				}
   				li:nth-child(even),

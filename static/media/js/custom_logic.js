@@ -43,5 +43,24 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 		$('li.badges a').append('<span> Badges &</span>');
 		$('li.about a').append('<span> the program</span>')
 		$('li.challenges a').append('<span> your future.</span>');
+	} else {
+		//if(mob) { 
+		var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
+		var dynList = $('<li id="dyn"></li>');
+		var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
+			$('#dynWrap').slideToggle();
+			return false;
+		});
+
+		$('ul.nav').prepend(dynList.append(dynLink), dynWrap);
+		//dynLink.appendTo(dynWrap.prependTo());
+
+		$('ul.nav li').each(function(){
+			if ($(this).attr("id") != "dyn") {
+        		$(this).appendTo("#dynWrap");
+    		}
+		});
+
+		//}
 	}
 });
