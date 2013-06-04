@@ -40,7 +40,11 @@ module.exports = function (app) {
   app.get('/dashboard', middleware, function (req, res, next) {
     var dependants = req.params.dependants;
 
-    normalizeDependants(dependants, function (err, dependants) {
+    normalizeDependants(dependants, {
+      limit: 4,
+      applications: true,
+      badges: true
+    }, function (err, dependants) {
       if (err)
         return next(err);
 

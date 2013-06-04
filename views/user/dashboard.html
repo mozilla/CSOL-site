@@ -23,7 +23,7 @@
 		<h3>{{ current.getDisplayName() }}'s recent activity</h3>
 		{% if current.activities.length %}
 			<ul class="activity thumbnails">
-				{% for activity in current.activities.slice(0,4) %}
+				{% for activity in current.activities %}
 					<li class="span3">
 						{% include "includes/learner-activity.html" %}
 					</li>

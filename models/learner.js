@@ -112,26 +112,25 @@ module.exports = {
               if (err)
                 return callback(err);
 
-              async.each(applications, function(application, callback) {
-                application.getEvidence()
-                  .complete(function (err, evidence) {
-                    if (err)
-                      return callback(err);
+              _.each(applications, function(application) {
+                application.update = function (callback) {
+                  application.getEvidence()
+                    .complete(function (err, evidence) {
+                      if (err)
+                        return callback(err);
 
-                    _.extend(application, {
-                      badge: _.findWhere(badges, {id: application.badgeId}),
-                      evidence: evidence,
-                      type: 'application'
+                      _.extend(application, {
+                        badge: _.findWhere(badges, {id: application.badgeId}),
+                        evidence: evidence,
+                        type: 'application'
+                      });
+
+                      callback();
                     });
-
-                    callback();
-                  });
-              }, function (err) {
-                if (err)
-                  return callback(err);
-
-                callback(null, applications);
+                }
               });
+
+              callback(null, applications);
             });
         }
 
@@ -170,7 +169,14 @@ module.exports = {
             return b.updatedAt - a.updatedAt;
           });
 
-          callback(err, activities);
+          if (_.isNumber(options.limit))
+            activities = activities.slice(0, options.limit);
+
+          async.each(activities, function (activity, callback) {
+            activity.update ? activity.update(callback) : callback();
+          }, function (err) {
+            callback(err, activities);
+          });
         });
       });
     }
