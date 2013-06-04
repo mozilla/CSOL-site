@@ -133,7 +133,7 @@ module.exports = function (app) {
 
   app.post('/mybadges/:id/favorite', [
     loggedIn,
-    openbadger.middleware('getUserBadge')
+    openbadger.middleware('getBadge')
   ], function (req, res, next) {
     var data = req.remote;
     var badge = data.badge;
@@ -159,6 +159,17 @@ module.exports = function (app) {
       user: res.locals.user,
       recommended: [], // XXX: grouped by STEAM?
       playlist: req.playlist
+    });
+  });
+
+  app.post('/myplaylist', [
+    loggedIn
+  ], function (req, res, next) {
+    var user = res.locals.user;
+    var shortName = req.body.shortName;
+    playlist.addToList(user, shortName, function(err) {
+      if (err) next(err);
+      res.redirect('/myplaylist');
     });
   });
 
