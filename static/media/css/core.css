@@ -738,8 +738,14 @@ body.home .navbar .navbar-inner {
   overflow: visible;
   max-height: 515px;
 }
+body.home .navbar .nav > li {
+  font-weight: 400;
+}
 body.home .navbar .nav > li.dropdown.open > .dropdown-toggle {
   color: #fff;
+}
+body.home .navbar .nav > li span {
+  font-weight: 300;
 }
 body.home .navbar .brand {
   background-image: url('../img/csol_logo_sm.png');
