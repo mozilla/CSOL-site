@@ -1130,6 +1130,6 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
   text-align: center;
   margin: 20px 0;
 }
-.about li.org {
+.about .org-list {
   list-style: none;
 }
