@@ -141,9 +141,24 @@ var aestimia = new Api(ENDPOINT, {
 
       var state = satisfied ? 'accepted' : 'rejected';
 
-      if (state !== application.state) {
-        // TO DO - email applicant about change of application state
-      }
+      if (state !== application.state)
+        if (state === 'accepted')
+          application.getLearner()
+            .complete(function (err, learner) {
+              if (err || !learner) return;
+
+              openbadger.awardBadge({
+                email: learner.email,
+                badge: application.badgeId
+              }, function (err, assertionUrl) {
+                if (err)
+                  return console.log(err); // Should probably log this
+
+                // TO DO - email applicant about change of application state
+
+                console.log('Badge awarded:', assetionUrl);
+              });
+            });
 
       application.updateAttributes({
         state: state,

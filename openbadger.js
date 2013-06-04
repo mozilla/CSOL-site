@@ -306,6 +306,25 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  awardBadge: function awardBadge (query, callback) {
+    var email = query.email || query.session.user.email;
+    var shortname = query.badge;
+
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    }
+
+    this.post('/user/badge/' + shortname, { form: params }, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        assetionUrl: data.url
+      });
+    });
+  },
+
   getBadgeFromCode: function getBadgeFromCode (query, callback) {
     var email = query.email;
     var code = query.code;
