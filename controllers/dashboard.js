@@ -6,6 +6,7 @@ const isGuardian = require('../middleware').isGuardian;
 const _ = require('underscore');
 
 const learners = db.model('Learner');
+const applications = db.model('Application');
 
 function normalizeDependants (dependants, options, callback) {
   if (_.isFunction(options)) {
@@ -154,4 +155,49 @@ module.exports = function (app) {
       });
     });
   });
+
+  app.post('/dashboard/:learnerName/applications/:badgeId', [isGuardian], function (req, res, next) {
+    var learnerName = req.params.learnerName,
+        badgeId = req.params.badgeId,
+        action = req.body.action,
+        options = {};
+
+    function finish (err) {
+      if (err)
+        return next(err);
+
+      return res.redirect(req.url);
+    }
+
+    if (['allow', 'deny'].indexOf(action) < 0)
+      return finish();
+
+    learners.find({where: {username: learnerName, GuardianId: req.session.user.id}})
+      .complete(function (err, learner) {
+        if (err)
+          return finish(err);
+
+        if (!learner)
+          return finish(new errors.NotFound());
+
+        applications.find({where: {LearnerId: learner.id, badgeId: badgeId, state: 'waiting'}})
+          .complete(function (err, application) {
+            if (err)
+              return finish(err);
+
+            if (!application)
+              return finish(new errors.NotFound());
+
+            if (action === 'allow')
+              return application.submit(true, finish);
+
+            if (action === 'deny')
+              return application.deny(finish);
+
+            // We shouldn't ever get this far, but just in case
+            finish();
+          });
+      });
+  });
+
 }

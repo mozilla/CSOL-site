@@ -68,7 +68,7 @@
 	{% if application.state == 'waiting' %}
 		<form method="post" class="text-center row-fluid">
 			<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-			<button name="action" value="submit" class="btn btn-large">Allow this application</button>
+			<button name="action" value="allow" class="btn btn-large">Allow this application</button>
 			<button name="action" value="deny" class="btn btn-large">Deny this application</button>
 		</form>
 	{% endif %}

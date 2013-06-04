@@ -62,11 +62,19 @@ module.exports = {
       return JSON.parse(this.latestReview || "{}");
     },
     reopen: function (callback) {
-      if (this.state !== 'rejected')
+      if (['rejected','denied'].indexOf(this.state) < 0)
         return callback();
 
       this.updateAttributes({
         state: 'open'
+      }).complete(callback);
+    },
+    deny: function (callback) {
+      if (this.state !== 'waiting')
+        return callback();
+
+      this.updateAttributes({
+        state: 'denied'
       }).complete(callback);
     },
     submit: function (force, callback) {
