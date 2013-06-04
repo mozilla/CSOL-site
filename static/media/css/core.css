@@ -3,9 +3,17 @@
 html,
 body {
   height: 100%;
-  font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   line-height: 18px;
+}
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p {
+  font-family: 'Open Sans', sans-serif;
 }
 body {
   margin: 0px;
@@ -125,6 +133,11 @@ ol {
 .navbar .nav-wrap ul.nav > li > a:hover {
   color: #c0c0c0;
 }
+.navbar .nav-wrap ul.nav > li.active a,
+.navbar .nav-wrap ul.nav > li.active a:hover {
+  border-left: none;
+  border-right: none;
+}
 .navbar .nav-wrap ul.nav > li:last-child {
   border-right: none;
 }
@@ -241,7 +254,7 @@ nav.pagination ul li a {
   overflow: hidden;
 }
 /*mobile*/
-@media only screen and (min-width: 320px) and (max-width: 599px) {
+@media only screen and (max-width: 599px) {
   .container p,
   .container h1,
   .container h2,
@@ -251,14 +264,15 @@ nav.pagination ul li a {
   #main {
     padding-top: 15px;
   }
+  #main .navbar-form select {
+    margin: 0 auto;
+    display: block;
+  }
   .form-search label,
   .form-inline label,
   .form-search .btn-group,
   .form-inline .btn-group {
     display: block;
-  }
-  .filter label {
-    display: none;
   }
   .navbar .nav-wrap,
   .container,
@@ -271,6 +285,14 @@ nav.pagination ul li a {
     padding: 0 0 0 0;
     margin-left: auto;
     margin-right: auto;
+  }
+  .navbar .brand {
+    background-image: url('../img/csol_logo_sm.png');
+    height: 150px;
+    background-position: top center;
+  }
+  .navbar-inner > .container {
+    width: 100%;
   }
   .form-horizontal .control-label {
     text-align: left;
@@ -293,16 +315,41 @@ nav.pagination ul li a {
   .navbar .nav-wrap {
     width: 90%;
     margin: 0 auto;
+    border-radius: 5px;
   }
-  .navbar .nav-wrap ul.nav li {
+  .navbar .nav-wrap ul.nav li,
+  .navbar .nav-wrap #dynWrap li,
+  .navbar .nav-wrap ul.nav li.active,
+  .navbar .nav-wrap #dynWrap li.active {
     display: block;
   }
-  .navbar .nav-wrap ul.nav li a {
-    padding: 5px 0;
+  .navbar .nav-wrap ul.nav li a,
+  .navbar .nav-wrap #dynWrap li a,
+  .navbar .nav-wrap ul.nav li.active a,
+  .navbar .nav-wrap #dynWrap li.active a,
+  .navbar .nav-wrap ul.nav li a:visited,
+  .navbar .nav-wrap #dynWrap li a:visited,
+  .navbar .nav-wrap ul.nav li.active a:visited,
+  .navbar .nav-wrap #dynWrap li.active a:visited,
+  .navbar .nav-wrap ul.nav li a:hover,
+  .navbar .nav-wrap #dynWrap li a:hover,
+  .navbar .nav-wrap ul.nav li.active a:hover,
+  .navbar .nav-wrap #dynWrap li.active a:hover {
+    font-size: 14px;
+    padding: 7px 0;
+    text-transform: capitalize;
+    line-height: 16px;
+    color: #000;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
   }
   .navbar .nav-wrap ul.nav li:nth-child(even),
+  .navbar .nav-wrap #dynWrap li:nth-child(even),
   .navbar .nav-wrap ul.nav > .active > a,
-  .navbar .nav-wrap ul.nav > .active > a:hover {
+  .navbar .nav-wrap #dynWrap > .active > a,
+  .navbar .nav-wrap ul.nav > .active > a:hover,
+  .navbar .nav-wrap #dynWrap > .active > a:hover {
     border-left: none;
     border-right: none;
   }
@@ -600,26 +647,51 @@ input[type="password"].metered:focus:invalid:focus + .password-meter {
   border-color: #e9322d;
 }
 /* ------------------------------ */
-/* Mobile : width > iphone ------ */
-/* ------------------------------ */
-@media only screen and (min-width: 321px) and (max-width: 940px) {
-  .navbar .brand {
-    background-image: url('../img/csol_logo_480.png');
-    height: 166px;
-  }
-}
-/* ------------------------------ */
-/* Mobile : width <= iphone ----- */
-/* ------------------------------ */
-@media only screen and (max-width: 320px) {
-  .navbar .brand {
-    background-image: url('../img/csol_logo_320.png');
-    height: 116px;
-  }
-}
-/* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */
 /* ------------------------------ */
+body .navbar.filter label,
+body .navbar.filter select,
+body .navbar.filter input {
+  display: block;
+  float: left;
+}
+body .navbar.filter select {
+  margin-right: 25px;
+}
+body .navbar.filter label {
+  background: url('../img/icon-sprite.png') no-repeat top left;
+  width: 30px;
+  height: 30px;
+  text-indent: -9000px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+body .navbar.filter label.filter-age {
+  background-position: 0 -160px;
+}
+body .navbar.filter label.filter-category {
+  background-position: 0 -640px;
+}
+body .navbar.filter label.filter-org {
+  background-position: 0 -480px;
+}
+body .navbar.filter label.filter-activity {
+  background-position: 0 -720px;
+}
+/* ------------------------------ */
+/* Mobile : general  ------------ */
+/* ------------------------------ */
+@media only screen and (max-width: 599px) {
+  body .navbar.filter .selectWrapper,
+  body .navbar.filter input {
+    clear: left;
+    margin: auto;
+    text-align: center;
+    width: 180px;
+    display: block;
+    float: none;
+  }
+}
 /* ------------------------------ */
 /* Mobile : width <= iphone  ---- */
 /* ------------------------------ */
@@ -665,8 +737,14 @@ body.home .navbar .navbar-inner {
   overflow: visible;
   max-height: 515px;
 }
+body.home .navbar .nav > li {
+  font-weight: 400;
+}
 body.home .navbar .nav > li.dropdown.open > .dropdown-toggle {
   color: #fff;
+}
+body.home .navbar .nav > li span {
+  font-weight: 300;
 }
 body.home .navbar .brand {
   background-image: url('../img/csol_logo_sm.png');
@@ -905,7 +983,7 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 /* ------------------------------ */
 /* Landing page : mobile -------- */
 /* ------------------------------ */
-@media only screen and (min-width: 320px) and (max-width: 599px) {
+@media only screen and (max-width: 599px) {
   body.home {
     background-image: url('../img/chalkboard_bg.jpg');
   }
@@ -951,4 +1029,99 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
   body.home .footer .upper ul li a {
     margin: 0 auto;
   }
+}
+/* ------------------------------ */
+/* Filter sprite positions ------ */
+/* ------------------------------ */
+.sprite-activitylines {
+  background-position: 0 0;
+  width: 30px;
+  height: 30px;
+}
+.sprite-activitytype {
+  background-position: 0 -80px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-age {
+  background-position: 0 -160px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-badgetype {
+  background-position: 0 -240px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-date {
+  background-position: 0 -320px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-location {
+  background-position: 0 -400px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-organization {
+  background-position: 0 -480px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-search {
+  background-position: 0 -560px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-topic {
+  background-position: 0 -640px;
+  width: 30px;
+  height: 30px;
+}
+.sprite-type {
+  background-position: 0 -720px;
+  width: 30px;
+  height: 30px;
+}
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering: 
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
+   */
+
+}
+.faq ol,
+.faq ul {
+  margin-bottom: 10px;
+}
+.faq ol li,
+.faq ul li {
+  list-style-position: inside;
+}
+.faq .split-numbering,
+.faq .split-numbering ol {
+  counter-reset: section;
+  list-style-type: none;
+}
+.faq .split-numbering li ol {
+  counter-reset: subsection;
+}
+.faq .split-numbering li:before {
+  counter-increment: section;
+  content: counter(section) ". ";
+  width: 2em;
+  display: inline-block;
+}
+.faq li.split-item:before {
+  visibility: hidden;
+  position: absolute;
+  left: -999em;
+}
+.faq li.split-item li:before {
+  counter-increment: subsection;
+  content: counter(section) counter(subsection, lower-alpha) ". ";
 }

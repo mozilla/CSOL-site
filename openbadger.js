@@ -33,6 +33,8 @@ function normalizeBadgeInstance (badge, id) {
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
+  badge.id = id;
+
   return badge;
 }
 
@@ -310,6 +312,25 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  awardBadge: function awardBadge (query, callback) {
+    var email = query.email || query.session.user.email;
+    var shortname = query.badge;
+
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    }
+
+    this.post('/user/badge/' + shortname, { form: params }, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        assetionUrl: data.url
+      });
+    });
+  },
+
   getBadgeFromCode: function getBadgeFromCode (query, callback) {
     var email = query.email;
     var code = query.code;
@@ -339,11 +360,15 @@ var openbadger = new Api(ENDPOINT, {
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
     var id = query.badgeName;
+    var limit = query.limit;
+    var params = {
+      limit: limit
+    };
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
 
-    this.get('/badge/' + id + '/recommendations', function(err, data) {
+    this.get('/badge/' + id + '/recommendations', { qs: params }, function(err, data) {
       if (err)
         return callback(err, data);
 

@@ -6,10 +6,12 @@
 /*general*/
 html, body {
   height:100%;
-  font-family:'Open Sans', sans-serif;
   font-weight:300;
   line-height:18px;
  }
+html, body, h1, h2, h3, h4, p {
+	font-family:'Open Sans', sans-serif;
+}
 body {
   margin:0px;
   padding:0px;
@@ -124,10 +126,15 @@ ol {
   			& > a {
   				text-shadow:none;
   				color:#333333;
-  				text-transform:uppercase;
   			}
   			& > a:focus, & > a:hover {
   				color:#c0c0c0;
+  			}
+  			&.active {
+  				a, a:hover {
+  					border-left:none;
+  					border-right:none;
+  				}
   			}
   		}
   		& > li:last-child {
@@ -270,20 +277,22 @@ nav.pagination {
 }
 
 /*mobile*/
-@media only screen 
-and (min-width : 320px) 
+@media only screen
 and (max-width : 599px) {
   	.container p, .container h1, .container h2, .footer .upper p {
   		width:inherit;
   	}
   	#main {
   		padding-top:15px;
+  		.navbar-form {
+  			select {
+  				margin:0 auto;
+  				display:block;
+  			}
+  		}
   	}
   	.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
   		display:block;
-  	}
-  	.filter label {
-  		display:none;
   	}
 	.navbar .nav-wrap,
 	.container,
@@ -297,7 +306,15 @@ and (max-width : 599px) {
 		margin-left:auto;
 		margin-right:auto;
 	}
-	.form-horizontal { 
+	.navbar .brand {
+		background-image:url('../img/csol_logo_sm.png');
+		height:150px;
+		background-position:top center;
+	}
+	.navbar-inner > .container {
+		width:100%;
+	}
+	.form-horizontal {
 		.control-label {
 			text-align:left;
 			float:none;
@@ -310,9 +327,9 @@ and (max-width : 599px) {
 		width:inherit;
 	}
 
-	
+
 /*mobile navbar*/
-	.navbar { 
+	.navbar {
 		div.navbar-inner {
   			padding-left:0px;
 			padding-right:0px;
@@ -323,11 +340,19 @@ and (max-width : 599px) {
   		.nav-wrap {
   			width:90%;
   			margin:0 auto;
-  			ul.nav {
-  				li {
+ 			border-radius:5px;
+  			ul.nav, #dynWrap {
+  				li, li.active {
   					display:block;
-  					a {
-  						padding: 5px 0;
+  					a, a:visited, a:hover {
+  						font-size:14px;
+  						padding: 7px 0;
+  						text-transform:capitalize;
+  						line-height:16px;
+  						color:#000;
+  						text-decoration:none;
+  						display:block;
+  						font-weight:400;
   					}
   				}
   				li:nth-child(even),
@@ -347,7 +372,7 @@ and (max-width : 599px) {
  			p {
 				width:inherit;
 				background-image:none;
-  				padding-left:0px;			
+  				padding-left:0px;
   			}
 				ul.pull-right {
 					width:270px;
@@ -619,7 +644,7 @@ and (max-width : 599px) {
 	}
 }
 ul.thumbnails {
-  li { 
+  li {
     figure.thumbnail {
       margin:0 0 0 0;
       & > a img {
@@ -705,36 +730,63 @@ input[type="password"].metered {
 }
 
 /* ------------------------------ */
-/* Mobile : width > iphone ------ */
-/* ------------------------------ */
-@media only screen 
-and (min-width : 321px)
-and (max-width : 940px ) {
-  .navbar .brand {
-  	background-image: url('../img/csol_logo_480.png');
-  	height:166px;
-  }
-}
-
-/* ------------------------------ */
-/* Mobile : width <= iphone ----- */
-/* ------------------------------ */
-@media only screen 
-and (max-width : 320px) {
-  .navbar .brand {
-  	background-image: url('../img/csol_logo_320.png');
-  	height:116px;
-  }
-}
-
-/* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */
 /* ------------------------------ */
+body {
+	.navbar.filter {
+		label, select, input {
+		display:block;
+		float:left;
+		}
+		select {
+			margin-right:25px;
+		}
+		label {
+			background: url('../img/icon-sprite.png') no-repeat top left;
+			width:30px;
+			height:30px;
+			text-indent:-9000px;
+			margin-bottom:0px;
+			margin-top:5px;
+			&.filter-age {
+				background-position: 0 -160px;
+			}
+			&.filter-category {
+				background-position: 0 -640px;
+			}
+			&.filter-org {
+				background-position: 0 -480px;
+			}
+			&.filter-activity {
+				background-position: 0 -720px;
+			}
+		}
+	}
+}
+
+/* ------------------------------ */
+/* Mobile : general  ------------ */
+/* ------------------------------ */
+@media only screen
+and (max-width : 599px) {
+body {
+  	.navbar.filter {
+  		.selectWrapper, input {
+			clear:left;
+			margin:auto;
+			text-align:center;
+			width:180px;
+			display:block;
+			float:none;
+		}
+	}
+}
+}
 
 /* ------------------------------ */
 /* Mobile : width <= iphone  ---- */
 /* ------------------------------ */
-@media only screen 
+@media only screen
 and (max-width : 320px) {
   .span3 {
   width:150px;
@@ -743,7 +795,7 @@ and (max-width : 320px) {
   width:140px;
   }
 ul.thumbnails {
-  	li { 
+  	li {
     	figure.thumbnail {
       		margin:0 0 0 0;
       		& > a img {
@@ -797,8 +849,12 @@ body.home {
 		}
 		.nav {
 			& > li {
+				font-weight:400;
 				&.dropdown.open > .dropdown-toggle {
 					color:#fff;
+				}
+				span {
+					font-weight:300;
 				}
 			}
 		}
@@ -906,12 +962,12 @@ body.home {
 				background-size:cover;
 				padding-top:0px;
 				filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
-				-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";	
+				-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";
 				& > .container {
 					background-image:url('../img/home_drawing.png');
 					background-position:top center;
 					background-repeat:no-repeat;
-				}		
+				}
 			}
 		}
 		background-image:url('../img/background-chalkboard-green.jpg');
@@ -921,7 +977,7 @@ body.home {
 		-o-background-size:cover;
 		background-size:cover;
 		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-		-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";  
+		-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
 		overflow:visible;
 	  	.container {
 	    	width:960px;
@@ -998,7 +1054,7 @@ body.home {
 					a {
 						color:#3B5998;
 					}
-				}	
+				}
 				&.rt {
 					margin-top:52px;
 					margin-right:7px;
@@ -1049,8 +1105,7 @@ body.home {
 /* ------------------------------ */
 /* Landing page : mobile -------- */
 /* ------------------------------ */
-@media only screen 
-and (min-width : 320px) 
+@media only screen
 and (max-width : 599px) {
 	body.home {
     	background-image:url('../img/chalkboard_bg.jpg');
@@ -1101,4 +1156,65 @@ and (max-width : 599px) {
 
 		}
 	}
+}
+
+/* ------------------------------ */
+/* Filter sprite positions ------ */
+/* ------------------------------ */
+.sprite-activitylines{ background-position: 0 0; width: 30px; height: 30px; }
+.sprite-activitytype{ background-position: 0 -80px; width: 30px; height: 30px; }
+.sprite-age{ background-position: 0 -160px; width: 30px; height: 30px; }
+.sprite-badgetype{ background-position: 0 -240px; width: 30px; height: 30px; }
+.sprite-date{ background-position: 0 -320px; width: 30px; height: 30px; }
+.sprite-location{ background-position: 0 -400px; width: 30px; height: 30px; }
+.sprite-organization{ background-position: 0 -480px; width: 30px; height: 30px; }
+.sprite-search{ background-position: 0 -560px; width: 30px; height: 30px; }
+.sprite-topic{ background-position: 0 -640px; width: 30px; height: 30px; }
+.sprite-type{ background-position: 0 -720px; width: 30px; height: 30px; }
+
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+
+  ol, ul {
+    margin-bottom: 10px;
+
+    li {
+      list-style-position: inside;
+    }
+  }
+
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering:
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
+   */
+  .split-numbering,
+  .split-numbering ol {
+      counter-reset: section;
+      list-style-type: none;
+  }
+
+  .split-numbering li ol {
+      counter-reset: subsection;
+  }
+
+  .split-numbering li:before {
+      counter-increment: section;
+      content: counter(section) ". ";
+      width: 2em;
+      display: inline-block;
+  }
+
+  li.split-item:before {
+      visibility: hidden;
+      position: absolute;
+      left: -999em;
+  }
+
+  li.split-item li:before {
+      counter-increment: subsection;
+      content: counter(section) counter(subsection, lower-alpha) ". ";
+  }
 }
