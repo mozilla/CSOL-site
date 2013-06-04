@@ -131,7 +131,7 @@ module.exports = function (app) {
     loggedIn
   ], function (req, res, next) {
     var user = req.session.user;
-    applications.findAll({where: {LearnerId: user.id}}).success(function (applications) {
+    applications.findAll({where: ['LearnerId = ? AND State != ?', user.id, 'accepted']}).success(function (applications) {
       openbadger.getBadges(function (err, data) {
         _.each(applications, function(app) {
           _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
