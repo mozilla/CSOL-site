@@ -589,7 +589,8 @@ nav.pagination ul li a {
 ul.thumbnails li figure.thumbnail {
   margin: 0 0 0 0;
 }
-ul.thumbnails li figure.thumbnail > a img {
+ul.thumbnails li figure.thumbnail > a img,
+figure.program-thumbnail > img {
   display: block;
   width: 210px;
   height: 210px;
