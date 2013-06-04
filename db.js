@@ -97,4 +97,16 @@ db.model = function(name) {
 }
 
 db.type = Sequelize;
+db.healthCheck = function(cb) {
+  var conn = require('mysql').createConnection({
+    host: DB_HOST,
+    port: DB_PORT,
+    database: DB_NAME,
+    user: USERNAME,
+    password: PASSWORD,
+  });
+  conn.connect();
+  conn.query('SHOW TABLES', cb);
+  conn.end();
+};
 module.exports = db;

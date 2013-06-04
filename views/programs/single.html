@@ -8,7 +8,7 @@
             <img src="{{program.imageUrl}}">
         </div>
         <div class="span8">
-            <p><strong>From <a href="/orgs/some-organization">Some Organization</a>.</strong></p>
+            <p><strong>From <a href="/orgs/some-organization">{{program.issuer.name}}</a>.</strong></p>
             {% if program.description %}
                 <p>{{program.description}}</p>
             {% endif %}
@@ -19,27 +19,18 @@
     </div>
     <h3><a href="/badges">Badges</a></h3>
     <ul class="thumbnails">
+        {% for shortname,badge in program.earnableBadges %}
         <li class="span3">
             <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
+                <a href="/earn/{{shortname}}"><img src="{{badge.image}}"></a>
                 <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
+                    <p>{{badge.description}}</p>
                     <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
+                        <a href="/earn/{{shortname}}" class="btn">Details</a>
                     </p>
                 </figcaption>
             </figure>
         </li>
-        <li class="span3">
-            <figure class="thumbnail">
-                <a href="/badges/ae784f"><img src="/media/images/badge.png"></a>
-                <figcaption class="caption">
-                    <p>Badge blah in voluptate velit...</p>
-                    <p class="text-right">
-                        <a href="/badges/ae784f" class="btn">Details</a>
-                    </p>
-                </figcaption>
-            </figure>
-        </li>
+        {% endfor %}
     </ul>
 {% endblock %}

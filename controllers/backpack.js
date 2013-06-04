@@ -88,8 +88,42 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var data = req.remote;
 
+    // XXX: replace with API call to openbadger
+    var similar = [
+        {
+            url: "/mybadges/this-badge",
+            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
+            name: "Test Badge CLM",
+            description: "This is a test badge!"
+        },
+        {
+            url: "/mybadges/this-badge",
+            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
+            name: "Test Badge CLM",
+            description: "This is a test badge!"
+        },
+        {
+            url: "/mybadges/this-badge",
+            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
+            name: "Test Badge CLM",
+            description: "This is a test badge!"
+        },
+        {
+            url: "/mybadges/this-badge",
+            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
+            name: "Test Badge CLM",
+            description: "This is a test badge!"
+        }
+    ];
+
+    const NSIMILAR = 4;
+
+    console.log(data.badge);
+
     res.render('user/badge.html', {
-      badge: data.badge
+      badge: data.badge,
+      user: req.session.user,
+      similar: similar.slice(0, NSIMILAR)
     });
   });
 

@@ -72,7 +72,7 @@
 		    $template = $(options.template),
 		    $buttons = $(options.buttonContainer),
 		    $description = $(document.createElement('div')),
-		    $label = $(document.createElement('label')),
+		    $btn = $(document.createElement('span')),
 		    itemSelector = '.' + $template[0].className.replace(/\s+/g, '.'),
 		    itemCount = 0,
 		    xhr = (window.XMLHttpRequest && new XMLHttpRequest()) || {};
@@ -81,16 +81,20 @@
 
 		$template.remove();
 
+		$template.find('input[type="file"]').attr('tabIndex', -1);
+
 		$description
 			.addClass('description')
 			.html('<span><strong>Drop photos and videos here</strong> <em>or</em></span>')
 			.prependTo($template);
 
-		$label
+		$btn
 			.addClass('btn')
 			.text('Choose photos and videos to upload')
 			.appendTo($description)
-			.click(function() { $(this).parents('.item').find('input').click(); });
+			.attr('tabIndex', 0)
+			.click(function() { $(this).parents('.item').find('input').click(); })
+			.keypress(function() { $(this).click(); });
 
 		if (xhr.upload && window.FormData) {
 			goAsync();

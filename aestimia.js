@@ -169,3 +169,10 @@ aestimia.defaultOptions = {
 };
 
 module.exports = aestimia;
+module.exports.healthCheck = function(cb) {
+  // A random email should guarantee we bust through any caches.
+  var email = 'healthCheck_test_' +
+              Math.floor(Math.random() * 100000) + '@mozilla.org';
+
+  aestimia.get('/submissions?learner=' + encodeURIComponent(email), cb);
+};

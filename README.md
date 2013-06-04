@@ -31,6 +31,24 @@ Contributing is relatively easy,
 
 If you want to tackle a bigger ticket, find a core developer and ask them what to work on. We hang out in IRC at irc.mozilla.org in the #badges room. Core devs include cmcavoy, arhayward, mlarsson, atul and brianloveswords. Any of those irc folks will be able to direct you towards meatier issues.
 
+If you're working on a ticket that needs copy, it's most likely in this [google doc](https://docs.google.com/document/d/1UJ1X5mMpFnleNeh58VALNLf7y1P2kuJIsQOqI7vSUWE/edit#) but if not, ping @threeqube in IRC, or through an issue.
+
+## Getting started
+
+Install the application dependencies:
+
+```bash
+$ npm install
+```
+
+Start the app server:
+
+```base
+$ node_modules/.bin/up -t 0 -n 1 -w -p 7000 app.js
+```
+
+Check out site in browser at [http://127.0.0.1:7000/](http://127.0.0.1:7000/)
+
 ## Running Tests
 
 You can use the following commands to run the entire suite:
@@ -56,13 +74,14 @@ thing.
 These variables should be configured in your applications environment through env variables. An easy way to do that is create a config.env in your application directly that looks something like,
 
 ```
+export NODE_ENV=development
+
+#General Config
+export CSOL_HOST='http://chicagosummeroflearning.org'
+export COOKIE_SECRET='chris is cool'
+
 #MySQL Config
 export CSOL_DB_PASS=db
-
-#Local Config
-export COOKIE_SECRET='chris is cool'
-export CSOL_HOST='chicagosummeroflearning.org'
-
 
 #Location of OpenBadger
 export CSOL_OPENBADGER_URL='http://localhost:8000/v2/'
@@ -72,12 +91,8 @@ export CSOL_OPENBADGER_SECRET='lecarre'
 export CSOL_AWS_FAKE_S3_DIR='csol-s3'
 
 #Aestimia
-export CSOL_AESTIMIA_URL='http://localhost:8001'
+export CSOL_AESTIMIA_URL='http://localhost:8001/api/'
 export CSOL_AESTIMIA_SECRET='lksdafjjtitiejrwejjjresfs'
-export CSOL_HOST='http://chicagosummeroflearning.org'
-
-#Mandrill
-export CSOL_MANDRILL_KEY=''
 ```
 
 Then you can source the file like `. config.env`.
@@ -98,15 +113,25 @@ Property            | Default  | Description
 `CSOL_HOST`         | `null`   | Canonical CSOL host (eg http://chicagosummeroflearning.org)
 `CSOL_EMAIL_DOMAIN` | `null`   | Domain to send email from (if different from CSOL_HOST)
 `COOKIE_SECRET`     | `null`   | Seed for session cookie.
-`CSOL_OPENBADGER_URL`    | `null` | Openbadger API Location, http://obr.com/v2/
+`CSOL_OPENBADGER_URL`    | `null` | Openbadger API Location, e.g. http://obr.com/v2/
 `CSOL_OPENBADGER_SECRET` | `null` | A shared secret with Open Badger. Should match the OPENBADGER_JWT_SECRET variable on open badger
 `CSOL_MANDRILL_KEY` | `null` | The Mandrill key to use for mailings.
-`CSOL_AESTIMIA_URL`      | `null` | Aestimia API Location
+`CSOL_AESTIMIA_URL`      | `null` | Aestimia API Location, e.g. http://aestimia.com/api/
 `CSOL_AESTIMIA_SECRET`   | `null` | A shared secret with Aestimia
 
-Note that instead of providing AWS credentials, you can specify a pathname
-in `CSOL_AWS_FAKE_S3_DIR`. This is for development purposes only, and
-will store all uploaded files in the local filesystem instead of S3.
+### Development Environment
+
+The following options are only valid if `NODE_ENV` is set to `development`.
+They make it easier to develop the site locally, without having to
+connect to external third-party services.
+
+* **Fake S3** Instead of providing AWS credentials, you can specify a
+  pathname in `CSOL_AWS_FAKE_S3_DIR`. This will store all uploaded files in
+  the local filesystem instead of S3.
+
+* **Fake Email** Instead of providing a Mandrill key, you can leave
+  `CSOL_MANDRILL_KEY` blank and the app will log email information to
+  the console instead of actually sending anything.
 
 ## Database
 
