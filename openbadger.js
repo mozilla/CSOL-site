@@ -385,12 +385,13 @@ module.exports.getFilters = function getFilters () {
   };
 }
 module.exports.updateOrgs = updateOrgs;
-module.exports.healthCheck = function(cb) {
+module.exports.healthCheck = function(meta, cb) {
   // Use a privileged API call to ensure we're testing the JWT secret.
   // A random email should guarantee we bust through any caches.
   var email = 'healthCheck_test_' +
               Math.floor(Math.random() * 100000) + '@mozilla.org';
 
+  meta.notes = ENDPOINT;
   openbadger.getUserBadges({
     session: {user: {email: email}}
   }, cb);
