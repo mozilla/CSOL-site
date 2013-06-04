@@ -22,7 +22,8 @@ const healthChecker = healthCheck({
     s3: healthCheck.checker(require('./s3').healthCheck),
     database: healthCheck.checker(require('./db').healthCheck),
     openbadger: healthCheck.checker(require('./openbadger').healthCheck),
-    aestimia: healthCheck.checker(require('./aestimia').healthCheck)
+    aestimia: healthCheck.checker(require('./aestimia').healthCheck),
+    mandrill: healthCheck.checker(require('./mandrill').healthCheck)
   }
 });
 
