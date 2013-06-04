@@ -150,7 +150,7 @@ module.exports = function (app) {
 
   app.get('/myplaylist', [
     loggedIn,
-    openbadger.middleware('getBadges'),
+    openbadger.middleware('getAllBadges'),
     playlistMiddleware
   ], function (req, res, next) {
     res.render('user/myplaylist.html', {
