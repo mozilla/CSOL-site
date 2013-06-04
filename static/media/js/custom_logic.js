@@ -41,7 +41,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 
 		/*landing page menu rearrange*/
 		$('<p id="rahm">This summer Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning. School stops for the summer, but learning never should.</p>').prependTo('.footer .upper');
-		$('<div id="bubbles"><span class="lt">join the conversation on <a href="#">Facebook</a>.</span><span class="rt">share stories</span></div>').appendTo('.footer .upper');
+		$('<div id="bubbles"><span class="lt">join the conversation on <a href="https://www.facebook.com/ChicagoSummerOfLearning">Facebook</a>.</span><span class="rt">share stories</span></div>').appendTo('.footer .upper');
 		
 		/*landing page mobile overrides*/
 		if(mob) { 
