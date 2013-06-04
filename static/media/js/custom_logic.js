@@ -60,9 +60,6 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
         		$(this).appendTo("#dynWrap");
     		}
 		});
-
-		$('ul.nav').show();
-
 		}
 	}
 });

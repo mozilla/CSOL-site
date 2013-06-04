@@ -125,6 +125,11 @@ ol {
 .navbar .nav-wrap ul.nav > li > a:hover {
   color: #c0c0c0;
 }
+.navbar .nav-wrap ul.nav > li.active a,
+.navbar .nav-wrap ul.nav > li.active a:hover {
+  border-left: none;
+  border-right: none;
+}
 .navbar .nav-wrap ul.nav > li:last-child {
   border-right: none;
 }
@@ -633,18 +638,6 @@ input[type="password"].metered:focus:invalid + .password-meter {
 }
 input[type="password"].metered:focus:invalid:focus + .password-meter {
   border-color: #e9322d;
-}
-/* ------------------------------ */
-/* Mobile : width > iphone ------ */
-/* ------------------------------ */
-@media only screen and (min-width: 321px) and (max-width: 940px) {
-  
-}
-/* ------------------------------ */
-/* Mobile : width <= iphone ----- */
-/* ------------------------------ */
-@media only screen and (max-width: 320px) {
-  
 }
 /* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */

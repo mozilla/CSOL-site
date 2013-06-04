@@ -129,6 +129,12 @@ ol {
   			& > a:focus, & > a:hover {
   				color:#c0c0c0;
   			}
+  			&.active {
+  				a, a:hover {
+  					border-left:none;
+  					border-right:none;
+  				}
+  			}
   		}
   		& > li:last-child {
   			border-right:none;
@@ -334,9 +340,6 @@ and (max-width : 599px) {
   			width:90%;
   			margin:0 auto;
  			border-radius:5px;
- 			ul.nav {
- 				display:none;
- 			}
   			ul.nav, #dynWrap {
   				li, li.active {
   					display:block;
@@ -726,23 +729,6 @@ input[type="password"].metered {
 	&:focus:invalid:focus + .password-meter {
 		border-color: #e9322d;
 	}
-}
-
-/* ------------------------------ */
-/* Mobile : width > iphone ------ */
-/* ------------------------------ */
-@media only screen 
-and (min-width : 321px)
-and (max-width : 940px ) {
-
-}
-
-/* ------------------------------ */
-/* Mobile : width <= iphone ----- */
-/* ------------------------------ */
-@media only screen 
-and (max-width : 320px) {
-
 }
 
 /* ------------------------------ */
