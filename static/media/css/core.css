@@ -1084,3 +1084,45 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
   width: 30px;
   height: 30px;
 }
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering: 
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
+   */
+
+}
+.faq ol,
+.faq ul {
+  margin-bottom: 10px;
+}
+.faq ol li,
+.faq ul li {
+  list-style-position: inside;
+}
+.faq .split-numbering,
+.faq .split-numbering ol {
+  counter-reset: section;
+  list-style-type: none;
+}
+.faq .split-numbering li ol {
+  counter-reset: subsection;
+}
+.faq .split-numbering li:before {
+  counter-increment: section;
+  content: counter(section) ". ";
+  width: 2em;
+  display: inline-block;
+}
+.faq li.split-item:before {
+  visibility: hidden;
+  position: absolute;
+  left: -999em;
+}
+.faq li.split-item li:before {
+  counter-increment: subsection;
+  content: counter(section) counter(subsection, lower-alpha) ". ";
+}

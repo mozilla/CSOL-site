@@ -1175,3 +1175,50 @@ and (max-width : 599px) {
 .sprite-search{ background-position: 0 -560px; width: 30px; height: 30px; } 
 .sprite-topic{ background-position: 0 -640px; width: 30px; height: 30px; } 
 .sprite-type{ background-position: 0 -720px; width: 30px; height: 30px; } 
+
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+
+  ol, ul {
+    margin-bottom: 10px;
+
+    li {
+      list-style-position: inside;
+    }
+  }
+
+  /* "Split numbering" is what I'm calling the following
+     ordered list numbering: 
+       1.  ...
+       2a. ...
+       2b. ...
+     where 2 is the "split item"
+   */
+  .split-numbering,
+  .split-numbering ol {
+      counter-reset: section;
+      list-style-type: none;
+  }
+
+  .split-numbering li ol {
+      counter-reset: subsection;
+  }
+
+  .split-numbering li:before {
+      counter-increment: section;
+      content: counter(section) ". ";
+      width: 2em;
+      display: inline-block;
+  }
+
+  li.split-item:before {
+      visibility: hidden;
+      position: absolute;
+      left: -999em;
+  }
+
+  li.split-item li:before {
+      counter-increment: subsection;
+      content: counter(section) counter(subsection, lower-alpha) ". ";
+  }
+}
