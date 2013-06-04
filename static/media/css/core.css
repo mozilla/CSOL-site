@@ -1133,3 +1133,11 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
   counter-increment: subsection;
   content: counter(section) counter(subsection, lower-alpha) ". ";
 }
+/* ABOUT STYLES */
+.about .video {
+  text-align: center;
+  margin: 20px 0;
+}
+.about .org-list {
+  list-style: none;
+}
