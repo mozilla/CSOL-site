@@ -24,7 +24,7 @@ module.exports = {
     {
       model: 'Learner',
       type: 'hasMany',
-      as: 'Dependents'
+      as: 'Dependants'
     }
   ]
 };

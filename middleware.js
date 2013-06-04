@@ -27,6 +27,18 @@ exports.session = function session (config) {
   });
 };
 
+function isUserType (type) {
+  return function (req, res, next) {
+    exports.loggedIn(req, res, function() {
+      if (req.session.user.type !== type)
+        return res.redirect(req.session.user.home);
+      next();
+    });
+  }
+}
+
+exports.isLearner = isUserType('learner');
+exports.isGuardian = isUserType('guardian');
 
 exports.loggedIn = function loggedIn(req, res, next) {
   var user = req.session.user;

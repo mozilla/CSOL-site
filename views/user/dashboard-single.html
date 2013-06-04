@@ -1,0 +1,26 @@
+{% extends 'user/dashboard.html' %}
+{% set pageTitle = current.getDisplayName() %}
+{% block pageTitle -%}
+	{{ current.getDisplayName() }}'s {{ view | default('activity') }}
+{%- endblock %}
+
+{% block tabs %}
+	{{ super() }}
+	<li class="pull-right">
+		<span><a href="/dashboard/{{ current.username }}/delete" class="btn">Delete {{ current.getDisplayName() }}'s account</a></span>
+	</li>
+{% endblock %}
+
+{% block activity %}
+	{% if current.activities.length %}
+		<ul class="activity thumbnails">
+			{% for activity in current.activities %}
+				<li class="span3">
+					{% include "includes/learner-activity.html" %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>{{ current.getDisplayName() }} does not have any {{ view | default('activity') }} to show.</p>
+	{% endif %}
+{% endblock %}

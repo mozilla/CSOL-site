@@ -94,8 +94,9 @@ ol {
   	}
  	}
   .navbar-inner {
-    background-image:url('../img/chalkboard_bg.jpg');
+    background-image:none;
     background-repeat:repeat;
+    background:#45bcd2;
   }
   form.navbar-inner {
     padding:7px;
@@ -429,11 +430,6 @@ and (max-width : 599px) {
 
 /*Evidence uploading / application*/
 #application-review {
-	.well {
-		margin-left: -20px;
-		margin-right: -20px;
-	}
-
 	.rubric {
 		margin: 0 0 20px;
 
@@ -563,9 +559,11 @@ and (max-width : 599px) {
 }
 
 #evidence {
+	margin-left: -20px;
+
 	.item {
 		position: relative;
-		width: 33%;
+		width: 33.333%;
 		margin-left: 0;
 		padding-left: 20px;
 		-webkit-box-sizing: border-box;
@@ -737,6 +735,7 @@ input[type="password"].metered {
 /* ------------------------------ */
 body {
 	.navbar.filter {
+		margin-top:20px;
 		label, select, input {
 		display:block;
 		float:left;
@@ -761,6 +760,9 @@ body {
 				background-position: 0 -480px;
 			}
 			&.filter-activity {
+				background-position: 0 -80px;
+			}
+			&.filter-type {
 				background-position: 0 -720px;
 			}
 		}
@@ -1219,5 +1221,17 @@ and (max-width : 599px) {
   li.split-item li:before {
       counter-increment: subsection;
       content: counter(section) counter(subsection, lower-alpha) ". ";
+  }
+}
+
+/* ABOUT STYLES */
+.about {
+  .video {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .org-list {
+    list-style: none;
   }
 }

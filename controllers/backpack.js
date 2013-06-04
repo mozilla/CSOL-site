@@ -1,13 +1,16 @@
 const _ = require('underscore');
 const openbadger = require('../openbadger');
 const db = require('../db');
+const isLearner = require('../middleware').isLearner;
+
 const claim = db.model('Claim');
 const applications = db.model('Application');
-const loggedIn = require('../middleware').loggedIn;
 
 module.exports = function (app) {
 
-  app.get('/claim', [loggedIn], function (req, res, next) {
+  app.get('/claim', [
+    isLearner
+  ], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -40,7 +43,9 @@ module.exports = function (app) {
 
   });
 
-  app.post('/claim', [loggedIn], function (req, res, next) {
+  app.post('/claim', [
+    isLearner
+  ], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -72,7 +77,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getUserBadges')
   ], function (req, res, next) {
     var data = req.remote;
@@ -83,7 +88,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges/:id', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getUserBadge')
   ], function (req, res, next) {
     var data = req.remote;
@@ -128,7 +133,7 @@ module.exports = function (app) {
   });
 
   app.get('/myapplications', [
-    loggedIn
+    isLearner
   ], function (req, res, next) {
     var user = req.session.user;
     applications.findAll({where: ['LearnerId = ? AND State != ?', user.id, 'accepted']}).success(function (applications) {
@@ -145,9 +150,9 @@ module.exports = function (app) {
       });
     });
   });
-  
+
   app.get('/myapplications/:id', [
-    loggedIn
+    isLearner
   ], function (req, res, next) {
     var user = req.session.user;
     openbadger.getBadge({id: req.params.id}, function(err, data) {
