@@ -122,8 +122,6 @@ module.exports = function (app) {
 
     const NSIMILAR = 4;
 
-    console.log(data.badge);
-
     res.render('user/badge.html', {
       badge: data.badge,
       user: req.session.user,

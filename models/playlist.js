@@ -57,10 +57,8 @@ module.exports = {
 
 					// Construct the user's playlist
 					var playlist = _.filter(badges, function(badge) {
-						console.log(badge.id);
 						return shortNames[badge.id];
 					});
-					console.log("playlist", playlist);
 					req.playlist = playlist;
 
 					next();
