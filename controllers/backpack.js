@@ -150,9 +150,12 @@ module.exports = function (app) {
     loggedIn
   ], function (req, res, next) {
     var user = req.session.user;
-    applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
-      res.render('user/application.html', {
-        item: application
+    openbadger.getBadge({id: req.params.id}, function(err, data) {
+      var badge = data.badge;
+      applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
+        res.render('user/application.html', {
+          badge: _.extend(badge, application)
+        });
       });
     });
   });
