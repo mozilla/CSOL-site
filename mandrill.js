@@ -115,14 +115,18 @@ module.exports = {
   }
 };
 
-module.exports.healthCheck = function(cb) {
-  if (FAKE_EMAIL) return cb(null);
+module.exports.healthCheck = function(meta, cb) {
+  if (FAKE_EMAIL) {
+    meta.notes = "fake email";
+    return cb(null);
+  }
 
   var opts = {
     url: url.resolve(ENDPOINT, 'users/ping.json'),
     json: { key: KEY }
   };
 
+  meta.notes = ENDPOINT;
   request.post(opts, function(err, response, body) {
     if (err)
       return cb(err);
