@@ -33,7 +33,7 @@
 					</select>
 					<select id="input-birthday-year" name="birthday_year" class="input-mini" required="required">
 						<option></option>
-						{% for year in range(2012, 1979, (-1)) %}
+						{% for year in range(2012, 1912, (-1)) %}
 							<option {% if birthday_year == year %} selected="selected"{% endif %}>{{ year }}</option>
 						{% endfor %}
 					</select>
