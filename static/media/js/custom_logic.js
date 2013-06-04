@@ -44,7 +44,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 		$('li.about a').append('<span> the program</span>')
 		$('li.challenges a').append('<span> your future.</span>');
 	} else {
-		//if(mob) { 
+		if(mob) { 
 		var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
 		var dynList = $('<li id="dyn"></li>');
 		var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
@@ -61,6 +61,8 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
     		}
 		});
 
-		//}
+		$('ul.nav').show();
+
+		}
 	}
 });
