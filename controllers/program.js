@@ -218,7 +218,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/earn/:badgeName', badger.middleware('getBadgeRecommendations'), function (req, res, next) {
+  app.get('/earn/:badgeName', badger.middleware('getBadgeRecommendations', {limit:4}), function (req, res, next) {
     var data = req.remote;
     res.render('badges/single.html', {
       badge: req.params.badge,

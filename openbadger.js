@@ -356,11 +356,15 @@ var openbadger = new Api(ENDPOINT, {
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
     var id = query.badgeName;
+    var limit = query.limit;
+    var params = {
+      limit: limit
+    };
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
 
-    this.get('/badge/' + id + '/recommendations', function(err, data) {
+    this.get('/badge/' + id + '/recommendations', { qs: params }, function(err, data) {
       if (err)
         return callback(err, data);
 
