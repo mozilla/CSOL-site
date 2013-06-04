@@ -128,8 +128,7 @@ module.exports = function (app) {
   });
 
   app.get('/myapplications', [
-    loggedIn,
-    openbadger.middleware('getUserBadges')
+    loggedIn
   ], function (req, res, next) {
     var user = req.session.user;
     applications.findAll({where: {LearnerId: user.id}}).success(function (applications) {
@@ -137,13 +136,23 @@ module.exports = function (app) {
         _.each(applications, function(app) {
           _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
         });
-        console.log(applications);
         res.render('user/applications.html', {
           items: _.map(applications, function(badge) {
             badge.url = '/myapplications/' + badge.id;
             return badge;
           })
         });
+      });
+    });
+  });
+  
+  app.get('/myapplications/:id', [
+    loggedIn
+  ], function (req, res, next) {
+    var user = req.session.user;
+    applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
+      res.render('user/application.html', {
+        item: application
       });
     });
   });
