@@ -189,21 +189,33 @@ function getJWTToken(email) {
   return jwt.encode(claims, JWT_SECRET);
 }
 
+// getAllBadges is an extracted function meant to DRY up the `getBadges' and
+// `getAllBages' API calls below
+function getAllBadges (query, callback) {
+  this.get('/badges', function(err, data) {
+    if (err)
+      return callback(err, data);
+
+    return callback(null, {
+      badges: _.map(data.badges, normalizeBadge)
+    });
+  });
+}
+
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
-    func: function getBadges (query, callback) {
-      this.get('/badges', function(err, data) {
-        if (err)
-          return callback(err, data);
-
-        return callback(null, {
-          badges: _.map(data.badges, normalizeBadge)
-        });
-      });
-    },
+    func: getAllBadges,
     filters: filterBadges,
     paginate: true,
+    key: 'badges'
+  },
+
+  // Similar to `getBadges' except is unfiltered and unpaginated, i.e., it
+  // returns **all** badges from the API
+  getAllBadges: {
+    func: getAllBadges,
+    paginate: false,
     key: 'badges'
   },
 
