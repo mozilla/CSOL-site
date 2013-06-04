@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% set pageTitle = 'My Playlist' %}
+{% set navItem = 'backpack' %}
+
+{% block content %}
+	<div class="row">
+		<div class="span8">
+			{% block recommended_list %}
+				{% if recommended.length %}
+					<ul class="thumbnails">
+					{% for item in recommended %}
+						<li span="3">
+							{% include "includes/badge-thumbnail.html" %}
+						</li>
+					{% endfor %}
+					</ul>
+				{% else %}
+					<p>No other recommended badges …</p>
+				{% endif %}
+			{% endblock %}
+		</div><!-- .span8 -->
+		<div class="span4">
+			{% block favorites_list %}
+				{% if favorites.length %}
+					<ul class="thumbnails">
+						{% for item in favorites %}
+						<li>
+							{% include "includes/badge-thumbnail.html" %}
+						</li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p>No badges favorited yet …</p>
+				{% endif %}
+			{% endblock %}
+		</div><!-- .span4 -->
+	</div><!-- .row -->
+{% endblock %}

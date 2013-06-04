@@ -148,6 +148,16 @@ module.exports = function (app) {
     });
   });
 
+  app.get('/myplaylist', [
+    loggedIn,
+    openbadger.middleware('getUserBadges'),
+    favoriteMiddleware
+  ], function (req, res, next) {
+    res.render('user/myplaylist.html', {
+      favorites: req.favorites
+    });
+  });
+
   app.get('/favorites/:view?', function (req, res, next) {
     var badge = {
       thumbnail: '/media/images/badge.png',
