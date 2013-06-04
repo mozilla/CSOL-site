@@ -1102,6 +1102,7 @@ body.home {
 	}
 }
 
+<<<<<<< HEAD
 /* ------------------------------ */
 /* Landing page : mobile -------- */
 /* ------------------------------ */
@@ -1171,3 +1172,30 @@ and (max-width : 599px) {
 .sprite-search{ background-position: 0 -560px; width: 30px; height: 30px; } 
 .sprite-topic{ background-position: 0 -640px; width: 30px; height: 30px; } 
 .sprite-type{ background-position: 0 -720px; width: 30px; height: 30px; } 
+
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+
+  ol, ul {
+    margin-bottom: 10px;
+
+    li {
+      list-style-position: inside;
+    }
+  }
+
+  /* For ordered list numbering unacheivable with
+     CSS list counters, e.g. 1a, 1b, etc.
+     <ul class="ol">
+       <li><span>1a.</span> ... </li>
+       <li><span>1b.</span> ... </li>
+     </ul>
+   */
+  ul.ol {
+    list-style: none;
+
+    li span {
+      width: 2em;
+    }
+  }
+}

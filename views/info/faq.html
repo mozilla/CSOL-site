@@ -1,22 +1,9 @@
 {% extends 'info/layout.html' %}
 {% set pageTitle = 'FAQ' %}
 {% set navItem = 'faq' %}
+{% set bodyClass = 'faq' %}
 
 {% block content %}
-
-<style>
-  ul.ol {
-    list-style: none;
-  }
-  ul.ol li {
-    position: relative;
-  }
-  ul.ol li span {
-    position: absolute;
-    left: -2em;
-  }
-</style>
-
 <h3>Learners</h3>
 <dl>
   <dt>How do I get started?</dt>
@@ -196,5 +183,4 @@
 <h3>Contact</h3>
 <p>Do you have a question that wasn’t answered here? Email us at <a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a> and we’ll help you as soon as we can.
 </p>
-
 {% endblock %}

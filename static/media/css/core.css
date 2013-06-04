@@ -1078,3 +1078,28 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
   width: 30px;
   height: 30px;
 }
+/* FAQ MAKE LOOK GOOD STYLES HERE */
+.faq {
+  /* For ordered list numbering unacheivable with
+     CSS list counters, e.g. 1a, 1b, etc.
+     <ul class="ol">
+       <li><span>1a.</span> ... </li>
+       <li><span>1b.</span> ... </li>
+     </ul>
+   */
+
+}
+.faq ol,
+.faq ul {
+  margin-bottom: 10px;
+}
+.faq ol li,
+.faq ul li {
+  list-style-position: inside;
+}
+.faq ul.ol {
+  list-style: none;
+}
+.faq ul.ol li span {
+  width: 2em;
+}
