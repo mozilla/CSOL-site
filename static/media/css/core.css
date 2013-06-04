@@ -127,7 +127,6 @@ ol {
 .navbar .nav-wrap ul.nav > li > a {
   text-shadow: none;
   color: #333333;
-  text-transform: uppercase;
 }
 .navbar .nav-wrap ul.nav > li > a:focus,
 .navbar .nav-wrap ul.nav > li > a:hover {
