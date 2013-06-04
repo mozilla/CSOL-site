@@ -12,7 +12,7 @@
     "knox": "~0.8.2",
     "mime": "~1.2.9",
     "mysql": "~2.0.0-alpha7",
-    "nunjucks": "~0.1.8a",
+    "nunjucks": "~0.1.9",
     "request": "~2.21.0",
     "sequelize": "~1.6.0",
     "tap": "~0.4.1",
