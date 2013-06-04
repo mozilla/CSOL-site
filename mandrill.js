@@ -2,15 +2,15 @@ const url = require('url');
 const _ = require('underscore');
 const logger = require('./logger');
 
-const FAKE_EMAIL = ('DEBUG' in process.env) 
-  && ('CSOL_DISABLE_EMAIL' in process.env);
+const FAKE_EMAIL = (process.env.NODE_ENV == 'development') 
+  && (!process.env.CSOL_MANDRILL_KEY);
 
 var request = require('request');
 if (FAKE_EMAIL) {
-  request.post = function(opts, cb) {
+  request = { post : function(opts, cb) {
     logger.log('debug', 'FAKE EMAIL: request.post with opts', opts); 
     cb('EMAIL DISABLED');
-  };
+  } };
 }
 
 const ENDPOINT = process.env['CSOL_MANDRILL_URL'] || 
@@ -114,3 +114,28 @@ module.exports = {
     });
   }
 };
+
+module.exports.healthCheck = function(meta, cb) {
+  if (FAKE_EMAIL) {
+    meta.notes = "fake email";
+    return cb(null);
+  }
+
+  var opts = {
+    url: url.resolve(ENDPOINT, 'users/ping.json'),
+    json: { key: KEY }
+  };
+
+  meta.notes = ENDPOINT;
+  request.post(opts, function(err, response, body) {
+    if (err)
+      return cb(err);
+
+    if (body.code === -1)
+      return cb(body.message);
+
+    return cb();
+  });
+};
+
+

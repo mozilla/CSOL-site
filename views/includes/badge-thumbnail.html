@@ -1,0 +1,17 @@
+{# A badge in a list or grid context #}
+<figure class="thumbnail">
+	<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+	<figcaption class="caption">
+		<p>{{ item.name }}</p>
+		{% if item.description %}
+			<p class="description">{{ item.description | truncate(20) }}</p>
+		{% endif %}
+		{% block item_actions_wrapper %}
+			<p class="text-right">
+				{% block item_actions %}
+					<a href="{{ item.url }}" class="btn">Details</a>
+				{% endblock %}
+			</p>
+		{% endblock %}
+	</figcaption>
+</figure>
