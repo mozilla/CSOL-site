@@ -211,8 +211,10 @@ nav.pagination ul li a {
   border-left: none;
   border-right: none;
 }
+.footer .upper li:nth-child(even) {
+  margin: 0 12px;
+}
 .footer .lower {
-  border-top: 1px solid #fff;
   padding: 15px 0;
 }
 .footer .lower ul li {
@@ -374,6 +376,9 @@ nav.pagination ul li a {
   }
   .footer .upper ul.pull-right li a {
     margin: 0 auto;
+  }
+  .footer .upper ul.pull-right li:nth-child(even) {
+    margin: 0 0;
   }
   .footer .lower {
     border-top: none;
