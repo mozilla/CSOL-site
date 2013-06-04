@@ -33,6 +33,8 @@ function normalizeBadgeInstance (badge, id) {
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
+  badge.id = id;
+
   return badge;
 }
 
