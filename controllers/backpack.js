@@ -2,9 +2,11 @@ const openbadger = require('../openbadger');
 const db = require('../db');
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
+const playlist = db.model('Playlist');
 const loggedIn = require('../middleware').loggedIn;
 const _ = require('underscore');
 const favoriteMiddleware = _.bind(favorite.middleware, favorite);
+const playlistMiddleware = _.bind(playlist.middleware, playlist);
 
 module.exports = function (app) {
 
@@ -150,11 +152,13 @@ module.exports = function (app) {
 
   app.get('/myplaylist', [
     loggedIn,
-    openbadger.middleware('getUserBadges'),
-    favoriteMiddleware
+    openbadger.middleware('getBadges'),
+    playlistMiddleware
   ], function (req, res, next) {
     res.render('user/myplaylist.html', {
-      favorites: req.favorites
+      user: res.locals.user,
+      recommended: [], // XXX: grouped by STEAM?
+      playlist: req.playlist
     });
   });
 

@@ -1,38 +1,23 @@
 {% extends 'layout.html' %}
-{% set pageTitle = 'My Playlist' %}
+{% set pageTitle = user.username + '’s Playlist' %}
 {% set navItem = 'backpack' %}
+{% set subNavItem = 'playlist' %}
 
 {% block content %}
-	<div class="row">
-		<div class="span8">
-			{% block recommended_list %}
-				{% if recommended.length %}
-					<ul class="thumbnails">
-					{% for item in recommended %}
-						<li span="3">
-							{% include "includes/badge-thumbnail.html" %}
-						</li>
-					{% endfor %}
-					</ul>
-				{% else %}
-					<p>No other recommended badges …</p>
-				{% endif %}
-			{% endblock %}
-		</div><!-- .span8 -->
-		<div class="span4">
-			{% block favorites_list %}
-				{% if favorites.length %}
-					<ul class="thumbnails">
-						{% for item in favorites %}
-						<li>
-							{% include "includes/badge-thumbnail.html" %}
-						</li>
-						{% endfor %}
-					</ul>
-				{% else %}
-					<p>No badges favorited yet …</p>
-				{% endif %}
-			{% endblock %}
-		</div><!-- .span4 -->
-	</div><!-- .row -->
+	<p class="lead">Some really short and sweet text about what a Playlist is goes here.</p>
+	<div class="playlist">
+		{% block playlist_list %}
+			{% if playlist.length %}
+				<ul class="thumbnails">
+				{% for item in playlist %}
+					<li span="3">
+						{% include "includes/badge-thumbnail.html" %}
+					</li>
+				{% endfor %}
+				</ul>
+			{% else %}
+				<p>Nothing in your playlist yet …</p>
+			{% endif %}
+		{% endblock %}
+	</div><!-- .playlist -->
 {% endblock %}
