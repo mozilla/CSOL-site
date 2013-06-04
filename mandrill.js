@@ -2,8 +2,8 @@ const url = require('url');
 const _ = require('underscore');
 const logger = require('./logger');
 
-const FAKE_EMAIL = ('DEBUG' in process.env) 
-  && ('CSOL_DISABLE_EMAIL' in process.env);
+const FAKE_EMAIL = (process.env.NODE_ENV == 'development') 
+  && (!process.env.CSOL_MANDRILL_KEY);
 
 var request = require('request');
 if (FAKE_EMAIL) {
@@ -116,6 +116,8 @@ module.exports = {
 };
 
 module.exports.healthCheck = function(cb) {
+  if (FAKE_EMAIL) return cb(null);
+
   var opts = {
     url: url.resolve(ENDPOINT, 'users/ping.json'),
     json: { key: KEY }

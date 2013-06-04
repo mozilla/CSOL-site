@@ -6,7 +6,8 @@ const S3_REQUIRED_ENV_VARS = [
   "CSOL_AWS_BUCKET"
 ];
 
-if (process.env["CSOL_AWS_FAKE_S3_DIR"]) {
+if (process.env['NODE_ENV'] == 'development' &&
+    process.env["CSOL_AWS_FAKE_S3_DIR"]) {
   var FakeS3 = require('./s3-fake');
   s3 = new FakeS3(process.env["CSOL_AWS_FAKE_S3_DIR"]);
 } else {
