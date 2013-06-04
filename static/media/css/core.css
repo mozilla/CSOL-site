@@ -92,8 +92,9 @@ ol {
   color: #000;
 }
 .navbar .navbar-inner {
-  background-image: url('../img/chalkboard_bg.jpg');
+  background-image: none;
   background-repeat: repeat;
+  background: #45bcd2;
 }
 .navbar form.navbar-inner {
   padding: 7px;
@@ -127,7 +128,6 @@ ol {
 .navbar .nav-wrap ul.nav > li > a {
   text-shadow: none;
   color: #333333;
-  text-transform: uppercase;
 }
 .navbar .nav-wrap ul.nav > li > a:focus,
 .navbar .nav-wrap ul.nav > li > a:hover {
@@ -651,6 +651,9 @@ input[type="password"].metered:focus:invalid:focus + .password-meter {
 /* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */
 /* ------------------------------ */
+body .navbar.filter {
+  margin-top: 20px;
+}
 body .navbar.filter label,
 body .navbar.filter select,
 body .navbar.filter input {
@@ -678,6 +681,9 @@ body .navbar.filter label.filter-org {
   background-position: 0 -480px;
 }
 body .navbar.filter label.filter-activity {
+  background-position: 0 -80px;
+}
+body .navbar.filter label.filter-type {
   background-position: 0 -720px;
 }
 /* ------------------------------ */
@@ -1088,7 +1094,7 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 /* FAQ MAKE LOOK GOOD STYLES HERE */
 .faq {
   /* "Split numbering" is what I'm calling the following
-     ordered list numbering: 
+     ordered list numbering:
        1.  ...
        2a. ...
        2b. ...
