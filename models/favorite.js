@@ -1,5 +1,6 @@
 const _ = require('underscore');
 const db = require('../db');
+const async = require('async');
 
 module.exports = {
 	properties: {
@@ -50,19 +51,23 @@ module.exports = {
 				callback(err);
 			});
 		},
-		// favorites middleware decorates an array of badges with the favorite
-		// status of each badge as a flag on the badge object named "favorited"
+		// favorites middleware takes the array of user's badges and decorates each
+		// badge with a "favd" flag if the user had favorited it previously
 		middleware: function (req, res, next) {
 			var badges = req.remote.badges;
 			var user = res.locals.user;
 			var _this = this;
-			_.each(badges, function(badge) {
+
+			async.each(badges, function(badge, cb) {
 				_this.favoritedBadge(user, badge.id, function(err, favd) {
-					if (err) next(err);
-					badge.favorited = favd;
+					if (err) cb(err);
+					badge.favd = favd;
+					cb(null);
 				});
+			}, function(err) {
+				if (err) next(err);
+				next();
 			});
-			next();
 		}
 	}
 };
