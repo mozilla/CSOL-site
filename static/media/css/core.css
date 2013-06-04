@@ -322,9 +322,10 @@ nav.pagination ul li a {
   .navbar .nav-wrap #dynWrap li a:hover,
   .navbar .nav-wrap ul.nav li.active a:hover,
   .navbar .nav-wrap #dynWrap li.active a:hover {
+    font-size: 14px;
     padding: 7px 0;
     text-transform: capitalize;
-    line-height: 14px;
+    line-height: 16px;
     color: #000;
     text-decoration: none;
     display: block;
