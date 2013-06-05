@@ -13,10 +13,6 @@ doesn't have a URL #}
 
 <figure class="thumbnail">
 	<div class="playlist-bar pull-right">
-		<form action="/myfavorites" method="POST">
-			<input type="hidden" name="shortname" value="{{ item.id }}">
-			<button type="submit" class="btn" title="Add to favorites"><i class="icon-heart"></i></button>
-		</form>
 		{% if not playlisted %}
 			{% include "includes/add-to-playlist-btn.html" %}
 		{% endif %}
