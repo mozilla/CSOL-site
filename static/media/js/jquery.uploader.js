@@ -85,12 +85,12 @@
 
 		$description
 			.addClass('description')
-			.html('<span><strong>Drop photos and videos here</strong> <em>or</em></span>')
+			.html('<span><strong>Drop pictures and other files here</strong> <em>or</em></span>')
 			.prependTo($template);
 
 		$btn
 			.addClass('btn')
-			.text('Choose photos and videos to upload')
+			.text('Choose files to upload')
 			.appendTo($description)
 			.attr('tabIndex', 0)
 			.click(function() { $(this).parents('.item').find('input').click(); })
@@ -203,6 +203,7 @@
 					switch (mediaType) {
 						case 'image': $icon.addClass('icon-picture'); break;
 						case 'video': $icon.addClass('icon-facetime-video'); break;
+						case 'audio': $icon.addClass('icon-music'); break;
 						default:      $icon.addClass('icon-file');
 					}
 
@@ -239,14 +240,23 @@
 						}
 					}).done(function (rsp) {
 						if (rsp.status !== 'ok') {
+							var msg = rsp.message;
+							if (msg.message) msg = msg.message;
+
+							if (''+msg === msg) {
+								$filename.text(msg);
+							}
+
 							$progress
 								.removeClass('progress-striped active')
 								.addClass('progress-danger');
+
 							$form.trigger('failed', {
 								status: rsp.status,
 								message: rsp.message,
 								key: key
 							});
+
 							return;
 						}
 
