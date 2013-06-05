@@ -785,6 +785,9 @@ body .navbar.filter .navbar-inner {
   filter: none;
   background: #45bcd2;
 }
+body .navbar .nav-wrap {
+  border: none;
+}
 /* ------------------------------ */
 /* Mobile : general  ------------ */
 /* ------------------------------ */
