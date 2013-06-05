@@ -45,20 +45,27 @@ module.exports = {
 		middleware: function (req, res, next) {
 			var badges = req.remote.badges;
 			var user = res.locals.user;
-			var _this = this;
 			
-			this.findAll({where: {LearnerId: user.id}}).
+			this.findAll({where: {LearnerId: user.id}, order: 'rank DESC'}).
 				success(function(rawList) {
-					// Make a badge short name lookup
+					// Make a badge short name -> rank lookup.
+					// This serves both as a way to filter down the full badge list into
+					// the ones in the playlist, as well as to sort the results by rank.
 					var shortNames = {}
 					_.each(rawList, function(item) {
-						shortNames[item.shortName] = true;
+						shortNames[item.shortName] = item.rank;
 					});
 
 					// Construct the user's playlist
-					var playlist = _.filter(badges, function(badge) {
-						return shortNames[badge.id];
+					var playlist = new Array(rawList.length);
+					_.each(badges, function(badge) {
+						if (badge.id in shortNames) {
+							var index = shortNames[badge.id]-1;
+							playlist[index] = badge;
+						}
 					});
+					playlist.reverse();
+
 					req.playlist = playlist;
 
 					next();
