@@ -91,7 +91,7 @@ ol {
   box-shadow: none;
   color: #000;
 }
-.navbar .navbar-inner {
+.navbar div.navbar-inner {
   background-image: none;
   background-repeat: repeat;
   border-bottom: 1px solid #c0c0c0;
@@ -779,6 +779,11 @@ body .navbar.filter label.filter-activity {
 }
 body .navbar.filter label.filter-type {
   background-position: 0 -720px;
+}
+body .navbar.filter .navbar-inner {
+  border: 1px solid #c0c0c0;
+  filter: none;
+  background: #45bcd2;
 }
 /* ------------------------------ */
 /* Mobile : general  ------------ */
