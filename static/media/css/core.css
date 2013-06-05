@@ -526,18 +526,30 @@ nav.pagination ul li a {
 }
 #evidence .thumbnail {
   background: #FFF;
+  position: relative;
+}
+#evidence .thumbnail::after {
+  content: attr(title);
+  font-size: 0.7em;
+  display: block;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 2px 4px;
+  text-align: center;
+  position: absolute;
+  left: 5px;
+  right: 28px;
+  bottom: -4px;
+  color: #EEE;
+  background: #333;
+  background: rgba(0, 0, 0, 0.8);
 }
 #evidence .processing::after {
   content: "Processing";
-  position: absolute;
-  top: 4px;
-  left: 24px;
-  right: 4px;
-  padding: 2px 5px;
-  background: #FFF;
-  background: rgba(255, 255, 255, 0.75);
-  text-align: center;
-  border-bottom: solid 1px #999;
 }
 #evidence img {
   display: block;
