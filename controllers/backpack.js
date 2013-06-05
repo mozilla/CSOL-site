@@ -143,9 +143,9 @@ module.exports = function (app) {
     var data = req.remote;
     var badge = data.badge;
     var user = res.locals.user;
-    var shortName = req.params.id; // assume if we got here id is valid input
+    var shortname = req.params.id; // assume if we got here id is valid input
 
-    favorite.favoriteBadge(user, shortName, function(err, fav) {
+    favorite.favoriteBadge(user, shortname, function(err, fav) {
         if (err) {
             return next(err);
         }
@@ -172,8 +172,8 @@ module.exports = function (app) {
     loggedIn
   ], function (req, res, next) {
     var user = res.locals.user;
-    var shortName = req.body.shortName;
-    playlist.addToList(user, shortName, function(err) {
+    var shortname = req.body.shortname;
+    playlist.addToList(user, shortname, function(err) {
       if (err) next(err);
       res.redirect('/myplaylist');
     });
