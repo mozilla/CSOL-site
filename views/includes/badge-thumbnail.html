@@ -1,15 +1,46 @@
-{# A badge in a list or grid context #}
+{# A badge in a list or grid context -- requires "item" and optionally "url" in parent template #}
+
+{# itemUrl simplifies getting the URL for the badge: it can be set in the
+parent template overriding the badge (or in some cases supplying it if it
+doesn't have a URL #}
+{% macro itemUrl(url, item) %}
+{% if url %}
+  {{ url }}
+{% else %}
+	{{ item.url }}
+{% endif %}
+{% endmacro %}
+
 <figure class="thumbnail">
-	<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+	<div class="playlist-bar pull-right">
+		{% block playlist_bar %}
+			{% block fav_btn %}
+			<form action="/myfavorites" method="POST">
+				<input type="hidden" name="shortname" value="{{ item.id }}">
+				<button type="submit" class="btn" title="Add to favorites"><i class="icon-heart"></i></button>
+			</form>
+			{% endblock %}
+			{% block playlist_btn %}
+			<form action="/myplaylist" method="POST">
+				<input type="hidden" name="shortname" value="{{ item.id }}">
+				<button type="submit" class="btn" title="Add to playlist"><i class="icon-plus"></i></button>
+			</form>
+			{% endblock %}
+		{% endblock %}
+	</div>
+	<a href="{{ itemUrl(url, item) }}"><img src="{{ item.image }}"></a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% if item.description %}
-			<p class="description">{{ item.description | truncate(20) }}</p>
+			<p class="description">
+				{{ item.description | truncate(20, false, "…") }}
+				<a href="{{ itemUrl(url, item) }}">Read…</a>
+			</p>
 		{% endif %}
 		{% block item_actions_wrapper %}
 			<p class="text-right">
 				{% block item_actions %}
-					<a href="{{ item.url }}" class="btn">Details</a>
+					<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
 				{% endblock %}
 			</p>
 		{% endblock %}

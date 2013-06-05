@@ -30,15 +30,8 @@
       <ul class="thumbnails">
           {% for relatedBadge in relatedBadges %}
           <li class="span3">
-              <figure class="thumbnail">
-                  <a href=""><img src="{{relatedBadge.image}}"></a>
-                  <figcaption class="caption">
-                      <p>{{relatedBadge.description}}</p>
-                      <p class="text-right">
-                          <a href="" class="btn">Details</a>
-                      </p>
-                  </figcaption>
-              </figure>
+              {% set item = relatedBadge %}
+              {% include "includes/badge-thumbnail.html" %}
           </li>
           {% endfor %}
       </ul>
