@@ -615,22 +615,28 @@ ul.thumbnails li:nth-child(3n+3) figure.thumbnail > a img {
 ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
   background-position: -210px -210px;
 }
-.recommendations .category.science h4.category-header {
+.recommendations .category.science .category-header h4 {
   background-position: 0px 0px;
 }
-.recommendations .category.technology h4.category-header {
+.recommendations .category.technology .category-header h4 {
   background-position: -194px 0px;
 }
-.recommendations .category.engineering h4.category-header {
+.recommendations .category.engineering .category-header h4 {
   background-position: -388px 0px;
 }
-.recommendations .category.art h4.category-header {
+.recommendations .category.art .category-header h4 {
   background-position: -582px 0px;
 }
-.recommendations .category.math h4.category-header {
+.recommendations .category.math .category-header h4 {
   background-position: -776px 0px;
 }
-.recommendations h4.category-header {
+.recommendations .category-header {
+  background-image: url(../img/criteria-badges.png);
+  height: 226px;
+  background-position: 194px 53px;
+  background-repeat: no-repeat;
+}
+.recommendations .category-header h4 {
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;

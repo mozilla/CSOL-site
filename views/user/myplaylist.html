@@ -27,7 +27,9 @@
 		categories and add them to your playlist</p>
 		{% for shortname, category in recommended %}
 		<div class="category {{shortname}}">
-			<h4 class="category-header">{{category.label}}</h4>
+			<div class="category-header">
+				<h4>{{category.label}}</h4>
+			</div>
 			<p class="lead">
 				Earn
 				{% if shortname == "art" or shortname == "engineering" %}

@@ -697,17 +697,23 @@ ul.thumbnails {
 
 .recommendations {
   .category {
-    &.science { h4.category-header { background-position: 0px 0px; } }
-    &.technology { h4.category-header { background-position: -194px 0px; } }
-    &.engineering { h4.category-header { background-position: -388px 0px; } }
-    &.art { h4.category-header { background-position: -582px 0px; } }
-    &.math { h4.category-header { background-position: -776px 0px; } }
+    &.science { .category-header h4 { background-position: 0px 0px; } }
+    &.technology { .category-header h4 { background-position: -194px 0px; } }
+    &.engineering { .category-header h4 { background-position: -388px 0px; } }
+    &.art { .category-header h4 { background-position: -582px 0px; } }
+    &.math { .category-header h4 { background-position: -776px 0px; } }
   }
-  h4.category-header {
-    .hide-text;
+  .category-header {
+    background-image: url(../img/criteria-badges.png);
     height: 226px;
-    width: 190px;
-    background-image: url(../img/steam.png);
+    background-position: 194px 53px;
+    background-repeat: no-repeat;
+    h4 {
+      .hide-text;
+      height: 226px;
+      width: 190px;
+      background-image: url(../img/steam.png);
+    }
   }
 }
 
