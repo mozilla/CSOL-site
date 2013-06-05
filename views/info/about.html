@@ -19,18 +19,20 @@
 {% endblock %}
 
 {% block content %}
-  <p class="lead">
-    Join Mayor Rahm Emanuel in challenging Chicago youth to participate in the Summer of Learning, a citywide effort to engage young people in hands-on learning. School stops for the summer, but learning never should.
-  </p>
-  <p class="lead">
-    Youth can explore, play and learn with these organizations and earn badges along the way. They can unlock exploratory challenges and make their own projects to add to their skills. Learners will showcase their work at an end of summer event in Chicago, into the next school year and beyond!
-  </p>
-  <p class="lead">
-    See how science, technology, engineering, arts and math (STEAM) learning will rock the Windy City this summer.
-  </p>
-  <div class="video">
-    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/6WwpwtYNsNk" frameborder="0" allowfullscreen></iframe>
+  <div class="lead">
+    <p>
+      Join Chicago Mayor Rahm Emanuel in challenging local kids to participate in the Summer of Learning, a citywide effort to engage young people in hands-on learning. School stops for the summer, but learning never should.
+    </p>
+    <p class="lead">
+      See how science, technology, engineering, art and math (STEAM) learning will rock the Windy City this summer.
+    </p>
   </div>
+  <div class="video">
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/6WwpwtYNsNk" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>
+    Kids can explore, play and learn with these organizations and earn badges along the way. They can unlock exploratory challenges and make their own projects to add to their skills. They'll showcase their work at an end of summer event in Chicago, into the next school year and beyond!
+  </p>
   {% if orgs %}
     {% set nearestTen = (orgs.length // 10) * 10 %}
     <h4>Over {{ nearestTen }} Participating Organizations</h4>

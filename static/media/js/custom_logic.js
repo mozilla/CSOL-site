@@ -12,9 +12,6 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 			var selectID = ($(this).attr('for'));
 			var selectEle = $('#' + selectID);
 			$('#' + selectID + ' option:first').text($(this).text());
-			var selectWrap = $('<div class="selectWrapper"></div>').append(this,selectEle);
-			$('.navbar.filter form').prepend(selectWrap);
-
 		});
 	}
 
