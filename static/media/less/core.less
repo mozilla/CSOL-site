@@ -224,10 +224,12 @@ nav.pagination {
 	  	display:inline-block;
   		border-left:none;
   		border-right:none;
+  		&:nth-child(even) {
+  			margin:0 12px;
+  		}
   	}
   }
   .lower {
-  	border-top:1px solid #fff;
   	padding:15px 0;
     ul {
  			li {
@@ -385,6 +387,9 @@ and (max-width : 599px) {
 						float:left;
 						a {
 							margin: 0 auto;
+						}
+						&:nth-child(even) {
+							margin:0 0;
 						}
 					}
 				}
