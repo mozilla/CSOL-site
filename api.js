@@ -44,7 +44,9 @@ function middleware (method, default_query) {
         return res.json(data);
       }
 
-      req.remote = data;
+			// Mutiple API calls are supported: to prevent clobbering existing data,
+			// use different keys for each call in the 'data' object.
+      req.remote = _.extend(req.remote || {}, data);
 
       if (err)
         return next(err);
@@ -142,7 +144,7 @@ function remote (method, path, options, callback) {
       return callback(new errors.Unknown(e.message));
     }
 
-    if ('status' in data && data.status !== 'ok')
+    if ('status' in data && _.isString(data.status) && data.status.slice(0, 2) !== 'ok')
       return callback(new errors.Unknown(data.reason || body.message), data);
 
     callback(null, data);
