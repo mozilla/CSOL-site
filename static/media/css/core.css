@@ -785,9 +785,6 @@ body .navbar.filter .navbar-inner {
   filter: none;
   background: #45bcd2;
 }
-body .navbar .nav-wrap {
-  border: none;
-}
 /* ------------------------------ */
 /* Mobile : general  ------------ */
 /* ------------------------------ */
@@ -846,6 +843,9 @@ body.home .navbar {
 body.home .navbar .navbar-inner {
   overflow: visible;
   max-height: 515px;
+}
+body.home .navbar .nav-wrap {
+  border: none;
 }
 body.home .navbar .nav > li {
   font-weight: 400;
