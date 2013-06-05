@@ -21,19 +21,9 @@
     <ul class="thumbnails">
         {% for shortname,badge in program.earnableBadges %}
         <li class="span3">
-            <figure class="thumbnail">
-                <a href="/earn/{{shortname}}"><img src="{{badge.image}}"></a>
-                <figcaption class="caption">
-                    <p>{{badge.description}}</p>
-                    <p class="text-right">
-                        <a href="/earn/{{shortname}}" class="btn">Details</a>
-												<form action="/myplaylist" method="POST" class="playlist-form">
-													<input type="hidden" name="shortName" value="{{ shortname }}">
-													<button type="submit" class="btn show-tooltip" title="Add to your playlist"><i class="icon-plus"></i></button>
-												</form>
-                    </p>
-                </figcaption>
-            </figure>
+            {% set item = badge %}
+            {% set url = "/earn/" + shortname %}
+            {% include "includes/badge-thumbnail.html" %}
         </li>
         {% endfor %}
     </ul>
