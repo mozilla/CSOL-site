@@ -608,6 +608,10 @@ and (max-width : 599px) {
 		text-indent: -999em;
 		margin: 0;
 	}
+
+	.state {
+		position: absolute;
+	}
 }
 
 .upload-list {
@@ -645,49 +649,136 @@ and (max-width : 599px) {
 	}
 }
 ul.thumbnails {
-  li {
-    figure.thumbnail {
-      margin:0 0 0 0;
-      & > a img {
-        display:block;
-        width:210px;
-        height:210px;
-        background-image:url('../img/badge-default.png');
-      }
-      a.show-tooltip {
-        display:none;
-      }
-      .caption {
-        p:first-child {
-          height:40px;
-          overflow:hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-    }
-  }
-  li:nth-child(2n+2) {
-    figure.thumbnail {
-      & > a img {
-        background-position:0 -210px;
-      }
-    }
-  }
-  li:nth-child(3n+3) {
-    figure.thumbnail {
-      & > a img {
-        background-position:-210px 0px;
-      }
-    }
-  }
-  li:nth-child(4n+4) {
-    figure.thumbnail {
-      & > a img {
-        background-position:-210px -210px;
-      }
-    }
-  }
+	li {
+		.thumbnail {
+			margin: 0 0 0 0;
+
+			& > a img {
+				display: block;
+				width: 210px;
+				height: 210px;
+				background-image: url('../img/badge-default.png');
+			}
+
+			a.show-tooltip {
+				display: none;
+			}
+
+			.caption {
+				p:first-child {
+					height: 40px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+
+			&[class*="state-"] {
+				position: relative;
+				padding-top: 2.5em;
+
+				.state {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					margin: 0;
+					padding: 3px 10px;
+					color: #FFF;
+					background: #999;
+					text-align: center;
+					text-transform: uppercase;
+					font-size: 0.85em;
+					font-weight: bold;
+					-webkit-border-radius: 3px 3px 0 0;
+					-moz-border-radius: 3px 3px 0 0;
+					border-radius: 3px 3px 0 0;
+					border-bottom: solid 2px #666;
+					white-space: pre;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+
+					&::before {
+						content: "";
+						display: inline-block;
+						width: 20px;
+						height: 20px;
+						background: url('../img/application-states.png');
+						vertical-align: bottom;
+						margin-right: 5px;
+					}
+				}
+			}
+
+			&.state-waiting .state {
+				background-color: #FAAD54;
+				border-color: #E29E5A;
+
+				&::before {
+					background-position: -20px 0;
+				}
+			}
+
+			&.state-denied .state,
+			&.state-rejected .state {
+				background-color: #931A1D;
+				border-color: #751A21;
+
+				&::before {
+					background-position: -40px 0;
+				}
+			}
+
+			&.state-submitted .state {
+				background-color: #EDD262;
+				border-color: #79692A;
+
+				&::before {
+					background-position: -60px 0;
+				}
+			}
+
+			&.state-reviewed .state {
+				background-color: #D56449;
+				border-color: #77311A;
+
+				&::before {
+					background-position: -80px 0;
+				}
+			}
+
+			&.state-accepted .state {
+				background-color: #8EBFDC;
+				border-color: #04465E;
+
+				&::before {
+					background-position: -100px 0;
+				}
+			}
+		}
+	}
+	li:nth-child(2n+2) {
+		figure.thumbnail {
+			& > a img {
+				background-position: 0 -210px;
+			}
+		}
+	}
+	li:nth-child(3n+3) {
+		figure.thumbnail {
+			& > a img {
+				background-position: -210px 0px;
+			}
+		}
+	}
+	li:nth-child(4n+4) {
+		figure.thumbnail {
+			& > a img {
+				background-position: -210px -210px;
+			}
+		}
+	}
 }
 
 /*Password fields with feedback bar*/
