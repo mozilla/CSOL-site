@@ -5,7 +5,7 @@ parent template overriding the badge (or in some cases supplying it if it
 doesn't have a URL #}
 {% macro itemUrl(url, item) %}
 {% if url %}
-  {{ url }}
+	{{ url }}
 {% else %}
 	{{ item.url }}
 {% endif %}
@@ -13,21 +13,13 @@ doesn't have a URL #}
 
 <figure class="thumbnail">
 	<div class="playlist-bar pull-right">
-		{% block playlist_bar %}
-			{% block fav_btn %}
-			<form action="/myfavorites" method="POST">
-				<input type="hidden" name="shortname" value="{{ item.id }}">
-				<button type="submit" class="btn" title="Add to favorites"><i class="icon-heart"></i></button>
-			</form>
-			{% endblock %}
-			{% block playlist_btn %}
-			<form action="/myplaylist" method="POST">
-				<input type="hidden" name="shortname" value="{{ item.id }}">
-				<button type="submit" class="btn" title="Add to playlist"><i class="icon-plus"></i></button>
-
-			</form>
-			{% endblock %}
-		{% endblock %}
+		<form action="/myfavorites" method="POST">
+			<input type="hidden" name="shortname" value="{{ item.id }}">
+			<button type="submit" class="btn" title="Add to favorites"><i class="icon-heart"></i></button>
+		</form>
+		{% if not playlisted %}
+			{% include "includes/add-to-playlist-btn.html" %}
+		{% endif %}
 	</div>
 	<a href="{{ itemUrl(url, item) }}"><img src="{{ item.image }}"></a>
 	<figcaption class="caption">
@@ -38,12 +30,21 @@ doesn't have a URL #}
 				<a href="{{ itemUrl(url, item) }}">Read…</a>
 			</p>
 		{% endif %}
-		{% block item_actions_wrapper %}
-			<p class="text-right">
-				{% block item_actions %}
+		<div class="item-actions row-fluid">
+			<div class="span6">
+				{% if playlisted %}
+				<form action="/myplaylist" method="POST" class="playlist-remove">
+					<input type="hidden" name="_method" value="DELETE">
+					<input type="hidden" name="shortname" value="{{ item.id }}">
+					<button class="btn"><i class="icon-trash"></i></button>
+				</form>
+				{% endif %}
+			</div>
+			<div class="span6">
+				<p class="pull-right">
 					<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
-				{% endblock %}
-			</p>
-		{% endblock %}
+				</p>
+			</div>
+		</div>
 	</figcaption>
 </figure>

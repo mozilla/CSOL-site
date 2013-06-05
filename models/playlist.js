@@ -25,8 +25,8 @@ module.exports = {
 		}
 	],
 	classMethods: {
-		// addToList adds a badge to the user's playlist
-		addToList: function (user, shortName, callback) {
+		// `add` adds a badge to the user's playlist
+		add: function (user, shortName, callback) {
 			var _this = this;
 			this.max('rank', {where: {LearnerId: user.id}})
 				.success(function(rank) {
@@ -35,6 +35,20 @@ module.exports = {
 						callback(null, item);
 					}).
 					error(function(err) {
+						callback(err);
+					});
+				}).
+				error(function(err) {
+					callback(err);
+				});
+		},
+		// `remove` removes a badge from the user's playlist
+		remove: function (user, shortName, callback) {
+			this.find({where: {LearnerId: user.id, shortName: shortName}}).
+				success(function(item) {
+					item.destroy().success(function() {
+						callback(null);
+					}).error(function(err) {
 						callback(err);
 					});
 				}).
@@ -59,19 +73,18 @@ module.exports = {
 					// This serves both as a way to filter down the full badge list into
 					// the ones in the playlist, as well as to sort the results by rank.
 					var shortNames = {}
-					_.each(rawList, function(item) {
-						shortNames[item.shortName] = item.rank;
+					_.each(rawList, function(item, index) {
+						shortNames[item.shortName] = index;
 					});
 
 					// Construct the user's playlist
 					var playlist = new Array(rawList.length);
 					_.each(badges, function(badge) {
 						if (badge.id in shortNames) {
-							var index = shortNames[badge.id]-1;
+							var index = shortNames[badge.id];
 							playlist[index] = badge;
 						}
 					});
-					playlist.reverse();
 
 					req.playlist = playlist;
 

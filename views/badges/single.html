@@ -20,6 +20,8 @@
                         <a href="{{ badge.url }}/apply" class="btn">Apply</a>
                     {% endif %}
                 </p>
+                {% set item = badge %}
+                {% include "includes/add-to-playlist-btn.html" %}
             {% endif %}
         </div>
     </div>

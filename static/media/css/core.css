@@ -603,7 +603,8 @@ ul.thumbnails li figure.thumbnail .caption p:first-child {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-ul.thumbnails li figure.thumbnail .playlist-bar form {
+ul.thumbnails li figure.thumbnail .playlist-bar form,
+ul.thumbnails li figure.thumbnail .item-actions form {
   display: inline-block;
 }
 ul.thumbnails li:nth-child(2n+2) figure.thumbnail > a img {

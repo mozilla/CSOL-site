@@ -213,12 +213,24 @@ module.exports = function (app) {
     });
   });
 
+  // This view supports both adding a badge to the playlist and removing a badge
+  // from the playlist. It dispatches on which action by the HTTP method, which is
+  // multiplexed onto POST -- the `_method` param, if present, overrides the
+  // HTTP method. (This enables DELETEs from regular browser form submissions.)
   app.post('/myplaylist', [
     loggedIn
   ], function (req, res, next) {
+    var method = req.body._method ? req.body._method : "POST";
+
+    var actions = {
+      POST: _.bind(playlist.add, playlist),
+      DELETE: _.bind(playlist.remove, playlist)
+    };
+
     var user = res.locals.user;
     var shortname = req.body.shortname;
-    playlist.addToList(user, shortname, function(err) {
+
+    actions[method](user, shortname, function(err) {
       if (err) next(err);
       res.redirect('/myplaylist');
     });
