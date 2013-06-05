@@ -20,8 +20,14 @@
                         <a href="{{ badge.url }}/apply" class="btn">Apply</a>
                     {% endif %}
                 </p>
-                {% set item = badge %}
-                {% include "includes/add-to-playlist-btn.html" %}
+                {% for _ in [0] %}
+                  {# create scope so that setting item = badge doesn't globally
+                  set item, which breaks the similar badges for loop below
+                  (probably a bug in nunjucks, also could factor out
+                  badge-thumbnail into a macro) #}
+                  {% set item = badge %}
+                  {% include "includes/add-to-playlist-btn.html" %}
+                {% endfor %}
             {% endif %}
         </div>
     </div>
