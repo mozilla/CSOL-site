@@ -1,6 +1,6 @@
 {# A badge in a list or grid context #}
 <figure class="thumbnail">
-	<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+	<a href="{{ item.url }}"><img src="{% if item.imageUrl %}{{ item.imageUrl }}{% else %}{% if item.image %}{{item.image}}{% else %}{{item.issuer.imageUrl}}{% endif %}{% endif %}"></a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% if item.description %}
