@@ -25,16 +25,21 @@
 		<h3>Recommendations</h3>
 		<p class="lead">Check out these other badges you can earn in the STEAM
 		categories and add them to your playlist</p>
-		{% if recommended.length %}
+		{% for shortname, category in recommended %}
+		<div class="category {{shortname}}">
+			<h4 class="category-header">{{category.label}}</h4>
+			<p class="lead">
+				Earn a {{category.label}} badge by getting one achievement
+				and one skill badge OR three skill badges!
+			</p>
 			<ul class="thumbnails">
-				{% for item in recommended %}
+				{% for item in category.badges %}
 					<li span="3">
 						{% include "includes/badge-thumbnail.html" %}
 					</li>
 				{% endfor %}
 			</ul>
-		{% else %}
-			<p>Nothing recommended yet …</p>
-		{% endif %}
+		</div>
+		{% endfor %}
 	</div>
 {% endblock %}
