@@ -44,7 +44,7 @@ var MIME_MAP = {
 var ALLOWED_TYPES = _.keys(MIME_MAP);
 
 var MEDIA_TYPE_TEST = new RegExp(
-  '^\s*(' + reFormat(ALLOWED_TYPES.join('|')) + ')\s*$',
+  '^\\s*(' + reFormat(ALLOWED_TYPES.join('|')) + ')\\s*$',
   'gi'
 );
 
@@ -67,6 +67,7 @@ function getSimpleType (mimeType) {
 }
 
 function isValidType (type) {
+  console.log(MEDIA_TYPE_TEST, type);
   return MEDIA_TYPE_TEST.test(type);
 }
 
@@ -140,14 +141,11 @@ module.exports = {
     },
     isValidType: isValidType,
     process: function (file, remotePrefix, callback) {
-      console.log(file);
-
       if (!file || !file.size)
         return callback();
 
-      if (!isValidType(file.type)) {
+      if (!isValidType(file.type))
         return callback(new errors.Unsupported(file.name + ' is not of a supported file type'));
-      }
 
       if (_.isFunction(remotePrefix)) {
         callback = remotePrefix;
@@ -188,7 +186,7 @@ module.exports = {
 
       var Model = this;
       var key = file.path.split('/').pop();
-      var format = mime.extension(file.type) || path.extname(file.name).substr(1);
+      var format = (mime.extension(file.type) || path.extname(file.name).substr(1) || 'unknown').toLowerCase();
       var remoteFilePath = '/' + remotePrefix + '/' + key + '.' + format;
       var remoteThumbPath = '/' + remotePrefix + '/' + key + '_thumb.' + format;
 
@@ -206,13 +204,20 @@ module.exports = {
           if (err || !instance)
             return callback(err);
 
-          saveFile(remoteFilePath, function (err) {
-            if (err)
-              return;
-
-            instance.updateAttributes({
-              saved: true
-            });
+          saveFile(remoteFilePath, function (err, response) {
+            if (err) {
+              console.log('Failed to save', file.name, '[', err, ']');
+            } else {
+              instance.updateAttributes({
+                saved: true
+              }).complete(function(err) {
+                if (err) {
+                  console.log('Failed to save', file.name, '[', err, ']');
+                } else {
+                  console.log('Successfully saved', file.name);
+                }
+              });
+            }
           });
 
           callback(null, instance);
