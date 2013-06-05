@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% set pageTitle = 'You favorited a badge' %}
+{% set navItem = 'backpack' %}
+
+{% block content %}
+<p>You added a badge to your favorites!</p>
+
+<p><a href="{{ badge.url }}">&lsaquo; Back to badge</a></p>
+{% endblock %}

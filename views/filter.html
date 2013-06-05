@@ -46,7 +46,12 @@
 								{% if item.template %}
 									{% include item.template %}
 								{% else %}
-									{% include "includes/badge-thumbnail.html" %}
+									{# this is hacky! #}
+									{% if itemType == 'program' or itemType == 'org' %}
+										{% include "includes/item-thumbnail.html" %}
+									{% else %}
+										{% include "includes/badge-thumbnail.html" %}
+									{% endif %}
 								{% endif %}
 							{% endblock %}
 						</li>

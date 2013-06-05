@@ -4,7 +4,47 @@ const db = require('../db');
 const isLearner = require('../middleware').isLearner;
 
 const claim = db.model('Claim');
+const favorite = db.model('Favorite');
+const playlist = db.model('Playlist');
+const loggedIn = require('../middleware').loggedIn;
+const favoriteMiddleware = _.bind(favorite.middleware, favorite);
+const playlistMiddleware = _.bind(playlist.middleware, playlist);
 const applications = db.model('Application');
+
+// groupByCategory groups an array of badges by their category(s).
+// Note that badges can be in multiple categories. It is up to the caller to
+// handle this appropriately.
+function groupByCategory(badges, categories) {
+  var group = _.object(_.map(categories, function(c) { return [c, []]; }));
+  _.each(badges, function(badge) {
+    _.each(badge.categories, function(c) {
+      if (c in group) {
+        group[c].push(badge);
+      }
+    });
+  });
+  return group;
+}
+
+// Fisher-Yates shuffle
+// Adapted from http://bost.ocks.org/mike/shuffle/
+function shuffle(array) {
+  var m = array.length, t, i;
+
+  // While there remain elements to shuffle…
+  while (m) {
+
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * m--);
+
+    // And swap it with the current element.
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+
+  return array;
+}
 
 module.exports = function (app) {
 
@@ -77,8 +117,9 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
-    isLearner,
-    openbadger.middleware('getUserBadges')
+    loggedIn,
+    openbadger.middleware('getUserBadges'),
+    favoriteMiddleware
   ], function (req, res, next) {
     var data = req.remote;
 
@@ -123,12 +164,75 @@ module.exports = function (app) {
 
     const NSIMILAR = 4;
 
-    console.log(data.badge);
-
     res.render('user/badge.html', {
       badge: data.badge,
       user: req.session.user,
       similar: similar.slice(0, NSIMILAR)
+    });
+  });
+
+  app.post('/mybadges/:id/favorite', [
+    loggedIn,
+    openbadger.middleware('getBadge')
+  ], function (req, res, next) {
+    var data = req.remote;
+    var badge = data.badge;
+    var user = res.locals.user;
+    var shortname = req.params.id; // assume if we got here id is valid input
+
+    favorite.favoriteBadge(user, shortname, function(err, fav) {
+        if (err) {
+            return next(err);
+        }
+        res.render('user/badge-favorited.html', {
+            badge: badge
+        });
+    });
+  });
+
+  app.get('/myplaylist', [
+    loggedIn,
+    openbadger.middleware('getAllBadges'),
+    openbadger.middleware('getUserRecommendations'),
+    playlistMiddleware
+  ], function (req, res, next) {
+
+    // Group recommendations into STEAM categories.
+    // We also limit to `maxPerCat` badges per category.
+    var maxPerCat = 4;
+    var categories = openbadger.getFilters().categories.options;
+    var grouped = groupByCategory(req.remote.recommendations, _.pluck(categories, 'value'));
+    var recommended = _.object(_.map(categories, function(c) {
+      return [c.value, {label: c.label, badges: shuffle(grouped[c.value]).slice(0, maxPerCat)}];
+    }));
+
+    res.render('user/myplaylist.html', {
+      user: res.locals.user,
+      recommended: recommended,
+      playlist: req.playlist
+    });
+  });
+
+  // This view supports both adding a badge to the playlist and removing a badge
+  // from the playlist. It dispatches on which action by the HTTP method, which is
+  // multiplexed onto POST -- the `_method` param, if present, overrides the
+  // HTTP method. (This enables DELETEs from regular browser form submissions.)
+  app.post('/myplaylist', [
+    loggedIn
+  ], function (req, res, next) {
+    var method = req.body._method ? req.body._method : "POST";
+
+    var actions = {
+      POST: _.bind(playlist.add, playlist),
+      DELETE: _.bind(playlist.remove, playlist)
+    };
+
+    var user = res.locals.user;
+    var shortname = req.body.shortname;
+
+    actions[method](user, shortname, function(err) {
+      if (err) next(err);
+      res.redirect('/myplaylist');
     });
   });
 

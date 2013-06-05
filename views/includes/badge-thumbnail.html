@@ -1,17 +1,53 @@
-{# A badge in a list or grid context #}
+{# A badge in a list or grid context.
+
+Context variables from including template:
+
+ - item (required)
+ - url (optional)
+ - playlisted (optional)
+#}
+
+{# itemUrl simplifies getting the URL for the badge: it can be set in the
+parent template overriding the badge (or in some cases supplying it if it
+doesn't have a URL #}
+{% macro itemUrl(url, item) %}
+{% if url %}
+	{{ url }}
+{% else %}
+	{{ item.url }}
+{% endif %}
+{% endmacro %}
+
 <figure class="thumbnail">
-	<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+	<div class="playlist-bar pull-right">
+		{% if not playlisted %}
+			{% include "includes/add-to-playlist-btn.html" %}
+		{% endif %}
+	</div>
+	<a href="{{ itemUrl(url, item) }}"><img src="{{ item.image }}"></a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% if item.description %}
-			<p class="description">{{ item.description | truncate(20) }}</p>
-		{% endif %}
-		{% block item_actions_wrapper %}
-			<p class="text-right">
-				{% block item_actions %}
-					<a href="{{ item.url }}" class="btn">Details</a>
-				{% endblock %}
+			<p class="description">
+				{{ item.description | truncate(20, false, "…") }}
+				<a href="{{ itemUrl(url, item) }}">Read…</a>
 			</p>
-		{% endblock %}
+		{% endif %}
+		<div class="item-actions row-fluid">
+			<div class="span6">
+				{% if playlisted %}
+				<form action="/myplaylist" method="POST" class="playlist-remove">
+					<input type="hidden" name="_method" value="DELETE">
+					<input type="hidden" name="shortname" value="{{ item.id }}">
+					<button class="btn"><i class="icon-trash"></i></button>
+				</form>
+				{% endif %}
+			</div>
+			<div class="span6">
+				<p class="pull-right">
+					<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
+				</p>
+			</div>
+		</div>
 	</figcaption>
 </figure>
