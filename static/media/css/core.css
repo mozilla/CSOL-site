@@ -615,6 +615,29 @@ ul.thumbnails li:nth-child(3n+3) figure.thumbnail > a img {
 ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
   background-position: -210px -210px;
 }
+.recommendations .category.science h4.category-header {
+  background-position: 0px 0px;
+}
+.recommendations .category.technology h4.category-header {
+  background-position: -194px 0px;
+}
+.recommendations .category.engineering h4.category-header {
+  background-position: -388px 0px;
+}
+.recommendations .category.art h4.category-header {
+  background-position: -582px 0px;
+}
+.recommendations .category.math h4.category-header {
+  background-position: -776px 0px;
+}
+.recommendations h4.category-header {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 226px;
+  width: 190px;
+  background-image: url(../img/steam.png);
+}
 /*Password fields with feedback bar*/
 input[type="password"].metered {
   padding-bottom: 9px;
