@@ -146,6 +146,7 @@ module.exports = {
                 badge: badge,
                 updatedAt: new Date(badge.issuedOn),
                 state: 'awarded',
+                getStateDescription: function() { return 'Awarded'; },
                 type: 'badge'
               });
             });

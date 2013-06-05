@@ -61,6 +61,21 @@ module.exports = {
     getReview: function () {
       return JSON.parse(this.latestReview || "{}");
     },
+    getStateDescription: function () {
+      switch (this.state) {
+        case 'open':
+          return 'Open';
+        case 'waiting':
+          return 'Needs Approval';
+        case 'denied':
+          return 'Approval Denied';
+        case 'submitted':
+          return 'Pending Mentor Review';
+        case 'rejected':
+        case 'accepted':
+          return 'Reviewed';
+      }
+    },
     reopen: function (callback) {
       if (['rejected','denied'].indexOf(this.state) < 0)
         return callback();
