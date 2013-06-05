@@ -228,6 +228,7 @@ module.exports = function (app) {
 
   app.get('/earn/:badgeName/apply', function (req, res, next) {
     var badge = req.params.badge;
+    var mimeTypes = evidence.getMimeTypes();
 
     if (!req.session.user) {
       req.session.afterLogin = '/earn/' + req.params.badgeName + '/apply';
@@ -240,6 +241,7 @@ module.exports = function (app) {
           badgeId: badge.id,
           state: 'open'
         }),
+        mimeTypes: mimeTypes,
         evidence: [],
         badge: badge
       });
