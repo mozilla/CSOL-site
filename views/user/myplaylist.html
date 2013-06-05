@@ -29,7 +29,13 @@
 		<div class="category {{shortname}}">
 			<h4 class="category-header">{{category.label}}</h4>
 			<p class="lead">
-				Earn a {{category.label}} badge by getting one achievement
+				Earn
+				{% if shortname == "art" or shortname == "engineering" %}
+				an
+				{% else %}
+				a
+				{% endif %}
+				{{category.label}} badge by getting one achievement
 				and one skill badge OR three skill badges!
 			</p>
 			<ul class="thumbnails">
