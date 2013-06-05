@@ -364,6 +364,23 @@ var openbadger = new Api(ENDPOINT, {
       });
     });
   },
+
+  getUserRecommendations: function getUserRecommendations (query, callback) {
+    var user = query.session.user;
+    var email = user.email;
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    };
+    this.get('/user/recommendations', {qs: params}, function(err, data) {
+      if (err)
+        return callback(err, null);
+
+      return callback(null, {
+        recommendations: _.map(data.badges, normalizeBadge)
+      });
+    });
+  }
 });
 
 updateOrgs();
