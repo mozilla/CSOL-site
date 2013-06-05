@@ -574,6 +574,9 @@ nav.pagination ul li a {
   text-indent: -999em;
   margin: 0;
 }
+#evidence .state {
+  position: absolute;
+}
 .upload-list {
   list-style: none;
   margin: 20px 0;
@@ -602,23 +605,95 @@ nav.pagination ul li a {
 .upload-list .details .progress .bar {
   opacity: 0.5;
 }
-ul.thumbnails li figure.thumbnail {
+ul.thumbnails li .thumbnail {
   margin: 0 0 0 0;
 }
-ul.thumbnails li figure.thumbnail > a img {
+ul.thumbnails li .thumbnail > a img {
   display: block;
   width: 210px;
   height: 210px;
   background-image: url('../img/badge-default.png');
 }
-ul.thumbnails li figure.thumbnail a.show-tooltip {
+ul.thumbnails li .thumbnail a.show-tooltip {
   display: none;
 }
-ul.thumbnails li figure.thumbnail .caption p:first-child {
+ul.thumbnails li .thumbnail .caption p:first-child {
   height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+ul.thumbnails li .thumbnail[class*="state-"] {
+  position: relative;
+  padding-top: 2.5em;
+}
+ul.thumbnails li .thumbnail[class*="state-"] .state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 3px 10px;
+  color: #FFF;
+  background: #999;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  font-weight: bold;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  border-bottom: solid 2px #666;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+}
+ul.thumbnails li .thumbnail[class*="state-"] .state::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url('../img/application-states.png');
+  vertical-align: bottom;
+  margin-right: 5px;
+}
+ul.thumbnails li .thumbnail.state-waiting .state {
+  background-color: #FAAD54;
+  border-color: #E29E5A;
+}
+ul.thumbnails li .thumbnail.state-waiting .state::before {
+  background-position: -20px 0;
+}
+ul.thumbnails li .thumbnail.state-denied .state,
+ul.thumbnails li .thumbnail.state-rejected .state {
+  background-color: #931A1D;
+  border-color: #751A21;
+}
+ul.thumbnails li .thumbnail.state-denied .state::before,
+ul.thumbnails li .thumbnail.state-rejected .state::before {
+  background-position: -40px 0;
+}
+ul.thumbnails li .thumbnail.state-submitted .state {
+  background-color: #EDD262;
+  border-color: #79692A;
+}
+ul.thumbnails li .thumbnail.state-submitted .state::before {
+  background-position: -60px 0;
+}
+ul.thumbnails li .thumbnail.state-reviewed .state {
+  background-color: #D56449;
+  border-color: #77311A;
+}
+ul.thumbnails li .thumbnail.state-reviewed .state::before {
+  background-position: -80px 0;
+}
+ul.thumbnails li .thumbnail.state-accepted .state {
+  background-color: #8EBFDC;
+  border-color: #04465E;
+}
+ul.thumbnails li .thumbnail.state-accepted .state::before {
+  background-position: -100px 0;
 }
 ul.thumbnails li:nth-child(2n+2) figure.thumbnail > a img {
   background-position: 0 -210px;
