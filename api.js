@@ -142,7 +142,7 @@ function remote (method, path, options, callback) {
       return callback(new errors.Unknown(e.message));
     }
 
-    if ('status' in data && data.status !== 'ok')
+    if ('status' in data && _.isString(data.status) && data.status.slice(0, 2) !== 'ok')
       return callback(new errors.Unknown(data.reason || body.message), data);
 
     callback(null, data);
