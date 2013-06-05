@@ -20,4 +20,21 @@
 			{% endif %}
 		{% endblock %}
 	</div><!-- .playlist -->
+
+	<div class="recommendations">
+		<h3>Recommendations</h3>
+		<p class="lead">Check out these other badges you can earn in the STEAM
+		categories and add them to your playlist</p>
+		{% if recommended.length %}
+			<ul class="thumbnails">
+				{% for item in recommended %}
+					<li span="3">
+						{% include "includes/badge-thumbnail.html" %}
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>Nothing recommended yet …</p>
+		{% endif %}
+	</div>
 {% endblock %}

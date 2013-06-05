@@ -151,11 +151,12 @@ module.exports = function (app) {
   app.get('/myplaylist', [
     loggedIn,
     openbadger.middleware('getAllBadges'),
+    openbadger.middleware('getUserRecommendations'),
     playlistMiddleware
   ], function (req, res, next) {
     res.render('user/myplaylist.html', {
       user: res.locals.user,
-      recommended: [], // XXX: grouped by STEAM?
+      recommended: req.remote.recommendations, // XXX: grouped by STEAM?
       playlist: req.playlist
     });
   });
