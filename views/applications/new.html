@@ -16,7 +16,7 @@
 				{% block items %}
 					<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
 						{% for item in evidence %}
-							<li class="item item-{{ item.mediaType.split('/')[0] }}">
+							<li class="item item-{{ item.getSimpleType() }}">
 								{% if item.saved %}
 									<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
 										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
@@ -42,10 +42,10 @@
 					{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
 					<textarea name="description" rows="7" id="edit-description">{{ application.description }}</textarea>
 					<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
-					{% block evidenceTitle %}<h3>Then upload your pictures and videos</h3>{% endblock %}
+					{% block evidenceTitle %}<h3>Then upload photos, videos, or other evidence</h3>{% endblock %}
 					<ul class="items">
 						<li class="item">
-							<input type="file" name="media" accept="image/*, video/*" multiple="multiple">
+							<input type="file" name="media" accept="{{ mimeTypes.join(', ') }}" multiple="multiple">
 						</li>
 					</ul>
 					<p class="text-right buttons"><button type="submit" value="upload" class="btn">Upload</button></p>
@@ -75,7 +75,7 @@
 
 			var $evidence = $('#evidence');
 
-			addLightbox($evidence.find('a.thumbnail'));
+			addLightbox($evidence.find('.item-image a.thumbnail'));
 
 			$evidence.on('submit', 'form', function () {
 				var $form = $(this),
@@ -123,7 +123,7 @@
 					.append($form)
 					.appendTo($list);
 
-				addLightbox($item.find('.thumbnail'));
+                // addLightbox($item.find('.thumbnail'));
 			});
 
 			uploader.on('removed', function (e, data) {
