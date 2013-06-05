@@ -71,9 +71,12 @@ var aestimia = new Api(ENDPOINT, {
                   ];
 
                 evidence.forEach(function(item, index) {
+                  var type = item.mediaType.split('/')[0];
+                  if (type !== 'image') type = 'link';
+
                   var obj = {
                     url: api.getFullUrl(CSOL_HOST, item.getLocationUrl()),
-                    mediaType: item.mediaType.split('/')[0]
+                    mediaType: type
                   };
 
                   if (!index && application.description)
