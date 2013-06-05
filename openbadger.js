@@ -13,6 +13,9 @@ if (!JWT_SECRET)
   throw new Error('Must specify CSOL_OPENBADGER_SECRET in the environment');
 
 function normalizeBadge (badge, id) {
+  if (badge.shortname)
+    badge.id = badge.shortname;
+
   if (!id)
     id = badge.shortname;
 
