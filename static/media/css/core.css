@@ -593,8 +593,7 @@ nav.pagination ul li a {
 ul.thumbnails li figure.thumbnail {
   margin: 0 0 0 0;
 }
-ul.thumbnails li figure.thumbnail > a img,
-figure.program-thumbnail > img {
+ul.thumbnails li figure.thumbnail > a img {
   display: block;
   width: 210px;
   height: 210px;
@@ -850,8 +849,7 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 /* ------------------------------ */
 @media screen and (min-width: 600px) {
   body.home {
-    background-image: url('../img/background-chalkboard-green.jpg');
-    background-repeat: no-repeat;
+    background: url('../img/background-chalkboard-green.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
