@@ -1,16 +1,21 @@
+const _ = require('underscore');
 const openbadger = require('../openbadger');
 const db = require('../db');
+const isLearner = require('../middleware').isLearner;
+
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
 const playlist = db.model('Playlist');
 const loggedIn = require('../middleware').loggedIn;
-const _ = require('underscore');
 const favoriteMiddleware = _.bind(favorite.middleware, favorite);
 const playlistMiddleware = _.bind(playlist.middleware, playlist);
+const applications = db.model('Application');
 
 module.exports = function (app) {
 
-  app.get('/claim', [loggedIn], function (req, res, next) {
+  app.get('/claim', [
+    isLearner
+  ], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -43,7 +48,9 @@ module.exports = function (app) {
 
   });
 
-  app.post('/claim', [loggedIn], function (req, res, next) {
+  app.post('/claim', [
+    isLearner
+  ], function (req, res, next) {
     var claimCode = req.query.code;
     var user = res.locals.user;
 
@@ -87,7 +94,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges/:id', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getUserBadge')
   ], function (req, res, next) {
     var data = req.remote;
@@ -169,6 +176,39 @@ module.exports = function (app) {
     playlist.addToList(user, shortName, function(err) {
       if (err) next(err);
       res.redirect('/myplaylist');
+    });
+  });
+
+  app.get('/myapplications', [
+    isLearner
+  ], function (req, res, next) {
+    var user = req.session.user;
+    applications.findAll({where: ['LearnerId = ? AND State != ?', user.id, 'accepted']}).success(function (applications) {
+      openbadger.getBadges(function (err, data) {
+        _.each(applications, function(app) {
+          _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
+        });
+        res.render('user/applications.html', {
+          items: _.map(applications, function(badge) {
+            badge.url = '/myapplications/' + badge.id;
+            return badge;
+          })
+        });
+      });
+    });
+  });
+
+  app.get('/myapplications/:id', [
+    isLearner
+  ], function (req, res, next) {
+    var user = req.session.user;
+    openbadger.getBadge({id: req.params.id}, function(err, data) {
+      var badge = data.badge;
+      applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
+        res.render('user/application.html', {
+          badge: _.extend(badge, application)
+        });
+      });
     });
   });
 

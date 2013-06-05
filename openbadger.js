@@ -36,6 +36,8 @@ function normalizeBadgeInstance (badge, id) {
   if (!badge.url)
     badge.url = '/mybadges/' + id;
 
+  badge.id = id;
+
   return badge;
 }
 
@@ -189,34 +191,26 @@ function getJWTToken(email) {
   return jwt.encode(claims, JWT_SECRET);
 }
 
-// getAllBadges is an extracted function meant to DRY up the `getBadges' and
-// `getAllBages' API calls below
-function getAllBadges (query, callback) {
-  this.get('/badges', function(err, data) {
-    if (err)
-      return callback(err, data);
-
-    return callback(null, {
-      badges: _.map(data.badges, normalizeBadge)
-    });
-  });
-}
-
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
-    func: getAllBadges,
+    func: function getBadges (query, callback) {
+      this.getAllBadges(query, callback);
+    },
     filters: filterBadges,
     paginate: true,
     key: 'badges'
   },
 
-  // Similar to `getBadges' except is unfiltered and unpaginated, i.e., it
-  // returns **all** badges from the API
-  getAllBadges: {
-    func: getAllBadges,
-    paginate: false,
-    key: 'badges'
+  getAllBadges: function getAllBadges (query, callback) {
+    this.get('/badges', function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        badges: _.map(data.badges, normalizeBadge)
+      });
+    })
   },
 
   getBadge: function getBadge (query, callback) {
@@ -280,8 +274,7 @@ var openbadger = new Api(ENDPOINT, {
 
   getUserBadges: {
     func: function getUserBadges (query, callback) {
-      var user = query.session.user;
-      var email = user.email;
+      var email = query.email || query.session.user.email;
       var params = {
         auth: getJWTToken(email),
         email: email
@@ -322,6 +315,25 @@ var openbadger = new Api(ENDPOINT, {
     });
   },
 
+  awardBadge: function awardBadge (query, callback) {
+    var email = query.email || query.session.user.email;
+    var shortname = query.badge;
+
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    }
+
+    this.post('/user/badge/' + shortname, { form: params }, function(err, data) {
+      if (err)
+        return callback(err, data);
+
+      return callback(null, {
+        assetionUrl: data.url
+      });
+    });
+  },
+
   getBadgeFromCode: function getBadgeFromCode (query, callback) {
     var email = query.email;
     var code = query.code;
@@ -351,11 +363,15 @@ var openbadger = new Api(ENDPOINT, {
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
     var id = query.badgeName;
+    var limit = query.limit;
+    var params = {
+      limit: limit
+    };
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
 
-    this.get('/badge/' + id + '/recommendations', function(err, data) {
+    this.get('/badge/' + id + '/recommendations', { qs: params }, function(err, data) {
       if (err)
         return callback(err, data);
 

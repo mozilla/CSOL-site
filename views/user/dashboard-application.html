@@ -1,0 +1,88 @@
+{% extends 'user/dashboard.html' %}
+{% set pageTitle = current.getDisplayName() %}
+{% block pageTitle -%}
+	{{ current.getDisplayName() }}'s application: {{ application.badge.name }}
+{%- endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/media/css/jquery.fancybox.css">
+{% endblock %}
+
+{% block activity %}
+	{% if application.state == 'open' %}
+		<div class="alert">
+			This application is currently being worked on
+		</div>
+	{% elif application.state == 'waiting' %}
+		<div class="alert">
+			This application is waiting for your approval
+		</div>
+	{% elif application.state == 'denied' %}
+		<div class="alert alert-error">
+			You denied this application
+		</div>
+	{% elif application.state == 'submitted' %}
+		<div class="alert">
+			You allowed this application, and it is waiting to be reviewed
+		</div>
+	{% elif application.state == 'rejected' %}
+		<div class="alert alert-error">
+			This application was rejected
+		</div>
+	{% elif application.state == 'accepted' %}
+		<div class="alert alert-success">
+			This application was successful
+		</div>
+	{% endif %}
+	<div class="row-fluid">
+		<div class="span4">
+			<a href="{{ application.badge.url }}"><img src="{{ application.badge.image }}"></a>
+		</div>
+		<div class="span8">
+			<div id="application-review">
+				{% block notes %}
+				{% endblock %}
+				<div class="well">
+					{% if application.description %}
+						<pre>{{ application.description }}</pre>
+					{% endif %}
+					<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
+						{% for item in application.evidence %}
+							<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
+								{% if item.saved %}
+									<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</a>
+								{% else %}
+									<span class="thumbnail processing" title="{{ item.original }}">
+										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+									</span>
+								{% endif %}
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if application.state == 'waiting' %}
+		<form method="post" class="text-center row-fluid">
+			<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+			<button name="action" value="allow" class="btn btn-large">Allow this application</button>
+			<button name="action" value="deny" class="btn btn-large">Deny this application</button>
+		</form>
+	{% endif %}
+{% endblock %}
+
+{% block finally %}
+	<script src="/media/js/jquery.fancybox.js"></script>
+	<script>
+		(function ($) {
+			$('#evidence').find('a.thumbnail').fancybox({
+				openEffect	: 'none',
+				closeEffect	: 'none'
+			});
+		})(jQuery);
+	</script>
+{% endblock %}
+

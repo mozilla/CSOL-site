@@ -5,19 +5,19 @@
 {% block content %}
     <div class="row">
         <div class="span4">
-            <img src="{{program.imageUrl}}">
+          <figure class="program-thumbnail thumbnail">
+            <img src="{% if program.imageUrl %}{{ program.imageUrl }}{% else %}{{program.issuer.imageUrl}}{% endif %}">
+          </figure>
         </div>
         <div class="span8">
-            <p><strong>From <a href="/orgs/some-organization">{{program.issuer.name}}</a>.</strong></p>
+            <p><strong>From <a href="{{program.url}}">{{program.issuer.name}}</a>.</strong></p>
             {% if program.description %}
                 <p>{{program.description}}</p>
             {% endif %}
-
-            <p class="text-right">
-            </p>
+            <p class="text-right"></p>
         </div>
     </div>
-    <h3><a href="/badges">Badges</a></h3>
+    <h3>Badges You Can Earn through this Program</h3>
     <ul class="thumbnails">
         {% for shortname,badge in program.earnableBadges %}
         <li class="span3">

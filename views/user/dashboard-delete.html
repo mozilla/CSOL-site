@@ -1,0 +1,14 @@
+{% extends 'user/dashboard.html' %}
+
+{% block activity %}
+	<h3>Delete {{ current.getDisplayName() }}'s account</h3>
+	<p>Are you sure you want to delete {{ current.getDisplayName() }}'s account? This action cannot be undone.</p>
+	<form method="post">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<input type="hidden" name="action" value="delete">
+		<p class="text-center">
+			<input type="submit" class="btn" value="Yes, delete this account">
+			<a href="/dashboard/{{ current.username }}" class="btn">Cancel</a>
+		</p>
+	</form>
+{% endblock %}
