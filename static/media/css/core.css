@@ -94,7 +94,9 @@ ol {
 .navbar .navbar-inner {
   background-image: none;
   background-repeat: repeat;
-  background: #45bcd2;
+  border-bottom: 1px solid #c0c0c0;
+  filter: none;
+  background-color: #45bcd2;
 }
 .navbar form.navbar-inner {
   padding: 7px;
@@ -106,6 +108,8 @@ ol {
   padding-top: 25px;
 }
 .navbar .nav-wrap {
+  border: 1px solid #c0c0c0;
+  border-radius: 7px;
   width: 100%;
   padding: 0 0 0 0;
   margin: 0 0 0 0;
@@ -935,13 +939,14 @@ body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
 /* Landing page : all displays -- */
 /* ------------------------------ */
 body.home {
+  min-height: 775px;
   background: url('../img/background-chalkboard-green.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale')";
   overflow: visible;
 }
 body.home .navbar .navbar-inner {
@@ -953,8 +958,8 @@ body.home .navbar .navbar-inner {
   -o-background-size: cover;
   background-size: cover;
   padding-top: 0px;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/spacedimg.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/spacedimg.jpg',sizingMethod='scale')";
 }
 body.home .navbar .navbar-inner > .container {
   background-image: url('../img/home_drawing.png');
@@ -1080,6 +1085,7 @@ body.home #cl_i_vid {
 /* ------------------------------ */
 @media only screen and (max-width: 599px) {
   body.home {
+    min-height: inherit;
     background-image: url('../img/chalkboard_bg.jpg');
     -webkit-background-size: inherit;
     -moz-background-size: inherit;
