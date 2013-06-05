@@ -42,6 +42,13 @@ module.exports = {
 					callback(err);
 				});
 		},
+		// middleware gets the user's playlist of badges and makes it available via
+		// `req.playlist`, which is a sorted array of badges.
+		// It expects that `req.remote.badges` exists and that it is the *full* list
+		// of all badges -- this list is then filtered down by what's in the
+		// playlist table to produce the user's playlist (nb: once/if the openbadger
+		// API supports taking a list of badge shortnames to return badge details
+		// about, retrieving the full list from the API is no longer necessary).
 		middleware: function (req, res, next) {
 			var badges = req.remote.badges;
 			var user = res.locals.user;
