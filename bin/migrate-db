@@ -4,6 +4,12 @@ var path = require('path');
 var db = require(path.join(__dirname, '..', 'db'));
 var migrationsPath = path.join(__dirname, '..', 'migrations');
 
-db.getMigrator({
-  path: migrationsPath
-}).migrate();
+db
+  .getMigrator({path: migrationsPath})
+    .migrate()
+      .success(function () {
+        console.log("Success!");
+      })
+      .error(function (err) {
+        console.log("Error:", err);
+      });

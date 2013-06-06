@@ -1,3 +1,4 @@
+const async = require('async');
 const path = require('path');
 
 const Sequelize = require('sequelize');
@@ -97,6 +98,7 @@ db.model = function(name) {
 }
 
 db.type = Sequelize;
+
 db.healthCheck = function(meta, cb) {
   var conn = require('mysql').createConnection({
     host: DB_HOST,
@@ -111,4 +113,18 @@ db.healthCheck = function(meta, cb) {
   conn.query('SHOW TABLES', cb);
   conn.end();
 };
+
+db.runMigrations = function (migrations, callback) {
+  async.mapSeries(migrations, function (migration, callback) {
+    migration.complete(callback);
+  }, function (err) {
+    if (err && err.code !== 'ER_DUP_FIELDNAME')
+      // If the error is 'ER_DUP_FIELDNAME', we're going to assume it's
+      // because the database is more up-to-date than migrations know.
+      return callback(err);
+
+    callback();
+  });
+}
+
 module.exports = db;
