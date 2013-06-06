@@ -1,22 +1,28 @@
 var runMigrations = require('../db').runMigrations;
 
 module.exports = {
-  up: function(migration, DataTypes, callback) {
-    runMigrations([
-      migration.addColumn('Learners', 'firstName', {
-        type: DataTypes.STRING,
-        allowNull: true
-      }),
-      migration.addColumn('Learners', 'lastName', {
-        type: DataTypes.STRING,
-        allowNull: true
-      })
+  up: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {
+        type: 'addColumn',
+        args: ['Learners', 'firstName', {
+          type: DataTypes.STRING,
+          allowNull: true
+        }]
+      },
+      {
+        type: 'addColumn',
+        args: ['Learners', 'lastName', {
+          type: DataTypes.STRING,
+          allowNull: true
+        }]
+      }
     ], callback);
   },
-  down: function(migration, DataTypes, callback) {
-    runMigrations([
-      migration.removeColumn('Learners', 'firstName'),
-      migration.removeColumn('Learners', 'lastName')
+  down: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {type: 'removeColumn', args: ['Learners', 'firstName']},
+      {type: 'removeColumn', args: ['Learners', 'lastName']}
     ], callback);
   }
 }
