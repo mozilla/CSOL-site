@@ -3,7 +3,7 @@
 
 {% block content %}
 	{% block filter %}
-		{% if filters %}
+    {% if filters %}
 			<div class="navbar filter">
 				<form class="navbar-inner navbar-form form-inline text-center" method="get">
 					{% for filter in filters %}
@@ -11,17 +11,17 @@
     						<label for="filter-{{ filter.name }}" class="filter-icon filter-{{ filter.name }}">{{ filter.label }}</label>
     						{% if filter.options %}
     							<select id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-medium{% if filter.class %} {{ filter.class }}{% endif %}">
-    								<option></option>
-    								{% if filter.is_grouped %}
-    									{% for label, options in filter.options %}
+    								<option value="">{{ filter.label }}</option>
+                    {% if filter.is_grouped %}
+                      {% for label, options in filter.options %}
     										<optgroup label="{{ label }}">
     											{% for value, label in options %}
     												<option value="{{ value }}"{% if filter.selected == value %} selected="selected"{% endif %}>{{ label }}</option>
     											{% endfor %}
     										</optgroup>
     									{% endfor %}
-    								{% else %}
-    									{% for item in filter.options %}
+                    {% else %}
+                      {% for item in filter.options %}
     										<option value="{{ item.value }}"{% if filter.selected == item.value %} selected="selected"{% endif %}>{{ item.label }}</option>
     									{% endfor %}
     								{% endif %}

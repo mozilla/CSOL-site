@@ -5,15 +5,6 @@ var mob = 0;
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob = 1
 
 	$('.show-tooltip').tooltip();
-	
-	/*move filter labels into the selectors*/
-	if($('.navbar.filter').length != 0) {
-		$('.navbar.filter form label').each(function(){
-			var selectID = ($(this).attr('for'));
-			var selectEle = $('#' + selectID);
-			$('#' + selectID + ' option:first').text($(this).text());
-		});
-	}
 
 	/*landing page overrides*/
 	if($('body.home').length != 0) {
@@ -35,8 +26,9 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 			}
 			return false;
 		});
+
 		/*landing page mobile overrides*/
-		if(mob) { 
+		if(mob) {
 			vidLink = '<a href="http://www.youtube.com/v/6WwpwtYNsNk">watch video</a>';
 		}
 		$('li.claim').after($('<li class="video"></li>').append(vidLink));
