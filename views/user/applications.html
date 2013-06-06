@@ -2,6 +2,12 @@
 {% set pageTitle = 'My Applications' %}
 {% set navItem = 'backpack' %}
 
+{% block head %}
+<script>
+  // Something here to show the shareModal
+</script>
+{% endblock %}
+
 {% block item %}
   <li class="span3">
     <figure class="thumbnail state-{{ item.state }}">
@@ -12,6 +18,7 @@
         {% block item_actions_wrapper %}
           <p class="text-right">
             {% block item_actions %}
+              <a href="#" class="btn" title="Share with your friends">Share</a>
               <a href="{{ item.url }}" class="btn">Details</a>
             {% endblock %}
           </p>
@@ -33,14 +40,6 @@
     </figure>
   </li>
 {% endblock %}
-
-{% block item_actions %}
-{#
-  {{ super() }}
-	<a class="btn show-tooltip" title="Add to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
-#}
-{% endblock %}
-
 
 {% block modal %}
 
