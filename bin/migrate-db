@@ -8,8 +8,9 @@ db
   .getMigrator({path: migrationsPath})
     .migrate()
       .success(function () {
-        console.log("Success!");
+        console.log("Migration successful");
       })
       .error(function (err) {
-        console.log("Error:", err);
+        console.log("Migration error:", err);
+        process.exit(1);
       });
