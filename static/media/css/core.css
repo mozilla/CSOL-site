@@ -1020,12 +1020,6 @@ body.home .secondary .upper > .pull-right li:nth-child(even) {
 body.home .secondary .lower {
   border-top: none;
 }
-body.home .secondary .lower .pull-right li:first-child {
-  display: none;
-}
-body.home .secondary .lower .pull-right li:nth-child(2) {
-  border-left: none;
-}
 body.home .footer {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
