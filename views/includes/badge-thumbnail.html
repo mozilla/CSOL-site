@@ -19,10 +19,10 @@ doesn't have a URL #}
 {% endmacro %}
 
 <figure class="thumbnail">
-	<div class="playlist-bar pull-right">
-		{% if not playlisted %}
-			{% include "includes/add-to-playlist-btn.html" %}
-		{% endif %}
+	<div class="playlist-bar text-right">
+	{% if not playlisted %}
+		{% include "includes/add-to-playlist-btn.html" %}
+	{% endif %}
 	</div>
 	<a href="{{ itemUrl(url, item) }}"><img src="{{ item.image }}"></a>
 	<figcaption class="caption">
