@@ -4,9 +4,9 @@
 {% set navItem = 'sign-up' %}
 
 {% block content %}
-	<form class="form-horizontal span6 offset3" method="post">
+	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		<fieldset>
+		<fieldset class="span6 offset3 well">
 			<div class="control-group">
 				<label class="control-label" for="input-email">Your Name</label>
 				<div class="controls">
