@@ -35,10 +35,6 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 			}
 			return false;
 		});
-
-		/*landing page menu rearrange*/
-		$('<p id="rahm">"Because we are making the right choices today, every child in Chicago has a better chance at a brighter future tomorrow."<br><span style="margin-top:5px;display:block; text-align:right;">–Mayor Rahm Emanuel</span></p>').prependTo('.footer .upper');
-		$('<div id="bubbles"><span class="lt">Join the conversation on <a href="https://www.facebook.com/ChicagoSummerOfLearning" target="_blank">Facebook</a>.</span><span class="rt">Share stories on <a href="http://twitter.com/csol2013" target=_blank">Twitter</a></span></div>').appendTo('.footer .upper');
 		
 		/*landing page mobile overrides*/
 		if(mob) { 

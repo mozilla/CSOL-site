@@ -180,15 +180,21 @@ nav.pagination {
 
 /*footer*/
 .footer {
-  background-image:url('../img/chalkboard_bg.jpg');
-  -webkit-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  -moz-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
-  background-repeat:repeat;
+	background: url('../img/background-chalkboard-green.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale')";
+	overflow:visible;
+	-webkit-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+	box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+	background-repeat:repeat;
 	a {
 		color: #fff;
 	}
-
 	a.logo {
 		text-indent:-9000px;
 		width:82px;
@@ -197,33 +203,12 @@ nav.pagination {
 		background-position:center center;
 		background-repeat:no-repeat;
 	}
-
-	a.logo.chi {
-		background-image: url('../img/chi.png');
-	}
-
-	a.logo.mac {
-		background-image: url('../img/mac.png');
-	}
-
-	a.logo.moz {
-		background-image: url('../img/moz.png');
-	}
-
 	a:hover {
 	  color:#c0c0c0;
 	  text-decoration:none;
   }
   .upper {
-  	  padding:50px 0 0 0;
-	  p {
-	    background-image:url('../img/csol_logo_sm.png');
-		  padding-left:209px;
-		  background-repeat:no-repeat;
-		  background-position:top left;
-		  width:400px;
-		  margin-bottom:25px;
-	  }
+  	  padding:10px 0 0 0;
 	  li {
 	  	display:inline-block;
   		border-left:none;
@@ -234,7 +219,9 @@ nav.pagination {
   	}
   }
   .lower {
+	border-top:1px dotted #fff;
   	padding:15px 0;
+  	margin-top:15px;
     ul {
  			li {
 				display:inline-block;
@@ -253,6 +240,62 @@ nav.pagination {
 			}
 			li:last-child {
 				border-right: none;
+			}
+		}
+	}
+	#rahm {
+		position:relative;
+		width:300px;
+		padding-left:0px;
+		padding-top:78px;
+		background:none;
+		float:left;
+		-webkit-hyphens:none;
+		-moz-hyphens:none;
+		hyphens:none;
+		margin-right:41px;
+		font-size:14px;
+	}
+	#logos {
+		padding-top:60px;
+		a.logo.chi {
+			background-image: url('../img/chi.png');
+		}
+
+		a.logo.mac {
+			background-image: url('../img/mac.png');
+		}
+
+		a.logo.moz {
+			background-image: url('../img/moz.png');
+		}
+	}
+	#bubbles {
+		background-image:url('../img/bubbles.png');
+		width:310px;
+		height:140px;
+		background-repeat:no-repeat;
+		background-position:18px 0px;
+		margin-top:15px;
+		span {
+			color:#000;
+			display:block;
+			width:100px;
+			&.lt {
+				float:left;
+				margin-left:34px;
+				margin-top:12px;
+				a {
+					color:#3B5998;
+				}
+			}
+			&.rt {
+				margin-top:57px;
+				margin-right:17px;
+				float:right;
+				a {
+					color:#3B5998;
+				}
 			}
 		}
 	}
@@ -1142,75 +1185,10 @@ body.home {
     		width:inherit;
     	}
     }
-    .secondary {
-    	.upper {
-			padding-top:15px;
-			position:relative;
-			> p.pull-left {
-				display:none;
-			}
-			> .pull-right {
-				float:left;
-				text-align:center;
-				width:340px;
-				padding-top:55px;
-				position:relative;
-				li:nth-child(even){
-					margin:12px;
-				}
-			}
-		}
-		.lower {
-			border-top:1px dotted #fff;
-		}
-	}
 	.footer {
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;
 	box-shadow:none;
-	}
-	#rahm {
-		position:relative;
-		width:300px;
-		padding-left:0px;
-		padding-top:78px;
-		background:none;
-		float:left;
-		-webkit-hyphens:none;
-		-moz-hyphens:none;
-		hyphens:none;
-		margin-right:8px;
-		font-size:14px;
-	}
-	#bubbles {
-		float:left;
-		background-image:url('../img/bubbles.png');
-		width:310px;
-		height:140px;
-		background-repeat:no-repeat;
-		background-position:18px 0px;
-		margin-top:15px;
-		span {
-			color:#000;
-			display:block;
-			width:100px;
-			&.lt {
-				float:left;
-				margin-left:34px;
-				margin-top:12px;
-				a {
-					color:#3B5998;
-				}
-			}
-			&.rt {
-				margin-top:58px;
-				margin-right:13px;
-				float:right;
-				a {
-					color:#3B5998;
-				}
-			}
-		}
 	}
 	.footer {
 		background-image: none;

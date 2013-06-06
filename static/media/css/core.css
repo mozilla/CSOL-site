@@ -169,7 +169,14 @@ nav.pagination ul li a {
 }
 /*footer*/
 .footer {
-  background-image: url('../img/chalkboard_bg.jpg');
+  background: url('../img/background-chalkboard-green.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale')";
+  overflow: visible;
   -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
@@ -186,29 +193,12 @@ nav.pagination ul li a {
   background-position: center center;
   background-repeat: no-repeat;
 }
-.footer a.logo.chi {
-  background-image: url('../img/chi.png');
-}
-.footer a.logo.mac {
-  background-image: url('../img/mac.png');
-}
-.footer a.logo.moz {
-  background-image: url('../img/moz.png');
-}
 .footer a:hover {
   color: #c0c0c0;
   text-decoration: none;
 }
 .footer .upper {
-  padding: 50px 0 0 0;
-}
-.footer .upper p {
-  background-image: url('../img/csol_logo_sm.png');
-  padding-left: 209px;
-  background-repeat: no-repeat;
-  background-position: top left;
-  width: 400px;
-  margin-bottom: 25px;
+  padding: 10px 0 0 0;
 }
 .footer .upper li {
   display: inline-block;
@@ -219,7 +209,9 @@ nav.pagination ul li a {
   margin: 0 12px;
 }
 .footer .lower {
+  border-top: 1px dotted #fff;
   padding: 15px 0;
+  margin-top: 15px;
 }
 .footer .lower ul li {
   display: inline-block;
@@ -237,6 +229,60 @@ nav.pagination ul li a {
 }
 .footer .lower ul li:last-child {
   border-right: none;
+}
+.footer #rahm {
+  position: relative;
+  width: 300px;
+  padding-left: 0px;
+  padding-top: 78px;
+  background: none;
+  float: left;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  hyphens: none;
+  margin-right: 41px;
+  font-size: 14px;
+}
+.footer #logos {
+  padding-top: 60px;
+}
+.footer #logos a.logo.chi {
+  background-image: url('../img/chi.png');
+}
+.footer #logos a.logo.mac {
+  background-image: url('../img/mac.png');
+}
+.footer #logos a.logo.moz {
+  background-image: url('../img/moz.png');
+}
+.footer #bubbles {
+  background-image: url('../img/bubbles.png');
+  width: 310px;
+  height: 140px;
+  background-repeat: no-repeat;
+  background-position: 18px 0px;
+  margin-top: 15px;
+}
+.footer #bubbles span {
+  color: #000;
+  display: block;
+  width: 100px;
+}
+.footer #bubbles span.lt {
+  float: left;
+  margin-left: 34px;
+  margin-top: 12px;
+}
+.footer #bubbles span.lt a {
+  color: #3B5998;
+}
+.footer #bubbles span.rt {
+  margin-top: 57px;
+  margin-right: 17px;
+  float: right;
+}
+.footer #bubbles span.rt a {
+  color: #3B5998;
 }
 /*sticky footer*/
 .wrapper {
@@ -1010,73 +1056,10 @@ body.home .container {
 body.home .navbar-static-top .container {
   width: inherit;
 }
-body.home .secondary .upper {
-  padding-top: 15px;
-  position: relative;
-}
-body.home .secondary .upper > p.pull-left {
-  display: none;
-}
-body.home .secondary .upper > .pull-right {
-  float: left;
-  text-align: center;
-  width: 340px;
-  padding-top: 55px;
-  position: relative;
-}
-body.home .secondary .upper > .pull-right li:nth-child(even) {
-  margin: 12px;
-}
-body.home .secondary .lower {
-  border-top: 1px dotted #fff;
-}
 body.home .footer {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-}
-body.home #rahm {
-  position: relative;
-  width: 300px;
-  padding-left: 0px;
-  padding-top: 78px;
-  background: none;
-  float: left;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  hyphens: none;
-  margin-right: 8px;
-  font-size: 14px;
-}
-body.home #bubbles {
-  float: left;
-  background-image: url('../img/bubbles.png');
-  width: 310px;
-  height: 140px;
-  background-repeat: no-repeat;
-  background-position: 18px 0px;
-  margin-top: 15px;
-}
-body.home #bubbles span {
-  color: #000;
-  display: block;
-  width: 100px;
-}
-body.home #bubbles span.lt {
-  float: left;
-  margin-left: 34px;
-  margin-top: 12px;
-}
-body.home #bubbles span.lt a {
-  color: #3B5998;
-}
-body.home #bubbles span.rt {
-  margin-top: 58px;
-  margin-right: 13px;
-  float: right;
-}
-body.home #bubbles span.rt a {
-  color: #3B5998;
 }
 body.home .footer {
   background-image: none;
