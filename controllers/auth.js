@@ -570,10 +570,6 @@ module.exports = function (app) {
           if (user.email !== username && user.username !== normalizeUsername(username))
             return finalize('Invalid nickname or email address');
 
-          if (user.underage) {
-            password = generatedPassword;
-          }
-
           bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
             if (err || !hash)
               return finalize(err || 'Failed to generate new password - please try again.');
