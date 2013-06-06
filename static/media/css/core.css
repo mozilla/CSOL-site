@@ -169,18 +169,21 @@ nav.pagination ul li a {
 }
 /*footer*/
 .footer {
-  background: url('../img/background-chalkboard-green.jpg') no-repeat center center fixed;
+  background-image: url('/media/img/background-chalkboard-green.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  padding-top: 0px;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg', sizingMethod='scale');
   -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale')";
-  overflow: visible;
   -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   background-repeat: repeat;
+  height: 250px;
 }
 .footer a {
   color: #fff;
