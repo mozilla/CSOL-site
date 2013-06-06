@@ -62,7 +62,10 @@ module.exports = function (app) {
     if (usernames.indexOf(learnerName) === -1)
       return res.redirect('/dashboard');
 
-    normalizeDependants(dependants, function (err, dependants) {
+    normalizeDependants(dependants, {
+      applications: true,
+      badges: true
+    }, function (err, dependants) {
       if (err)
         return next(err);
 

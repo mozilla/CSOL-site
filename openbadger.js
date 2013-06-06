@@ -332,7 +332,7 @@ var openbadger = new Api(ENDPOINT, {
         return callback(err, data);
 
       return callback(null, {
-        assetionUrl: data.url
+        assertionUrl: data.url
       });
     });
   },

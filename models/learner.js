@@ -144,7 +144,7 @@ module.exports = {
             _.each(userBadges, function(badge) {
               _.extend(badge, {
                 badge: badge,
-                updatedAt: new Date(badge.issuedOn),
+                updatedAt: new Date(badge.issuedOn * 1000),
                 state: 'awarded',
                 getStateDescription: function() { return 'Awarded'; },
                 type: 'badge'

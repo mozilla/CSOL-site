@@ -696,11 +696,13 @@ ul.thumbnails li .thumbnail.state-reviewed .state {
 ul.thumbnails li .thumbnail.state-reviewed .state::before {
   background-position: -80px 0;
 }
-ul.thumbnails li .thumbnail.state-accepted .state {
+ul.thumbnails li .thumbnail.state-accepted .state,
+ul.thumbnails li .thumbnail.state-awarded .state {
   background-color: #8EBFDC;
   border-color: #04465E;
 }
-ul.thumbnails li .thumbnail.state-accepted .state::before {
+ul.thumbnails li .thumbnail.state-accepted .state::before,
+ul.thumbnails li .thumbnail.state-awarded .state::before {
   background-position: -100px 0;
 }
 ul.thumbnails li:nth-child(2n+2) figure.thumbnail > a img {

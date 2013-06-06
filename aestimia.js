@@ -159,7 +159,7 @@ var aestimia = new Api(ENDPOINT, {
 
                 // TO DO - email applicant about change of application state
 
-                console.log('Badge awarded:', assetionUrl);
+                // console.log('Badge awarded:', assertionUrl);
               });
             });
 
