@@ -16,10 +16,8 @@
 {% endblock %}
 
 {% block item_actions %}
-{#
 	{{ super() }}
-	<a class="btn show-tooltip" title="Add to your favorites" href="{{ item.url }}/favorite"><i class="icon-heart"></i></a>
-#}
+        <a class="btn" title="Share with your friends!" href="#" onClick="$('#shareModal').modal('toggle'); return false;"><i class="icon-share"></i></a>
 {% endblock %}
 
 {% block modal %}
