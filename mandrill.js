@@ -25,8 +25,12 @@ const TEMPLATES = {
   '10 day guardian reminder': 'csol-guardian-remind-10-day',
   '7 day guardian reminder': 'csol-guardian-remind-7-day',
   '3 day guardian reminder': 'csol-guardian-remind-3-day',
-  '1 day guardian reminder': 'csol-guardian-remind-1-day'
-}
+  '1 day guardian reminder': 'csol-guardian-remind-1-day',
+  'badge claim': 'csol-badge-claim',
+  '<13 badge claim': 'csol-13-badge-claim',
+  '<13 badge claim with name': 'csol-13-badge-claim-named',
+  'unknown badge claim': 'csol-unknown-badge-claim'
+};
 
 module.exports = {
 
@@ -104,7 +108,7 @@ module.exports = {
           level = 'error';
           unsent.push(result);
         }
-        logger.log(level, 'Learner signup email %s for %s', result.status, result.email);
+        logger.log(level, '%s email %s for %s', payload.template_name, result.status, result.email);
       });
       if (unsent.length) 
         return callback({ 
