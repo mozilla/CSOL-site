@@ -17,7 +17,9 @@
 
 {% block item_actions %}
 	{{ super() }}
+        {% if not user.underage %}
         <a class="btn" title="Share with your friends!" href="#" onClick="$('#shareModal').modal('toggle'); return false;"><i class="icon-share"></i></a>
+        {% endif %}
 {% endblock %}
 
 {% block modal %}

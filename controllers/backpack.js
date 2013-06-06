@@ -78,7 +78,8 @@ module.exports = function (app) {
     var data = req.remote;
 
     res.render('user/backpack.html', {
-      items: data.badges
+      items: data.badges,
+      user: req.session.user
     });
   });
 
@@ -140,7 +141,8 @@ module.exports = function (app) {
           items: _.map(applications, function(badge) {
             badge.url = '/myapplications/' + badge.id;
             return badge;
-          })
+          }),
+          user: user
         });
       });
     });

@@ -11,7 +11,9 @@
         {% block item_actions_wrapper %}
           <p class="text-right">
             {% block item_actions %}
+              {% if not user.underage %}
               <a class="btn" title="Share with your friends!" href="#" onClick="$('#shareModal').modal('toggle'); return false;"><i class="icon-share"></i></a>
+              {% endif %}
               <a href="{{ item.url }}" class="btn">Details</a>
             {% endblock %}
           </p>
