@@ -13,6 +13,9 @@ if (!JWT_SECRET)
   throw new Error('Must specify CSOL_OPENBADGER_SECRET in the environment');
 
 function normalizeBadge (badge, id) {
+  if (badge.shortname)
+    badge.id = badge.shortname;
+
   if (!id)
     id = badge.shortname;
 
@@ -29,6 +32,9 @@ function normalizeBadgeInstance (badge, id) {
   /*  This is dumb, but let's us reuse current templates to
       build out a single-level object. */
   _.extend(badge, badge.badgeClass);
+
+  if (!badge.id)
+    badge.id = id;
 
   if (!badge.url)
     badge.url = '/mybadges/' + id;
@@ -377,6 +383,23 @@ var openbadger = new Api(ENDPOINT, {
       });
     });
   },
+
+  getUserRecommendations: function getUserRecommendations (query, callback) {
+    var user = query.session.user;
+    var email = user.email;
+    var params = {
+      auth: getJWTToken(email),
+      email: email
+    };
+    this.get('/user/recommendations', {qs: params}, function(err, data) {
+      if (err)
+        return callback(err, null);
+
+      return callback(null, {
+        recommendations: _.map(data.badges, normalizeBadge)
+      });
+    });
+  }
 });
 
 updateOrgs();

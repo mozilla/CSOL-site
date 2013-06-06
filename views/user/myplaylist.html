@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% set pageTitle = user.username + '’s Playlist' %}
+{% set navItem = 'backpack' %}
+{% set subNavItem = 'playlist' %}
+
+
+{% block content %}
+	<p class="lead">Some really short and sweet text about what a Playlist is goes here.</p>
+	<div class="playlist">
+		{% block playlist_list %}
+			{% if playlist.length %}
+				<ul class="thumbnails">
+				{% for item in playlist %}
+					{% set playlisted = true %}
+					<li span="3">
+						{% include "includes/badge-thumbnail.html" %}
+					</li>
+				{% endfor %}
+				</ul>
+			{% else %}
+				<p>Nothing in your playlist yet …</p>
+			{% endif %}
+		{% endblock %}
+	</div><!-- .playlist -->
+
+	<div class="recommendations">
+		<h3>Recommendations</h3>
+		<p class="lead">Check out these other badges you can earn in the STEAM
+		categories and add them to your playlist</p>
+		{% for shortname, category in recommended %}
+		<div class="category {{shortname}}">
+			<div class="category-header">
+				<h4>{{category.label}}</h4>
+			</div>
+			<p class="lead">
+				Earn
+				{% if shortname == "art" or shortname == "engineering" %}
+				an
+				{% else %}
+				a
+				{% endif %}
+				{{category.label}} badge by getting one achievement
+				and one skill badge OR three skill badges!
+			</p>
+			<ul class="thumbnails">
+				{% for item in category.badges %}
+					<li span="3">
+						{% include "includes/badge-thumbnail.html" %}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
