@@ -1142,45 +1142,34 @@ body.home #cl_i_vid {
   body.home .navbar .nav-wrap ul.nav li a {
     padding: 10px 15px 10px;
   }
-  body.home .footer,
-  body.home .secondary {
-    background-image: none;
-    box-shadow: none;
-  }
-  body.home .footer .upper,
-  body.home .secondary .upper {
+  .footer .upper {
     padding-top: 70px;
     padding-bottom: 20px;
   }
-  body.home .footer .upper p,
-  body.home .secondary .upper p,
-  body.home .footer .upper div,
-  body.home .secondary .upper div {
+  .footer .upper p,
+  .footer .upper div {
     display: none;
   }
-  body.home .footer .upper ul.pull-right,
-  body.home .secondary .upper ul.pull-right {
+  .footer .upper ul#logos {
     width: 90%;
     display: block;
     float: none;
     padding-top: 0px;
-  }
-  body.home .footer .upper ul.pull-right li,
-  body.home .secondary .upper ul.pull-right li {
-    width: 32%;
-  }
-  body.home .footer .upper ul.pull-right li a,
-  body.home .secondary .upper ul.pull-right li a {
     margin: 0 auto;
   }
-  body.home .footer .upper ul.pull-right li:nth-child(even),
-  body.home .secondary .upper ul.pull-right li:nth-child(even) {
+  .footer .upper ul#logos li {
+    width: 32%;
+  }
+  .footer .upper ul#logos li a {
+    margin: 0 auto;
+  }
+  .footer .upper ul#logos li:nth-child(even) {
     margin: 0;
   }
-  body.home #rahm {
+  .footer #rahm {
     display: none;
   }
-  body.home #bubbles {
+  .footer #bubbles {
     display: none;
   }
 }
