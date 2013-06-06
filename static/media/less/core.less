@@ -93,10 +93,12 @@ ol {
   		}
   	}
  	}
-  .navbar-inner {
+  div.navbar-inner {
     background-image:none;
     background-repeat:repeat;
-    background:#45bcd2;
+    border-bottom:1px solid #c0c0c0;
+    filter:none;
+    background-color:#45bcd2;
   }
   form.navbar-inner {
     padding:7px;
@@ -108,11 +110,13 @@ ol {
   	padding-top:25px;
   }
   .nav-wrap {
+  	border:1px solid #c0c0c0;
+  	border-radius:7px;
   	width:100%;
   	padding:0 0 0 0;
   	margin:0 0 0 0;
   	width:940px;
-  	margin-bottom:-24px;
+  	margin-bottom:-22px;
   	-webkit-box-shadow:0 0 8px 3px rgba(0, 0, 0, 0.25);
   	-moz-box-shadow:0 0 8px 3px rgba(0, 0, 0, 0.25);
   	box-shadow:0 0 8px 3px rgba(0, 0, 0, 0.25);
@@ -904,6 +908,11 @@ body {
 				background-position: 0 -720px;
 			}
 		}
+		.navbar-inner {
+			border:1px solid #c0c0c0;
+			filter:none;
+			background:#45bcd2;
+		}
 	}
 }
 
@@ -989,6 +998,10 @@ body.home {
   			overflow:visible;
   			max-height:515px;
 
+
+		}
+		.nav-wrap {
+			border:none;
 		}
 		.nav {
 			& > li {
@@ -1094,6 +1107,7 @@ body.home {
 /* ------------------------------ */
 
 body.home {
+	min-height:775px;
 	.navbar {
 		.navbar-inner {
 			background-image:url('../img/spacedimg.jpg');
@@ -1104,8 +1118,8 @@ body.home {
 			-o-background-size:cover;
 			background-size:cover;
 			padding-top:0px;
-			filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale');
-			-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/spacedimg.png', sizingMethod='scale')";
+			filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/spacedimg.jpg',sizingMethod='scale');
+			-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/spacedimg.jpg',sizingMethod='scale')";
 			& > .container {
 				background-image:url('../img/home_drawing.png');
 				background-position:top center;
@@ -1118,8 +1132,8 @@ body.home {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale');
-	-ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background-chalkboard-green.jpg', sizingMethod='scale')";
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/media/img/background-chalkboard-green.jpg',sizingMethod='scale')";
 	overflow:visible;
   	.container {
     	width:960px;
@@ -1149,14 +1163,6 @@ body.home {
 		}
 		.lower {
 			border-top:none;
-			.pull-right {
-				li:first-child {
-					display:none;
-				}
-				li:nth-child(2) {
-					border-left:none;
-				}
-			}
 		}
 	}
 	.footer {
@@ -1250,6 +1256,7 @@ body.home {
 @media only screen
 and (max-width : 599px) {
 	body.home {
+		min-height:inherit;
     	background-image:url('../img/chalkboard_bg.jpg');
       	-webkit-background-size: inherit;
     	-moz-background-size: inherit;
