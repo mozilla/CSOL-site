@@ -39,6 +39,18 @@
 			{% block form %}
 				<form id="edit-application" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+					{% if badge.rubric %}
+						<h3>Before submitting your work check out the requirements for this badge</h3>
+						<ul class="rubric">
+						{% for item in badge.rubric.items %}
+							<li{% if item.required %} class="required"{% endif %}>{{ item.text }}
+							{%- if item.required %}
+								<span class="note">(Required)</span>
+							{%- endif -%}
+						</li>
+						{% endfor %}
+						</ul>
+					{% endif %}
 					{% block descriptionTitle %}<h3>Start by telling us about your work</h3>{% endblock %}
 					<textarea name="description" rows="7" id="edit-description">{{ application.description }}</textarea>
 					<p class="text-right"><button type="submit" value="save" class="btn">Update</button></p>
