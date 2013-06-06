@@ -20,6 +20,8 @@ const KEY = process.env['CSOL_MANDRILL_KEY'];
 const TEMPLATES = {
   '<13 learner signup': 'csol-13-signup',
   'learner signup': 'csol-signup',
+  'password reset': 'csol-password-reset',
+  'password reset confirmation': 'csol-password-reset-confirm',
   '10 day guardian reminder': 'csol-guardian-remind-10-day',
   '7 day guardian reminder': 'csol-guardian-remind-7-day',
   '3 day guardian reminder': 'csol-guardian-remind-3-day',

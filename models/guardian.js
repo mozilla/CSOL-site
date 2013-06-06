@@ -26,5 +26,10 @@ module.exports = {
       type: 'hasMany',
       as: 'Dependants'
     }
-  ]
+  ],
+  instanceMethods: {
+    getDisplayName: function () {
+      return this.email;
+    },
+  }
 };

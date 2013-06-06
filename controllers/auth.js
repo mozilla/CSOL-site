@@ -26,6 +26,22 @@ try {
 if (!CSOL_EMAIL_DOMAIN)
   throw new Error('Must specify valid CSOL_HOST or CSOL_EMAIL_DOMAIN in the environment');
 
+function getFullUrl(origin, path) {
+  if (!path) {
+    path = origin;
+    origin = CSOL_HOST;
+  }
+
+  if (!_.isObject(origin))
+    origin = url.parse(origin);
+
+  path = path || '';
+  path = path.replace(/^\/?/, '');
+
+  return url.format(_.extend(
+    origin,
+    { pathname: origin.path + path }));
+}
 
 function validateEmail (email) {
   // TODO - make sure email is valid
@@ -395,6 +411,24 @@ module.exports = function (app) {
     if (!normalizedUsername)
       return res.redirect('/login/password');
 
+    function sendResetEmail (user, resetUrl) {
+      function send (address) {
+        email.send('password reset', {
+          earnername: user.getDisplayName(),
+          resetUrl: resetUrl
+        }, address);
+      }
+
+      if (!user.underage)
+        return send(user.email);
+
+      user.getGuardian()
+        .complete(function(err, guardian) {
+          if (!err && guardian)
+            send(guardian.email);
+        });
+    }
+
     function finalize (err, user) {
       if (err || !user) {
         err && req.flash('error', err);
@@ -426,8 +460,7 @@ module.exports = function (app) {
               if (err || !token)
                 return finalize(err);
 
-              var resetLink = '/login/password/' + token
-              // TO DO - send an email to user (or guardian) with reset link
+              sendResetEmail(user, getFullUrl('/login/password/' + token.token));
 
               res.render('/auth/password-notified.html', {
                 notifyUser: user
@@ -504,6 +537,23 @@ module.exports = function (app) {
       res.redirect(303, '/login');
     }
 
+    function sendConfirmationEmail (user) {
+      function send(address) {
+        email.send('password reset', {
+          earnername: user.getDisplayName()
+        }, address);
+      }
+
+      if (!user.underage)
+        return send(user.email);
+
+      user.getGuardian()
+        .complete(function(err, guardian) {
+          if (!err && guardian)
+            send(guardian.email);
+        });
+    }
+
     if (!validatePassword(password)) {
       req.flash('error', 'This is not a valid password');
       return res.redirect('/login/password/' + token.token);
@@ -533,6 +583,8 @@ module.exports = function (app) {
             }).complete(function(err) {
               if (err)
                 return finalize(err);
+
+              sendConfirmationEmail(user);
 
               finalize();
             });
