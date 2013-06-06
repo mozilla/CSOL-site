@@ -13,7 +13,7 @@ var DEFAULT_QUERY = {
 
 function middleware (method, default_query) {
   if (!_.isFunction(method))
-    method = this[method]; 
+    method = this[method];
 
   if (!_.isFunction(method)) {
     throw new Error('Supplied method ' + method + ' not valid');
@@ -174,7 +174,7 @@ function paginate(key, dataFn) {
       if (err)
         return callback(err, data);
 
-      if (typeof data[key].length !== 'number') 
+      if (typeof data[key].length !== 'number')
         return callback(new errors.BadGateway('Unpageable data returned from upstream'), data);
 
       var pages = Math.ceil(data[key].length / pageSize);
@@ -239,7 +239,7 @@ module.exports = function Api(origin, globalFilters, config) {
       },
       /* TODO: writable is set to true for mocking, but it would
          be nice to revisit and try to remove that line. */
-      writable: true 
+      writable: true
     });
   }, this);
 
@@ -273,5 +273,3 @@ module.exports = function Api(origin, globalFilters, config) {
   });
 
 };
-
-
