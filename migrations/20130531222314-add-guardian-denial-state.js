@@ -1,31 +1,43 @@
+var runMigrations = require('../db').runMigrations;
+
 module.exports = {
-  up: function(migration, DataTypes) {
-    migration.changeColumn('Applications', 'state', {
-      type: db.type.ENUM,
-      values: [
-        'open',
-        'waiting',
-        'denied',
-        'submitted',
-        'rejected',
-        'accepted'
-      ],
-      defaultValue: 'open',
-      allowNull: false
-    });
+  up: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {
+        type: 'changeColumn',
+        args: ['Applications', 'state', {
+          type: DataTypes.ENUM,
+          values: [
+            'open',
+            'waiting',
+            'denied',
+            'submitted',
+            'rejected',
+            'accepted'
+          ],
+          defaultValue: 'open',
+          allowNull: false
+        }]
+      }
+    ], callback);
   },
-  down: function(migration) {
-    migration.changeColumn('Applications', 'state', {
-      type: db.type.ENUM,
-      values: [
-        'open',
-        'waiting',
-        'submitted',
-        'rejected',
-        'accepted'
-      ],
-      defaultValue: 'open',
-      allowNull: false
-    });
+  down: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {
+        type: 'changeColumn',
+        args: ['Applications', 'state', {
+          type: DataTypes.ENUM,
+          values: [
+            'open',
+            'waiting',
+            'submitted',
+            'rejected',
+            'accepted'
+          ],
+          defaultValue: 'open',
+          allowNull: false
+        }]
+      }
+    ], callback);
   }
 }

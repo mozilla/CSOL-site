@@ -1,11 +1,20 @@
+var runMigrations = require('../db').runMigrations;
+
 module.exports = {
-  up: function(migration, DataTypes) {
-    migration.addColumn('signuptokens', 'lastReminder', {
-      type: DataTypes.DATE,
-      allowNull: true
-    });
+  up: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {
+        type: 'addColumn',
+        args: ['signuptokens', 'lastReminder', {
+          type: DataTypes.DATE,
+          allowNull: true
+        }]
+      }
+    ], callback);
   },
-  down: function(migration) {
-    migration.removeColumn('signuptokens', 'lastReminder');
+  down: function(target, DataTypes, callback) {
+    runMigrations(target, [
+      {type: 'removeColumn', args: ['signuptokens', 'lastReminder']}
+    ], callback);
   }
 }
