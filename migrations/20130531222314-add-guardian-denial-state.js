@@ -1,4 +1,5 @@
-var runMigrations = require('../db').runMigrations;
+var path = require('path');
+var runMigrations = require(path.join(__dirname, '../db')).runMigrations;
 
 module.exports = {
   up: function(target, DataTypes, callback) {
