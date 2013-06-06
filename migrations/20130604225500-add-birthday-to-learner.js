@@ -11,7 +11,7 @@ module.exports = {
   },
   down: function(migration, DataTypes, callback) {
     runMigrations([
-      migration.removeColumn('Applications', 'birthday')
+      migration.removeColumn('Learners', 'birthday')
     ], callback);
   }
 }
