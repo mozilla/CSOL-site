@@ -1,11 +1,17 @@
+var runMigrations = require('../db').runMigrations;
+
 module.exports = {
-  up: function(migration, DataTypes) {
-    migration.addColumn('Learners', 'birthday', {
-      type: db.type.DATE,
-      allowNull: false
-    });
+  up: function(migration, DataTypes, callback) {
+    runMigrations([
+      migration.addColumn('Learners', 'birthday', {
+        type: DataTypes.DATE,
+        allowNull: false
+      })
+    ], callback);
   },
-  down: function(migration) {
-    migration.removeColumn('Applications', 'birthday');
+  down: function(migration, DataTypes, callback) {
+    runMigrations([
+      migration.removeColumn('Applications', 'birthday')
+    ], callback);
   }
 }
