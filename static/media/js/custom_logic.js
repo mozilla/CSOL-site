@@ -35,12 +35,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 			}
 			return false;
 		});
-		
 		/*landing page mobile overrides*/
 		if(mob) { 
 			vidLink = '<a href="http://www.youtube.com/v/6WwpwtYNsNk">watch video</a>';
 		}
-
 		$('li.claim').after($('<li class="video"></li>').append(vidLink));
 		$('li.log-in').before($('.about'));
 
@@ -51,23 +49,21 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 		$('li.about a').append('<span> the program</span>')
 		$('li.challenges a').append('<span> your future.</span>');
 	} else {
-		/*non-landing page overrides*/
+		
+		/*non-landing page mobile overrides*/
 		if(mob) { 
-		var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
-		var dynList = $('<li id="dyn"></li>');
-		var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
-			$('#dynWrap').slideToggle();
-			return false;
-		});
-
-		$('ul.nav').prepend(dynList.append(dynLink), dynWrap);
-		//dynLink.appendTo(dynWrap.prependTo());
-
-		$('ul.nav li').each(function(){
-			if ($(this).attr("id") != "dyn") {
-        		$(this).appendTo("#dynWrap");
-    		}
-		});
+			var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
+			var dynList = $('<li id="dyn"></li>');
+			var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
+				$('#dynWrap').slideToggle();
+				return false;
+			});
+			$('ul.nav').prepend(dynList.append(dynLink), dynWrap);
+			$('ul.nav li').each(function(){
+				if ($(this).attr("id") != "dyn") {
+        			$(this).appendTo("#dynWrap");
+    			}
+			});
 		}
 	}
 });
