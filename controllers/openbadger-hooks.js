@@ -77,8 +77,6 @@ function auth(req, res, next) {
   var decodedToken, msg;
   if (!token)
     return respondWithError(res, 'missing mandatory `auth` param');
-  if (!JWT_SECRET)
-    return respondWithError(res, 'Environment variable CSOL_OPENBADGER_SECRET is not set.');
   try {
     decodedToken = jwt.decode(token, JWT_SECRET);
   } catch(err) {
