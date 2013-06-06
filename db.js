@@ -114,13 +114,20 @@ db.healthCheck = function(meta, cb) {
   conn.end();
 };
 
-db.runMigrations = function (migrations, callback) {
+const ALLOWED_ERROR_TYPES = [
+  'ER_DUP_FIELDNAME',
+  'ER_DUP_KEYNAME'
+];
+
+db.runMigrations = function (target, migrations, callback) {
   async.mapSeries(migrations, function (migration, callback) {
-    migration.complete(callback);
+    target[migration.type]
+      .apply(target, migration.args)
+      .complete(callback);
   }, function (err) {
-    if (err && err.code !== 'ER_DUP_FIELDNAME')
-      // If the error is 'ER_DUP_FIELDNAME', we're going to assume it's
-      // because the database is more up-to-date than migrations know.
+    if (err && ALLOWED_ERROR_TYPES.indexOf(err.code) < 0)
+      // There are some errors that happen because the database is
+      // more up-to-date than migrations know, so we ignore them
       return callback(err);
 
     callback();
