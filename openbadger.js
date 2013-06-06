@@ -52,7 +52,7 @@ function normalizeProgram(program, id) {
     program.id = id;
 
   if (!program.url)
-    program.url = '/explore/' + program.id;
+    program.url = '/explore/' + program.shortname;
 
   return program;
 }

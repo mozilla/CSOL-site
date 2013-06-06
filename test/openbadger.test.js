@@ -52,15 +52,18 @@ const DATA = {
     programs: {
       "prog-a": {
         image: "http://some.org/prog-a/img.png",
-        name: "Program A"
+        name: "Program A",
+        shortname: "program-a"
       },
       "prog-b": {
         image: "http://some.org/prog-b/img.png",
-        name: "Program B"
+        name: "Program B",
+        shortname: "program-b"
       },
       "prog-c": {
         image: "http://some.org/prog-c/img.png",
-        name: "Program C"
+        name: "Program C",
+        shortname: "program-c"
       }
     }
   },
@@ -68,7 +71,8 @@ const DATA = {
     status: 'ok',
     program: {
       image: "http://some.org/prog-a/img.png",
-      name: "Program A"
+      name: "Program A",
+      shortname: "program-a"
     }
   },
   'issuers': {
@@ -199,7 +203,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/explore/some-id' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', url: '/explore/program-a' }, 'normalized');
       t.end();
     });
   });
