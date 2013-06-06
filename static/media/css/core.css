@@ -5,6 +5,7 @@ body {
   height: 100%;
   font-weight: 300;
   line-height: 18px;
+  font-size: 16px;
 }
 html,
 body,
@@ -207,8 +208,7 @@ nav.pagination ul li a {
   background-repeat: no-repeat;
   background-position: top left;
   width: 400px;
-  min-height: 131px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 .footer .upper li {
   display: inline-block;
@@ -383,9 +383,6 @@ nav.pagination ul li a {
   }
   .footer .upper ul.pull-right li:nth-child(even) {
     margin: 0 0;
-  }
-  .footer .lower {
-    border-top: none;
   }
   .footer .lower ul.pull-left {
     display: none;
@@ -1031,7 +1028,7 @@ body.home .secondary .upper > .pull-right li:nth-child(even) {
   margin: 12px;
 }
 body.home .secondary .lower {
-  border-top: none;
+  border-top: 1px dotted #fff;
 }
 body.home .footer {
   -webkit-box-shadow: none;
@@ -1040,16 +1037,16 @@ body.home .footer {
 }
 body.home #rahm {
   position: relative;
-  width: 210px;
-  padding-left: 100px;
-  padding-top: 15px;
-  background-image: url('../img/rahm.png');
-  background-repeat: no-repeat;
-  background-position: center left;
+  width: 300px;
+  padding-left: 0px;
+  padding-top: 78px;
+  background: none;
   float: left;
   -webkit-hyphens: none;
   -moz-hyphens: none;
   hyphens: none;
+  margin-right: 8px;
+  font-size: 14px;
 }
 body.home #bubbles {
   float: left;
@@ -1074,11 +1071,12 @@ body.home #bubbles span.lt a {
   color: #3B5998;
 }
 body.home #bubbles span.rt {
-  margin-top: 52px;
-  margin-right: 7px;
+  margin-top: 58px;
+  margin-right: 13px;
   float: right;
-  font-size: 24px;
-  line-height: 20px;
+}
+body.home #bubbles span.rt a {
+  color: #3B5998;
 }
 body.home .footer {
   background-image: none;

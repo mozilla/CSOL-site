@@ -8,6 +8,7 @@ html, body {
   height:100%;
   font-weight:300;
   line-height:18px;
+  font-size:16px;
  }
 html, body, h1, h2, h3, h4, p {
 	font-family:'Open Sans', sans-serif;
@@ -221,8 +222,7 @@ nav.pagination {
 		  background-repeat:no-repeat;
 		  background-position:top left;
 		  width:400px;
-		  min-height:131px;
-		  margin-bottom:20px;
+		  margin-bottom:25px;
 	  }
 	  li {
 	  	display:inline-block;
@@ -400,7 +400,6 @@ and (max-width : 599px) {
 
 		}
 		.lower {
-			border-top:none;
 			ul.pull-left {
 				display:none;
 			}
@@ -1162,7 +1161,7 @@ body.home {
 			}
 		}
 		.lower {
-			border-top:none;
+			border-top:1px dotted #fff;
 		}
 	}
 	.footer {
@@ -1172,16 +1171,16 @@ body.home {
 	}
 	#rahm {
 		position:relative;
-		width:210px;
-		padding-left:100px;
-		padding-top:15px;
-		background-image:url('../img/rahm.png');
-		background-repeat:no-repeat;
-		background-position:center left;
+		width:300px;
+		padding-left:0px;
+		padding-top:78px;
+		background:none;
 		float:left;
 		-webkit-hyphens:none;
 		-moz-hyphens:none;
 		hyphens:none;
+		margin-right:8px;
+		font-size:14px;
 	}
 	#bubbles {
 		float:left;
@@ -1204,11 +1203,12 @@ body.home {
 				}
 			}
 			&.rt {
-				margin-top:52px;
-				margin-right:7px;
+				margin-top:58px;
+				margin-right:13px;
 				float:right;
-				font-size:24px;
-				line-height:20px;
+				a {
+					color:#3B5998;
+				}
 			}
 		}
 	}
