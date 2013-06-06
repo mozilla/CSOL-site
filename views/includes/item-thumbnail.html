@@ -1,5 +1,5 @@
 <figure class="thumbnail">
-	<a href="{{ item.url }}"><img src="{% if item.imageUrl %}{{ item.imageUrl }}{% else %}{{item.issuer.imageUrl}}{% endif %}"></a>
+	<a href="{{ item.url }}"><img src="{{ item.imageUrl | default(item.issuer.imageUrl) }}"></a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% block item_actions_wrapper %}
