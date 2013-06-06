@@ -554,6 +554,24 @@ module.exports = function (app) {
         });
     }
 
+    function updateUserPassword (user) {
+      bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
+        if (err || !hash)
+          return finalize(err || 'Failed to generate new password - please try again.');
+
+        user.updateAttributes({
+          password: hash
+        }).complete(function(err) {
+          if (err)
+            return finalize(err);
+
+          sendConfirmationEmail(user);
+
+          finalize();
+        });
+      });
+    }
+
     if (!validatePassword(password)) {
       req.flash('error', 'This is not a valid password');
       return res.redirect('/login/password/' + token.token);
@@ -567,24 +585,22 @@ module.exports = function (app) {
           return finalize(err);
 
         token.getUser(function (err, user) {
-          if (user.email !== username && user.username !== normalizeUsername(username))
+          if (user.email === username || user.username === normalizeUsername(username))
+            return updateUserPassword(user);
+
+          if (!user.GuardianId)
             return finalize('Invalid nickname or email address');
 
-          bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
-            if (err || !hash)
-              return finalize(err || 'Failed to generate new password - please try again.');
+          // Make allowances for situations where guardians have entered their
+          // own email address when resetting their child's password
 
-            user.updateAttributes({
-              password: hash
-            }).complete(function(err) {
-              if (err)
-                return finalize(err);
+          user.getGuardian()
+            .complete(function (err, guardian) {
+              if (err || !guardian)
+                return finalize('Invalid nickname or email address');
 
-              sendConfirmationEmail(user);
-
-              finalize();
+              updateUserPassword(user);
             });
-          });
         });
       });
   });
