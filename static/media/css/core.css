@@ -1303,3 +1303,7 @@ body.home #cl_i_vid {
 .about .org-list {
   list-style: none;
 }
+
+p.description {
+  white-space: pre-wrap;
+}
