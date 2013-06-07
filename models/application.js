@@ -2,8 +2,13 @@ var aestimia = require('../aestimia');
 var openbadger = require('../openbadger');
 var async = require('async');
 var errors = require('../lib/errors');
+var mandrill = require('../mandrill');
+var openbadger = require('../openbadger');
+var url = require('url');
 var db = require('../db');
 var s3 = require('../s3');
+
+const CSOL_HOST = process.env.CSOL_HOST;
 
 module.exports = {
   properties: {
@@ -108,9 +113,32 @@ module.exports = {
           return callback(err);
 
         if (learner.underage && !force) {
-          return application.updateAttributes({
-            state: 'waiting'
-          }).complete(callback);
+          return learner.getGuardian().complete(function (err, guardian) {
+            if (err)
+              return callback(err);
+
+            openbadger.getBadge(application.badgeId, function (err, data) {
+              if (err)
+                return callback(err);
+
+              var approvalUrl = url.format({
+                protocol : 'http:',
+                host : CSOL_HOST,
+                pathname: '/dashboard/' + learner.username + '/applications/' + application.badgeId
+              });
+
+              mandrill.send('<13 badge application submission', {
+                earnerName: learner.username,
+                badgeName: data.badge.name,
+                approvalUrl: approvalUrl
+              }, guardian.email, function (err) {
+                if (err)
+                  return callback(err);
+
+                application.updateAttributes({ state: 'waiting' }).complete(callback);
+              });
+            });
+          });
         }
 
         application.getEvidence().complete(function (err, items) {
