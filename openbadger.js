@@ -290,7 +290,7 @@ var openbadger = new Api(ENDPOINT, {
   getUserBadge: function getUserBadge (query, callback) {
     var id = query.id;
 
-    var email = query.session.user.email;
+    var email = query.email || query.session.user.email;
     var params = {
       auth: getJWTToken(email),
       email: email
