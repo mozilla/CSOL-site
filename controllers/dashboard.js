@@ -7,6 +7,7 @@ const _ = require('underscore');
 
 const learners = db.model('Learner');
 const applications = db.model('Application');
+const claims = db.model('Claim');
 
 function normalizeDependants (dependants, options, callback) {
   if (_.isFunction(options)) {
@@ -143,15 +144,73 @@ module.exports = function (app) {
       email: learner.email,
       id: req.params.badgeId
     }, function (err, data) {
+      if (!err)
+        return res.render('/user/dashboard-badge.html', {
+          dependants: dependants,
+          current: learner,
+          badge: data.badge
+        });
+
+      openbadger.getBadgeFromCode({
+        code: req.params.badgeId,
+        email: learner.email
+      }, function (err, data) {
+        if (err)
+          return next(err);
+
+        openbadger.getBadge(data.badge.shortname, function (err, data) {
+          if (err)
+            return next(err);
+
+            res.render('/user/dashboard-badge.html', {
+              dependants: dependants,
+              current: learner,
+              badge: data.badge,
+              code: req.params.badgeId
+            });
+        });
+      });
+    });
+  });
+
+  app.post('/dashboard/:learnerName/badges/:claimCode', [isGuardian], function (req, res, next) {
+    var learnerName = req.params.learnerName,
+        claimCode = req.params.claimCode,
+        action = req.body.action,
+        options = {};
+
+    function finish (err) {
       if (err)
         return next(err);
 
-      res.render('/user/dashboard-badge.html', {
-        dependants: dependants,
-        current: learner,
-        badge: data.badge
+      return res.redirect('/dashboard');
+    }
+
+    claims.find({where: {code: claimCode}})
+      .complete(function (err, claim) {
+        if (err || !claim)
+          return finish(err);
+
+        if (action === 'approve') {
+          claim.approve(function (err) {
+            if (err)
+              return finish(err);
+
+            req.flash('success', 'You successfully approved a badge application.');
+            finish();
+          });
+        } else if (action === 'deny') {
+          claim.deny(function (err) {
+            if (err)
+              return finish(err);
+
+            req.flash('info', 'You denied that badge application.');
+            finish();
+          });
+        } else {
+          finish();
+        }
       })
-    });
   });
 
   app.get('/dashboard/:learnerName/applications', middleware, function (req, res, next) {

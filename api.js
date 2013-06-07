@@ -131,6 +131,7 @@ function remote (method, path, options, callback) {
         };
       }
 
+      body.code = response.statusCode;
       msg = body.message || body.reason || errors.lookup(response.statusCode).status;
 
       return callback(new errors.BadGateway(msg, body));
