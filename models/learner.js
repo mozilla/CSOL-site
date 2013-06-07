@@ -169,6 +169,12 @@ module.exports = {
             return callback(err);
 
           activities = _.flatten(activities);
+          if (options.badges) {
+            applications = _.reject(applications, function(application) {
+              return application.state === 'accepted';
+            });
+          }
+
           activities.sort(function(a, b) {
             // Sort with most recent first
             return b.updatedAt - a.updatedAt;
