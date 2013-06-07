@@ -29,7 +29,9 @@ const TEMPLATES = {
   'badge claim': 'csol-badge-claim',
   '<13 badge claim': 'csol-13-badge-claim',
   '<13 badge claim with name': 'csol-13-badge-claim-named',
-  'unknown badge claim': 'csol-unknown-badge-claim'
+  'unknown badge claim': 'csol-unknown-badge-claim',
+  '<13 badge application submission': 'csol-13-badge-application',
+  '<13 badge application review': 'csol-13-badge-application-review'
 };
 
 module.exports = {
