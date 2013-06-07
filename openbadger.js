@@ -52,7 +52,7 @@ function normalizeProgram(program, id) {
     program.id = id;
 
   if (!program.url)
-    program.url = '/explore/' + program.id;
+    program.url = '/explore/' + program.shortname;
 
   return program;
 }
@@ -169,23 +169,6 @@ function filterBadges (data, query) {
   return data;
 }
 
-function filterPrograms (data, query) {
-  var category = confirmFilterValue(query.category, categories),
-      org = confirmFilterValue(query.org, orgs),
-      ageGroup = confirmFilterValue(query.age, ageRanges),
-      activityType = confirmFilterValue(query.activity, activityTypes);
-
-  if (!category && !org && !ageGroup && !activityType)
-    return data;
-
-  return applyFilter(data, {
-    'categories': category,
-    'issuer.shortname': org,
-    'ageRange': ageGroup,
-    'activityType': activityType
-  });
-}
-
 function getJWTToken(email) {
   var claims = {
     prn: email,
@@ -234,7 +217,13 @@ var openbadger = new Api(ENDPOINT, {
 
   getPrograms: {
     func: function getPrograms (query, callback) {
-      this.get('/programs', function(err, data) {
+      var qs = {
+        category: query.category,
+        org: query.org,
+        age: query.age,
+        activity: query.activity,
+      };
+      this.get('/programs', {qs: qs}, function(err, data) {
         if (err)
           return callback(err, data);
 
@@ -243,7 +232,6 @@ var openbadger = new Api(ENDPOINT, {
         });
       });
     },
-    filters: filterPrograms,
     paginate: true,
     key: 'programs'
   },

@@ -4,9 +4,9 @@
 {% set navItem = 'auth' %}
 
 {% block content %}
-	<form class="form-horizontal span6 offset3" method="post">
+	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		<fieldset>
+		<fieldset class="span6 offset3 well">
 			<div class="control-group">
 				<label class="control-label" for="input-email">Your Name</label>
 				<div class="controls">
@@ -18,7 +18,7 @@
 				<label class="control-label" for="input-email">Your parent's email</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="parent_email" value="{{ parent_email }}" placeholder="e.g. user@example.com" required="required">
-					<span class="help-block">We need to know you're not an alien!
+					<span class="help-block">We need to know you're not an robot!
 						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong></span>
 				</div>
 			</div>
