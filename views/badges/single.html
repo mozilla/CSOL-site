@@ -16,9 +16,6 @@
                     <ul class="rubric">
                         {% for item in badge.rubric.items %}
                             <li{% if item.required %} class="required"{% endif %}>{{ item.text }}
-                                {%- if item.required %}
-                                    <span class="note">(Required)</span>
-                                {%- endif -%}
                             </li>
                         {% endfor %}
                     </ul>
