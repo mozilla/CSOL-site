@@ -56,7 +56,31 @@ module.exports = {
       type: db.type.BOOLEAN,
       allowNull: false,
       defaultValue: false
-    }
+    },
+    school: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    cpsStudentId: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    gender: {
+      type: db.type.ENUM,
+      values: [
+				'male',
+				'female',
+			],
+      allowNull: true
+    },
+    raceEthnicity: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    zipCode: {
+      type: db.type.STRING,
+      allowNull: true
+    },
   },
   relationships: [
     {
