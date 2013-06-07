@@ -149,6 +149,21 @@ module.exports = function (app) {
       });
   });
 
+  app.get('/evidence/:applicationId/:authHash', function (req, res, next) {
+    applications.find({where: {id: req.params.applicationId}})
+      .complete(function (err, application) {
+        if (err)
+          return next(err);
+
+        var hash = application.getHash();
+        if (req.params.authHash !== hash)
+          return next(new errors.NotFound());
+
+        res.type('text/plain');
+        res.send(application.description);
+      });
+  });
+
   app.get('/evidence/:evidenceSlug', function (req, res, next) {
     var evidence = req.params.evidence,
         thumb = req.params.thumb;
@@ -259,12 +274,14 @@ module.exports = function (app) {
         if (!application)
           return render('new');
 
+        var wordcount = application.description.replace(/[^\w\s]/g, '').split(/\s+/).length;
+
         application.getEvidence()
           .complete(function(err, evidence) {
             if (err)
               return next(err);
 
-            var state = evidence.length ? application.state : 'new';
+            var state = evidence.length || (wordcount >= 20) ? application.state : 'new';
 
             render(state, {
               evidence: evidence,
@@ -311,7 +328,7 @@ module.exports = function (app) {
 
         if ('description' in req.body) {
           application.updateAttributes({
-            description: req.body.description
+            description: req.body.description.replace(/^\s*|\s*$/gi, '')
           });
         }
 

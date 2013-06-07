@@ -1,7 +1,7 @@
 const Api = require('./api');
 const async = require('async');
-const openbadger = require('./openbadger');
 const errors = require('./lib/errors');
+const openbadger = require('./openbadger');
 const _ = require('underscore');
 
 const ENDPOINT = process.env['CSOL_AESTIMIA_URL'];
@@ -21,6 +21,7 @@ var aestimia = new Api(ENDPOINT, {
 
   submit: function (application, callback) {
     var api = this;
+    var wordcount = application.description.replace(/[^\w\s]/g, '').split(/\s+/).length;
 
     application.getLearner()
       .complete(function (err, learner) {
@@ -31,6 +32,11 @@ var aestimia = new Api(ENDPOINT, {
             .complete(function (err, evidence) {
               if (err)
                 return callback(err);
+
+              evidence = evidence || [];
+
+              if (!evidence.length && wordcount < 20)
+                return callback('Insufficient evidence for this application');
 
               openbadger.getBadge(application.badgeId, function (err, data) {
                 var badge = data.badge;
@@ -70,6 +76,14 @@ var aestimia = new Api(ENDPOINT, {
                     'Good work! But you still have a few criteria to meet to earn this badge. Make sure you take a look at all the criteria before reapplying.'
                   ];
 
+                if (application.description) {
+                  submission.evidence.push({
+                    url: api.getFullUrl(CSOL_HOST, '/evidence/' + application.id + '/' + application.getHash()),
+                    mediaType: 'link',
+                    reflection: application.description
+                  })
+                }
+
                 evidence.forEach(function(item, index) {
                   var type = item.mediaType.split('/')[0];
                   if (type !== 'image') type = 'link';
@@ -78,9 +92,6 @@ var aestimia = new Api(ENDPOINT, {
                     url: api.getFullUrl(CSOL_HOST, item.getLocationUrl()),
                     mediaType: type
                   };
-
-                  if (!index && application.description)
-                    obj.reflection = application.description;
 
                   submission.evidence.push(obj);
                 });
