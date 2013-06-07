@@ -258,6 +258,7 @@ function processChildLearnerSignup (req, res, next) {
 
 function processStandardLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
+  var form = req.body;
   var normalizedUsername = normalizeUsername(signup.username);
 
   signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
@@ -305,6 +306,11 @@ function processStandardLearnerSignup (req, res, next) {
           firstName: signup.first_name,
           lastName: signup.last_name,
           email: signup.email,
+          school: (form.school||'').trim(),
+          cpsStudentId: (form.studentId||'').trim(),
+          gender: form.gender || null,
+          raceEthnicity: form.raceEthnicity,
+          zipCode: (form.zipCode||'').trim(),
           password: hash
         }).complete(function(err) {
           if (err) {

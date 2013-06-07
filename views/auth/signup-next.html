@@ -22,7 +22,81 @@
 						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong></span>
 				</div>
 			</div>
-			<div class="control-group">
+
+      <div class="control-group">
+				<label class="control-label" id="input-school-label" for="input-school">School</label>
+				<div class="controls">
+					<input type="text" id="input-school" name="school" placeholder="Optional">
+				</div>
+			</div>
+
+      <div class="control-group">
+				<label class="control-label" id="input-student-id-label" for="input-student-id">CPS Student ID</label>
+				<div class="controls">
+					<input type="text" id="input-student-id" name="studentId" placeholder="Optional">
+				</div>
+			</div>
+
+      <div class="control-group">
+				<label class="control-label" id="input-gender-label" for="input-gender">Gender</label>
+				<div class="controls">
+					<select id="input-gender" name="gender">
+            <option value=""></option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+				</div>
+			</div>
+
+      <div class="control-group">
+				<label class="control-label" id="input-ethnicity-label">Race/Ethnicity</label>
+				<div class="controls">
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="American Indian or Alaska Native">
+            American Indian or Alaska Native
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Asian">
+            Asian
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Black or African American">
+            Black or African American
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Hispanic/Latino">
+            Hispanic/Latino
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Native American or Other Pacific Islander">
+            Native American or Other Pacific Islander
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Two or More Races">
+            Two or More Races
+          </label>
+
+          <label>
+            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="White">
+            White
+          </label>
+        </div>
+			</div>
+
+      <div class="control-group">
+				<label class="control-label" id="input-zipcode-label" for="input-zipcode">Zip Code</label>
+				<div class="controls">
+					<input type="text" id="input-zipcode" name="zipCode" placeholder="11111" pattern="[0-9]{5}">
+				</div>
+			</div>
+
+
+      <div class="control-group">
 				<label class="control-label" id="input-password-label" for="input-password">Password</label>
 				<div class="controls">
 					{% if passwordGenerated %}
@@ -33,7 +107,8 @@
 					<span class="help-block">Don't forget this! You'll need it to log in again later.</span>
 				</div>
 			</div>
-			<div class="control-group">
+
+      <div class="control-group">
 				<div class="controls">
 					<p><button type="submit" class="btn">All Done!</button></p>
 				</div>
