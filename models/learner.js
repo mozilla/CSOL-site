@@ -66,11 +66,7 @@ module.exports = {
       allowNull: true
     },
     gender: {
-      type: db.type.ENUM,
-      values: [
-				'male',
-				'female',
-			],
+      type: db.type.STRING,
       allowNull: true
     },
     raceEthnicity: {

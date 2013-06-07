@@ -21,11 +21,7 @@ module.exports = {
       {
         type: 'addColumn',
         args: ['Learners', 'gender', {
-          type: DataTypes.ENUM,
-          values: [
-            'male',
-            'female',
-          ],
+          type: DataTypes.STRING,
           allowNull: true
         }]
       },
