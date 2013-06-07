@@ -39,7 +39,7 @@
                                     {% if user %}
                                         {% if user.type == 'learner' %}
                                             <li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
-                                                <a class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My Backpack <i class="caret"></i></a>
+                                                <a class="dropdown-toggle" role="button" data-toggle="dropdown" id="backpack-menu-toggle">My CSOL <i class="caret"></i></a>
                                                 <ul class="dropdown-menu" role="menu" id="backpack-menu" aria-labelledby="backpack-menu-toggle">
                                                     <li role="presentation"{% if subNavItem == 'badges' %} class="active"{% endif %}>
                                                         <a role="menuitem" tabindex="-1" href="/mybadges">My Badges</a>
@@ -48,7 +48,7 @@
                                                         <a role="menuitem" tabindex="-1" href="/myapplications">My Applications</a>
                                                     </li>
                                                     <li role="presentation"{% if subNavItem == 'playlist' %} class="active"{% endif %}>
-                                                        <a role="menuitem" tabindex="-1" href="/myplaylist">My Playlist</a>
+                                                        <a role="menuitem" tabindex="-1" href="/myplaylist">Playlist</a>
                                                     </li>
                                                     <li class="divider" role="presentation" aria-hidden="true"></li>
                                                     <li role="presentation">
@@ -125,20 +125,17 @@
             <div class="inner-wrapper">
                 <div class="container">
                     <div class="upper clearfix">
-                        <p class="pull-left">
-                            More than 100 organizations across the city have joined forces to integrate learning into summer activities for youth of all ages in every Chicago neighborhood.
-                            <br><br>
-                            With your help, we'll launch the largest citywide summer learning campaign in the nation.
-                        </p>
-                        <ul class="pull-right">
-                            <li><a class="logo chi" href="#">City of Chicago</a></li>
-                            <li><a class="logo moz" href="#">Mozilla</a></li>
-                            <li><a class="logo mac" href="#">MacArthur Foundation</a></li>
+                        <p class="pull-left" id="rahm">"Because we are making the right choices today, every child in Chicago has a better chance at a brighter future tomorrow."<br><span style="margin-top:5px;display:block; text-align:right;">–Mayor Rahm Emanuel</span></p>
+                        <ul class="pull-left" id="logos">
+                            <li><a class="logo moz" href="http://openbadges.org" target=_blank>Mozilla</a></li>
+                            <li><a class="logo chi" href="http://www.cityofchicago.org" target=_blank>City of Chicago</a></li>
+                            <li><a class="logo mac" href="http://macfound.org" target=_blank>MacArthur Foundation</a></li>
                         </ul>
+                        <div class="pull-right" id="bubbles"><span class="lt">Join the conversation on <a href="https://www.facebook.com/ChicagoSummerOfLearning" target="_blank">Facebook</a>.</span><span class="rt">Share stories on <a href="http://twitter.com/csol2013" target="_blank&quot;">Twitter</a></span></div>
                     </div>
                     <div class="lower clearfix">
                         <ul class="pull-left">
-                            <li><a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a></li>
+                            <li><a href="mailto:support@chicagosummeroflearning.org">support@chicagosummeroflearning.org</a></li>
                             <li><span>&copy; 2013</span></li>
                         </ul>
                         <ul class="pull-right">
@@ -146,6 +143,8 @@
                             <li><a href="/terms">Terms</a></li>
                             <li><a href="/privacy">Privacy</a></li>
                             <li><a href="/faq">FAQ</a></li>
+                            <li><a href="http://assess.chicagosummeroflearning.org">Mentors</a></li>
+                            <li><a href="http://badge.chicagosummeroflearning.org">Organizations</a></li>
                         </ul>
                     </div>
                 </div>

@@ -1,14 +1,14 @@
 {% extends 'auth/layout.html' %}
 {% set bodyClass = 'sign-up' %}
-{% set pageTitle = 'Sign Up' %}
+{% set pageTitle = 'Sign Up &amp; Start Exploring' %}
 {% set navItem = 'sign-up' %}
 {% set months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %}
 
 {% block content %}
-	<form class="form-horizontal span6 offset3" method="post">
-		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+	<form class="form-horizontal row-fluid" method="post">
+		<p class="lead">Explore badges you can earn and level up for citywide challenges. Create an account to get started!</p>
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		<fieldset>
+		<fieldset class="span6 offset3 well">
 			<div class="control-group">
 				<label class="control-label" for="input-username">Nickname</label>
 				<div class="controls">

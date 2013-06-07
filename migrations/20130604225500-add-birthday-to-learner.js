@@ -6,16 +6,16 @@ module.exports = {
     runMigrations(target, [
       {
         type: 'addColumn',
-        args: ['Applications', 'latestReview', {
-          type: DataTypes.TEXT,
-          allowNull: true
+        args: ['Learners', 'birthday', {
+          type: DataTypes.DATE,
+          allowNull: false
         }]
       }
     ], callback);
   },
   down: function(target, DataTypes, callback) {
     runMigrations(target, [
-      {type: 'removeColumn', args: ['Applications', 'latestReview']}
+      {type: removeColumn, args: ['Learners', 'birthday']}
     ], callback);
   }
 }

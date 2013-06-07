@@ -5,15 +5,6 @@ var mob = 0;
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob = 1
 
 	$('.show-tooltip').tooltip();
-	
-	/*move filter labels into the selectors*/
-	if($('.navbar.filter').length != 0) {
-		$('.navbar.filter form label').each(function(){
-			var selectID = ($(this).attr('for'));
-			var selectEle = $('#' + selectID);
-			$('#' + selectID + ' option:first').text($(this).text());
-		});
-	}
 
 	/*landing page overrides*/
 	if($('body.home').length != 0) {
@@ -36,15 +27,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 			return false;
 		});
 
-		/*landing page menu rearrange*/
-		$('<p id="rahm">This summer Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning. School stops for the summer, but learning never should.</p>').prependTo('.footer .upper');
-		$('<div id="bubbles"><span class="lt">Join the conversation on <a href="https://www.facebook.com/ChicagoSummerOfLearning" target="_blank">Facebook</a>.</span><span class="rt">share stories</span></div>').appendTo('.footer .upper');
-		
 		/*landing page mobile overrides*/
-		if(mob) { 
+		if(mob) {
 			vidLink = '<a href="http://www.youtube.com/v/6WwpwtYNsNk">watch video</a>';
 		}
-
 		$('li.claim').after($('<li class="video"></li>').append(vidLink));
 		$('li.log-in').before($('.about'));
 
@@ -55,23 +41,21 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 		$('li.about a').append('<span> the program</span>')
 		$('li.challenges a').append('<span> your future.</span>');
 	} else {
-		/*non-landing page overrides*/
+		
+		/*non-landing page mobile overrides*/
 		if(mob) { 
-		var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
-		var dynList = $('<li id="dyn"></li>');
-		var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
-			$('#dynWrap').slideToggle();
-			return false;
-		});
-
-		$('ul.nav').prepend(dynList.append(dynLink), dynWrap);
-		//dynLink.appendTo(dynWrap.prependTo());
-
-		$('ul.nav li').each(function(){
-			if ($(this).attr("id") != "dyn") {
-        		$(this).appendTo("#dynWrap");
-    		}
-		});
+			var dynWrap = $('<div id="dynWrap" style="display:none;"></div>');
+			var dynList = $('<li id="dyn"></li>');
+			var dynLink = $('<a href="#" title="">Menu</a>').click(function(){
+				$('#dynWrap').slideToggle();
+				return false;
+			});
+			$('ul.nav').prepend(dynList.append(dynLink), dynWrap);
+			$('ul.nav li').each(function(){
+				if ($(this).attr("id") != "dyn") {
+        			$(this).appendTo("#dynWrap");
+    			}
+			});
 		}
 	}
 });

@@ -52,15 +52,18 @@ const DATA = {
     programs: {
       "prog-a": {
         image: "http://some.org/prog-a/img.png",
-        name: "Program A"
+        name: "Program A",
+        shortname: "program-a"
       },
       "prog-b": {
         image: "http://some.org/prog-b/img.png",
-        name: "Program B"
+        name: "Program B",
+        shortname: "program-b"
       },
       "prog-c": {
         image: "http://some.org/prog-c/img.png",
-        name: "Program C"
+        name: "Program C",
+        shortname: "program-c"
       }
     }
   },
@@ -68,7 +71,8 @@ const DATA = {
     status: 'ok',
     program: {
       image: "http://some.org/prog-a/img.png",
-      name: "Program A"
+      name: "Program A",
+      shortname: "program-a"
     }
   },
   'issuers': {
@@ -199,7 +203,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/explore/some-id' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', url: '/explore/program-a' }, 'normalized');
       t.end();
     });
   });
@@ -207,10 +211,11 @@ test('getProgram', function(t) {
 });
 
 test('getPrograms', function(t) {
+  const CALLBACK_INDEX = 2;
 
   t.test('on error', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, 500, 'error of some sort');
+    getStub.callsArgWith(CALLBACK_INDEX, 500, 'error of some sort');
     openbadger.getPrograms(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
       t.similar(data, 'error of some sort', 'data');
@@ -220,7 +225,7 @@ test('getPrograms', function(t) {
 
   t.test('with data', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['programs']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['programs']);
     openbadger.getPrograms(DEFAULT_QUERY, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.programs.length, 3, 'data length');
@@ -233,7 +238,7 @@ test('getPrograms', function(t) {
 
   t.test('paginates', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['programs']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['programs']);
     openbadger.getPrograms({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.programs.length, 2, 'paginated');

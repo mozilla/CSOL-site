@@ -44,7 +44,6 @@ module.exports = function (app) {
 
   app.get('/explore', badger.middleware('getPrograms'), function (req, res, next) {
     var data = req.remote;
-
     res.render('programs/list.html', {
       filters: getFilters(req.query, ['categories', 'orgs', 'ageRanges', 'activityTypes']),
       items: data.programs,

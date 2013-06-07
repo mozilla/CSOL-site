@@ -5,4 +5,26 @@
 {%- endblock %}
 
 {% block activity %}
+	<div class="row-fluid">
+		<div class="span4">
+			<img src="{{ badge.image }}">
+		</div>
+		<div class="span8">
+			<p>
+				<strong>Issued by:</strong>
+				{% if badge.program.issuer.url -%}
+					<a href="{{ badge.program.issuer.url }}">
+				{%- endif -%}
+				{{ badge.program.issuer.name }}
+				{%- if badge.program.issuer.url -%}
+					</a>
+				{%- endif -%}
+			</p>
+
+			<p><strong>Issued to:</strong> {{ current.email }}</p>
+
+			<h3>What is this badge about?</h3>
+			<p class="description">{{ badge.description }}</p>
+		</div>
+	</div>
 {% endblock %}

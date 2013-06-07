@@ -26,6 +26,22 @@ try {
 if (!CSOL_EMAIL_DOMAIN)
   throw new Error('Must specify valid CSOL_HOST or CSOL_EMAIL_DOMAIN in the environment');
 
+function getFullUrl(origin, path) {
+  if (!path) {
+    path = origin;
+    origin = CSOL_HOST;
+  }
+
+  if (!_.isObject(origin))
+    origin = url.parse(origin);
+
+  path = path || '';
+  path = path.replace(/^\/?/, '');
+
+  return url.format(_.extend(
+    origin,
+    { pathname: origin.path + path }));
+}
 
 function validateEmail (email) {
   // TODO - make sure email is valid
@@ -144,7 +160,12 @@ function processInitialLearnerSignup (req, res, next) {
   // race conditions on usernames - even if the username does not exist now, it may
   // well have been created by the time sign-up is complete.
   // This will fail if the username is already being used
-  learners.create({username: normalizedUsername, password: '', underage: underage})
+  learners.create({
+    username: normalizedUsername,
+    password: '',
+    underage: underage,
+    birthday: birthday
+  })
     .error(function(err) {
       // Did try a `findOrCreate`, but couldn't get `isNewRecord` to work
       if (err.code === 'ER_DUP_ENTRY')
@@ -395,6 +416,24 @@ module.exports = function (app) {
     if (!normalizedUsername)
       return res.redirect('/login/password');
 
+    function sendResetEmail (user, resetUrl) {
+      function send (address) {
+        email.send('password reset', {
+          earnername: user.getDisplayName(),
+          resetUrl: resetUrl
+        }, address);
+      }
+
+      if (!user.underage)
+        return send(user.email);
+
+      user.getGuardian()
+        .complete(function(err, guardian) {
+          if (!err && guardian)
+            send(guardian.email);
+        });
+    }
+
     function finalize (err, user) {
       if (err || !user) {
         err && req.flash('error', err);
@@ -426,8 +465,7 @@ module.exports = function (app) {
               if (err || !token)
                 return finalize(err);
 
-              var resetLink = '/login/password/' + token
-              // TO DO - send an email to user (or guardian) with reset link
+              sendResetEmail(user, getFullUrl('/login/password/' + token.token));
 
               res.render('/auth/password-notified.html', {
                 notifyUser: user
@@ -504,6 +542,41 @@ module.exports = function (app) {
       res.redirect(303, '/login');
     }
 
+    function sendConfirmationEmail (user) {
+      function send(address) {
+        email.send('password reset', {
+          earnername: user.getDisplayName()
+        }, address);
+      }
+
+      if (!user.underage)
+        return send(user.email);
+
+      user.getGuardian()
+        .complete(function(err, guardian) {
+          if (!err && guardian)
+            send(guardian.email);
+        });
+    }
+
+    function updateUserPassword (user) {
+      bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
+        if (err || !hash)
+          return finalize(err || 'Failed to generate new password - please try again.');
+
+        user.updateAttributes({
+          password: hash
+        }).complete(function(err) {
+          if (err)
+            return finalize(err);
+
+          sendConfirmationEmail(user);
+
+          finalize();
+        });
+      });
+    }
+
     if (!validatePassword(password)) {
       req.flash('error', 'This is not a valid password');
       return res.redirect('/login/password/' + token.token);
@@ -517,26 +590,22 @@ module.exports = function (app) {
           return finalize(err);
 
         token.getUser(function (err, user) {
-          if (user.email !== username && user.username !== normalizeUsername(username))
+          if (user.email === username || user.username === normalizeUsername(username))
+            return updateUserPassword(user);
+
+          if (!user.GuardianId)
             return finalize('Invalid nickname or email address');
 
-          if (user.underage) {
-            password = generatedPassword;
-          }
+          // Make allowances for situations where guardians have entered their
+          // own email address when resetting their child's password
 
-          bcrypt.hash(password, BCRYPT_SEED_ROUNDS, function(err, hash) {
-            if (err || !hash)
-              return finalize(err || 'Failed to generate new password - please try again.');
+          user.getGuardian()
+            .complete(function (err, guardian) {
+              if (err || !guardian)
+                return finalize('Invalid nickname or email address');
 
-            user.updateAttributes({
-              password: hash
-            }).complete(function(err) {
-              if (err)
-                return finalize(err);
-
-              finalize();
+              updateUserPassword(user);
             });
-          });
         });
       });
   });
