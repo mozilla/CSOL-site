@@ -596,12 +596,15 @@ nav.pagination ul li a {
   padding: 2px 4px;
   text-align: center;
   position: absolute;
-  left: 5px;
-  right: 28px;
+  left: 8px;
+  right: 8px;
   bottom: -4px;
   color: #EEE;
   background: #333;
   background: rgba(0, 0, 0, 0.8);
+}
+#evidence .item.deletable .thumbnail::after {
+  right: 28px;
 }
 #evidence .processing::after {
   content: "Processing";
@@ -742,11 +745,13 @@ ul.thumbnails li .thumbnail.state-reviewed .state {
 ul.thumbnails li .thumbnail.state-reviewed .state::before {
   background-position: -80px 0;
 }
-ul.thumbnails li .thumbnail.state-accepted .state {
+ul.thumbnails li .thumbnail.state-accepted .state,
+ul.thumbnails li .thumbnail.state-awarded .state {
   background-color: #8EBFDC;
   border-color: #04465E;
 }
-ul.thumbnails li .thumbnail.state-accepted .state::before {
+ul.thumbnails li .thumbnail.state-accepted .state::before,
+ul.thumbnails li .thumbnail.state-awarded .state::before {
   background-position: -100px 0;
 }
 ul.thumbnails li:nth-child(2n+2) figure.thumbnail > a img {

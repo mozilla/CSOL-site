@@ -148,7 +148,7 @@ module.exports = {
             _.each(userBadges, function(badge) {
               _.extend(badge, {
                 badge: badge,
-                updatedAt: new Date(badge.issuedOn),
+                updatedAt: new Date(badge.issuedOn * 1000),
                 state: 'awarded',
                 getStateDescription: function() { return 'Awarded'; },
                 type: 'badge'
@@ -169,6 +169,12 @@ module.exports = {
             return callback(err);
 
           activities = _.flatten(activities);
+          if (options.badges) {
+            applications = _.reject(applications, function(application) {
+              return application.state === 'accepted';
+            });
+          }
+
           activities.sort(function(a, b) {
             // Sort with most recent first
             return b.updatedAt - a.updatedAt;

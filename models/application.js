@@ -1,4 +1,5 @@
 var aestimia = require('../aestimia');
+var openbadger = require('../openbadger');
 var async = require('async');
 var errors = require('../lib/errors');
 var db = require('../db');
@@ -70,6 +71,13 @@ module.exports = {
         case 'accepted':
           return 'Reviewed';
       }
+    },
+    getBadge: function (callback) {
+      openbadger.getBadge(this.badgeId, function (err, data) {
+        if (err)
+          return callback(err);
+        return callback(null, data.badge);
+      });
     },
     reopen: function (callback) {
       if (['rejected','denied'].indexOf(this.state) < 0)

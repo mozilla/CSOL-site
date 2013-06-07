@@ -6,7 +6,6 @@ const isLearner = require('../middleware').isLearner;
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
 const playlist = db.model('Playlist');
-const loggedIn = require('../middleware').loggedIn;
 const favoriteMiddleware = _.bind(favorite.middleware, favorite);
 const playlistMiddleware = _.bind(playlist.middleware, playlist);
 const applications = db.model('Application');
@@ -117,7 +116,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getUserBadges'),
     favoriteMiddleware
   ], function (req, res, next) {
@@ -172,7 +171,7 @@ module.exports = function (app) {
   });
 
   app.post('/mybadges/:id/favorite', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getBadge')
   ], function (req, res, next) {
     var data = req.remote;
@@ -191,7 +190,7 @@ module.exports = function (app) {
   });
 
   app.get('/myplaylist', [
-    loggedIn,
+    isLearner,
     openbadger.middleware('getAllBadges'),
     openbadger.middleware('getUserRecommendations'),
     playlistMiddleware
@@ -218,7 +217,7 @@ module.exports = function (app) {
   // multiplexed onto POST -- the `_method` param, if present, overrides the
   // HTTP method. (This enables DELETEs from regular browser form submissions.)
   app.post('/myplaylist', [
-    loggedIn
+    isLearner
   ], function (req, res, next) {
     var method = req.body._method ? req.body._method : "POST";
 
