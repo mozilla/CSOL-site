@@ -28,8 +28,7 @@ doesn't have a URL #}
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% if item.description %}
-			<p class="description">
-				{{ item.description | truncate(20, false, "…") }}
+			<p class="description">{{ item.description | truncate(20, false, "…") }}
 				<a href="{{ itemUrl(url, item) }}">Read…</a>
 			</p>
 		{% endif %}

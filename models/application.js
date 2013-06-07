@@ -1,6 +1,7 @@
 var aestimia = require('../aestimia');
 var openbadger = require('../openbadger');
 var async = require('async');
+var crypto = require('crypto');
 var errors = require('../lib/errors');
 var mandrill = require('../mandrill');
 var openbadger = require('../openbadger');
@@ -22,7 +23,7 @@ module.exports = {
       allowNull: false
     },
     description: {
-      type: db.type.STRING,
+      type: db.type.TEXT,
       allowNull: true
     },
     state: {
@@ -61,6 +62,11 @@ module.exports = {
   instanceMethods: {
     getReview: function () {
       return JSON.parse(this.latestReview || "{}");
+    },
+    getHash: function () {
+      return crypto.createHmac('sha1', this.badgeId)
+               .update(this.description)
+               .digest('hex');
     },
     getStateDescription: function () {
       switch (this.state) {
@@ -141,19 +147,14 @@ module.exports = {
           });
         }
 
-        application.getEvidence().complete(function (err, items) {
-          if (err || !items || !items.length)
-            return callback(err || 'No evidence found for this application');
+        aestimia.submit(application, function (err, id) {
+          if (err)
+            return callback(err);
 
-          aestimia.submit(application, function (err, id) {
-            if (err)
-              return callback(err);
-
-            application.updateAttributes({
-              state: 'submitted',
-              submissionId: id
-            }).complete(callback);
-          })
+          application.updateAttributes({
+            state: 'submitted',
+            submissionId: id
+          }).complete(callback);
         });
       });
     },
