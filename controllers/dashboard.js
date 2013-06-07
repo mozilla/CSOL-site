@@ -33,6 +33,26 @@ function getDependants (req, res, next) {
     });
 }
 
+function activityPage (res, res, next, learnerName, dependants, options, view) {
+  var usernames = _.pluck(dependants, 'username');
+
+  if (usernames.indexOf(learnerName) === -1)
+    return res.direct('/dashboard');
+
+  normalizeDependants(dependants, options, function (err, dependants) {
+    if (err)
+      return next(err);
+
+    var current = _.findWhere(dependants, {username: learnerName});
+
+    res.render('/user/dashboard-single.html', {
+      dependants: dependants,
+      view: view,
+      current: current
+    });
+  });
+}
+
 var middleware = [isGuardian, getDependants];
 
 module.exports = function (app) {
@@ -55,22 +75,11 @@ module.exports = function (app) {
   });
 
   app.get('/dashboard/:learnerName', middleware, function (req, res, next) {
-    var learnerName = req.params.learnerName,
-        dependants = req.params.dependants,
-        usernames = _.pluck(dependants, 'username');
-
-    if (usernames.indexOf(learnerName) === -1)
-      return res.redirect('/dashboard');
-
-    normalizeDependants(dependants, function (err, dependants) {
-      if (err)
-        return next(err);
-
-      res.render('/user/dashboard-single.html', {
-        dependants: dependants,
-        current: _.findWhere(dependants, {username: learnerName})
-      });
-    });
+    return activityPage(req, res, next,
+      req.params.learnerName,
+      req.params.dependants,
+      {badge: true, applications: true}
+    );
   });
 
   app.get('/dashboard/:learnerName/delete', middleware, function (req, res, next) {
@@ -114,53 +123,94 @@ module.exports = function (app) {
       });
   });
 
-  app.get('/dashboard/:learnerName/:activityType/:activityId?', [isGuardian], function (req, res, next) {
-    var learnerName = req.params.learnerName,
-        activityType = req.params.activityType,
-        activityId = req.params.activityId,
-        options = {};
+  app.get('/dashboard/:learnerName/badges', middleware, function (req, res, next) {
+    return activityPage(req, res, next,
+      req.params.learnerName,
+      req.params.dependants,
+      {badges: true},
+      'badges'
+    );
+  });
 
-    if (['applications', 'badges'].indexOf(activityType) < 0)
-      return next(new errors.NotFound());
+  app.get('/dashboard/:learnerName/badges/:badgeId', middleware, function (req, res, next) {
+    var dependants = req.params.dependants,
+        learner = _.findWhere(dependants, {username: req.params.learnerName});
 
-    options[activityType] = true;
+    if (!learner)
+      return res.redirect('/dashboard');
 
-    getDependants(req, res, function () {
-      var dependants = req.params.dependants,
-          usernames = _.pluck(dependants, 'username');
+    openbadger.getUserBadge({
+      email: learner.email,
+      id: req.params.badgeId
+    }, function (err, data) {
+      if (err)
+        return next(err);
 
-      if (usernames.indexOf(learnerName) === -1)
-        return res.redirect('/dashboard');
-
-      normalizeDependants(dependants, options, function (err, dependants) {
-        if (err)
-          return next(err);
-
-        var current = _.findWhere(dependants, {username: learnerName}),
-            context = {
-              dependants: dependants,
-              view: activityType,
-              current: current
-            };
-
-        if (!activityId)
-          return res.render('/user/dashboard-single.html', context);
-
-        var activity = _.find(current.activities, function(activity) {
-          return activity.badge.id === activityId;
-        });
-
-        if (!activity)
-          return next(new errors.NotFound());
-
-        context[activity.type] = activity;
-
-        return res.render('/user/dashboard-' + activity.type + '.html', context);
-      });
+      res.render('/user/dashboard-badge.html', {
+        dependants: dependants,
+        current: learner,
+        badge: data.badge
+      })
     });
   });
 
-  app.post('/dashboard/:learnerName/applications/:badgeId', [isGuardian], function (req, res, next) {
+  app.get('/dashboard/:learnerName/applications', middleware, function (req, res, next) {
+    return activityPage(req, res, next,
+      req.params.learnerName,
+      req.params.dependants,
+      {applications: true},
+      'applications'
+    );
+  });
+
+  app.get('/dashboard/:learnerName/applications/:badgeId', middleware, function (req, res, next) {
+    var dependants = req.params.dependants,
+        learner = _.findWhere(dependants, {username: req.params.learnerName});
+
+    if (!learner)
+      return res.redirect('/dashboard');
+
+    console.log(_.functions(learner));
+
+    applications.find({where: {badgeId: req.params.badgeId, LearnerId: learner.id}})
+      .complete(function (err, application) {
+        if (err || !application)
+          return next(err);
+
+        async.parallel([
+          function (callback) {
+            application.getBadge(function (err, badge) {
+              if (err)
+                return callback(err);
+
+              application.badge = badge;
+              callback();
+            });
+          },
+          function (callback) {
+            application.getEvidence()
+              .complete(function (err, evidence) {
+                if (err)
+                  return callback(err);
+
+                application.evidence = evidence;
+                callback();
+              });
+          }
+        ], function (err) {
+          if (err)
+            return next(err);
+
+          res.render('/user/dashboard-application.html', {
+            dependants: dependants,
+            current: learner,
+            application: application
+          });
+        });
+      });
+  });
+
+  app.post('/dashboard/:learnerName/applications/:applicationId', [isGuardian], function (req, res, next) {
     var learnerName = req.params.learnerName,
         badgeId = req.params.badgeId,
         action = req.body.action,

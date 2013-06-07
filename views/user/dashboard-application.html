@@ -40,27 +40,33 @@
 		</div>
 		<div class="span8">
 			<div id="application-review">
-				{% block notes %}
-				{% endblock %}
 				<div class="well">
-					{% if application.description %}
-						<pre>{{ application.description }}</pre>
+					<pre>
+						{%- if application.description -%}
+							{{ application.description }}
+						{%- else -%}
+							<i>No description available for this application.</i>
+						{%- endif -%}
+					</pre>
+					{% if application.evidence.length %}
+						<ul id="evidence" class="thumbnails">
+							{% for item in application.evidence %}
+								<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
+									{% if item.saved %}
+										<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
+											<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+										</a>
+									{% else %}
+										<span class="thumbnail processing" title="{{ item.original }}">
+											<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
+										</span>
+									{% endif %}
+								</li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						<p style="margin: 30px 0 0;">No evidence added to this application.</p>
 					{% endif %}
-					<ul id="evidence" class="thumbnails"{% if evidence.length == 0 %} style="display: none;"{% endif %}>
-						{% for item in application.evidence %}
-							<li class="span2 item item-{{ item.mediaType.split('/')[0] }}">
-								{% if item.saved %}
-									<a href="{{ item.getLocationUrl() }}" class="thumbnail" data-fancybox-type="{{ item.mediaType.split('/')[0] }}" data-fancybox-group="gallery" title="{{ item.original }}">
-										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-									</a>
-								{% else %}
-									<span class="thumbnail processing" title="{{ item.original }}">
-										<img src="{{ item.getThumbnailUrl() }}" width="150" height="150">
-									</span>
-								{% endif %}
-							</li>
-						{% endfor %}
-					</ul>
 				</div>
 			</div>
 		</div>
