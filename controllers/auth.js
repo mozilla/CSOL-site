@@ -13,7 +13,7 @@ var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
 var passwordTokens = db.model('PasswordToken');
 
-var COPPA_MAX_AGE = process.env.COPPA_MAX_AGE || 13;
+var ADULT_MIN_AGE = process.env.ADULT_MIN_AGE || 18;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 var CSOL_HOST = process.env.CSOL_HOST;
 try {
@@ -69,16 +69,16 @@ function validatePassword (password) {
   return passwords.validate(password);
 }
 
-function validateCoppaCompliance (birthday) {
+function validateAdultAgeCompliance (birthday) {
   var today = new Date();
 
   var cutoff = new Date(
-    today.getFullYear() - COPPA_MAX_AGE,
+    today.getFullYear() - ADULT_MIN_AGE,
     today.getMonth(),
     today.getDate()
   );
 
-  return cutoff > birthday;
+  return cutoff >= birthday;
 }
 
 function generateToken () {
@@ -154,7 +154,7 @@ function processInitialLearnerSignup (req, res, next) {
   if (!isValidDate)
     return fail(new Error('This is not a valid date.'));
 
-  var underage = !validateCoppaCompliance(birthday);
+  var underage = !validateAdultAgeCompliance(birthday);
 
   // Due to sign-up being a two-step process, we're creating the user now to prevent
   // race conditions on usernames - even if the username does not exist now, it may
