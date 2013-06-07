@@ -5,7 +5,8 @@
 
 
 {% block content %}
-	<p class="lead">Some really short and sweet text about what a Playlist is goes here.</p>
+	<p class="lead">What skills and interests are you working towards? Add badges you've got your eye on here! You can keep coming back to see what's next as you progress.</p>
+	<p class="lead">As you earn these badges, they'll move to your <a href="/mybadges">My Badges</a> page</p>
 	<div class="playlist">
 		{% block playlist_list %}
 			{% if playlist.length %}
@@ -18,29 +19,27 @@
 				{% endfor %}
 				</ul>
 			{% else %}
-				<p>Nothing in your playlist yet …</p>
+				<p>There is nothing in your playlist yet. Check out badges you can <a href="/earn">earn here</a>.</p>
 			{% endif %}
 		{% endblock %}
 	</div><!-- .playlist -->
 
 	<div class="recommendations">
 		<h3>Recommendations</h3>
-		<p class="lead">Check out these other badges you can earn in the STEAM
-		categories and add them to your playlist</p>
+		<p class="lead">Take a look at different badges that you can earn across science, technology, engineering, art and math (STEAM) categories.</p>
 		{% for shortname, category in recommended %}
 		<div class="category {{shortname}}">
 			<div class="category-header">
 				<h4>{{category.label}}</h4>
 			</div>
 			<p class="lead">
-				Earn
+				Work towards
 				{% if shortname == "art" or shortname == "engineering" %}
 				an
 				{% else %}
 				a
 				{% endif %}
-				{{category.label}} badge by getting one achievement
-				and one skill badge OR three skill badges!
+				{{category.label}} badge by earning one achievement and one skill badge OR three skill badges!
 			</p>
 			<ul class="thumbnails">
 				{% for item in category.badges %}
