@@ -5,6 +5,11 @@
 {%- endblock %}
 
 {% block activity %}
+	{% if code %}
+		<div class="alert">
+			This badge application is waiting for your approval
+		</div>
+	{% endif %}
 	<div class="row-fluid">
 		<div class="span4">
 			<img src="{{ badge.image }}">
@@ -27,4 +32,11 @@
 			<p class="description">{{ badge.description }}</p>
 		</div>
 	</div>
+	{% if code %}
+		<form method="post" class="text-center row-fluid">
+			<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+			<button name="action" value="approve" class="btn btn-large">Allow this application</button>
+			<button name="action" value="deny" class="btn btn-large">Deny this application</button>
+		</form>
+	{% endif %}
 {% endblock %}

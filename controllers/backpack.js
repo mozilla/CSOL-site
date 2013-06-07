@@ -62,9 +62,9 @@ module.exports = function (app) {
       email: user.email
     }, function(err, data) {
       if (err) {
-        if (err.code === 404)
+        if (err.meta.code === 404)
           req.flash('error', "That claim code appears to be invalid.");
-        else if (err.code === 409)
+        else if (err.meta.code === 409)
           req.flash('warn', "You have already used that claim code.");
         else
           req.flash('error', "A problem was encountered.");
@@ -92,26 +92,24 @@ module.exports = function (app) {
       code: claimCode,
       LearnerId: user.id
     }).complete(function(err, claim) {
-      if (err) {
+      if (err)
         return next(err);
-      }
-      else {
-        claim.submit(function(err, claim){
-          if (err) {
-            if (err.code === 409)
-              req.flash('warn', "You already have that badge.");
-            else
-              req.flash('error', "There has been an error claiming your badge.");
-          }
-          else {
-            if (claim.state === 'waiting')
-              req.flash('info', "Your badge claim is awaiting approval from your parent or guardian.");
-            else
-              req.flash('success', "You've claimed a new badge!");
-          }
-          return res.redirect('/mybadges');
-        });
-      }
+
+      claim.submit(function(err, claim){
+        if (err) {
+          if (err.meta.code === 409)
+            req.flash('warn', "You already have that badge.");
+          else
+            req.flash('error', "There has been an error claiming your badge.");
+        }
+        else {
+          if (claim.state === 'waiting')
+            req.flash('info', "Your badge claim is awaiting approval from your parent or guardian.");
+          else
+            req.flash('success', "You've claimed a new badge!");
+        }
+        return res.redirect('/mybadges');
+      });
     });
   });
 
