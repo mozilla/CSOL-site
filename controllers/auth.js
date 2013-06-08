@@ -13,7 +13,7 @@ var guardians = db.model('Guardian');
 var signupTokens = db.model('SignupToken');
 var passwordTokens = db.model('PasswordToken');
 
-var ADULT_MIN_AGE = process.env.ADULT_MIN_AGE || 18;
+var ADULT_MIN_AGE = process.env.ADULT_MIN_AGE || 13;
 var BCRYPT_SEED_ROUNDS = process.env.BCRYPT_SEED_ROUNDS || 10;
 var CSOL_HOST = process.env.CSOL_HOST;
 try {
