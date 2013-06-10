@@ -12,14 +12,7 @@
 
             {% if not user or user.type == 'learner' %}
                 <h3>How can you earn it?</h3>
-                {% if badge.rubric %}
-                    <ul class="rubric">
-                        {% for item in badge.rubric.items %}
-                            <li{% if item.required %} class="required"{% endif %}>{{ item.text }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                <p class="description">{{badge.criteria}}</p>
                 <p class="text-right">
                     {% if badge.activityType == 'offline' %}
                         <a href="/claim" class="btn">Claim this badge</a>
