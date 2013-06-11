@@ -27,7 +27,6 @@ const healthChecker = healthCheck({
   }
 });
 
-app.use(express.cookieParser());
 app.use(middleware.session());
 app.use(middleware.csrf({
   whitelist: [

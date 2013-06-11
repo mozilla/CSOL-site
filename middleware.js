@@ -1,9 +1,10 @@
 var errors = require('./lib/errors');
 var express = require('express');
 var _ = require('underscore');
+var clientSessions = require('client-sessions');
 
 
-var COOKIE_KEY = 'csol_state';
+var COOKIE_KEY = 'session';
 
 if ('COOKIE_SECRET' in process.env) {
   var COOKIE_SECRET = process.env.COOKIE_SECRET;
@@ -15,15 +16,14 @@ if ('COOKIE_SECRET' in process.env) {
 }
 
 
-exports.session = function session (config) {
-  return express.session({
+exports.session = function session () {
+  return clientSessions({
+    cookieName: COOKIE_KEY,
     secret: COOKIE_SECRET,
-    key: COOKIE_KEY,
-    cookie: _.defaults(config || {}, {
-      httpOnly: true,
-      maxAge: (7 * 24 * 60 * 60 * 1000), //one week
-      secure: false
-    })
+    maxAge: (7 * 24 * 60 * 60 * 1000), //one week
+    cookie: {
+      httpOnly: true
+    }
   });
 };
 
