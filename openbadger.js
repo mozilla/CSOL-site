@@ -162,7 +162,7 @@ function filterBadges (data, query) {
   return applyFilter(data, {
     'categories': category,
     'ageRange': ageGroup,
-    'badgeType': badgeType,
+    'type': badgeType,
     'activityType': activityType
   });
 
