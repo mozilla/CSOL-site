@@ -175,7 +175,7 @@ function processInitialLearnerSignup (req, res, next) {
     })
     .success(function(user) {
       signup.state = underage ? 'child' : 'more';
-      signup.passwordGenerated = true;
+      signup.passwordGenerated = false;
       signup.password = signup.generatedPassword = generatePassword();
       req.session.signup = signup;
       res.redirect(303, '/signup');
@@ -189,6 +189,9 @@ function processChildLearnerSignup (req, res, next) {
   signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
   signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
   signup.parent_email = req.body['parent_email'].replace(/^\s*|\s*$/g, '');
+
+  if ('password' in req.body)
+    signup.password = req.body['password'];
 
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
@@ -207,6 +210,12 @@ function processChildLearnerSignup (req, res, next) {
 
   if (!validateEmail(signup.parent_email))
     return fail(new Error('Invalid email address'));
+
+  if (!signup.password)
+    return fail(new Error('Missing password'));
+
+  if (!validatePassword(signup.password))
+    return fail(new Error('Invalid password'));
 
   learners.find({where: {username: normalizedUsername}})
     .complete(function(err, user) {
@@ -268,7 +277,7 @@ function processStandardLearnerSignup (req, res, next) {
   if ('password' in req.body)
     signup.password = req.body['password'];
 
-  signup.passwordGenerated = (signup.password === signup.generatedPassword);
+  signup.passwordGenerated = false;
 
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
@@ -524,7 +533,7 @@ module.exports = function (app) {
       req.session.generatedPassword = password;
 
       res.render('/auth/password-reset.html', {
-        passwordGenerated: (password !== null),
+        passwordGenerated: false,
         password: password
       });
     })
