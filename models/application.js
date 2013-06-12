@@ -1,9 +1,15 @@
 var aestimia = require('../aestimia');
 var openbadger = require('../openbadger');
 var async = require('async');
+var crypto = require('crypto');
 var errors = require('../lib/errors');
+var mandrill = require('../mandrill');
+var openbadger = require('../openbadger');
+var url = require('url');
 var db = require('../db');
 var s3 = require('../s3');
+
+const CSOL_HOST = process.env.CSOL_HOST;
 
 module.exports = {
   properties: {
@@ -17,7 +23,7 @@ module.exports = {
       allowNull: false
     },
     description: {
-      type: db.type.STRING,
+      type: db.type.TEXT,
       allowNull: true
     },
     state: {
@@ -56,6 +62,11 @@ module.exports = {
   instanceMethods: {
     getReview: function () {
       return JSON.parse(this.latestReview || "{}");
+    },
+    getHash: function () {
+      return crypto.createHmac('sha1', this.badgeId)
+               .update(this.description)
+               .digest('hex');
     },
     getStateDescription: function () {
       switch (this.state) {
@@ -108,24 +119,42 @@ module.exports = {
           return callback(err);
 
         if (learner.underage && !force) {
-          return application.updateAttributes({
-            state: 'waiting'
-          }).complete(callback);
-        }
-
-        application.getEvidence().complete(function (err, items) {
-          if (err || !items || !items.length)
-            return callback(err || 'No evidence found for this application');
-
-          aestimia.submit(application, function (err, id) {
+          return learner.getGuardian().complete(function (err, guardian) {
             if (err)
               return callback(err);
 
-            application.updateAttributes({
-              state: 'submitted',
-              submissionId: id
-            }).complete(callback);
-          })
+            openbadger.getBadge(application.badgeId, function (err, data) {
+              if (err)
+                return callback(err);
+
+              var approvalUrl = url.format({
+                protocol : 'http:',
+                host : CSOL_HOST,
+                pathname: '/dashboard/' + learner.username + '/applications/' + application.badgeId
+              });
+
+              mandrill.send('<13 badge application submission', {
+                earnerName: learner.username,
+                badgeName: data.badge.name,
+                approvalUrl: approvalUrl
+              }, guardian.email, function (err) {
+                if (err)
+                  return callback(err);
+
+                application.updateAttributes({ state: 'waiting' }).complete(callback);
+              });
+            });
+          });
+        }
+
+        aestimia.submit(application, function (err, id) {
+          if (err)
+            return callback(err);
+
+          application.updateAttributes({
+            state: 'submitted',
+            submissionId: id
+          }).complete(callback);
         });
       });
     },

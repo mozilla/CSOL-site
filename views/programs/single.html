@@ -13,6 +13,7 @@
             <p><strong>From <a href="{{program.url}}">{{program.issuer.name}}</a>.</strong></p>
             {% if program.description %}
                 <p class="description">{{program.description}}</p>
+                {% if program.phone %} <p class="description">For more information, call {{program.phone}}</p>{% endif %}
             {% endif %}
             <p class="text-right"></p>
         </div>

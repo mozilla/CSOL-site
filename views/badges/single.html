@@ -9,20 +9,11 @@
         <div class="span8">
             <h3>What is this badge about?</h3>
             <p class="description">{{ badge.description }}</p>
+            <p class="desription">Part of <a href="/explore/{{badge.program.shortname}}">{{badge.program.name}}</a></p>
 
             {% if not user or user.type == 'learner' %}
                 <h3>How can you earn it?</h3>
-                {% if badge.rubric %}
-                    <ul class="rubric">
-                        {% for item in badge.rubric.items %}
-                            <li{% if item.required %} class="required"{% endif %}>{{ item.text }}
-                                {%- if item.required %}
-                                    <span class="note">(Required)</span>
-                                {%- endif -%}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                <p class="description">{{badge.criteria}}</p>
                 <p class="text-right">
                     {% if badge.activityType == 'offline' %}
                         <a href="/claim" class="btn">Claim this badge</a>

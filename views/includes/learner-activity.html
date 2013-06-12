@@ -1,10 +1,10 @@
 <figure class="thumbnail activity-type-{{ activity.type }} state-{{ activity.state }}">
-	<a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id }}">
+	<a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id | default(activity.badge.shortname) }}">
 		<img src="{{ activity.badge.image }}">
 	</a>
 	<figcaption class="caption">
 		<p>{{ activity.badge.name }}</p>
 		<p class="state">{{ activity.getStateDescription() }}</p>
-		<p class="text-right"><a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id }}" class="btn">Details</a></p>
+		<p class="text-right"><a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id | default(activity.badge.shortname) }}" class="btn">Details</a></p>
 	</figcaption>
 </figure>

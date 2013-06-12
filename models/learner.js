@@ -56,7 +56,27 @@ module.exports = {
       type: db.type.BOOLEAN,
       allowNull: false,
       defaultValue: false
-    }
+    },
+    school: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    cpsStudentId: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    gender: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    raceEthnicity: {
+      type: db.type.STRING,
+      allowNull: true
+    },
+    zipCode: {
+      type: db.type.STRING,
+      allowNull: true
+    },
   },
   relationships: [
     {
@@ -139,23 +159,65 @@ module.exports = {
         }
 
         function getBadges (callback) {
-          openbadger.getUserBadges({email: learner.email}, function(err, data) {
+          async.parallel([
+            function (callback) {
+              openbadger.getUserBadges({email: learner.email}, function(err, data) {
+                if (err)
+                  return callback(err);
+
+                var userBadges = data.badges;
+
+                _.each(userBadges, function(badge) {
+                  _.extend(badge, {
+                    badge: badge,
+                    updatedAt: new Date(badge.issuedOn * 1000),
+                    state: 'awarded',
+                    getStateDescription: function() { return 'Awarded'; },
+                    type: 'badge'
+                  });
+                });
+
+                callback(null, userBadges);
+              });
+            },
+            function (callback) {
+              db.model('Claim').findAll({where: {LearnerId: learner.id, state: 'waiting'}})
+                .complete(function (err, claims) {
+                  if (err)
+                    return callback(err);
+
+                  if (!claims)
+                    return callback(null, []);
+
+                  async.map(claims, function (claim, callback) {
+                    openbadger.getBadgeFromCode({
+                      code: claim.code,
+                      email: learner.email
+                    }, function (err, data) {
+                      if (err)
+                        return callback();
+
+                      var badge = data.badge;
+                      badge.id = badge.shortname = claim.code;
+
+                      callback(null, {
+                        badge: badge,
+                        type: 'badge',
+                        updatedAt: claim.updatedAt,
+                        state: claim.state,
+                        getStateDescription: claim.getStateDescription.bind(claim),
+                      });
+                    });
+                  }, callback);
+                });
+            }
+          ], function (err, badges) {
             if (err)
               return callback(err);
 
-            var userBadges = data.badges;
+            console.log(badges);
 
-            _.each(userBadges, function(badge) {
-              _.extend(badge, {
-                badge: badge,
-                updatedAt: new Date(badge.issuedOn * 1000),
-                state: 'awarded',
-                getStateDescription: function() { return 'Awarded'; },
-                type: 'badge'
-              });
-            });
-
-            callback(null, userBadges);
+            callback(null, _.flatten(badges));
           });
         }
 

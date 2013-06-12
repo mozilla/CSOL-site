@@ -140,8 +140,8 @@
                         </ul>
                         <ul class="pull-right">
                             <li><a href="/about">About</a></li>
-                            <li><a href="/terms">Terms</a></li>
-                            <li><a href="/privacy">Privacy</a></li>
+                            <li><a href="/media/csol_tos.pdf">Terms</a></li>
+                            <li><a href="/media/csol_privacy.pdf">Privacy</a></li>
                             <li><a href="/faq">FAQ</a></li>
                             <li><a href="http://assess.chicagosummeroflearning.org">Mentors</a></li>
                             <li><a href="http://badge.chicagosummeroflearning.org">Organizations</a></li>
@@ -180,5 +180,20 @@
             </script>
         {% endif %}
         {% block finally %}{% endblock %}
+            <script type="text/javascript">
+
+              var _gaq = _gaq || [];
+              _gaq.push(['_setAccount', 'UA-39195644-1']);
+              _gaq.push(['_setDomainName', 'chicagosummeroflearning.org']);
+              _gaq.push(['_setAllowLinker', true]);
+              _gaq.push(['_trackPageview']);
+
+              (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              })();
+
+            </script>
     </body>
 </html>

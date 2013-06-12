@@ -2,7 +2,19 @@
 {% set pageTitle = 'My Badges' %}
 {% set navItem = 'backpack' %}
 
+{% block content %}
+  {% if user.underage %}
+    <div class="alert alert-block">
+      <h4>Welcome {{user.getDisplayName()}}!</h4>
+      {{user.signuptoken}}
+      <p>We need to be sure your parent or guardian is OK with you creating an account, so we've sent them an email. While you wait, check out the great badges you can earn: <a href="/explore">explore</a></p>
+    </div>
+  {% endif %}
+  {{ super() }}
+{% endblock %}
+
 {% block list %}
+  <p>See all the badges you have earned. Keep it up!</p>
   {{ super() }}
   <li class="span3">
   <figure class="thumbnail">
@@ -45,4 +57,8 @@
       <a href="#" class="btn btn-block">Yes</a>
     </div>
   </div>
+{% endblock %}
+
+{% block no_data %}
+<p>It doesn't look like you've earned any Chicago Summer of Learning badges yet. Have no fear! You can start now! Check out the <a href="/earn">Earn</a> page to find badges to earn!<p>
 {% endblock %}

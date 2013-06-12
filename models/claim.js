@@ -30,6 +30,16 @@ module.exports = {
     }
   ],
   instanceMethods: {
+    getStateDescription: function () {
+      switch (this.state) {
+        case 'waiting':
+          return 'Needs Approval';
+        case 'approved':
+          return 'Approval Granted';
+        case 'denied':
+          return 'Approval Denied';
+      }
+    },
     submit: function (force, callback) {
       if (typeof force === 'function') {
         callback = force;
