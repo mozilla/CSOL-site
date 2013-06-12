@@ -8,7 +8,6 @@ bike
 bird
 boat
 book
-boy
 cake
 car
 cat
@@ -25,14 +24,12 @@ doll
 duck
 egg
 eye
-fairy
 feet
 fish
 flower
 friend
 frog
 giant
-girl
 hand
 horse
 house
