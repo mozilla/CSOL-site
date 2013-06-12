@@ -144,7 +144,7 @@ function processInitialLearnerSignup (req, res, next) {
   }
 
   if (!validateUsername(signup.username))
-    return fail(new Error('This is not a valid nickname'));
+    return fail(new Error('This is not a valid username'));
 
   // Check for accidental February 30ths, etc
   var isValidDate = birthday.getFullYear() === signup.birthday_year
@@ -169,7 +169,7 @@ function processInitialLearnerSignup (req, res, next) {
     .error(function(err) {
       // Did try a `findOrCreate`, but couldn't get `isNewRecord` to work
       if (err.code === 'ER_DUP_ENTRY')
-        return fail(new Error('This nickname is already in use'));
+        return fail(new Error('This username is already in use'));
 
       return fail(err);
     })
@@ -383,18 +383,18 @@ module.exports = function (app) {
 
     function validateUser (user) {
       if (!user)
-        return finalize(new Error('Nickname or password incorrect'));
+        return finalize(new Error('Username or password incorrect'));
 
       bcrypt.compare(password, user.password, function(err, match) {
         if (err || !match)
-          return finalize(err || new Error('Nickname or password incorrect'));
+          return finalize(err || new Error('Username or password incorrect'));
 
         finalize(null, user);
       });
     }
 
     if (!username || !password)
-      return finalize(new Error('Missing nickname or password'));
+      return finalize(new Error('Missing username or password'));
 
     // Annoying redundancy here, but no other obvious way to generate OR queries
     learners.find({where: ["`email`=? OR `username`=?", normalizedUsername, normalizedUsername]})
@@ -600,7 +600,7 @@ module.exports = function (app) {
             return updateUserPassword(user);
 
           if (!user.GuardianId)
-            return finalize('Invalid nickname or email address');
+            return finalize('Invalid username or email address');
 
           // Make allowances for situations where guardians have entered their
           // own email address when resetting their child's password
@@ -608,7 +608,7 @@ module.exports = function (app) {
           user.getGuardian()
             .complete(function (err, guardian) {
               if (err || !guardian)
-                return finalize('Invalid nickname or email address');
+                return finalize('Invalid username or email address');
 
               updateUserPassword(user);
             });
