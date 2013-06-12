@@ -23,9 +23,13 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" id="input-password-label">Your password is</label>
-				<div class="controls">
-					<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
+				<label class="control-label" id="input-password-label" for="input-password">Your Password</label>
+        <div class="controls">
+					{% if passwordGenerated %}
+						<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
+					{% else %}
+						<input type="password" id="input-password" name="password">
+					{% endif %}
 					<div class="alert help-block">Print this page so you won't forget this! You'll need it to log in again later.</div>
 				</div>
 			</div>
@@ -36,4 +40,15 @@
 			</div>
 		</fieldset>
 	</form>
+{% endblock %}
+
+{% block finally %}
+{% if not passwordGenerated %}
+<script>
+	(function() {
+		{% include 'includes/password-test.js' %}
+		setupPasswordStrengthTest();
+	})();
+</script>
+{% endif %}
 {% endblock %}
