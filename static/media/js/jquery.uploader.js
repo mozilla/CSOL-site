@@ -172,7 +172,7 @@
 		function goAsync () {
 			$buttons
 				.find('.btn')
-					.text('Done');
+					.text('Save');
 
 			function upload (e) {
 				blockEvent(e);

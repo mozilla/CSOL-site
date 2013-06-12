@@ -8,9 +8,9 @@
 	<form class="form-horizontal row-fluid" method="post">
 		<p class="lead">Explore badges you can earn and level up for citywide challenges. Create an account to get started!</p>
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		<fieldset class="span6 offset3 well">
+		<fieldset class="span6 well">
 			<div class="control-group">
-				<label class="control-label" for="input-username">Nickname</label>
+				<label class="control-label" for="input-username">Username</label>
 				<div class="controls">
 					<input type="text" id="input-username" name="username" value="{{ username }}" required="required" placeholder="e.g. {{ example }}">
 					<span class="help-block"><strong>Please don't use your real name.</strong></span>
@@ -68,7 +68,7 @@
 
 		$button
 		    .addClass('btn')
-		    .attr({type: 'button', title: 'Create a nickname'})
+		    .attr({type: 'button', title: 'Create a username'})
 		    .append($refresh);
 
 		$button.click(function() {
