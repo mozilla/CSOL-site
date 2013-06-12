@@ -43,49 +43,12 @@
 {% endblock %}
 
 {% block finally %}
+{% if not passwordGenerated %}
 <script>
 	(function() {
 		{% include 'includes/password-test.js' %}
-
-		{% if passwordGenerated %}
-			var $input = $('#input-password'),
-			    $label = $('#input-password-label'),
-			    $container = $input.parent(),
-			    $wrapper = $(document.createElement('div')),
-			    $button = $(document.createElement('button'));
-
-			$wrapper
-				.addClass('input-append')
-				.insertBefore($input);
-
-			$button
-				.addClass('btn')
-				.attr({type: 'button', title: 'Choose your own password'})
-				.html('Choose your own');
-
-			$button.click(function() {
-				var $password = $(document.createElement('input'));
-
-				$password.attr({
-					type: 'password',
-					id: 'input-password',
-					name: 'password',
-					required: 'required'
-				});
-
-				$password.insertBefore($wrapper);
-				$wrapper.remove();
-				$password.focus();
-
-				setupPasswordStrengthTest();
-			});
-
-			$wrapper
-				.append($input)
-				.append($button);
-		{% else %}
-			setupPasswordStrengthTest();
-		{% endif %}
+		setupPasswordStrengthTest();
 	})();
 </script>
+{% endif %}
 {% endblock %}
