@@ -76,7 +76,7 @@ var activityTypes = [
 var badgeTypes = [
   {label: 'Participation', value: 'participation'},
   {label: 'Skill', value: 'skill'},
-  {label: 'Activity', value: 'activity'}
+  {label: 'Achievement', value: 'achievement'}
 ];
 var orgs = [];
 
@@ -162,7 +162,7 @@ function filterBadges (data, query) {
   return applyFilter(data, {
     'categories': category,
     'ageRange': ageGroup,
-    'badgeType': badgeType,
+    'type': badgeType,
     'activityType': activityType
   });
 
