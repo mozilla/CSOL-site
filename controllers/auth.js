@@ -186,9 +186,9 @@ function processChildLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
-  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
-  signup.parent_email = req.body['parent_email'].replace(/^\s*|\s*$/g, '');
+  signup.first_name = req.body['first_name'].trim();
+  signup.last_name = req.body['last_name'].trim();
+  signup.parent_email = req.body['parent_email'].trim();
 
   function fail (err) {
     req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
@@ -261,9 +261,9 @@ function processStandardLearnerSignup (req, res, next) {
   var form = req.body;
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
-  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
-  signup.email = req.body['email'].replace(/^\s*|\s*$/g, '');
+  signup.first_name = req.body['first_name'].trim();
+  signup.last_name = req.body['last_name'].trim();
+  signup.email = req.body['email'].trim();
 
   if ('password' in req.body)
     signup.password = req.body['password'];
