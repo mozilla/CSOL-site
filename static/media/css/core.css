@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 /*general*/
 html,
 body {
@@ -75,8 +77,10 @@ ol {
   border-left: none;
   border-right: none;
 }
-.navbar .nav > li.dropdown.open > .dropdown-toggle {
-  color: #000;
+.navbar .nav > li.dropdown.open > .dropdown-toggle,
+.navbar .nav > li.dropdown.active > .dropdown-toggle {
+  color: inherit;
+  background-color: inherit;
 }
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;
@@ -869,6 +873,29 @@ body .navbar.filter .navbar-inner {
   filter: none;
   background: #45bcd2;
 }
+body.challenges #main > .container > h2,
+body.explore #main > .container > h2,
+body.earn #main > .container > h2 {
+  height: 110px;
+  width: 100%;
+  font: normal 48px/150% 'Amatic SC', cursive;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+body.challenges #main > .container > h2 span,
+body.explore #main > .container > h2 span,
+body.earn #main > .container > h2 span {
+  line-height: 110px;
+}
+body.explore #main > .container > h2 {
+  background: url('../img/menu-bk-explore.png') center right no-repeat;
+}
+body.challenges #main > .container > h2 {
+  background: url('../img/menu-bk-levelup.png') center right no-repeat;
+}
+body.earn #main > .container > h2 {
+  background: url('../img/menu-bk-earn.png') center right no-repeat;
+}
 /* ------------------------------ */
 /* Mobile : general  ------------ */
 /* ------------------------------ */
@@ -881,6 +908,18 @@ body .navbar.filter .navbar-inner {
     width: 180px;
     display: block;
     float: none;
+  }
+  body.challenges #main > .container > h2,
+  body.explore #main > .container > h2,
+  body.earn #main > .container > h2 {
+    background: none;
+    width: inherit;
+    height: inherit;
+  }
+  body.challenges #main > .container > h2 span,
+  body.explore #main > .container > h2 span,
+  body.earn #main > .container > h2 span {
+    line-height: inherit;
   }
 }
 /* ------------------------------ */
@@ -991,14 +1030,8 @@ body.home .navbar .nav-wrap ul.nav > li.about > a {
   text-align: center;
   line-height: 24px;
 }
-body.home .navbar .nav-wrap ul.nav > li.claim > a {
-  text-align: center;
-  text-transform: capitalize;
-  margin-top: 5px;
-}
-body.home .navbar .nav-wrap ul.nav > li.claim > a:before,
-body.home .navbar .nav-wrap ul.nav > li.claim > a:after {
-  content: '-';
+body.home .navbar .nav-wrap ul.nav > li.claim {
+  display: none;
 }
 body.home .navbar .nav-wrap ul.nav > li.video {
   margin: 30px 0;
@@ -1280,8 +1313,4 @@ body.home #cl_i_vid {
 }
 .about .org-list {
   list-style: none;
-}
-
-p.description {
-  white-space: pre-wrap;
 }
