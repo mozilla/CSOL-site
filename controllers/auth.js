@@ -124,7 +124,8 @@ function clearUser (req, res) {
 
 function processInitialLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
-  var normalizedUsername = normalizeUsername(req.body['username']);
+  var username = (req.body['username']||'').trim().replace(/\s+/g, ' ');
+  var normalizedUsername = normalizeUsername(username);
 
   signup.birthday_year = parseInt(req.body['birthday_year'], 10);
   signup.birthday_month = parseInt(req.body['birthday_month'], 10);
@@ -161,6 +162,7 @@ function processInitialLearnerSignup (req, res, next) {
   // well have been created by the time sign-up is complete.
   // This will fail if the username is already being used
   learners.create({
+    originalUsername: username,
     username: normalizedUsername,
     password: '',
     underage: underage,
