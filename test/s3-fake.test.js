@@ -27,8 +27,9 @@ test('FakeS3 works', function(t) {
   removeFakeS3Dir();
   s3.putBuffer(new Buffer('hai2u', 'binary'), '/evidence/lol.txt', {
     'Content-Type': 'text/plain'
-  }, function(err) {
+  }, function(err, data) {
     t.equal(err, null);
+    t.equal(data, null);
     s3.get('/evidence/lol.txt').on('response', function(proxy) {
       var chunks = [];
       proxy.on('data', function(chunk) {
@@ -37,8 +38,9 @@ test('FakeS3 works', function(t) {
       proxy.on('end', function() {
         var buf = Buffer.concat(chunks);
         t.equal(buf.toString('ascii'), 'hai2u');
-        s3.deleteFile('/evidence/lol.txt', function(err) {
+        s3.deleteFile('/evidence/lol.txt', function(err, response) {
           t.equal(err, null);
+          t.equal(response, null);
           removeFakeS3Dir(t);
           t.end();
         });
