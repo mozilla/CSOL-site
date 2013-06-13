@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 /*general*/
 html,
 body {
@@ -870,6 +872,29 @@ body .navbar.filter .navbar-inner {
   border: 1px solid #c0c0c0;
   filter: none;
   background: #45bcd2;
+}
+body.challenges #main > .container > h2,
+body.explore #main > .container > h2,
+body.earn #main > .container > h2 {
+  height: 110px;
+  width: 100%;
+  font: normal 48px/150% 'Amatic SC', cursive;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+body.challenges #main > .container > h2 span,
+body.explore #main > .container > h2 span,
+body.earn #main > .container > h2 span {
+  line-height: 110px;
+}
+body.explore #main > .container > h2 {
+  background: url('../img/menu-bk-explore.png') center right no-repeat;
+}
+body.challenges #main > .container > h2 {
+  background: url('../img/menu-bk-levelup.png') center right no-repeat;
+}
+body.earn #main > .container > h2 {
+  background: url('../img/menu-bk-earn.png') center right no-repeat;
 }
 /* ------------------------------ */
 /* Mobile : general  ------------ */

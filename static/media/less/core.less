@@ -2,6 +2,7 @@
 
 @import "mixins.less";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 
 /*general*/
 html, body {
@@ -970,6 +971,27 @@ body {
 			filter:none;
 			background:#45bcd2;
 		}
+	}
+	&.challenges #main > .container > h2,
+	&.explore #main > .container > h2,
+	&.earn #main > .container > h2 {
+		height:110px;
+		width:100%;
+		font:normal 48px/150% 'Amatic SC', cursive;
+		text-transform:uppercase;
+		letter-spacing:1px;
+		span {
+			line-height:110px;
+		}
+	}
+	&.explore #main > .container > h2 {
+		background:url('../img/menu-bk-explore.png') center right no-repeat;
+	}
+	&.challenges #main > .container > h2 {
+		background:url('../img/menu-bk-levelup.png') center right no-repeat;
+	}
+	&.earn #main > .container > h2 {
+		background:url('../img/menu-bk-earn.png') center right no-repeat;
 	}
 }
 
