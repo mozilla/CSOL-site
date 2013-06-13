@@ -36,8 +36,8 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 
 		/*landing page menu text*/
 		$('li.claim a').append('<span> badges</span>');
-		$('li.learn a').append('<span> your city</span>');
-		$('li.badges a').append('<span> Badges &</span>');
+		$('li.learn a').append('<span> your city,</span>');
+		$('li.badges a').append('<span> Badges and</span>');
 		$('li.about a').append('<span> the program</span>')
 		$('li.challenges a').append('<span> your future.</span>');
 	} else {
