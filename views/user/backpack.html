@@ -37,7 +37,7 @@
     <div class="modal-body">
       <a href="#" class="btn btn-block"><i class="icon-twitter"></i> Twitter</a>
       <a href="#" class="btn btn-block"><i class="icon-facebook"></i> Facebook</a>
-      <a href="#" class="btn btn-block">Mozilla Backpack</a>
+      <a href="#" class="btn btn-block js-moz-backpack">Mozilla Backpack</a>
     </div>
   </div>
   <div id="trashModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -54,4 +54,18 @@
 
 {% block no_data %}
 <p>It doesn't look like you've earned any Chicago Summer of Learning badges yet. Have no fear! You can start now! Check out the <a href="/earn">Earn</a> page to find badges to earn!<p>
+{% endblock %}
+
+{% block finally %}
+  <script src="//backpack.openbadges.org/issuer.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.js-share').click(function(){
+        window.selected = $(this).attr('data-url');
+      });
+      $('.js-moz-backpack').click(function(){
+        OpenBadges.issue_no_modal([window.selected]);
+      });
+    });
+  </script>
 {% endblock %}
