@@ -1,7 +1,9 @@
 {% extends 'includes/badge-thumbnail.html' %}
 {% block buttons_right %}
   {{super()}}
-  <a href="#" role="button" class="btn js-share" 
-    data-toggle="modal" data-target="#shareModal" 
-    data-url="{{item.assertionUrl}}">Share</a>
+  {% if user and not user.underage %}
+    <a href="#" role="button" class="btn js-share" 
+      data-toggle="modal" data-target="#shareModal" 
+      data-url="{{item.assertionUrl}}">Share</a>
+  {% endif %}
 {% endblock %}
