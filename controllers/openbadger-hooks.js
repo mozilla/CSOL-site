@@ -105,6 +105,9 @@ module.exports = function (app) {
     var claimCode = req.body.claimCode;
     var email = req.body.email;
 
+    if (req.body.isTesting)
+      return module.exports.testHandler(req, res, next);
+
     if (!claimCode)
       return respondWithError(res, 'No claimCode provided');
 
@@ -117,4 +120,8 @@ module.exports = function (app) {
       return res.send(200, { status: 'ok' });
     });
   });
+};
+
+module.exports.testHandler = function(req, res, next) {
+  return res.send(501, 'test handler not implemented');
 };

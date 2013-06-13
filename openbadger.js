@@ -2,6 +2,9 @@ const Api = require('./api');
 const errors = require('./lib/errors');
 const _ = require('underscore');
 const jwt = require('jwt-simple');
+const async = require('async');
+const s3 = require('./s3');
+const openbadgerHooks = require('./controllers/openbadger-hooks');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
 const JWT_SECRET = process.env['CSOL_OPENBADGER_SECRET'];
@@ -423,14 +426,66 @@ module.exports.getFilters = function getFilters () {
   };
 }
 module.exports.updateOrgs = updateOrgs;
+
 module.exports.healthCheck = function(meta, cb) {
   // Use a privileged API call to ensure we're testing the JWT secret.
   // A random email should guarantee we bust through any caches.
-  var email = 'healthCheck_test_' +
-              Math.floor(Math.random() * 100000) + '@mozilla.org';
+  var random = Math.floor(Math.random() * 100000).toString();
+  var fakeClaimCode = 'healthCheck_test_' + random;
+  var email = fakeClaimCode + '@mozilla.org';
 
   meta.notes = ENDPOINT;
-  openbadger.getUserBadges({
-    session: {user: {email: email}}
-  }, cb);
+  meta.apiTest = meta.webhookTest = "FAILED";
+
+  async.waterfall([
+    openbadger.getUserBadges.bind(openbadger, {
+      session: {user: {email: email}}
+    }),
+    function(data, done) { meta.apiTest = "OK"; done(); },
+    openbadger.post.bind(openbadger, '/test/webhook', {
+      json: {
+        auth: getJWTToken(email),
+        email: email,
+        claimCode: fakeClaimCode
+      }
+    }),
+    function(data, done) {
+      if (!(data &&
+            data.status == "ok" &&
+            data.body == "S3_ITEM_CREATED"))
+        return done(new Error("unexpected webhook response: " +
+                              JSON.stringify(data)));
+
+      s3.get('/' + fakeClaimCode).on('response', function(stream) {
+        var chunks = [];
+        stream.on('data', function(chunk) { chunks.push(chunk); });
+        stream.on('end', function() {
+          var result = Buffer.concat(chunks).toString('ascii');
+          if (result !== fakeClaimCode)
+            return done(new Error("unexpected s3 item content: " + result));
+          done();
+        });
+      }).end();
+    },
+    s3.deleteFile.bind(s3, '/' + fakeClaimCode),
+    function(_, done) { meta.webhookTest = "OK"; done(); }
+  ], cb);
+};
+
+openbadgerHooks.testHandler = function(req, res, next) {
+  var claimCode = req.body.claimCode;
+
+  if (req.body.isTesting !== true)
+    return res.send(200, "body.isTesting !== true");
+  
+  if (!(claimCode && typeof(claimCode) == "string"))
+    return res.send(200, "body.claimCode is empty");
+
+  s3.putBuffer(new Buffer(claimCode), '/' + claimCode, {
+    'Content-Type': 'text/plain'
+  }, function(err) {
+    if (err) return res.send(200, "s3 putbuffer failed");
+
+    return res.send(200, "S3_ITEM_CREATED");
+  });
 };
