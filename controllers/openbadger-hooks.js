@@ -69,7 +69,7 @@ function handleIssuedClaim(email, code, callback) {
   });
 }
 
-function respondWithError(res, reason) {
+function respondWithForbidden(res, reason) {
   return res.send(403, { status: 'forbidden', reason: reason });
 }
 
@@ -81,22 +81,22 @@ function auth(req, res, next) {
   const now = Date.now()/1000|0;
   var decodedToken, msg;
   if (!token)
-    return respondWithError(res, 'missing mandatory `auth` param');
+    return respondWithForbidden(res, 'missing mandatory `auth` param');
   try {
     decodedToken = jwt.decode(token, JWT_SECRET);
   } catch(err) {
-    return respondWithError(res, 'error decoding JWT: ' + err.message);
+    return respondWithForbidden(res, 'error decoding JWT: ' + err.message);
   }
   if (decodedToken.prn !== email) {
     msg = '`prn` mismatch: given %s, expected %s';
-    return respondWithError(res, util.format(msg, decodedToken.prn, email));
+    return respondWithForbidden(res, util.format(msg, decodedToken.prn, email));
   }
 
   if (!decodedToken.exp)
-    return respondWithError(res, 'Token must have exp (expiration) set');
+    return respondWithForbidden(res, 'Token must have exp (expiration) set');
 
   if (decodedToken.exp < now)
-    return respondWithError(res, 'Token has expired');
+    return respondWithForbidden(res, 'Token has expired');
 
   return next();
 }
