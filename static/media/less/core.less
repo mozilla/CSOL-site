@@ -2,6 +2,7 @@
 
 @import "mixins.less";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 
 /*general*/
 html, body {
@@ -73,8 +74,10 @@ ol {
 	  		border-left:none;
 	  		border-right:none;
 	  	}
-	  	&.dropdown.open > .dropdown-toggle {
-	  		color:#000;
+	  	&.dropdown.open > .dropdown-toggle,
+	  	&.dropdown.active > .dropdown-toggle {
+	  		color:inherit;
+	  		background-color:inherit;
 	  	}
 	  }
 		& > li:nth-child(even) {
@@ -969,6 +972,27 @@ body {
 			background:#45bcd2;
 		}
 	}
+	&.challenges #main > .container > h2,
+	&.explore #main > .container > h2,
+	&.earn #main > .container > h2 {
+		height:110px;
+		width:100%;
+		font:normal 48px/150% 'Amatic SC', cursive;
+		text-transform:uppercase;
+		letter-spacing:1px;
+		span {
+			line-height:110px;
+		}
+	}
+	&.explore #main > .container > h2 {
+		background:url('../img/menu-bk-explore.png') center right no-repeat;
+	}
+	&.challenges #main > .container > h2 {
+		background:url('../img/menu-bk-levelup.png') center right no-repeat;
+	}
+	&.earn #main > .container > h2 {
+		background:url('../img/menu-bk-earn.png') center right no-repeat;
+	}
 }
 
 /* ------------------------------ */
@@ -985,6 +1009,16 @@ body {
 			width:180px;
 			display:block;
 			float:none;
+		}
+	}
+	&.challenges #main > .container > h2,
+	&.explore #main > .container > h2,
+	&.earn #main > .container > h2 {
+		background:none;
+		width:inherit;
+		height:inherit;
+		span {
+			line-height:inherit;
 		}
 	}
 }
@@ -1116,13 +1150,8 @@ body.home {
 					text-align:center;
             		line-height:24px;
            		}
-           		&.claim > a {
-           			text-align:center;
-           			text-transform:capitalize;
-           			margin-top:5px;
-           			&:before, &:after {
-           				content: '-';
-           			}
+           		&.claim {
+           			display:none;
            		}
             	&.video {
               		margin:30px 0;
