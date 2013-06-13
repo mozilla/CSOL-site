@@ -6,6 +6,7 @@ const guardians = db.model('Guardian');
 const mandrill = require('../mandrill');
 const openbadger = require('../openbadger');
 const url = require('url');
+const logger = require('../logger');
 
 const JWT_SECRET = process.env.CSOL_OPENBADGER_SECRET;
 const CSOL_HOST = process.env.CSOL_HOST;
@@ -68,6 +69,10 @@ function handleIssuedClaim(email, code, callback) {
   });
 }
 
+function respondWithError(res, reason) {
+  return res.send(403, { status: 'forbidden', reason: reason });
+}
+
 function auth(req, res, next) {
   const param = req.method === "GET" ? req.query : req.body;
   const token = param.auth;
@@ -96,23 +101,21 @@ function auth(req, res, next) {
   return next();
 }
 
-function respondWithError(res, reason) {
-  return res.send(403, { status: 'forbidden', reason: reason });
-}
-
 module.exports = function (app) {
   app.post('/notify/claim', auth, function (req, res, next) {
     var claimCode = req.body.claimCode;
     var email = req.body.email;
 
     if (!claimCode)
-      return respondWithError(res, 'No claimCode provided');
+      return res.send(500, { status: 'error', error: 'No claimCode provided' });
 
     claimCode = claimCode.trim();
 
     handleIssuedClaim(email, claimCode, function(err) {
-      if (err)
-        return respondWithError(res, 'An error occurred while attempting to handle this claim notification.');
+      if (err) {
+        logger.log('info', 'Error encountered while handling claim code %s for user %s: %s', claimCode, email, err.toString());
+        return res.send(500, { status: 'error', error: 'An error occurred while attempting to handle this claim notification.' });
+      }
 
       return res.send(200, { status: 'ok' });
     });
