@@ -909,6 +909,18 @@ body.earn #main > .container > h2 {
     display: block;
     float: none;
   }
+  body.challenges #main > .container > h2,
+  body.explore #main > .container > h2,
+  body.earn #main > .container > h2 {
+    background: none;
+    width: inherit;
+    height: inherit;
+  }
+  body.challenges #main > .container > h2 span,
+  body.explore #main > .container > h2 span,
+  body.earn #main > .container > h2 span {
+    line-height: inherit;
+  }
 }
 /* ------------------------------ */
 /* Mobile : width <= iphone  ---- */
