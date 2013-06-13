@@ -3,6 +3,23 @@
 {% set pageTitle = badge.name %}
 
 {% block content %}
+    {% if share %}
+      <div class="row share">
+        <div class="span12">
+          {% if share.shared %}
+            <p class="muted">
+              Public url: <a href="{{share.url}}">{{share.url}}</a>
+              <a class="share-toggle" href="{{share.toggleUrl}}">Make it private.</a>
+            </p>
+          {% else %}
+            <p class="muted">
+              This page is private.
+              <a class="share-toggle" href="{{share.toggleUrl}}">Make it public.</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
     <div class="row">
         <div class="span4">
             <img src="{{ badge.image }}">
