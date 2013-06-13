@@ -75,8 +75,10 @@ ol {
   border-left: none;
   border-right: none;
 }
-.navbar .nav > li.dropdown.open > .dropdown-toggle {
-  color: #000;
+.navbar .nav > li.dropdown.open > .dropdown-toggle,
+.navbar .nav > li.dropdown.active > .dropdown-toggle {
+  color: inherit;
+  background-color: inherit;
 }
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;

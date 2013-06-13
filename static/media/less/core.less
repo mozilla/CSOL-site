@@ -73,8 +73,10 @@ ol {
 	  		border-left:none;
 	  		border-right:none;
 	  	}
-	  	&.dropdown.open > .dropdown-toggle {
-	  		color:#000;
+	  	&.dropdown.open > .dropdown-toggle,
+	  	&.dropdown.active > .dropdown-toggle {
+	  		color:inherit;
+	  		background-color:inherit;
 	  	}
 	  }
 		& > li:nth-child(even) {
