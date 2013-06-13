@@ -6,6 +6,11 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 
 const ENV = {
+  NODE_ENV: 'development',
+  CSOL_AWS_FAKE_S3_DIR: __dirname + '/csol-s3',
+  CSOL_AESTIMIA_URL: 'http://blahblah/',
+  CSOL_AESTIMIA_SECRET: 'blawblelbwe',
+  CSOL_HOST: 'http://chicagosummeroflearning.org'
   // Add any test-specific environment variables here.
 };
 
