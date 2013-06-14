@@ -208,7 +208,9 @@ module.exports = function (app) {
     var token = req.params.token;
 
     shareToken.find({
-      token: token
+      where: {
+        token: token
+      }
     }).complete(function (err, token) {
       if (err)
         return next(err);
@@ -240,7 +242,9 @@ module.exports = function (app) {
     var user = req.session.user;
 
     shareToken.find({
-      token: token
+      where: {
+        token: token
+      }
     }).complete(function (err, token) {
       if (err)
         return next(err);
