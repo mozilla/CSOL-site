@@ -680,6 +680,9 @@ ul.thumbnails li .thumbnail .caption p:first-child {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+ul.thumbnails li .thumbnail .caption .description a {
+  display: block;
+}
 ul.thumbnails li .thumbnail .playlist-bar form,
 ul.thumbnails li .thumbnail .item-actions form {
   display: inline-block;
