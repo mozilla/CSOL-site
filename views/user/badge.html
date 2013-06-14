@@ -7,15 +7,19 @@
       <div class="row share">
         <div class="span12">
           {% if share.shared %}
-            <p class="muted">
+            <p class="muted share-state">
               Public url: <a href="{{share.url}}">{{share.url}}</a>
-              <a class="share-toggle" href="{{share.toggleUrl}}">Make it private.</a>
             </p>
+            <form method="post" action="{{share.toggleUrl}}">
+              <button type="submit" class="btn btn-small share-toggle">Make it private.</button>
+            </form>
           {% else %}
-            <p class="muted">
+            <p class="muted share-state">
               This page is private.
-              <a class="share-toggle" href="{{share.toggleUrl}}">Make it public.</a>
             </p>
+            <form method="post" action="{{share.toggleUrl}}">
+              <button type="submit" class="btn btn-small share-toggle">Make it public.</button>
+            </form>
           {% endif %}
         </div>
       </div>

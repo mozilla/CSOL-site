@@ -42,12 +42,6 @@ module.exports = {
       defaultValue: false
     }
   },
-  relationships: [
-    {
-      model: 'Learner',
-      type: 'hasMany'
-    }
-  ],
   instanceMethods: {
     getUrl: function () {
       return url.resolve(CSOL_HOST, 'share/' + this.token);

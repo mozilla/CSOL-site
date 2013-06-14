@@ -235,8 +235,8 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/share/toggle/:token', [
-    isLearner
+  app.post('/share/toggle/:token', [
+    isLearner 
   ], function (req, res, next) {
     var token = req.params.token;
     var user = req.session.user;

@@ -1314,3 +1314,14 @@ body.home #cl_i_vid {
 .about .org-list {
   list-style: none;
 }
+
+/* Badge share styles */
+.share {
+  margin-bottom: 10px;
+}
+.share-state {
+  float: left;
+}
+.share-toggle {
+  float: right;
+}
