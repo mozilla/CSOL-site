@@ -122,6 +122,8 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var data = req.remote;
 
+    data.badges.template = 'includes/badge-instance-thumbnail.html';
+
     res.render('user/backpack.html', {
       items: data.badges
     });
