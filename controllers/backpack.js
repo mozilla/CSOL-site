@@ -1,4 +1,5 @@
 const _ = require('underscore');
+const async = require('async');
 const openbadger = require('../openbadger');
 const db = require('../db');
 const isLearner = require('../middleware').isLearner;
@@ -6,6 +7,7 @@ const isLearner = require('../middleware').isLearner;
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
 const playlist = db.model('Playlist');
+const shareToken = db.model('ShareToken');
 const favoriteMiddleware = _.bind(favorite.middleware, favorite);
 const playlistMiddleware = _.bind(playlist.middleware, playlist);
 const applications = db.model('Application');
@@ -129,6 +131,7 @@ module.exports = function (app) {
     isLearner,
     openbadger.middleware('getUserBadge')
   ], function (req, res, next) {
+    var user = req.session.user;
     var data = req.remote;
 
     // XXX: replace with API call to openbadger
@@ -161,11 +164,102 @@ module.exports = function (app) {
 
     const NSIMILAR = 4;
 
-    res.render('user/badge.html', {
-      badge: data.badge,
-      user: req.session.user,
-      similar: similar.slice(0, NSIMILAR)
+    if (user.underage) {
+      return res.render('user/badge.html', {
+        badge: data.badge,
+        user: req.session.user,
+        similar: similar.slice(0, NSIMILAR),
+        share: false
+      });
+    }
+    else {
+      async.waterfall([
+        function getToken (callback) {
+          shareToken.findOrCreate({
+            shortName: data.badge.shortname,
+            email: user.email
+          }).complete(callback);
+        },
+        function ensureTokenValue (token, callback) {
+          if (!token.token)
+            token.generateToken(callback);
+          else
+            callback(null, token);
+        }
+      ], function renderPage (err, shareToken) {
+        var share = false;
+        if (shareToken) {
+          share = shareToken.values;
+          share.url = shareToken.getUrl();
+          share.toggleUrl = shareToken.getToggleUrl();
+        }
+
+        return res.render('user/badge.html', {
+          badge: data.badge,
+          user: req.session.user,
+          similar: similar.slice(0, NSIMILAR),
+          share: share
+        });
+      });
+    }
+  });
+
+  app.get('/share/:token', function (req, res, next) {
+    var token = req.params.token;
+
+    shareToken.find({
+      where: {
+        token: token
+      }
+    }).complete(function (err, token) {
+      if (err)
+        return next(err);
+
+      if (!token.shared)
+        return next('Invalid share token');
+
+      openbadger.getUserBadge({
+        id: token.shortName,
+        email: token.email
+      }, function (err, data) {
+        if (err)
+          return next(err);
+
+        return res.render('user/badge-share.html', {
+          badge: data.badge,
+          user: {
+            email: token.email
+          }
+        });
+      });
     });
+  });
+
+  app.post('/share/toggle/:token', [
+    isLearner 
+  ], function (req, res, next) {
+    var token = req.params.token;
+    var user = req.session.user;
+
+    shareToken.find({
+      where: {
+        token: token
+      }
+    }).complete(function (err, token) {
+      if (err)
+        return next(err);
+
+      if (token.email !== user.email)
+        return next('User does not own token');
+
+      token.toggle(function (err) {
+        if (err)
+          return next(err);
+
+        return res.redirect('/mybadges/' + token.shortName);
+      });
+    });
+
   });
 
   app.post('/mybadges/:id/favorite', [
