@@ -14,15 +14,6 @@ html, body {
 html, body, h1, h2, h3, h4, p {
 	font-family:'Open Sans', sans-serif;
 }
-body {
-  margin:0px;
-  padding:0px;
-  .container {
-  & > br {
-			display:none;
-  	}
-  }
- }
 
 #main {
 	padding-top: 45px;
@@ -61,10 +52,6 @@ ol {
 	.nav {
 	  float:none;
 	  & > li {
-      &.dropdown.open > .dropdown-toggle {
-      background-color:inherit;
-      text-decoration:underline;
-      }
 	  	& > a {
 	  		border-left:none;
 	  		border-right:none;
@@ -73,11 +60,6 @@ ol {
 	  		background-color:inherit;
 	  		border-left:none;
 	  		border-right:none;
-	  	}
-	  	&.dropdown.open > .dropdown-toggle,
-	  	&.dropdown.active > .dropdown-toggle {
-	  		color:inherit;
-	  		background-color:inherit;
 	  	}
 	  }
 		& > li:nth-child(even) {
@@ -177,6 +159,20 @@ nav.pagination {
       }
     }
   }
+}
+
+.navbar .nav li {
+	text-align:left;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle,
+.navbar .nav li.dropdown.open > .dropdown-toggle, 
+.navbar .nav li.dropdown.active > .dropdown-toggle, 
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+	background:none;
+	color:#000;
+	cursor:hand;
+	cursor:pointer; 
 }
 
 /*footer*/
@@ -742,6 +738,11 @@ ul.thumbnails {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+				}
+				.description {
+					a {
+						display:block;
+					}
 				}
 			}
 
