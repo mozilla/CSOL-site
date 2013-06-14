@@ -44,7 +44,9 @@ doesn't have a URL #}
 			</div>
 			<div class="span6">
 				<p class="pull-right">
-					<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
+					{% block buttons_right %}
+						<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
+					{% endblock %}
 				</p>
 			</div>
 		</div>
