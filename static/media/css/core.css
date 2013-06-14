@@ -1313,3 +1313,13 @@ body.home #cl_i_vid {
 .about .org-list {
   list-style: none;
 }
+/* SHARE STYLES */
+.share {
+  margin-bottom: 10px;
+}
+.share .share-state {
+  float: left;
+}
+.share .share-toggle {
+  float: right;
+}
