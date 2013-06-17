@@ -54,10 +54,10 @@
         </div>
     </div>
 
+    {% if similar %}
     <div class="row">
       <h3>Similar Badges</h3>
-      <p>Cupcake <a href="#">link to Badges page</a> something about badges
-      should go here.</p>
+      <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
 
       {% for item in similar %}
       <div class="span3">
@@ -66,4 +66,5 @@
       {% endfor %}
 
     </div>
+    {% endif %}
 {% endblock %}
