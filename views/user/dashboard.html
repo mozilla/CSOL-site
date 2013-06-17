@@ -9,7 +9,7 @@
       </li>
       {% for dependant in dependants %}
         <li{% if dependant.username == current.username %} class="active"{% endif %}>
-          <a href="/dashboard/{{ dependant.username }}">{{ dependant.getDisplayName()  }}</a>
+          <a href="/dashboard/{{ dependant.username }}">{{ dependant.getDisplayName() }}</a>
         </li>
       {% endfor %}
     {% endblock %}
@@ -20,19 +20,19 @@
 {% block content %}
   {% block activity %}
     {% for current in dependants %}
-    <h3>{{ current.getDisplayName() }}'s recent activity</h3>
-    {% if current.activities.length %}
-      <ul class="activity thumbnails">
-        {% for activity in current.activities %}
-          <li class="span3">
-            {% include "includes/learner-activity.html" %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>{{ current.getDisplayName() }} does not have any recent activity.</p>
-    {% endif %}
-    <p class="text-right"><a href="/dashboard/{{ dependant.username }}" class="btn">See all activity &raquo;</a></p>
+      <h3>{{ current.getDisplayName() }}'s recent activity</h3>
+      {% if current.activities.length %}
+        <ul class="activity thumbnails">
+          {% for activity in current.activities %}
+            <li class="span3">
+              {% include "includes/learner-activity.html" %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{{ current.getDisplayName() }} does not have any recent activity.</p>
+      {% endif %}
+      <p class="text-right"><a href="/dashboard/{{ current.username }}" class="btn">See all activity &raquo;</a></p>
     {% endfor %}
   {% endblock %}
 {% endblock %}
