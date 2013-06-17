@@ -230,8 +230,8 @@ module.exports = {
 
           activities = _.flatten(activities);
           if (options.badges) {
-            applications = _.reject(applications, function(application) {
-              return application.state === 'accepted';
+            activities = _.reject(activities, function(activity) {
+              return activity.state === 'accepted';
             });
           }
 
