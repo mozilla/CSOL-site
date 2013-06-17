@@ -408,6 +408,9 @@ nav.pagination ul li a {
     border-left: none;
     border-right: none;
   }
+  .navbar .nav li {
+    text-align: center;
+  }
   /*mobile footer*/
   .footer .upper {
     padding-top: 15px;
