@@ -138,7 +138,7 @@ module.exports = {
                 badgeName: data.badge.name,
                 approvalUrl: approvalUrl
               }, guardian.email, function (err) {
-                if (err)
+                if (err && err !== 'EMAIL DISABLED')
                   return callback(err);
 
                 application.updateAttributes({ state: 'waiting' }).complete(callback);

@@ -1,12 +1,13 @@
 const jwt = require('jwt-simple');
 const util = require('util');
-var db = require('../db');
+const db = require('../db');
 const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const mandrill = require('../mandrill');
 const openbadger = require('../openbadger');
 const url = require('url');
 const logger = require('../logger');
+const s3 = require('../s3');
 
 const JWT_SECRET = process.env.CSOL_OPENBADGER_SECRET;
 const CSOL_HOST = process.env.CSOL_HOST;
@@ -126,5 +127,19 @@ module.exports = function (app) {
 };
 
 module.exports.testHandler = function(req, res, next) {
-  return res.send(501, 'test handler not implemented');
+  var claimCode = req.body.claimCode;
+
+  if (req.body.isTesting !== true)
+    return res.send(200, "body.isTesting !== true");
+
+  if (!(claimCode && typeof(claimCode) == "string"))
+    return res.send(200, "body.claimCode is empty");
+
+  s3.putBuffer(new Buffer(claimCode), '/' + claimCode, {
+    'Content-Type': 'text/plain'
+  }, function(err) {
+    if (err) return res.send(200, "s3 putbuffer failed");
+
+    return res.send(200, "S3_ITEM_CREATED");
+  });
 };
