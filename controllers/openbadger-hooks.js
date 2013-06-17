@@ -27,7 +27,7 @@ function handleIssuedClaim(email, code, callback) {
     else {
       var claimUrl = url.format({
         protocol : 'http:',
-        host : CSOL_HOST,
+        host : url.parse(CSOL_HOST).host,
         pathname: '/claim',
         query : { code: code }
       });

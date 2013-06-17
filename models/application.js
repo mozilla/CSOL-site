@@ -129,7 +129,7 @@ module.exports = {
 
               var approvalUrl = url.format({
                 protocol : 'http:',
-                host : CSOL_HOST,
+                host : url.parse(CSOL_HOST).host,
                 pathname: '/dashboard/' + learner.username + '/applications/' + application.badgeId
               });
 
