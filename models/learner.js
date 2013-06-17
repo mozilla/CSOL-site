@@ -215,8 +215,6 @@ module.exports = {
             if (err)
               return callback(err);
 
-            console.log(badges);
-
             callback(null, _.flatten(badges));
           });
         }
