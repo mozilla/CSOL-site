@@ -7,7 +7,7 @@
         <title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
         <link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="/media/css/core.css">
-        <link rel="icon" type="image/png" href="/media/images/favicon.png">
+        <link rel="icon" type="image/png" href="/media/img/favicon.png">
         <script type="text/javascript" src="//use.typekit.net/nht7hbp.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
         <!--[if lt IE 9]>
@@ -25,17 +25,22 @@
                             <div class="nav-wrap">
                                 <ul class="nav">
                                     <li class="learn{% if navItem == 'learn' %} active{% endif %}">
-                                        <a href="/explore">Explore</a>
+                                        <a href="/explore">Explore{% if bodyClass == 'home' %}<span> your city,</span>{% endif %}</a>
                                     </li>
                                     <li class="badges{% if navItem == 'badges' %} active{% endif %}">
-                                        <a href="/earn">Earn</a>
+                                        <a href="/earn">Earn{% if bodyClass == 'home' %}<span> badges and</span>{% endif %}</a>
                                     </li>
                                     <li class="challenges{% if navItem == 'challenges' %} active{% endif %}">
-                                        <a href="/challenges">Level Up</a>
+                                        <a href="/challenges">Level Up{% if bodyClass == 'home' %}<span> your future.</span>{% endif %}</a>
                                     </li>
                                     <li class="claim{% if navItem == 'claim' %} active{% endif %}">
                                         <a href="/claim">Claim</a>
                                     </li>
+                                    {% if bodyClass == 'home' %}
+                                        <li class="video">
+                                            <a href="http://www.youtube.com/v/6WwpwtYNsNk">Watch Video</a>
+                                        </li>
+                                    {% endif %}
                                     {% if user %}
                                         {% if user.type == 'learner' %}
                                             <li class="dropdown backpack{% if navItem == 'backpack' %} active{% endif %}">
@@ -74,8 +79,8 @@
                                                 <label for="menu-login-password">Password:</label>
                                                 <input type="password" id="menu-login-password" name="password" required="required">
                                                 <button type="submit" class="btn">Submit</button>
-                                                <small>Don't have an account? <a href="/signup">Sign up.</a></small>
-                                                <span class="help-block"><small><a href="/login/password">Forgot password?</a></small></span>
+                                                <small>Don't have an account? <a href="/signup">Sign up.</a>
+                                                <span class="help-block"><a href="/login/password">Forgot password?</a></span></small>
                                             </form>
                                         </li>
                                     {% endif %}
@@ -154,7 +159,7 @@
 
         {% block modal %}{% endblock %}
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="/media/js/jquery.min.js"></script>
         <script src="/media/bootstrap/js/bootstrap.js"></script>
         <script src="/media/js/custom_logic.js"></script>
         {% if _messages.modal %}

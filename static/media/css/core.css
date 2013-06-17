@@ -18,6 +18,9 @@ h4,
 p {
   font-family: 'Open Sans', sans-serif;
 }
+.row-fluid [class*="span"] {
+  margin-left: 0px;
+}
 #main {
   padding-top: 45px;
   padding-bottom: 25px;
@@ -408,6 +411,9 @@ nav.pagination ul li a {
     border-left: none;
     border-right: none;
   }
+  .navbar .nav li {
+    text-align: center;
+  }
   /*mobile footer*/
   .footer .upper {
     padding-top: 15px;
@@ -453,6 +459,11 @@ nav.pagination ul li a {
 #menu-login-form {
   padding: 10px;
   text-align: left;
+  line-height: 20px;
+}
+#menu-login-form .help-block {
+  margin-bottom: 0px;
+  margin-top: 5px;
 }
 #menu-login-form button {
   display: block;

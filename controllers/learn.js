@@ -43,15 +43,15 @@ module.exports = function(app) {
     var items = [];
 
     var itemOptions = [{
-      thumbnail: '/media/images/org.png',
+      thumbnail: '/media/img/org.png',
       description: 'Organization blah irure...',
       url: '/explore/orgs/some-organization'
     },{
-      thumbnail: '/media/images/program.png',
+      thumbnail: '/media/img/program.png',
       description: 'Program blah sed eiusmod...',
       url: '/explore/programs/some-program'
     },{
-      thumbnail: '/media/images/activity.png',
+      thumbnail: '/media/img/activity.png',
       description: 'Activity id est laborum...',
       url: '/explore/activities/some-activity'
     }];
