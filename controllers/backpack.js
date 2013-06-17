@@ -322,14 +322,16 @@ module.exports = function (app) {
   });
 
   app.get('/myapplications/:id', [
-    isLearner
+    isLearner,
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     openbadger.getBadge({id: req.params.id}, function(err, data) {
       var badge = data.badge;
       applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
         res.render('user/application.html', {
-          badge: _.extend(badge, application)
+          badge: _.extend(badge, application),
+          similar:data.badges
         });
       });
     });

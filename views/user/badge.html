@@ -54,6 +54,7 @@
         </div>
     </div>
 
+    {% if similar %}
     <div class="row">
       <h3>Similar Badges</h3>
       <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
@@ -65,4 +66,5 @@
       {% endfor %}
 
     </div>
+    {% endif %}
 {% endblock %}
