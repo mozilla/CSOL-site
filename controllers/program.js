@@ -373,7 +373,7 @@ module.exports = function (app) {
 
     for (var i = 0; i < 12; ++i) {
       orgs.push({
-        thumbnail: '/media/images/org.png',
+        thumbnail: '/media/img/org.png',
         description: 'Organization blah irure...',
         url: '/orgs/some-organization'
       });

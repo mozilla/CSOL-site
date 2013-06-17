@@ -364,19 +364,19 @@ module.exports = function (app) {
 
   app.get('/favorites/:view?', function (req, res, next) {
     var badge = {
-      thumbnail: '/media/images/badge.png',
+      thumbnail: '/media/img/badge.png',
       description: 'Badge blah in voluptate velit...',
       url: '/badges/ae784f'
     };
 
     var org = {
-      thumbnail: '/media/images/org.png',
+      thumbnail: '/media/img/org.png',
       description: 'Organization blah irure...',
       url: '/orgs/some-organization'
     };
 
     var program = {
-      thumbnail: '/media/images/program.png',
+      thumbnail: '/media/img/program.png',
       description: 'Program blah sed eiusmod...',
       url: '/programs/ae784f'
     };
