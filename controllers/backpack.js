@@ -128,49 +128,22 @@ module.exports = function (app) {
       items: data.badges
     });
   });
-
   app.get('/mybadges/:id', [
     isLearner,
-    openbadger.middleware('getUserBadge')
+    openbadger.middleware('getUserBadge'),
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     var data = req.remote;
 
     // XXX: replace with API call to openbadger
-    var similar = [
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        }
-    ];
-
-    const NSIMILAR = 4;
+    var similar = data.badges;
 
     if (user.underage) {
       return res.render('user/badge.html', {
         badge: data.badge,
         user: req.session.user,
-        similar: similar.slice(0, NSIMILAR),
+        similar: similar,
         share: false
       });
     }
@@ -199,7 +172,7 @@ module.exports = function (app) {
         return res.render('user/badge.html', {
           badge: data.badge,
           user: req.session.user,
-          similar: similar.slice(0, NSIMILAR),
+          similar: similar,
           share: share
         });
       });
@@ -238,7 +211,7 @@ module.exports = function (app) {
   });
 
   app.post('/share/toggle/:token', [
-    isLearner 
+    isLearner
   ], function (req, res, next) {
     var token = req.params.token;
     var user = req.session.user;

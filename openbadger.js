@@ -356,11 +356,15 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
-    var id = query.badgeName;
+    var badgename = query.badgeName;
+    var id = query.id;
     var limit = query.limit;
     var params = {
       limit: limit
     };
+
+    if (badgename)
+      id = badgename
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
@@ -477,7 +481,7 @@ openbadgerHooks.testHandler = function(req, res, next) {
 
   if (req.body.isTesting !== true)
     return res.send(200, "body.isTesting !== true");
-  
+
   if (!(claimCode && typeof(claimCode) == "string"))
     return res.send(200, "body.claimCode is empty");
 
