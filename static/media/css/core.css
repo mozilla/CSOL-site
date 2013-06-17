@@ -1029,6 +1029,15 @@ body.home .navbar .nav-wrap ul.nav > li.about > a {
   text-align: center;
   line-height: 24px;
 }
+body.home .navbar .nav-wrap ul.nav > li.log-in {
+  text-align: center;
+}
+body.home .navbar .nav-wrap ul.nav > li.log-in > a {
+  display: inline;
+}
+body.home .navbar .nav-wrap ul.nav > li.log-in > a > .caret {
+  border-top-color: #fff !important;
+}
 body.home .navbar .nav-wrap ul.nav > li.claim {
   display: none;
 }
