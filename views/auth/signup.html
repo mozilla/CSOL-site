@@ -9,14 +9,18 @@
 		<p class="lead">Explore badges you can earn and level up for citywide challenges. Create an account to get started!</p>
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset class="span12 well">
-			<div class="control-group">
+			<div class="control-group {{ _fields.username.state }}">
 				<label class="control-label" for="input-username">Username</label>
 				<div class="controls">
 					<input type="text" id="input-username" name="username" value="{{ username }}" required="required" placeholder="e.g. {{ example }}">
-					<span class="help-block"><strong>Please don't use your real name.</strong></span>
+					{% if _fields.username.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.username.message }}</em></strong></span>
+					{%- else -%}
+						<span class="help-block"><strong>Please don't use your real name.</strong></span>
+					{%- endif %}
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group {{ _fields.birthday.state }}">
 				<label class="control-label" for="input-birthday-month">Birthday</label>
 				<div class="controls">
 					<select id="input-birthday-month" name="birthday_month" class="input-small" required="required">
@@ -37,6 +41,9 @@
 							<option {% if birthday_year == year %} selected="selected"{% endif %}>{{ year }}</option>
 						{% endfor %}
 					</select>
+					{% if _fields.birthday.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.birthday.message }}</em></strong></span>
+					{%- endif %}
 				</div>
 			</div>
 			<div class="control-group">
@@ -90,7 +97,8 @@
 		    .append($input)
 		    .append($button);
 
-		$help.html('Type in a name, or click the button<br>to have one generated for you.<br>' + $help.html());
+		if (!$help.hasClass('message'))
+			$help.html('Type in a name, or click the button<br>to have one generated for you.<br>' + $help.html());
 	})(jQuery);
 </script>
 {% endblock %}
