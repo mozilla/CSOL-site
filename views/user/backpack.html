@@ -36,10 +36,8 @@
       <h3 id="myModalLabel">Share This Badge</h3>
     </div>
     <div class="modal-body">
-      <!-- Hide until implemented
-      <a href="#" class="btn btn-block"><i class="icon-twitter"></i> Twitter</a>
-      <a href="#" class="btn btn-block"><i class="icon-facebook"></i> Facebook</a>
-      -->
+      <a href="#" class="btn btn-block js-twitter" target="_blank"><i class="icon-twitter"></i> Twitter</a>
+      <a href="#" class="btn btn-block js-facebook" target="_blank"><i class="icon-facebook"></i> Facebook</a>
       <a href="#" class="btn btn-block js-moz-backpack">Mozilla Backpack</a>
     </div>
   </div>
@@ -62,12 +60,39 @@
 {% block finally %}
   <script src="//backpack.openbadges.org/issuer.js"></script>
   <script>
+    function twitterShareUrl(opts) {
+      var queries = [];
+      for (prop in opts) {
+        queries.push(prop + '=' + encodeURIComponent(opts[prop]));
+      }
+      return '//twitter.com/share?' + queries.join('&');
+    }
+
+    function facebookShareUrl(url) {
+      return '//facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    }
+
     $(document).ready(function(){
+
       $('.js-share').click(function(){
-        window.selected = $(this).attr('data-url');
+        window.selected = {
+          assertionUrl: $(this).attr('data-assertion-url'),
+          shareUrl: window.location.protocol + '//' + window.location.host + $(this).attr('data-share-url')
+        };
+
+        $('.js-twitter').attr('href', twitterShareUrl({ 
+          url: window.selected.shareUrl,
+          text: 'Check out my badge:',
+          hashtags: 'CSOL2013',
+          dnt: 1
+        }));
+
+        $('.js-facebook').attr('href', facebookShareUrl(window.selected.shareUrl));
+
       });
+
       $('.js-moz-backpack').click(function(){
-        OpenBadges.issue_no_modal([window.selected]);
+        OpenBadges.issue_no_modal([window.selected.assertionUrl]);
       });
     });
   </script>

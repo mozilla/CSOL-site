@@ -204,7 +204,8 @@ module.exports = function (app) {
           badge: data.badge,
           user: {
             email: token.email
-          }
+          },
+          fullUrl: req.protocol + '://' + req.headers.host + req.originalUrl
         });
       });
     });
