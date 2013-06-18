@@ -55,12 +55,15 @@ function generateUsername () {
 }
 
 function validateUsername (username) {
-  return usernames.validate(normalizeUsername(username));
+  try {
+    return !!usernames.validate(username);
+  } catch (e) {
+    return e.message || e;
+  }
 }
 
 function normalizeUsername (username) {
-  // For now, just remove white space and lower case it
-  return (''+username).replace(/\s/g, '').toLowerCase();
+  return usernames.normalize(username);
 }
 
 function generatePassword () {
@@ -68,7 +71,11 @@ function generatePassword () {
 }
 
 function validatePassword (password) {
-  return passwords.validate(password);
+  try {
+    return !!passwords.validate(password);
+  } catch (e) {
+    return e.message || e;
+  }
 }
 
 function validateAdultAgeCompliance (birthday) {
