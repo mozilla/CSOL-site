@@ -23,6 +23,25 @@ try {
   var CSOL_EMAIL_DOMAIN = ''
 }
 
+function FieldError (field, message) {
+  Object.defineProperties(this, {
+    message: {
+      enumerable: false,
+      value: message
+    },
+    field: {
+      enumerable: true,
+      value: field
+    }
+  });
+  Error.call(this, this.message);
+}
+FieldError.prototype = new Error();
+FieldError.prototype.constructor = FieldError;
+FieldError.prototype.toString = function () {
+  return '[FieldException: ' + this.message + ' (' + this.field + ')]';
+}
+
 if (!CSOL_EMAIL_DOMAIN)
   throw new Error('Must specify valid CSOL_HOST or CSOL_EMAIL_DOMAIN in the environment');
 
@@ -44,7 +63,9 @@ function getFullUrl(origin, path) {
 }
 
 function validateEmail (email) {
-  // TODO - make sure email is valid
+  if (!email.match(/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/)) {
+      return 'Invalid email address';
+  }
   return true;
 }
 
@@ -53,12 +74,15 @@ function generateUsername () {
 }
 
 function validateUsername (username) {
-  return usernames.validate(normalizeUsername(username));
+  try {
+    return !!usernames.validate(username);
+  } catch (e) {
+    return e.message || e;
+  }
 }
 
 function normalizeUsername (username) {
-  // For now, just remove white space and lower case it
-  return (''+username).replace(/\s/g, '').toLowerCase();
+  return usernames.normalize(username);
 }
 
 function generatePassword () {
@@ -66,7 +90,11 @@ function generatePassword () {
 }
 
 function validatePassword (password) {
-  return passwords.validate(password);
+  try {
+    return !!passwords.validate(password);
+  } catch (e) {
+    return e.message || e;
+  }
 }
 
 function validateAdultAgeCompliance (birthday) {
@@ -138,13 +166,29 @@ function processInitialLearnerSignup (req, res, next) {
   );
 
   function fail (err) {
-    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
+    _.reduce(arguments, function(genericErrorShown, err) {
+      if (!(err instanceof FieldError)) {
+        req.flash('error', err);
+        return genericErrorShown;
+      }
+
+      if (!genericErrorShown)
+        req.flash('error', 'There were some problems signing you up - check the form below.')
+
+      req.flash('field-error', err);
+
+      return true;
+    }, false);
+
     req.session.signup = signup;
     res.render('auth/signup.html', signup);
   }
 
-  if (!validateUsername(signup.username))
-    return fail(new Error('This is not a valid username'));
+  var errors = [];
+
+  var isValidUsername = validateUsername(signup.username);
+  if (isValidUsername !== true)
+    errors.push(new FieldError('username', isValidUsername || 'This is not a valid username'));
 
   // Check for accidental February 30ths, etc
   var isValidDate = birthday.getFullYear() === signup.birthday_year
@@ -152,7 +196,10 @@ function processInitialLearnerSignup (req, res, next) {
         && birthday.getDate() === signup.birthday_day;
 
   if (!isValidDate)
-    return fail(new Error('This is not a valid date.'));
+    errors.push(new FieldError('birthday', 'This is not a valid date.'));
+
+  if (errors.length)
+    return fail.apply(null, errors);
 
   var underage = !validateAdultAgeCompliance(birthday);
 
@@ -194,28 +241,50 @@ function processChildLearnerSignup (req, res, next) {
     signup.password = req.body['password'];
 
   function fail (err) {
-    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
+    _.reduce(arguments, function(genericErrorShown, err) {
+      if (!(err instanceof FieldError)) {
+        req.flash('error', err);
+        return genericErrorShown;
+      }
+
+      if (!genericErrorShown)
+        req.flash('error', 'There were some problems signing you up - check the form below.')
+
+      req.flash('field-error', err);
+
+      return true;
+    }, false);
+
     req.session.signup = signup;
     res.render('auth/signup-next-child.html', signup);
   }
 
+  var errors = [];
+
   if (!signup.first_name)
-    return fail(new Error('Missing first name'));
+    errors.push(new FieldError('first_name', 'Missing first name'));
 
   if (!signup.last_name)
-    return fail(new Error('Missing last name'));
+    errors.push(new FieldError('last_name', 'Missing last name'));
 
-  if (!signup.parent_email)
-    return fail(new Error('Missing email address'));
+  if (!signup.parent_email) {
+    errors.push(new FieldError('parent_email', 'Missing email address'));
+  } else {
+    var isValidEmail = validateEmail(signup.parent_email);
+    if (isValidEmail !== true)
+      errors.push(new FieldError('parent_email', isValidEmail || 'Invalid email address'));
+  }
 
-  if (!validateEmail(signup.parent_email))
-    return fail(new Error('Invalid email address'));
+  if (!signup.password) {
+    errors.push(new FieldError('password', 'Missing password'));
+  } else {
+    var isValidPassword = validatePassword(signup.password);
+    if (isValidPassword !== true)
+      errors.push(new FieldError('password', isValidPassword || 'Invalid password'));
+  }
 
-  if (!signup.password)
-    return fail(new Error('Missing password'));
-
-  if (!validatePassword(signup.password))
-    return fail(new Error('Invalid password'));
+  if (errors.length)
+    return fail.apply(null, errors);
 
   learners.find({where: {username: normalizedUsername}})
     .complete(function(err, user) {
@@ -270,9 +339,15 @@ function processStandardLearnerSignup (req, res, next) {
   var form = req.body;
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
-  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
-  signup.email = req.body['email'].replace(/^\s*|\s*$/g, '');
+  signup.first_name = (form.first_name||'').trim();
+  signup.last_name = (form.last_name||'').trim();
+  signup.email = (form.email||'').trim();
+
+  signup.school = (form.school||'').trim();
+  signup.studentId = (form.studentId||'').trim();
+  signup.gender = form.gender || null;
+  signup.raceEthnicity = form.raceEthnicity;
+  signup.zipCode = (form.zipCode||'').trim();
 
   if ('password' in req.body)
     signup.password = req.body['password'];
@@ -280,28 +355,50 @@ function processStandardLearnerSignup (req, res, next) {
   signup.passwordGenerated = false;
 
   function fail (err) {
-    req.flash('error', err || 'Unable to complete sign-up process. Please try again.');
+    _.reduce(arguments, function(genericErrorShown, err) {
+      if (!(err instanceof FieldError)) {
+        req.flash('error', err);
+        return genericErrorShown;
+      }
+
+      if (!genericErrorShown)
+        req.flash('error', 'There were some problems signing you up - check the form below.')
+
+      req.flash('field-error', err);
+
+      return true;
+    }, false);
+
     req.session.signup = signup;
     res.render('auth/signup-next.html', signup);
   }
 
+  var errors = [];
+
   if (!signup.first_name)
-    return fail(new Error('Missing first name'));
+    errors.push(new FieldError('first_name', 'Missing first name'));
 
   if (!signup.last_name)
-    return fail(new Error('Missing last name'));
+    errors.push(new FieldError('last_name', 'Missing last name'));
 
-  if (!signup.email)
-    return fail(new Error('Missing email address'));
+  if (!signup.email) {
+    errors.push(new FieldError('email', 'Missing email address'));
+  } else {
+    var isValidEmail = validateEmail(signup.email);
+    if (isValidEmail !== true)
+      errors.push(new FieldError('email', isValidEmail || 'Invalid email address'));
+  }
 
-  if (!signup.password)
-    return fail(new Error('Missing password'));
+  if (!signup.password) {
+    errors.push(new FieldError('password', 'Missing password'));
+  } else {
+    var isValidPassword = validatePassword(signup.password);
+    if (isValidPassword !== true)
+      errors.push(new FieldError('password', isValidPassword || 'Invalid password'));
+  }
 
-  if (!validateEmail(signup.email))
-    return fail(new Error('Invalid email address'));
-
-  if (!validatePassword(signup.password))
-    return fail(new Error('Invalid password'));
+  if (errors.length)
+    return fail.apply(null, errors);
 
   learners.find({where: {username: normalizedUsername}})
     .complete(function(err, user) {
@@ -315,16 +412,16 @@ function processStandardLearnerSignup (req, res, next) {
           firstName: signup.first_name,
           lastName: signup.last_name,
           email: signup.email,
-          school: (form.school||'').trim(),
-          cpsStudentId: (form.studentId||'').trim(),
-          gender: form.gender || null,
-          raceEthnicity: form.raceEthnicity,
-          zipCode: (form.zipCode||'').trim(),
+          school: signup.school,
+          cpsStudentId: signup.studentId,
+          gender: signup.gender,
+          raceEthnicity: signup.raceEthnicity,
+          zipCode: signup.zipCode,
           password: hash
         }).complete(function(err) {
           if (err) {
             if (err.code === 'ER_DUP_ENTRY')
-              return fail(new Error('This email address is already in use'));
+              return fail(new FieldError('email', 'This email address is already in use'));
             return fail(err);
           }
 
@@ -592,8 +689,9 @@ module.exports = function (app) {
       });
     }
 
-    if (!validatePassword(password)) {
-      req.flash('error', 'This is not a valid password');
+    var isValidPassword = validatePassword(password);
+    if (isValidPassword !== true) {
+      req.flash('error', isValidPassword || 'This is not a valid password');
       return res.redirect('/login/password/' + token.token);
     }
 
@@ -636,10 +734,11 @@ module.exports = function (app) {
     if (signup.state === 'more')
       return res.render('auth/signup-next.html', signup);
 
-    delete req.session.signup;
-    res.render('auth/signup.html', {
+    req.session.signup = signup = {
       example: usernames.generate()
-    });
+    };
+
+    res.render('auth/signup.html', signup);
   });
 
   app.post('/signup', function (req, res, next) {
@@ -678,11 +777,13 @@ module.exports = function (app) {
     if (!email || !password)
       return finalize(new Error('Missing email or password'));
 
-    if (!validateEmail(email))
-      return finalize(new Error('Invalid email address'));
+    var isValidEmail = validateEmail(email);
+    if (isValidEmail !== true)
+      return finalize(new Error(isValidEmail || 'Invalid email address'));
 
-    if (!validatePassword(password))
-      return finalize(new Error('Invalid password'));
+    var isValidPassword = validatePassword(password);
+    if (isValidPassword !== true)
+      return finalize(new Error(isValidPassword || 'Invalid password'));
 
     guardians.find({where: {email: email}})
       .complete(function(err, user) {
@@ -773,8 +874,9 @@ module.exports = function (app) {
     if (!password)
       return fail('Missing password')
 
-    if (!validatePassword(password))
-      return fail('Please enter a valid password')
+    var isValidPassword = validatePassword(password);
+    if (isValidPassword !== true)
+      return fail(isValidPassword || 'Please enter a valid password')
 
     guardians.find({where: {email: email}})
       .complete(function(err, guardian) {

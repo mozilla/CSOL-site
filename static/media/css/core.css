@@ -840,6 +840,10 @@ input[type="password"].metered:focus:invalid + .password-meter {
 input[type="password"].metered:focus:invalid:focus + .password-meter {
   border-color: #e9322d;
 }
+.control-group.error input[type="password"].metered + .password-meter,
+.control-group.error input[type="password"].metered:focus + .password-meter {
+  border-color: #DF382C;
+}
 /* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */
 /* ------------------------------ */
