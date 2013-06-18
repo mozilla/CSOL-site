@@ -7,29 +7,44 @@
 	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset class="span6 well">
-			<div class="control-group">
+			<div class="control-group {{ _fields.first_name.state }} {{ _fields.last_name.state }}">
 				<label class="control-label" for="input-email">Your Name</label>
 				<div class="controls">
 					<input type="text" id="input-first-name" name="first_name" value="{{ first_name }}" class="input-small" required="required" placeholder="First">
 					<input type="text" id="input-last-name" name="last_name" value="{{ last_name }}" class="input-small" required="required" placeholder="Last">
+					{% if _fields.first_name.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.first_name.message }}</em></strong></span>
+					{%- endif %}
+					{% if _fields.last_name.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.last_name.message }}</em></strong></span>
+					{%- endif %}
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group {{ _fields.parent_email.state }}">
 				<label class="control-label" for="input-email">Your parent's email</label>
 				<div class="controls">
-					<input type="email" id="input-email" name="parent_email" value="{{ parent_email }}" placeholder="e.g. user@example.com" required="required">
-					<span class="help-block">We need to know you're not an robot!
-						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong></span>
+					<input type="email" id="input-email" name="parent_email" value="{{ parent_email }}" required="required" placeholder="e.g. user@example.com">
+					<span class="help-block">
+						{%- if _fields.parent_email.message -%}
+							<strong><em>{{ _fields.parent_email.message }}</em></strong>
+						{%- else -%}
+							We need to know you're not an robot!
+						{%- endif -%}
+						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong>
+					</span>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group {{ _fields.password.state }}">
 				<label class="control-label" id="input-password-label" for="input-password">Your Password</label>
-        <div class="controls">
+                <div class="controls">
 					{% if passwordGenerated %}
 						<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
 					{% else %}
 						<input type="password" id="input-password" name="password">
 					{% endif %}
+					{% if _fields.password.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.password.message }}</em></strong></span>
+					{%- endif %}
 					<div class="alert help-block">Print this page so you won't forget this! You'll need it to log in again later.</div>
 				</div>
 			</div>
@@ -44,11 +59,11 @@
 
 {% block finally %}
 {% if not passwordGenerated %}
-<script>
-	(function() {
-		{% include 'includes/password-test.js' %}
-		setupPasswordStrengthTest();
-	})();
-</script>
+	<script>
+		(function() {
+			{% include 'includes/password-test.js' %}
+			setupPasswordStrengthTest();
+		})();
+	</script>
 {% endif %}
 {% endblock %}

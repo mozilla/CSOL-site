@@ -8,107 +8,124 @@
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<fieldset class="span6 well">
 			<div class="control-group">
+				<div class="controls"><small><em>Fields marked * are optional</em></small></div>
+			</div>
+			<div class="control-group {{ _fields.first_name.state }} {{ _fields.last_name.state }}">
 				<label class="control-label" for="input-email">Your Name</label>
 				<div class="controls">
 					<input type="text" id="input-first-name" name="first_name" value="{{ first_name }}" class="input-small" required="required" placeholder="First">
 					<input type="text" id="input-last-name" name="last_name" value="{{ last_name }}" class="input-small" required="required" placeholder="Last">
+					{% if _fields.first_name.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.first_name.message }}</em></strong></span>
+					{%- endif %}
+					{% if _fields.last_name.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.last_name.message }}</em></strong></span>
+					{%- endif %}
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="input-email">Email</label>
+			<div class="control-group {{ _fields.email.state }}">
+				<label class="control-label" for="input-email">Your Email Address</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="email" value="{{ email }}" required="required">
-					<span class="help-block">You'll need this to claim your badges.
-						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong></span>
+					<span class="help-block">
+						{%- if _fields.email.message -%}
+							<strong><em>{{ _fields.email.message }}</em></strong>
+						{%- else -%}
+							You'll need this to claim your badges.
+						{%- endif -%}
+						<br><strong><a href="/privacy">Please see our privacy policy.</a></strong>
+					</span>
 				</div>
 			</div>
 
-      <div class="control-group">
-				<label class="control-label" id="input-school-label" for="input-school">School</label>
+			<div class="control-group {{ _fields.school.state }}">
+				<label class="control-label" id="input-school-label" for="input-school">School *</label>
 				<div class="controls">
-					<input type="text" id="input-school" name="school" placeholder="Optional">
+					<input type="text" id="input-school" name="school" value={{ school }}>
+					{% if _fields.school.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.school.message }}</em></strong></span>
+					{%- endif %}
 				</div>
 			</div>
 
-      <div class="control-group">
-				<label class="control-label" id="input-student-id-label" for="input-student-id">CPS Student ID</label>
+			<div class="control-group {{ _fields.studentId.state }}">
+				<label class="control-label" id="input-student-id-label" for="input-student-id">CPS Student ID *</label>
 				<div class="controls">
-					<input type="text" id="input-student-id" name="studentId" placeholder="Optional">
+					<input type="text" id="input-student-id" name="studentId" value="{{ studentId }}">
 				</div>
 			</div>
 
-      <div class="control-group">
-				<label class="control-label" id="input-gender-label" for="input-gender">Gender</label>
+			<div class="control-group">
+				<label class="control-label" id="input-gender-label" for="input-gender">Gender *</label>
 				<div class="controls">
 					<select id="input-gender" name="gender">
-            <option value=""></option>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-          </select>
+						<option value=""></option>
+						<option value="female"{% if gender == 'female' %} selected{% endif %}>Female</option>
+						<option value="male"{% if gender == 'male' %} selected{% endif %}>Male</option>
+					</select>
+					{% if _fields.gender.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.gender.message }}</em></strong></span>
+					{%- endif %}
 				</div>
 			</div>
 
-      <div class="control-group">
-				<label class="control-label" id="input-ethnicity-label">Race/Ethnicity</label>
+			<div class="control-group">
+				<label class="control-label" id="input-ethnicity-label">Race/Ethnicity *</label>
 				<div class="controls">
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="American Indian or Alaska Native">
-            American Indian or Alaska Native
-          </label>
+					{%- set ethnicities = [
+						'American Indian or Alaska Native',
+						'Asian',
+						'Black or African American',
+						'Hispanic/Latino',
+						'Native American or Other Pacific Islander',
+						'Two or More Races',
+						'White'
+					] -%}
 
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Asian">
-            Asian
-          </label>
+					{% for ethnicity in ethnicities %}
+						<label class="radio">
+							<input type="radio" id="input-ethnicity" name="raceEthnicity" value="{{ ethnicity }}"{% if raceEthnicity == ethnicity %} checked{% endif %}>
+							{{ ethnicity }}
+						</label>
+					{% endfor %}
 
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Black or African American">
-            Black or African American
-          </label>
-
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Hispanic/Latino">
-            Hispanic/Latino
-          </label>
-
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Native American or Other Pacific Islander">
-            Native American or Other Pacific Islander
-          </label>
-
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="Two or More Races">
-            Two or More Races
-          </label>
-
-          <label>
-            <input type="radio" id="input-ethnicity" name="raceEthnicity" value="White">
-            White
-          </label>
-        </div>
+					{% if _fields.raceEthnicity.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.raceEthnicity.message }}</em></strong></span>
+					{%- endif %}
+				</div>
 			</div>
 
-      <div class="control-group">
-				<label class="control-label" id="input-zipcode-label" for="input-zipcode">Zip Code</label>
+			<div class="control-group">
+				<label class="control-label" id="input-zipcode-label" for="input-zipcode">Zip Code *</label>
 				<div class="controls">
-					<input type="text" id="input-zipcode" name="zipCode" placeholder="11111" pattern="[0-9]{5}">
+					<input type="text" id="input-zipcode" name="zipCode" placeholder="e.g. 11111" pattern="[0-9]{5}">
+					<span class="help-block">
+						{%- if _fields.zipCode.message -%}
+							<strong><em>{{ _fields.zipCode.message }}</em></strong>
+						{%- else -%}
+							Your five digit Zip Code
+						{%- endif -%}
+					</span>
 				</div>
 			</div>
 
 
-      <div class="control-group">
+			<div class="control-group {{ _fields.password.state }}">
 				<label class="control-label" id="input-password-label" for="input-password">Your Password</label>
 				<div class="controls">
-					{% if passwordGenerated %}
+					{% if passwordGenerated -%}
 						<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
-					{% else %}
-						<input type="password" id="input-password" name="password">
-					{% endif %}
+					{%- else -%}
+						<input type="password" id="input-password" required="required" name="password">
+					{%- endif %}
+					{% if _fields.password.message -%}
+						<span class="help-block message"><strong><em>{{ _fields.password.message }}</em></strong></span>
+					{%- endif %}
 					<div class="alert help-block">Print this page so you won't forget this! You'll need it to log in again later.</div>
 				</div>
 			</div>
 
-      <div class="control-group">
+			<div class="control-group">
 				<div class="controls">
 					<p><button type="submit" class="btn">All Done!</button></p>
 				</div>
