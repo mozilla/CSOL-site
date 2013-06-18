@@ -124,7 +124,8 @@ function clearUser (req, res) {
 
 function processInitialLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
-  var normalizedUsername = normalizeUsername(req.body['username']);
+  var username = (req.body['username']||'').trim().replace(/\s+/g, ' ');
+  var normalizedUsername = normalizeUsername(username);
 
   signup.birthday_year = parseInt(req.body['birthday_year'], 10);
   signup.birthday_month = parseInt(req.body['birthday_month'], 10);
@@ -161,6 +162,7 @@ function processInitialLearnerSignup (req, res, next) {
   // well have been created by the time sign-up is complete.
   // This will fail if the username is already being used
   learners.create({
+    originalUsername: username,
     username: normalizedUsername,
     password: '',
     underage: underage,
@@ -186,9 +188,9 @@ function processChildLearnerSignup (req, res, next) {
   var signup = req.session.signup || {};
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
-  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
-  signup.parent_email = req.body['parent_email'].replace(/^\s*|\s*$/g, '');
+  signup.first_name = req.body['first_name'].trim();
+  signup.last_name = req.body['last_name'].trim();
+  signup.parent_email = req.body['parent_email'].trim();
 
   if ('password' in req.body)
     signup.password = req.body['password'];
@@ -252,7 +254,7 @@ function processChildLearnerSignup (req, res, next) {
               title: 'Welcome to the Chicago Summer of Learning',
               value:
                 '<p>You have been given a temporary account for 10 days.</p>' +
-                '<p>Please make sure that your guardian checks their email so that they can register you for a permanent account.</p>'
+                '<p>Please make sure that your guardian checks their email so they can register you for a permanent account where you can apply for badges and much more.</p>'
               ,
               buttons: {
                 'Get Started!': 'primary'
@@ -270,9 +272,9 @@ function processStandardLearnerSignup (req, res, next) {
   var form = req.body;
   var normalizedUsername = normalizeUsername(signup.username);
 
-  signup.first_name = req.body['first_name'].replace(/^\s*|\s*$/g, '');
-  signup.last_name = req.body['last_name'].replace(/^\s*|\s*$/g, '');
-  signup.email = req.body['email'].replace(/^\s*|\s*$/g, '');
+  signup.first_name = req.body['first_name'].trim();
+  signup.last_name = req.body['last_name'].trim();
+  signup.email = req.body['email'].trim();
 
   if ('password' in req.body)
     signup.password = req.body['password'];

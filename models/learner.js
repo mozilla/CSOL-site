@@ -40,12 +40,16 @@ module.exports = {
         isEmail: true
       }
     },
+    originalUsername: {
+      type: db.type.STRING,
+      allowNull: true
+    },
     username: {
       type: db.type.STRING,
       allowNull: true,
       unique: true,
       validate: {
-        is: ['[a-zA-Z0-9 ]']
+        is: ['[a-zA-Z0-9]']
       }
     },
     password: {
@@ -107,8 +111,11 @@ module.exports = {
     getFullName: function () {
       return this.firstName + ' ' + this.lastName;
     },
+    getUsername: function () {
+      return this.originalUsername || this.username;
+    },
     getDisplayName: function () {
-      return this.firstName || this.username;
+      return this.firstName || this.getUsername();
     },
     getActivities: function (options, callback) {
       var learner = this;
