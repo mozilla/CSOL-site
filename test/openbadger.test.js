@@ -272,7 +272,7 @@ test('claim', function(t) {
     postStub.callsArgWith(2, null, DATA['claim']);
     openbadger.claim({
       code: 'CLAIMCODE',
-      email: 'EMAIL'
+      learner: { email: 'EMAIL' }
     }, function(err, data) {
       t.notOk(err, 'no error');
       var opts = postStub.args[0][1];

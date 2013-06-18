@@ -23,7 +23,8 @@ const healthChecker = healthCheck({
     database: healthCheck.checker(require('./db').healthCheck),
     openbadger: healthCheck.checker(require('./openbadger').healthCheck),
     aestimia: healthCheck.checker(require('./aestimia').healthCheck),
-    email: healthCheck.checker(require('./mandrill').healthCheck)
+    email: healthCheck.checker(require('./mandrill').healthCheck),
+    iremix: healthCheck.checker(require('./iremix').healthCheck)
   }
 });
 
