@@ -252,7 +252,7 @@ function processChildLearnerSignup (req, res, next) {
               title: 'Welcome to the Chicago Summer of Learning',
               value:
                 '<p>You have been given a temporary account for 10 days.</p>' +
-                '<p>Please make sure that your guardian checks their email so that they can register you for a permanent account.</p>'
+                '<p>Please make sure that your guardian checks their email so they can register you for a permanent account where you can apply for badges and much more.</p>'
               ,
               buttons: {
                 'Get Started!': 'primary'
