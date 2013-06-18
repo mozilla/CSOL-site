@@ -131,9 +131,9 @@ function extractMessageData (req) {
 
   if (_.isFunction(req.flash)) {
     _.each(req.flash(), function(list, type) {
-      messages[type] = _.map(list, function(msg) {
+      list = _.map(list, function(msg) {
         if (msg instanceof Error)
-          msg = msg.message;
+          msg = _.extend({value: msg.message}, _.pick(msg, _.keys(msg)));
 
         if (!_.isObject(msg))
           msg = {value: ''+msg};
@@ -168,23 +168,30 @@ function extractMessageData (req) {
         if (!msg.fields && msg.field)
           msg.fields = [msg.field];
 
-        if (_.isArray(msg.fields)) {
-          _.each(msg.fields, function(field) {
-            fields[field] = {state: type};
-          });
-        } else if (_.isObject(msg.fields)) {
-          _.each(msg.fields, function(field, meta) {
-            if (_.isString(meta))
-              meta = {message: meta};
+        if (msg.fields) {
+          var fieldBase = {
+            message: msg.value,
+            state: type.replace(/^field-/, '')
+          };
 
-            fields[field] = _.defaults(meta || {}, {
-              state: type
+          if (_.isArray(msg.fields)) {
+            _.each(msg.fields, function(field) {
+              fields[field] = fieldBase;
             });
-          });
+          } else if (_.isObject(msg.fields)) {
+            _.each(msg.fields, function(field, meta) {
+              if (_.isString(meta))
+                meta = {message: meta};
+
+              fields[field] = _.defaults(meta || {}, fieldBase);
+            });
+          }
         }
 
         return msg;
       });
+      if (type !== 'field-error')
+        messages[type] = list;
     });
   }
 
