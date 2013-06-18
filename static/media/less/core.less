@@ -128,6 +128,14 @@ ol {
   					border-right:none;
   				}
   			}
+			&.log-in > a {
+				display: inline;
+				padding: 10px 15px 10px 0;
+
+				&:first-child {
+					padding: 10px 0 10px 15px;
+				}
+			}
   		}
   		& > li:last-child {
   			border-right:none;
@@ -1165,12 +1173,12 @@ body.home {
 				&.log-in {
 					text-align: center;
 
-					& > a {
-						display: inline;
+					& > a > .caret {
+						border-top-color: #fff !important;
+					}
 
-						& > .caret {
-							border-top-color: #fff !important;
-						}
+					span {
+						color: #FFF;
 					}
 				}
            		&.claim {
