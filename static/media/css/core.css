@@ -134,6 +134,13 @@ ol {
   border-left: none;
   border-right: none;
 }
+.navbar .nav-wrap ul.nav > li.log-in > a {
+  display: inline;
+  padding: 10px 15px 10px 0;
+}
+.navbar .nav-wrap ul.nav > li.log-in > a:first-child {
+  padding: 10px 0 10px 15px;
+}
 .navbar .nav-wrap ul.nav > li:last-child {
   border-right: none;
 }
@@ -1047,11 +1054,11 @@ body.home .navbar .nav-wrap ul.nav > li.about > a {
 body.home .navbar .nav-wrap ul.nav > li.log-in {
   text-align: center;
 }
-body.home .navbar .nav-wrap ul.nav > li.log-in > a {
-  display: inline;
-}
 body.home .navbar .nav-wrap ul.nav > li.log-in > a > .caret {
   border-top-color: #fff !important;
+}
+body.home .navbar .nav-wrap ul.nav > li.log-in span {
+  color: #FFF;
 }
 body.home .navbar .nav-wrap ul.nav > li.claim {
   display: none;
