@@ -79,7 +79,7 @@ module.exports = function (app) {
     return activityPage(req, res, next,
       req.params.learnerName,
       req.params.dependants,
-      {badge: true, applications: true}
+      {badges: true, applications: true}
     );
   });
 
@@ -269,7 +269,7 @@ module.exports = function (app) {
       });
   });
 
-  app.post('/dashboard/:learnerName/applications/:applicationId', [isGuardian], function (req, res, next) {
+  app.post('/dashboard/:learnerName/applications/:badgeId', [isGuardian], function (req, res, next) {
     var learnerName = req.params.learnerName,
         badgeId = req.params.badgeId,
         action = req.body.action,

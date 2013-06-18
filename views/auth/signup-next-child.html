@@ -6,7 +6,7 @@
 {% block content %}
 	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
-		<fieldset class="span6 well">
+		<fieldset class="span12 well">
 			<div class="control-group {{ _fields.first_name.state }} {{ _fields.last_name.state }}">
 				<label class="control-label" for="input-email">Your Name</label>
 				<div class="controls">
@@ -45,7 +45,7 @@
 					{% if _fields.password.message -%}
 						<span class="help-block message"><strong><em>{{ _fields.password.message }}</em></strong></span>
 					{%- endif %}
-					<div class="alert help-block">Print this page so you won't forget this! You'll need it to log in again later.</div>
+					<div class="alert help-block">Make sure to write your password somewhere so you won't forget it! You'll need it to log in again later.</div>
 				</div>
 			</div>
 			<div class="control-group">

@@ -128,49 +128,22 @@ module.exports = function (app) {
       items: data.badges
     });
   });
-
   app.get('/mybadges/:id', [
     isLearner,
-    openbadger.middleware('getUserBadge')
+    openbadger.middleware('getUserBadge'),
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     var data = req.remote;
 
     // XXX: replace with API call to openbadger
-    var similar = [
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        }
-    ];
-
-    const NSIMILAR = 4;
+    var similar = data.badges;
 
     if (user.underage) {
       return res.render('user/badge.html', {
         badge: data.badge,
         user: req.session.user,
-        similar: similar.slice(0, NSIMILAR),
+        similar: similar,
         share: false
       });
     }
@@ -199,7 +172,7 @@ module.exports = function (app) {
         return res.render('user/badge.html', {
           badge: data.badge,
           user: req.session.user,
-          similar: similar.slice(0, NSIMILAR),
+          similar: similar,
           share: share
         });
       });
@@ -238,7 +211,7 @@ module.exports = function (app) {
   });
 
   app.post('/share/toggle/:token', [
-    isLearner 
+    isLearner
   ], function (req, res, next) {
     var token = req.params.token;
     var user = req.session.user;
@@ -349,14 +322,16 @@ module.exports = function (app) {
   });
 
   app.get('/myapplications/:id', [
-    isLearner
+    isLearner,
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     openbadger.getBadge({id: req.params.id}, function(err, data) {
       var badge = data.badge;
       applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
         res.render('user/application.html', {
-          badge: _.extend(badge, application)
+          badge: _.extend(badge, application),
+          similar:data.badges
         });
       });
     });
@@ -364,19 +339,19 @@ module.exports = function (app) {
 
   app.get('/favorites/:view?', function (req, res, next) {
     var badge = {
-      thumbnail: '/media/images/badge.png',
+      thumbnail: '/media/img/badge.png',
       description: 'Badge blah in voluptate velit...',
       url: '/badges/ae784f'
     };
 
     var org = {
-      thumbnail: '/media/images/org.png',
+      thumbnail: '/media/img/org.png',
       description: 'Organization blah irure...',
       url: '/orgs/some-organization'
     };
 
     var program = {
-      thumbnail: '/media/images/program.png',
+      thumbnail: '/media/img/program.png',
       description: 'Program blah sed eiusmod...',
       url: '/programs/ae784f'
     };

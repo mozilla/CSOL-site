@@ -4,7 +4,6 @@ const _ = require('underscore');
 const jwt = require('jwt-simple');
 const async = require('async');
 const s3 = require('./s3');
-const openbadgerHooks = require('./controllers/openbadger-hooks');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
 const JWT_SECRET = process.env['CSOL_OPENBADGER_SECRET'];
@@ -356,11 +355,15 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
-    var id = query.badgeName;
+    var badgename = query.badgeName;
+    var id = query.id;
     var limit = query.limit;
     var params = {
       limit: limit
     };
+
+    if (badgename)
+      id = badgename
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
@@ -470,22 +473,4 @@ module.exports.healthCheck = function(meta, cb) {
     s3.deleteFile.bind(s3, '/' + fakeClaimCode),
     function(_, done) { meta.webhookTest = "OK"; done(); }
   ], cb);
-};
-
-openbadgerHooks.testHandler = function(req, res, next) {
-  var claimCode = req.body.claimCode;
-
-  if (req.body.isTesting !== true)
-    return res.send(200, "body.isTesting !== true");
-  
-  if (!(claimCode && typeof(claimCode) == "string"))
-    return res.send(200, "body.claimCode is empty");
-
-  s3.putBuffer(new Buffer(claimCode), '/' + claimCode, {
-    'Content-Type': 'text/plain'
-  }, function(err) {
-    if (err) return res.send(200, "s3 putbuffer failed");
-
-    return res.send(200, "S3_ITEM_CREATED");
-  });
 };

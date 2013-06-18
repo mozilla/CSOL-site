@@ -3,6 +3,7 @@
 var db = require('../db');
 var email = require('../mandrill');
 var logger = require('../logger');
+var url = require('url');
 
 var signupTokens = db.model('SignupToken');
 
@@ -50,7 +51,11 @@ signupTokens.findAll({ where: { expired: 0 } }).success(function(activeTokens) {
       });
 
       if (bestMatch) {
-        var confirmationUrl = 'http://' + process.env.CSOL_HOST + '/signup/' + activeToken.token;
+        var confirmationUrl = url.format({
+          protocol : 'http:',
+          host : url.parse(process.env.CSOL_HOST).host,
+          pathname: '/signup/' + activeToken.token
+        });
 
         activeToken.getLearner().success(function(learner) {
           email.send(bestMatch.template, {

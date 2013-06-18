@@ -1,11 +1,13 @@
 const jwt = require('jwt-simple');
 const util = require('util');
-var db = require('../db');
+const db = require('../db');
 const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const mandrill = require('../mandrill');
 const openbadger = require('../openbadger');
 const url = require('url');
+const logger = require('../logger');
+const s3 = require('../s3');
 
 const JWT_SECRET = process.env.CSOL_OPENBADGER_SECRET;
 const CSOL_HOST = process.env.CSOL_HOST;
@@ -27,7 +29,7 @@ function handleIssuedClaim(email, code, callback) {
     else {
       var claimUrl = url.format({
         protocol : 'http:',
-        host : CSOL_HOST,
+        host : url.parse(CSOL_HOST).host,
         pathname: '/claim',
         query : { code: code }
       });
@@ -68,6 +70,10 @@ function handleIssuedClaim(email, code, callback) {
   });
 }
 
+function respondWithForbidden(res, reason) {
+  return res.send(403, { status: 'forbidden', reason: reason });
+}
+
 function auth(req, res, next) {
   const param = req.method === "GET" ? req.query : req.body;
   const token = param.auth;
@@ -76,28 +82,24 @@ function auth(req, res, next) {
   const now = Date.now()/1000|0;
   var decodedToken, msg;
   if (!token)
-    return respondWithError(res, 'missing mandatory `auth` param');
+    return respondWithForbidden(res, 'missing mandatory `auth` param');
   try {
     decodedToken = jwt.decode(token, JWT_SECRET);
   } catch(err) {
-    return respondWithError(res, 'error decoding JWT: ' + err.message);
+    return respondWithForbidden(res, 'error decoding JWT: ' + err.message);
   }
   if (decodedToken.prn !== email) {
     msg = '`prn` mismatch: given %s, expected %s';
-    return respondWithError(res, util.format(msg, decodedToken.prn, email));
+    return respondWithForbidden(res, util.format(msg, decodedToken.prn, email));
   }
 
   if (!decodedToken.exp)
-    return respondWithError(res, 'Token must have exp (expiration) set');
+    return respondWithForbidden(res, 'Token must have exp (expiration) set');
 
   if (decodedToken.exp < now)
-    return respondWithError(res, 'Token has expired');
+    return respondWithForbidden(res, 'Token has expired');
 
   return next();
-}
-
-function respondWithError(res, reason) {
-  return res.send(403, { status: 'forbidden', reason: reason });
 }
 
 module.exports = function (app) {
@@ -109,13 +111,15 @@ module.exports = function (app) {
       return module.exports.testHandler(req, res, next);
 
     if (!claimCode)
-      return respondWithError(res, 'No claimCode provided');
+      return res.send(500, { status: 'error', error: 'No claimCode provided' });
 
     claimCode = claimCode.trim();
 
     handleIssuedClaim(email, claimCode, function(err) {
-      if (err)
-        return respondWithError(res, 'An error occurred while attempting to handle this claim notification.');
+      if (err) {
+        logger.log('info', 'Error encountered while handling claim code %s for user %s: %s', claimCode, email, err.toString());
+        return res.send(500, { status: 'error', error: 'An error occurred while attempting to handle this claim notification.' });
+      }
 
       return res.send(200, { status: 'ok' });
     });
@@ -123,5 +127,19 @@ module.exports = function (app) {
 };
 
 module.exports.testHandler = function(req, res, next) {
-  return res.send(501, 'test handler not implemented');
+  var claimCode = req.body.claimCode;
+
+  if (req.body.isTesting !== true)
+    return res.send(200, "body.isTesting !== true");
+
+  if (!(claimCode && typeof(claimCode) == "string"))
+    return res.send(200, "body.claimCode is empty");
+
+  s3.putBuffer(new Buffer(claimCode), '/' + claimCode, {
+    'Content-Type': 'text/plain'
+  }, function(err) {
+    if (err) return res.send(200, "s3 putbuffer failed");
+
+    return res.send(200, "S3_ITEM_CREATED");
+  });
 };
