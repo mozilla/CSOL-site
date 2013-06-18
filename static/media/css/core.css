@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 /*general*/
 html,
 body {
@@ -16,12 +18,8 @@ h4,
 p {
   font-family: 'Open Sans', sans-serif;
 }
-body {
-  margin: 0px;
-  padding: 0px;
-}
-body .container > br {
-  display: none;
+.row-fluid [class*="span"] {
+  margin-left: 0px;
 }
 #main {
   padding-top: 45px;
@@ -61,10 +59,6 @@ ol {
 .navbar .nav {
   float: none;
 }
-.navbar .nav > li.dropdown.open > .dropdown-toggle {
-  background-color: inherit;
-  text-decoration: underline;
-}
 .navbar .nav > li > a {
   border-left: none;
   border-right: none;
@@ -74,9 +68,6 @@ ol {
   background-color: inherit;
   border-left: none;
   border-right: none;
-}
-.navbar .nav > li.dropdown.open > .dropdown-toggle {
-  color: #000;
 }
 .navbar .nav > li:nth-child(even) {
   border-left: 1px solid #c0c0c0;
@@ -166,6 +157,18 @@ nav.pagination ul li a {
   background: -ms-linear-gradient(45deg, rgba(91, 91, 91, 0.25) 0%, rgba(72, 72, 72, 0.25) 21%, rgba(0, 0, 0, 0) 100%);
   background: linear-gradient(45deg, rgba(91, 91, 91, 0.25) 0%, rgba(72, 72, 72, 0.25) 21%, rgba(0, 0, 0, 0) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#405b5b5b', endColorstr='#00000000', GradientType=1);
+}
+.navbar .nav li {
+  text-align: left;
+}
+.navbar .nav li.dropdown > .dropdown-toggle,
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  background: none;
+  color: #000;
+  cursor: hand;
+  cursor: pointer;
 }
 /*footer*/
 .footer {
@@ -408,6 +411,9 @@ nav.pagination ul li a {
     border-left: none;
     border-right: none;
   }
+  .navbar .nav li {
+    text-align: center;
+  }
   /*mobile footer*/
   .footer .upper {
     padding-top: 15px;
@@ -453,6 +459,11 @@ nav.pagination ul li a {
 #menu-login-form {
   padding: 10px;
   text-align: left;
+  line-height: 20px;
+}
+#menu-login-form .help-block {
+  margin-bottom: 0px;
+  margin-top: 5px;
 }
 #menu-login-form button {
   display: block;
@@ -676,6 +687,9 @@ ul.thumbnails li .thumbnail .caption p:first-child {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+ul.thumbnails li .thumbnail .caption .description a {
+  display: block;
+}
 ul.thumbnails li .thumbnail .playlist-bar form,
 ul.thumbnails li .thumbnail .item-actions form {
   display: inline-block;
@@ -869,6 +883,29 @@ body .navbar.filter .navbar-inner {
   filter: none;
   background: #45bcd2;
 }
+body.challenges #main > .container > h2,
+body.explore #main > .container > h2,
+body.earn #main > .container > h2 {
+  height: 110px;
+  width: 100%;
+  font: normal 48px/150% 'Amatic SC', cursive;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+body.challenges #main > .container > h2 span,
+body.explore #main > .container > h2 span,
+body.earn #main > .container > h2 span {
+  line-height: 110px;
+}
+body.explore #main > .container > h2 {
+  background: url('../img/menu-bk-explore.png') center right no-repeat;
+}
+body.challenges #main > .container > h2 {
+  background: url('../img/menu-bk-levelup.png') center right no-repeat;
+}
+body.earn #main > .container > h2 {
+  background: url('../img/menu-bk-earn.png') center right no-repeat;
+}
 /* ------------------------------ */
 /* Mobile : general  ------------ */
 /* ------------------------------ */
@@ -881,6 +918,18 @@ body .navbar.filter .navbar-inner {
     width: 180px;
     display: block;
     float: none;
+  }
+  body.challenges #main > .container > h2,
+  body.explore #main > .container > h2,
+  body.earn #main > .container > h2 {
+    background: none;
+    width: inherit;
+    height: inherit;
+  }
+  body.challenges #main > .container > h2 span,
+  body.explore #main > .container > h2 span,
+  body.earn #main > .container > h2 span {
+    line-height: inherit;
   }
 }
 /* ------------------------------ */
@@ -991,14 +1040,17 @@ body.home .navbar .nav-wrap ul.nav > li.about > a {
   text-align: center;
   line-height: 24px;
 }
-body.home .navbar .nav-wrap ul.nav > li.claim > a {
+body.home .navbar .nav-wrap ul.nav > li.log-in {
   text-align: center;
-  text-transform: capitalize;
-  margin-top: 5px;
 }
-body.home .navbar .nav-wrap ul.nav > li.claim > a:before,
-body.home .navbar .nav-wrap ul.nav > li.claim > a:after {
-  content: '-';
+body.home .navbar .nav-wrap ul.nav > li.log-in > a {
+  display: inline;
+}
+body.home .navbar .nav-wrap ul.nav > li.log-in > a > .caret {
+  border-top-color: #fff !important;
+}
+body.home .navbar .nav-wrap ul.nav > li.claim {
+  display: none;
 }
 body.home .navbar .nav-wrap ul.nav > li.video {
   margin: 30px 0;
@@ -1281,7 +1333,13 @@ body.home #cl_i_vid {
 .about .org-list {
   list-style: none;
 }
-
-p.description {
-  white-space: pre-wrap;
+/* SHARE STYLES */
+.share {
+  margin-bottom: 10px;
+}
+.share .share-state {
+  float: left;
+}
+.share .share-toggle {
+  float: right;
 }

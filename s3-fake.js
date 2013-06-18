@@ -39,7 +39,7 @@ FakeS3.prototype.putBuffer = function(buffer, urlPath, headers, cb) {
   process.nextTick(function() {
     // We don't currently do anything w/ the data, so we won't bother
     // passing it in as the second param to the callback.
-    cb(null);
+    cb(null, null);
   });
 };
 
@@ -65,7 +65,7 @@ FakeS3.prototype.deleteFile = function(urlPath, cb) {
   process.nextTick(function() {
     // We don't currently do anything w/ the response, so we won't bother
     // passing it in as the second param to the callback.
-    cb(null);
+    cb(null, null);
   });
 };
 

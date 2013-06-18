@@ -2,6 +2,7 @@
 
 @import "mixins.less";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
 
 /*general*/
 html, body {
@@ -13,15 +14,9 @@ html, body {
 html, body, h1, h2, h3, h4, p {
 	font-family:'Open Sans', sans-serif;
 }
-body {
-  margin:0px;
-  padding:0px;
-  .container {
-  & > br {
-			display:none;
-  	}
-  }
- }
+.row-fluid [class*="span"] {
+	margin-left:0px;
+}
 
 #main {
 	padding-top: 45px;
@@ -60,10 +55,6 @@ ol {
 	.nav {
 	  float:none;
 	  & > li {
-      &.dropdown.open > .dropdown-toggle {
-      background-color:inherit;
-      text-decoration:underline;
-      }
 	  	& > a {
 	  		border-left:none;
 	  		border-right:none;
@@ -72,9 +63,6 @@ ol {
 	  		background-color:inherit;
 	  		border-left:none;
 	  		border-right:none;
-	  	}
-	  	&.dropdown.open > .dropdown-toggle {
-	  		color:#000;
 	  	}
 	  }
 		& > li:nth-child(even) {
@@ -174,6 +162,20 @@ nav.pagination {
       }
     }
   }
+}
+
+.navbar .nav li {
+	text-align:left;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle,
+.navbar .nav li.dropdown.open > .dropdown-toggle, 
+.navbar .nav li.dropdown.active > .dropdown-toggle, 
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+	background:none;
+	color:#000;
+	cursor:hand;
+	cursor:pointer; 
 }
 
 /*footer*/
@@ -415,6 +417,9 @@ and (max-width : 599px) {
   				}
   			}
   		}
+  		.nav li {
+			text-align:center;
+		}
   	}
 /*mobile footer*/
  	.footer {
@@ -467,6 +472,11 @@ and (max-width : 599px) {
 #menu-login-form {
 	padding:10px;
 	text-align:left;
+	line-height:20px;
+	.help-block {
+		margin-bottom:0px;
+		margin-top:5px;
+	}
 
 	button {
 		display: block;
@@ -740,6 +750,11 @@ ul.thumbnails {
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
+				.description {
+					a {
+						display:block;
+					}
+				}
 			}
 
       .playlist-bar,
@@ -969,6 +984,27 @@ body {
 			background:#45bcd2;
 		}
 	}
+	&.challenges #main > .container > h2,
+	&.explore #main > .container > h2,
+	&.earn #main > .container > h2 {
+		height:110px;
+		width:100%;
+		font:normal 48px/150% 'Amatic SC', cursive;
+		text-transform:uppercase;
+		letter-spacing:1px;
+		span {
+			line-height:110px;
+		}
+	}
+	&.explore #main > .container > h2 {
+		background:url('../img/menu-bk-explore.png') center right no-repeat;
+	}
+	&.challenges #main > .container > h2 {
+		background:url('../img/menu-bk-levelup.png') center right no-repeat;
+	}
+	&.earn #main > .container > h2 {
+		background:url('../img/menu-bk-earn.png') center right no-repeat;
+	}
 }
 
 /* ------------------------------ */
@@ -985,6 +1021,16 @@ body {
 			width:180px;
 			display:block;
 			float:none;
+		}
+	}
+	&.challenges #main > .container > h2,
+	&.explore #main > .container > h2,
+	&.earn #main > .container > h2 {
+		background:none;
+		width:inherit;
+		height:inherit;
+		span {
+			line-height:inherit;
 		}
 	}
 }
@@ -1116,13 +1162,8 @@ body.home {
 					text-align:center;
             		line-height:24px;
            		}
-           		&.claim > a {
-           			text-align:center;
-           			text-transform:capitalize;
-           			margin-top:5px;
-           			&:before, &:after {
-           				content: '-';
-           			}
+           		&.claim {
+           			display:none;
            		}
             	&.video {
               		margin:30px 0;
@@ -1393,5 +1434,18 @@ and (max-width : 599px) {
 
   .org-list {
     list-style: none;
+  }
+}
+
+/* SHARE STYLES */
+.share {
+  margin-bottom: 10px;
+
+  .share-state {
+    float: left;
+  }
+
+  .share-toggle {
+    float: right;
   }
 }

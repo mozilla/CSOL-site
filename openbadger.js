@@ -2,6 +2,8 @@ const Api = require('./api');
 const errors = require('./lib/errors');
 const _ = require('underscore');
 const jwt = require('jwt-simple');
+const async = require('async');
+const s3 = require('./s3');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
 const JWT_SECRET = process.env['CSOL_OPENBADGER_SECRET'];
@@ -76,7 +78,7 @@ var activityTypes = [
 var badgeTypes = [
   {label: 'Participation', value: 'participation'},
   {label: 'Skill', value: 'skill'},
-  {label: 'Activity', value: 'activity'}
+  {label: 'Achievement', value: 'achievement'}
 ];
 var orgs = [];
 
@@ -162,7 +164,7 @@ function filterBadges (data, query) {
   return applyFilter(data, {
     'categories': category,
     'ageRange': ageGroup,
-    'badgeType': badgeType,
+    'type': badgeType,
     'activityType': activityType
   });
 
@@ -353,11 +355,15 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   getBadgeRecommendations: function getBadgeRecommendations (query, callback) {
-    var id = query.badgeName;
+    var badgename = query.badgeName;
+    var id = query.id;
     var limit = query.limit;
     var params = {
       limit: limit
     };
+
+    if (badgename)
+      id = badgename
 
     if (!id)
       return callback(new errors.BadRequest('Invalid badge key'));
@@ -423,14 +429,48 @@ module.exports.getFilters = function getFilters () {
   };
 }
 module.exports.updateOrgs = updateOrgs;
+
 module.exports.healthCheck = function(meta, cb) {
   // Use a privileged API call to ensure we're testing the JWT secret.
   // A random email should guarantee we bust through any caches.
-  var email = 'healthCheck_test_' +
-              Math.floor(Math.random() * 100000) + '@mozilla.org';
+  var random = Math.floor(Math.random() * 100000).toString();
+  var fakeClaimCode = 'healthCheck_test_' + random;
+  var email = fakeClaimCode + '@mozilla.org';
 
   meta.notes = ENDPOINT;
-  openbadger.getUserBadges({
-    session: {user: {email: email}}
-  }, cb);
+  meta.apiTest = meta.webhookTest = "FAILED";
+
+  async.waterfall([
+    openbadger.getUserBadges.bind(openbadger, {
+      session: {user: {email: email}}
+    }),
+    function(data, done) { meta.apiTest = "OK"; done(); },
+    openbadger.post.bind(openbadger, '/test/webhook', {
+      json: {
+        auth: getJWTToken(email),
+        email: email,
+        claimCode: fakeClaimCode
+      }
+    }),
+    function(data, done) {
+      if (!(data &&
+            data.status == "ok" &&
+            data.body == "S3_ITEM_CREATED"))
+        return done(new Error("unexpected webhook response: " +
+                              JSON.stringify(data)));
+
+      s3.get('/' + fakeClaimCode).on('response', function(stream) {
+        var chunks = [];
+        stream.on('data', function(chunk) { chunks.push(chunk); });
+        stream.on('end', function() {
+          var result = Buffer.concat(chunks).toString('ascii');
+          if (result !== fakeClaimCode)
+            return done(new Error("unexpected s3 item content: " + result));
+          done();
+        });
+      }).end();
+    },
+    s3.deleteFile.bind(s3, '/' + fakeClaimCode),
+    function(_, done) { meta.webhookTest = "OK"; done(); }
+  ], cb);
 };

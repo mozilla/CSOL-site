@@ -5,7 +5,7 @@
 {% block content %}
     <div class="row">
         <div class="span4">
-            <img class="{{ badge.state }}"  src="{{ badge.image }}">
+            <img src="{{ badge.image }}">
         </div>
         <div class="span8">
           <p>
@@ -27,18 +27,4 @@
           <p class="description">{{ badge.description }}</p>
         </div>
     </div>
-
-    {% if similar %}
-    <div class="row">
-      <h3>Similar Badges</h3>
-      <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
-
-      {% for item in similar %}
-      <div class="span3">
-        {% include "includes/badge-thumbnail.html" %}
-      </div>
-      {% endfor %}
-
-    </div>
-    {% endif %}
 {% endblock %}

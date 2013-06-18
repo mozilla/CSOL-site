@@ -3,6 +3,27 @@
 {% set pageTitle = badge.name %}
 
 {% block content %}
+    {% if share %}
+      <div class="row share">
+        <div class="span12">
+          {% if share.shared %}
+            <p class="muted share-state">
+              Public url: <a href="{{share.url}}">{{share.url}}</a>
+            </p>
+            <form method="post" action="{{share.toggleUrl}}">
+              <button type="submit" class="btn btn-small share-toggle">Make it private.</button>
+            </form>
+          {% else %}
+            <p class="muted share-state">
+              This page is private.
+            </p>
+            <form method="post" action="{{share.toggleUrl}}">
+              <button type="submit" class="btn btn-small share-toggle">Make it public.</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
     <div class="row">
         <div class="span4">
             <img src="{{ badge.image }}">
@@ -33,10 +54,10 @@
         </div>
     </div>
 
+    {% if similar %}
     <div class="row">
       <h3>Similar Badges</h3>
-      <p>Cupcake <a href="#">link to Badges page</a> something about badges
-      should go here.</p>
+      <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
 
       {% for item in similar %}
       <div class="span3">
@@ -45,4 +66,5 @@
       {% endfor %}
 
     </div>
+    {% endif %}
 {% endblock %}

@@ -1,4 +1,5 @@
 const _ = require('underscore');
+const async = require('async');
 const openbadger = require('../openbadger');
 const db = require('../db');
 const isLearner = require('../middleware').isLearner;
@@ -6,6 +7,7 @@ const isLearner = require('../middleware').isLearner;
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
 const playlist = db.model('Playlist');
+const shareToken = db.model('ShareToken');
 const favoriteMiddleware = _.bind(favorite.middleware, favorite);
 const playlistMiddleware = _.bind(playlist.middleware, playlist);
 const applications = db.model('Application');
@@ -120,52 +122,119 @@ module.exports = function (app) {
   ], function (req, res, next) {
     var data = req.remote;
 
+    data.badges.template = 'includes/badge-instance-thumbnail.html';
+
     res.render('user/backpack.html', {
       items: data.badges
     });
   });
-
   app.get('/mybadges/:id', [
     isLearner,
-    openbadger.middleware('getUserBadge')
+    openbadger.middleware('getUserBadge'),
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
+    var user = req.session.user;
     var data = req.remote;
 
     // XXX: replace with API call to openbadger
-    var similar = [
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
+    var similar = data.badges;
+
+    if (user.underage) {
+      return res.render('user/badge.html', {
+        badge: data.badge,
+        user: req.session.user,
+        similar: similar,
+        share: false
+      });
+    }
+    else {
+      async.waterfall([
+        function getToken (callback) {
+          shareToken.findOrCreate({
+            shortName: data.badge.shortname,
+            email: user.email
+          }).complete(callback);
         },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
-        },
-        {
-            url: "/mybadges/this-badge",
-            image: "http://openbadger-csol.mofostaging.net/badge/image/this-badge.png",
-            name: "Test Badge CLM",
-            description: "This is a test badge!"
+        function ensureTokenValue (token, callback) {
+          if (!token.token)
+            token.generateToken(callback);
+          else
+            callback(null, token);
         }
-    ];
+      ], function renderPage (err, shareToken) {
+        var share = false;
+        if (shareToken) {
+          share = shareToken.values;
+          share.url = shareToken.getUrl();
+          share.toggleUrl = shareToken.getToggleUrl();
+        }
 
-    const NSIMILAR = 4;
+        return res.render('user/badge.html', {
+          badge: data.badge,
+          user: req.session.user,
+          similar: similar,
+          share: share
+        });
+      });
+    }
+  });
 
-    res.render('user/badge.html', {
-      badge: data.badge,
-      user: req.session.user,
-      similar: similar.slice(0, NSIMILAR)
+  app.get('/share/:token', function (req, res, next) {
+    var token = req.params.token;
+
+    shareToken.find({
+      where: {
+        token: token
+      }
+    }).complete(function (err, token) {
+      if (err)
+        return next(err);
+
+      if (!token.shared)
+        return next('Invalid share token');
+
+      openbadger.getUserBadge({
+        id: token.shortName,
+        email: token.email
+      }, function (err, data) {
+        if (err)
+          return next(err);
+
+        return res.render('user/badge-share.html', {
+          badge: data.badge,
+          user: {
+            email: token.email
+          }
+        });
+      });
     });
+  });
+
+  app.post('/share/toggle/:token', [
+    isLearner
+  ], function (req, res, next) {
+    var token = req.params.token;
+    var user = req.session.user;
+
+    shareToken.find({
+      where: {
+        token: token
+      }
+    }).complete(function (err, token) {
+      if (err)
+        return next(err);
+
+      if (token.email !== user.email)
+        return next('User does not own token');
+
+      token.toggle(function (err) {
+        if (err)
+          return next(err);
+
+        return res.redirect('/mybadges/' + token.shortName);
+      });
+    });
+
   });
 
   app.post('/mybadges/:id/favorite', [
@@ -253,14 +322,16 @@ module.exports = function (app) {
   });
 
   app.get('/myapplications/:id', [
-    isLearner
+    isLearner,
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     openbadger.getBadge({id: req.params.id}, function(err, data) {
       var badge = data.badge;
       applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
         res.render('user/application.html', {
-          badge: _.extend(badge, application)
+          badge: _.extend(badge, application),
+          similar:data.badges
         });
       });
     });
@@ -268,19 +339,19 @@ module.exports = function (app) {
 
   app.get('/favorites/:view?', function (req, res, next) {
     var badge = {
-      thumbnail: '/media/images/badge.png',
+      thumbnail: '/media/img/badge.png',
       description: 'Badge blah in voluptate velit...',
       url: '/badges/ae784f'
     };
 
     var org = {
-      thumbnail: '/media/images/org.png',
+      thumbnail: '/media/img/org.png',
       description: 'Organization blah irure...',
       url: '/orgs/some-organization'
     };
 
     var program = {
-      thumbnail: '/media/images/program.png',
+      thumbnail: '/media/img/program.png',
       description: 'Program blah sed eiusmod...',
       url: '/programs/ae784f'
     };

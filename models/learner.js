@@ -222,8 +222,6 @@ module.exports = {
             if (err)
               return callback(err);
 
-            console.log(badges);
-
             callback(null, _.flatten(badges));
           });
         }
@@ -239,8 +237,8 @@ module.exports = {
 
           activities = _.flatten(activities);
           if (options.badges) {
-            applications = _.reject(applications, function(application) {
-              return application.state === 'accepted';
+            activities = _.reject(activities, function(activity) {
+              return activity.state === 'accepted';
             });
           }
 
