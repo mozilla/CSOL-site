@@ -924,6 +924,13 @@ input[type="password"].metered {
 	}
 }
 
+.control-group.error input[type="password"].metered {
+	& + .password-meter,
+	&:focus + .password-meter {
+		border-color: #DF382C;
+	}
+}
+
 /* ------------------------------ */
 /* CSOL-site SPECIFIC ----------- */
 /* ------------------------------ */
