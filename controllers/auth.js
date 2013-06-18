@@ -216,7 +216,7 @@ function processInitialLearnerSignup (req, res, next) {
     .error(function(err) {
       // Did try a `findOrCreate`, but couldn't get `isNewRecord` to work
       if (err.code === 'ER_DUP_ENTRY')
-        return fail(new Error('This username is already in use'));
+        return fail(new FieldError('username', 'This username is already in use'));
 
       return fail(err);
     })
