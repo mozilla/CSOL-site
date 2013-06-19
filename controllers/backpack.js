@@ -121,12 +121,34 @@ module.exports = function (app) {
     favoriteMiddleware
   ], function (req, res, next) {
     var data = req.remote;
+    var user = req.session.user;
 
-    res.render('user/backpack.html', {
-      items: data.badges,
-      template: 'includes/badge-instance-thumbnail.html'
-    });
+    async.each(data.badges, 
+      function attachShareToken(badge, callback){
+        shareToken.findOrCreate({
+          shortName: badge.id,
+          email: user.email
+        }).complete(function(err, shareToken){
+          if (shareToken) {
+            badge.share = shareToken.values;
+            badge.share.url = shareToken.getUrl();
+            badge.share.toggleUrl = shareToken.getToggleUrl();
+          }
+          callback(err);
+        });
+      },
+      function done(err) {
+        if (err)
+          next(err);
+
+        res.render('user/backpack.html', {
+          items: data.badges,
+          template: 'includes/badge-instance-thumbnail.html'
+        });
+      }
+    );
   });
+
   app.get('/mybadges/:id', [
     isLearner,
     openbadger.middleware('getUserBadge'),
