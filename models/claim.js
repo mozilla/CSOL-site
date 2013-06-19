@@ -60,7 +60,7 @@ module.exports = {
 
         openbadger.claim({
           code: claim.code,
-          email: learner.email
+          learner: learner
         }, function (err, data) {
           if (err)
             return callback(err);

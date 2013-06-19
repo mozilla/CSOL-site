@@ -22,7 +22,7 @@ function handleIssuedClaim(email, code, callback) {
   learners.find({ where: { email: email } }).success(function(learner) {
     if (learner !== null && !learner.underage) {
       // email matched a >13 learner.  Can immediately claim the badge.
-      openbadger.claim({ code: code, email: email }, function (err, data) {
+      openbadger.claim({ code: code, learner: learner }, function (err, data) {
           return callback(err);
       });
     }
