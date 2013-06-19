@@ -29,7 +29,7 @@ module.exports = {
     state: {
       type: db.type.ENUM,
       values: [
-        'open',       // This application is being worked on 
+        'open',       // This application is being worked on
         'waiting',    // This application is waiting for guardian approval (where applicable)
         'denied',     // This application has been denied by the guardian (where applicable)
         'submitted',  // This application has been submitted for review
@@ -71,13 +71,13 @@ module.exports = {
     getStateDescription: function () {
       switch (this.state) {
         case 'open':
-          return 'Open';
+          return 'Application Started';
         case 'waiting':
-          return 'Needs Approval';
+          return 'Approval Requested';
         case 'denied':
           return 'Approval Denied';
         case 'submitted':
-          return 'Pending Mentor Review';
+          return 'Mentor Reviewing';
         case 'rejected':
         case 'accepted':
           return 'Reviewed';
