@@ -2,6 +2,14 @@
 {% set navitem = 'backpack' %}
 {% set pageTitle = badge.name %}
 
+{% block head %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ fullUrl }}">
+  <meta property="og:title" content="{{ user.email }}'s {{ badge.name }} Badge">
+  <meta property="og:description" content="{{ badge.description }}">
+  <meta property="og:image" content="{{ badge.image }}">
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="span4">

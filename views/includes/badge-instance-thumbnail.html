@@ -4,6 +4,7 @@
   {% if user and not user.underage %}
     <a href="#" role="button" class="btn js-share" 
       data-toggle="modal" data-target="#shareModal" 
-      data-url="{{item.assertionUrl}}">Share</a>
+      data-assertion-url="{{item.assertionUrl}}"
+      data-share-url="{{item.url}}">Share</a>
   {% endif %}
 {% endblock %}
