@@ -91,6 +91,10 @@
 							{{ ethnicity }}
 						</label>
 					{% endfor %}
+					<label class="radio">
+						<input type="radio" id="input-ethnicity" name="raceEthnicity" value=""{% if not raceEthnicity %} checked{% endif %}>
+						<i>Don't want to say</i>
+					</label>
 
 					{% if _fields.raceEthnicity.message -%}
 						<span class="help-block message"><strong><em>{{ _fields.raceEthnicity.message }}</em></strong></span>
