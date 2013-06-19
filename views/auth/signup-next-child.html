@@ -6,6 +6,9 @@
 {% block content %}
 	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<button class="btn btn-link pull-left" name="action" value="go-back" formnovalidate>&laquo; Go Back</button>
+		<button class="btn pull-right" name="action" value="restart" formnovalidate>Restart</button>
+		<br><br>
 		<fieldset class="span12 well">
 			<div class="control-group {{ _fields.first_name.state }} {{ _fields.last_name.state }}">
 				<label class="control-label" for="input-email">Your Name</label>

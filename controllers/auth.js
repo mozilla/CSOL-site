@@ -184,6 +184,16 @@ function processInitialLearnerSignup (req, res, next) {
     res.render('auth/signup.html', signup);
   }
 
+  function finish (user) {
+    signup.state = user.underage ? 'child' : 'more';
+    signup.profileId = user.id;
+    signup.passwordGenerated = false;
+    signup.password = signup.generatedPassword = generatePassword();
+
+    req.session.signup = signup;
+    res.redirect(303, '/signup');
+  }
+
   var errors = [];
 
   var isValidUsername = validateUsername(signup.username);
@@ -207,25 +217,37 @@ function processInitialLearnerSignup (req, res, next) {
   // race conditions on usernames - even if the username does not exist now, it may
   // well have been created by the time sign-up is complete.
   // This will fail if the username is already being used
-  learners.create({
-    username: normalizedUsername,
-    password: '',
-    underage: underage,
-    birthday: birthday
-  })
-    .error(function(err) {
-      // Did try a `findOrCreate`, but couldn't get `isNewRecord` to work
-      if (err.code === 'ER_DUP_ENTRY')
+  learners.find({where: {username: normalizedUsername}})
+    .error(fail)
+    .success(function(user) {
+      if (!user) {
+        if (signup.profileId) {
+          // Releasing previous user profile, which they might have created if
+          // they've gone backwards in the sign-up process and started with
+          // another username
+          learners.find(signup.profileId).success(function(profile) {
+            if (profile && !profile.complete)
+              profile.destroy();
+          });
+        }
+
+        return learners.create({
+          username: normalizedUsername,
+          password: '',
+          underage: underage,
+          birthday: birthday
+        }).error(fail).success(finish);
+      }
+
+      if (user.id !== signup.profileId)
         return fail(new FieldError('username', 'This username is already in use'));
 
-      return fail(err);
-    })
-    .success(function(user) {
-      signup.state = underage ? 'child' : 'more';
-      signup.passwordGenerated = false;
-      signup.password = signup.generatedPassword = generatePassword();
-      req.session.signup = signup;
-      res.redirect(303, '/signup');
+      user.updateAttributes({
+        underage: underage,
+        birthday: birthday
+      }).error(fail).success(function() {
+        finish(user);
+      });
     });
 }
 
@@ -734,6 +756,9 @@ module.exports = function (app) {
     if (signup.state === 'more')
       return res.render('auth/signup-next.html', signup);
 
+    if (signup.state === 'initial')
+      return res.render('auth/signup.html', signup);
+
     req.session.signup = signup = {
       example: usernames.generate()
     };
@@ -743,6 +768,37 @@ module.exports = function (app) {
 
   app.post('/signup', function (req, res, next) {
     var signup = req.session.signup || {};
+
+    if (req.body['action'] === 'go-back') {
+      var form = req.body;
+
+      'first_name' in form && (signup.first_name = (form.first_name||'').trim());
+      'last_name' in form && (signup.last_name = (form.last_name||'').trim());
+      'email' in form && (signup.email = (form.email||'').trim());
+      'parent_email' in form && (signup.parent_email = (form.parent_email||'').trim());
+
+      'school' in form && (signup.school = (form.school||'').trim());
+      'studentId' in form && (signup.studentId = (form.studentId||'').trim());
+      'gender' in form && (signup.gender = form.gender || null);
+      'raceEthnicity' in form && (signup.raceEthnicity = form.raceEthnicity);
+      'zipCode' in form && (signup.zipCode = (form.zipCode||'').trim());
+
+      signup.state = 'initial';
+
+      req.session.signup = signup;
+      return res.redirect('/signup');
+    }
+
+    if (req.body['action'] === 'restart') {
+      return learners.find(signup.profileId)
+        .complete(function(err, profile) {
+          if (profile && !profile.complete)
+            profile.destroy();
+
+          delete req.session.signup;
+          return res.redirect('/signup');
+        });
+    }
 
     if (signup.state === 'child')
       return processChildLearnerSignup(req, res, next);
