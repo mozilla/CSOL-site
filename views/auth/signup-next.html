@@ -6,6 +6,9 @@
 {% block content %}
 	<form class="form-horizontal row-fluid" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<button class="btn btn-link pull-left" name="action" value="go-back" formnovalidate>&laquo; Go Back</button>
+		<button class="btn pull-right" name="action" value="restart" formnovalidate>Restart</button>
+		<br><br>
 		<fieldset class="span12 well">
 			<div class="control-group">
 				<div class="controls"><small><em>Fields marked * are optional</em></small></div>
@@ -88,6 +91,10 @@
 							{{ ethnicity }}
 						</label>
 					{% endfor %}
+					<label class="radio">
+						<input type="radio" id="input-ethnicity" name="raceEthnicity" value=""{% if not raceEthnicity %} checked{% endif %}>
+						<i>Don't want to say</i>
+					</label>
 
 					{% if _fields.raceEthnicity.message -%}
 						<span class="help-block message"><strong><em>{{ _fields.raceEthnicity.message }}</em></strong></span>
