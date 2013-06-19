@@ -21,7 +21,9 @@ var aestimia = new Api(ENDPOINT, {
 
   submit: function (application, callback) {
     var api = this;
-    var wordcount = application.description.replace(/[^\w\s]/g, '').split(/\s+/).length;
+    var description = application.description.trim().replace(/[^a-z0-9\s]/ig, '');
+    var wordcount = !!description ? description.split(/\s+/).length : 0;
+    var minWordCount = 10;
 
     application.getLearner()
       .complete(function (err, learner) {
@@ -35,7 +37,7 @@ var aestimia = new Api(ENDPOINT, {
 
               evidence = evidence || [];
 
-              if (!evidence.length && wordcount < 20)
+              if (!evidence.length && wordcount < minWordCount)
                 return callback('Insufficient evidence for this application');
 
               openbadger.getBadge(application.badgeId, function (err, data) {
