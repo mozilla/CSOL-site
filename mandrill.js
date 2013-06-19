@@ -31,7 +31,9 @@ const TEMPLATES = {
   '<13 badge claim with name': 'csol-13-badge-claim-named',
   'unknown badge claim': 'csol-unknown-badge-claim',
   '<13 badge application submission': 'csol-13-badge-application',
-  '<13 badge application review': 'csol-13-badge-application-review'
+  '<13 badge application review': 'csol-13-badge-application-review',
+  'steam award with invite': 'csol-steam-award-invite',
+  'steam award': 'csol-steam-award'
 };
 
 module.exports = {
