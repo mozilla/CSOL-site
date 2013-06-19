@@ -274,14 +274,22 @@ module.exports = function (app) {
         if (!application)
           return render('new');
 
-        var wordcount = application.description.replace(/[^\w\s]/g, '').split(/\s+/).length;
+        var description = application.description.trim().replace(/[^a-z0-9\s]/ig, '');
+        var wordcount = !!description ? description.split(/\s+/).length : 0;
 
         application.getEvidence()
           .complete(function(err, evidence) {
             if (err)
               return next(err);
 
-            var state = evidence.length || (wordcount >= 20) ? application.state : 'new';
+            var state = application.state;
+            var minWordCount = 10;
+
+            if (!evidence.length && wordcount < minWordCount) {
+              state = 'new';
+              if (wordcount)
+                req.flash('block', 'To submit this badge application, you\'ll need to include a description of ' + minWordCount + ' words or more, and/or upload evidence of your work in the form of a file.');
+            }
 
             render(state, {
               evidence: evidence,
