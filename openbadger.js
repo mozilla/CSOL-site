@@ -53,8 +53,7 @@ function normalizeProgram(program, id) {
   if (!program.id)
     program.id = id;
 
-  if (!program.url)
-    program.url = '/explore/' + program.shortname;
+  program.localUrl = '/explore/' + program.shortname;
 
   return program;
 }
