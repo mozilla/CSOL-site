@@ -203,7 +203,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/explore/program-a' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', localUrl: '/explore/program-a' }, 'normalized');
       t.end();
     });
   });
@@ -230,7 +230,7 @@ test('getPrograms', function(t) {
       t.notOk(err, 'no error');
       t.same(data.programs.length, 3, 'data length');
       var program = data.programs[0];
-      t.ok(program.id && program.url && program.name, 'looks like normalized program');
+      t.ok(program.id && program.localUrl && program.name, 'looks like normalized program');
       t.ok(getStub.calledWithMatch('/programs'), 'endpoint');
       t.end();
     });
