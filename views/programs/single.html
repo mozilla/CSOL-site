@@ -10,10 +10,22 @@
           </figure>
         </div>
         <div class="span8">
-            <p><strong>From <a href="{{program.url}}">{{program.issuer.name}}</a>.</strong></p>
+            <p><strong>From 
+              {% if program.issuer.url %}
+                <a href="{{program.issuer.url}}">{{program.issuer.name}}</a>
+              {% else %}    
+                {{program.issuer.name}}
+              {% endif %}
+            .</strong></p>
             {% if program.description %}
                 <p class="description">{{program.description}}</p>
-                {% if program.phone %} <p class="description">For more information, call {{program.phone}}</p>{% endif %}
+                {% if program.contact %}
+                  <p class="description">Email us at <a href="mailto:{{program.contact}}">{{program.contact}}</a> to sign up</p>
+                {% elif program.url %}
+                  <p class="description">Check us out at <a href="{{program.url}}">{{program.url}}</a> to learn more</p>
+                {% elif program.phone %} 
+                  <p class="description">For more information, call {{program.phone}}</p>
+                {% endif %}
             {% endif %}
             <p class="text-right"></p>
         </div>

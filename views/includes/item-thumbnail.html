@@ -1,11 +1,11 @@
 <figure class="thumbnail">
-	<a href="{{ item.url }}"><img src="{{ item.imageUrl | default(item.issuer.imageUrl) }}"></a>
+	<a href="{{ item.localUrl }}"><img src="{{ item.imageUrl | default(item.issuer.imageUrl) }}"></a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% block item_actions_wrapper %}
 			<p class="text-right">
 				{% block item_actions %}
-					<a href="{{ item.url }}" class="btn">Details</a>
+					<a href="{{ item.localUrl }}" class="btn">Details</a>
 				{% endblock %}
 			</p>
 		{% endblock %}
