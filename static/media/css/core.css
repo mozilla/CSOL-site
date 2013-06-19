@@ -917,6 +917,10 @@ body.challenges #main > .container > h2 {
 body.earn #main > .container > h2 {
   background: url('../img/menu-bk-earn.png') center right no-repeat;
 }
+body p.description {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 /* ------------------------------ */
 /* Mobile : general  ------------ */
 /* ------------------------------ */

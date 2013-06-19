@@ -177,13 +177,13 @@ nav.pagination {
 }
 
 .navbar .nav li.dropdown > .dropdown-toggle,
-.navbar .nav li.dropdown.open > .dropdown-toggle, 
-.navbar .nav li.dropdown.active > .dropdown-toggle, 
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
 	background:none;
 	color:#000;
 	cursor:hand;
-	cursor:pointer; 
+	cursor:pointer;
 }
 
 /*footer*/
@@ -957,7 +957,7 @@ body {
 	#main {
 		> .container {
 			> h2 {
-			
+
 			}
 		}
 	}
@@ -1019,6 +1019,10 @@ body {
 	}
 	&.earn #main > .container > h2 {
 		background:url('../img/menu-bk-earn.png') center right no-repeat;
+	}
+	p.description {
+		white-space: pre-wrap;
+		word-wrap: break-word;
 	}
 }
 
@@ -1340,7 +1344,7 @@ and (max-width : 599px) {
 				-webkit-box-shadow:none;
 				-moz-box-shadow:none;
 				box-shadow:none;
-				& > .container { 
+				& > .container {
 					background-image:none;
 					background:none;
 				}
