@@ -77,7 +77,7 @@
       $('.js-share').click(function(){
         window.selected = {
           assertionUrl: $(this).attr('data-assertion-url'),
-          shareUrl: window.location.protocol + '//' + window.location.host + $(this).attr('data-share-url')
+          shareUrl: $(this).attr('data-share-url')
         };
 
         $('.js-twitter').attr('href', twitterShareUrl({ 
