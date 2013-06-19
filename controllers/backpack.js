@@ -74,12 +74,22 @@ module.exports = function (app) {
           code: claimCode
         });
       }
-      else {
+
+      openbadger.getUserBadge({
+        email: user.email,
+        id: data.badge.shortname
+      }, function (err, badge) {
+        if (!badge)
+          return res.render('claim.html', {
+            code: claimCode,
+            badge: data.badge
+          });
+
+        req.flash('error', 'You already have this badge');
         return res.render('claim.html', {
-          code: claimCode,
           badge: data.badge
         });
-      }
+      });
     });
 
   });

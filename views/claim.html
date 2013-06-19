@@ -5,28 +5,27 @@
 
 {% block content %}
   {% if badge %}
-    <div class="row">
+    <div class="row-fluid">
       <div class="span4">
         <img src="{{ badge.image }}">
       </div>
       <div class="span8">
         <h3>{{ badge.name }}</h3>
-        <form method="post" class="form-horizontal well">
-		      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-          <input type="hidden" id="input-code" name="code" value="{{ code }}">
-          <fieldset>
-            <div class="control-group">
-              <div class="controls">
-                <button type="submit" class="btn">Claim this badge</button>
-              </div>
-            </div>
-          </fieldset>
-        </form>
+        <p class="description">{{ badge.description }}</p>
+        {% if code %}
+          <br>
+          <form method="post" class="form-horizontal text-center well">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            <input type="hidden" id="input-code" name="code" value="{{ code }}">
+            <button type="submit" class="btn btn-large">Claim this badge</button>
+          </form>
+        {% else %}
+        {% endif %}
       </div>
     </div>
   {% else %}
-            <p>To claim the badge you've earned, enter the "claim code" written on the paper badge you received from your teacher, counselor or mentor.</p>
-            <p>Then hit the "Claim This Badge" button on your screen. Once you do this, the badge will be added to your My Badges page and you can throw the piece of paper away (or, better yet, recycle it!).</p>
+    <p>To claim the badge you've earned, enter the "claim code" written on the paper badge you received from your teacher, counselor or mentor.</p>
+    <p>Then hit the "Claim This Badge" button on your screen. Once you do this, the badge will be added to your My Badges page and you can throw the piece of paper away (or, better yet, recycle it!).</p>
 
     <h3>Already have a claim code?</h3>
     <form method="get" class="form-horizontal row-fluid">
