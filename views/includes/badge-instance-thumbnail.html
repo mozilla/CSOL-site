@@ -7,10 +7,14 @@
     {% set modalId = 'shareModal' + item.id %}
     {% set modalLabelId = modalId + 'Label' %}
     {% macro socialButtons(item, private=true) %}
-      <a href="{{ item.share.twitterUrl }}" class="btn btn-block share-button {% if private %}disabled{% endif %}"
-        target="_blank"><i class="icon-twitter"></i> Twitter</a>
-      <a href="{{ item.share.facebookUrl }}" class="btn btn-block share-button {% if private %}disabled{% endif %}"
-        target="_blank"><i class="icon-facebook"></i> Facebook</a>
+      <a href="{{ item.share.twitterUrl }}" target="_blank"
+        class="btn btn-block share-button js-twitter-share {% if private %}disabled{% endif %}">
+          <i class="icon-twitter"></i> Twitter
+      </a>
+      <a href="{{ item.share.facebookUrl }}" target="_blank"
+        class="btn btn-block share-button js-facebook-share {% if private %}disabled{% endif %}">
+          <i class="icon-facebook"></i> Facebook
+      </a>
       <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
     {% endmacro %}
 

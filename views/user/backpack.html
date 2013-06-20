@@ -49,6 +49,21 @@
 {% block finally %}
   <script src="//backpack.openbadges.org/issuer.js"></script>
   <script>
+
+    function popup (name, opts){
+      var optStrs = [];
+      for (prop in opts) {
+        optStrs.push(prop + '=' + opts[prop]);
+      }
+      var optStr = optStrs.join(',');
+      return function() {
+        var url = $(this).attr('href');
+        var popup = window.open(url, name, optStr);
+        if (window.focus) popup.focus();
+        return false;
+      };
+    }
+
     $(document).ready(function(){
 
       $('.js-moz-backpack').click(function(){
@@ -69,6 +84,9 @@
           return false;
         });
       });
+
+      $('.js-twitter-share').click(popup('twitter', { width: 550, height: 450 }));
+      $('.js-facebook-share').click(popup('facebook', { width: 626, height: 436 }));
 
     });
   </script>
