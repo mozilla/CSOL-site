@@ -3,17 +3,6 @@
 {% set bodyClass = 'mybadges' %}
 {% set navItem = 'backpack' %}
 
-{% block content %}
-  {% if user.underage %}
-    <div class="alert alert-block">
-      <h4>Welcome {{user.getDisplayName()}}!</h4>
-      {{user.signuptoken}}
-      <p>We need to be sure your parent or guardian is OK with you creating an account, so we've sent them an email. While you wait, check out the great badges you can earn: <a href="/explore">explore</a></p>
-    </div>
-  {% endif %}
-  {{ super() }}
-{% endblock %}
-
 {% block list %}
   <p>See all the badges you have earned. Keep it up!</p>
   {{ super() }}
