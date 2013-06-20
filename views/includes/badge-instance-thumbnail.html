@@ -34,16 +34,17 @@
             <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
           </div>
           <div class="js-badge-private" {% if item.share.shared %}style="display: none;"{% endif %}>
-            <p class="share-state">
-              This badge is private.
-            </p>
-            <form class="share-toggle" method="post" action="{{ item.share.toggleUrl }}">
-              <button type="submit" class="btn btn-small">Make it public.</button>
+            <form method="post" action="{{ item.share.toggleUrl }}">
+              <p class="share-state">
+                This badge is private.
+              </p>
+              <button type="submit" class="btn btn-small share-toggle">Make it public.</button>
+              <hr>
+              <p class="muted">
+                <button type="submit" class="btn btn-link">Make this badge public</button> to share it through your social networks. 
+                You can always send badges to your Backpack:
+              </p>
             </form>
-            <hr>
-            <p class="muted">
-              Private badges can't be shared through your social networks, but you can send them to your Backpack:
-            </p>
             <a href="{{ item.share.twitterUrl }}" class="btn btn-block disabled" target="_blank"><i class="icon-twitter"></i> Twitter</a>
             <a href="{{ item.share.facebookUrl }}" class="btn btn-block disabled" target="_blank"><i class="icon-facebook"></i> Facebook</a>
             <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
