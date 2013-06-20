@@ -140,10 +140,11 @@ test('getBadge', function(t) {
 });
 
 test('getBadges', function(t){
+  const CALLBACK_INDEX = 2;
 
   t.test('on error', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, 500, 'error of some sort');
+    getStub.callsArgWith(CALLBACK_INDEX, 500, 'error of some sort');
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
       t.same(data, 'error of some sort', 'data');
@@ -153,7 +154,7 @@ test('getBadges', function(t){
 
   t.test('with data', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['badges']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['badges']);
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.badges.length, 3, 'data length');
@@ -166,7 +167,7 @@ test('getBadges', function(t){
 
   t.test('paginates', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['badges']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['badges']);
     openbadger.getBadges({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.badges.length, 2, 'paginated');
@@ -206,7 +207,7 @@ test('getProgram', function(t) {
       t.notOk(err, "no error");
       t.ok(getStub.calledWithMatch('/program/some-id'), 'endpoint');
       t.similar(data.program, { name: "Program A" }, 'program');
-      t.similar(data.program, { id: 'some-id', url: '/explore/program-a' }, 'normalized');
+      t.similar(data.program, { id: 'some-id', localUrl: '/explore/program-a' }, 'normalized');
       t.end();
     });
   });
@@ -233,7 +234,7 @@ test('getPrograms', function(t) {
       t.notOk(err, 'no error');
       t.same(data.programs.length, 3, 'data length');
       var program = data.programs[0];
-      t.ok(program.id && program.url && program.name, 'looks like normalized program');
+      t.ok(program.id && program.localUrl && program.name, 'looks like normalized program');
       t.ok(getStub.calledWithMatch('/programs'), 'endpoint');
       t.end();
     });

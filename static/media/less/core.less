@@ -967,12 +967,15 @@ body {
 	}
 	.navbar.filter {
 		margin-top:20px;
-		label, select, input {
-		display:block;
-		float:left;
+		text-align: center;
+		.selectWrapper {
+			display: inline;
 		}
 		select {
 			margin-right:25px;
+		}
+		.btn {
+			margin-left: 25px;
 		}
 		label {
 			background: url('../img/icon-sprite.png') no-repeat top left;
@@ -995,6 +998,9 @@ body {
 			}
 			&.filter-type {
 				background-position: 0 -720px;
+			}
+			&.filter-search {
+				background-position: 0 -560px;
 			}
 		}
 		.navbar-inner {
@@ -1037,13 +1043,31 @@ body {
 and (max-width : 599px) {
 body {
   	.navbar.filter {
-  		.selectWrapper, input {
+  		.selectWrapper {
 			clear:left;
-			margin:auto;
+			margin: 0 auto 10px;
 			text-align:center;
-			width:180px;
 			display:block;
 			float:none;
+			padding-left: 35px;
+			overflow: hidden;
+		}
+		.selectWrapper.text {
+			padding-right: 14px;
+		}
+		label {
+			float: left;
+			margin-top: 0;
+			margin-left: -35px;
+		}
+		select, input {
+			display: block;
+			float: left;
+			width: 100%;
+			margin: 0;
+		}
+		.btn {
+			margin-left: 0;
 		}
 	}
 	&.challenges #main > .container > h2,

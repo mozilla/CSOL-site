@@ -55,8 +55,7 @@ function normalizeProgram(program, id) {
   if (!program.id)
     program.id = id;
 
-  if (!program.url)
-    program.url = '/explore/' + program.shortname;
+  program.localUrl = '/explore/' + program.shortname;
 
   return program;
 }
@@ -208,7 +207,10 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   getAllBadges: function getAllBadges (query, callback) {
-    this.get('/badges', function(err, data) {
+    // We should really be passing through the entire query at this point,
+    // but right now we're handling most of the querying on this side, so we'll
+    // only worry about 'search' for now
+    this.get('/badges', {qs: {search: query.search}}, function(err, data) {
       if (err)
         return callback(err, data);
 
@@ -241,6 +243,7 @@ var openbadger = new Api(ENDPOINT, {
         org: query.org,
         age: query.age,
         activity: query.activity,
+        search: query.search,
       };
       this.get('/programs', {qs: qs}, function(err, data) {
         if (err)
@@ -449,6 +452,10 @@ module.exports.getFilters = function getFilters () {
       name: 'type',
       label: 'Type',
       options: badgeTypes
+    },
+    search: {
+      name: 'search',
+      label: 'Search'
     }
   };
 }
