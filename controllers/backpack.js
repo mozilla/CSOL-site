@@ -147,7 +147,7 @@ module.exports = function (app) {
             badge.share.toggleUrl = shareToken.getToggleUrl();
             badge.share.twitterUrl = twitterShareUrl({
               url: shareToken.getUrl(),
-              text: 'Check out my badge:',
+              text: 'Check out my newest badge from the Chicago Summer of Learning!',
               hashtags: 'CSOL2013',
               dnt: 1
             });
