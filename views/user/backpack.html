@@ -50,11 +50,26 @@
   <script src="//backpack.openbadges.org/issuer.js"></script>
   <script>
     $(document).ready(function(){
+
       $('.js-moz-backpack').click(function(){
         var url = $(this).attr('data-assertion-url');
         OpenBadges.issue_no_modal([url]);
         return false;
       });
+
+      $('.js-badge-state').each(function(){
+        var container = this;
+        $('form', container).submit(function(){
+          var url = $(this).attr('action');
+          $.post(url).done(function() { 
+            $(container).children().toggle(); 
+          }).fail(function() { 
+            alert('Badge update failed');
+          });
+          return false;
+        });
+      });
+
     });
   </script>
 {% endblock %}

@@ -272,6 +272,9 @@ module.exports = function (app) {
         if (err)
           return next(err);
 
+        if (req.xhr) {
+          return res.send(200);
+        }
         return res.redirect('/mybadges/' + token.shortName);
       });
     });

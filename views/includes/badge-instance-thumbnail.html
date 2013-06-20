@@ -2,15 +2,36 @@
 {% block buttons_right %}
   {{ super() }}
   {% if user and not user.underage %}
+    {% set modalId = 'shareModal' + item.id %}
+    {% set modalLabelId = modalId + 'Label' %}
     <a href="#" role="button" class="btn js-share" 
-      data-toggle="modal" data-target="#shareModal{{ item.id }}">Share</a>
+      data-toggle="modal" data-target="#{{ modalId }}">Share</a>
 
-    <div id="shareModal{{ item.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{ item.id }}Share" aria-hidden="true">
+    <div id="{{ modalId }}" class="modal hide fade" tabindex="-1" 
+      role="dialog" aria-labelledby="{{ modalLabelId }}" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Share Your {{ item.name }} Badge</h3>
+        <h3 id="{{ modalLabelId }}">Share Your {{ item.name }} Badge</h3>
       </div>
       <div class="modal-body">
+        <div class="js-badge-state">
+          <div class="js-badge-public" {% if not item.share.shared %}style="display: none;"{% endif %}>
+            <p class="muted share-state">
+              Public url: <a href="{{ item.share.url }}">{{ item.share.url }}</a>
+            </p>
+            <form method="post" action="{{ item.share.toggleUrl }}">
+              <button type="submit" class="btn btn-small share-toggle">Make it private.</button>
+            </form>
+          </div>
+          <div class="js-badge-private" {% if item.share.shared %}style="display: none;"{% endif %}>
+            <p class="muted share-state">
+              This page is private.
+            </p>
+            <form method="post" action="{{ item.share.toggleUrl }}">
+              <button type="submit" class="btn btn-small share-toggle">Make it public.</button>
+            </form>
+          </div>
+        </div>
         <a href="{{ item.share.twitterUrl }}" class="btn btn-block" target="_blank"><i class="icon-twitter"></i> Twitter</a>
         <a href="{{ item.share.facebookUrl }}" class="btn btn-block" target="_blank"><i class="icon-facebook"></i> Facebook</a>
         <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
