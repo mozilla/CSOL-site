@@ -24,14 +24,14 @@
             </form>
             <hr>
             <p class="muted">
-              Copy and paste the url: <a href="{{ item.share.url }}">{{ item.share.url }}</a>
+              Copy and paste the url: <a class="share-link" href="{{ item.share.url }}">{{ item.share.url }}</a>
             </p>
             <p class="muted">
               Share via:
             </p>
-            <a href="{{ item.share.twitterUrl }}" class="btn btn-block" target="_blank"><i class="icon-twitter"></i> Twitter</a>
-            <a href="{{ item.share.facebookUrl }}" class="btn btn-block" target="_blank"><i class="icon-facebook"></i> Facebook</a>
-            <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+            <a href="{{ item.share.twitterUrl }}" class="btn btn-block share-button" target="_blank"><i class="icon-twitter"></i> Twitter</a>
+            <a href="{{ item.share.facebookUrl }}" class="btn btn-block share-button" target="_blank"><i class="icon-facebook"></i> Facebook</a>
+            <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
           </div>
           <div class="js-badge-private" {% if item.share.shared %}style="display: none;"{% endif %}>
             <form method="post" action="{{ item.share.toggleUrl }}">
@@ -45,9 +45,9 @@
                 You can always send badges to your Backpack:
               </p>
             </form>
-            <a href="{{ item.share.twitterUrl }}" class="btn btn-block disabled" target="_blank"><i class="icon-twitter"></i> Twitter</a>
-            <a href="{{ item.share.facebookUrl }}" class="btn btn-block disabled" target="_blank"><i class="icon-facebook"></i> Facebook</a>
-            <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+            <a href="{{ item.share.twitterUrl }}" class="btn btn-block disabled share-button" target="_blank"><i class="icon-twitter"></i> Twitter</a>
+            <a href="{{ item.share.facebookUrl }}" class="btn btn-block disabled share-button" target="_blank"><i class="icon-facebook"></i> Facebook</a>
+            <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
           </div>
         </div>
       </div>

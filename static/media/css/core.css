@@ -1339,3 +1339,22 @@ body.home #cl_i_vid {
 .share-modal .share-toggle {
   float: right;
 }
+.share p .btn-link,
+.share-modal p .btn-link {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+.share .share-link,
+.share-modal .share-link {
+  display: block;
+}
+.share .share-button,
+.share-modal .share-button {
+  width: 300px;
+  margin: 0 auto 12px;
+}
