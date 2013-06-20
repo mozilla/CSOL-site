@@ -1,10 +1,20 @@
 {% extends 'includes/badge-thumbnail.html' %}
 {% block buttons_right %}
-  {{super()}}
+  {{ super() }}
   {% if user and not user.underage %}
     <a href="#" role="button" class="btn js-share" 
-      data-toggle="modal" data-target="#shareModal" 
-      data-assertion-url="{{item.assertionUrl}}"
-      data-share-url="{{item.share.url}}">Share</a>
+      data-toggle="modal" data-target="#shareModal{{ item.id }}">Share</a>
+
+    <div id="shareModal{{ item.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{ item.id }}Share" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Share Your {{ item.name }} Badge</h3>
+      </div>
+      <div class="modal-body">
+        <a href="{{ item.share.twitterUrl }}" class="btn btn-block" target="_blank"><i class="icon-twitter"></i> Twitter</a>
+        <a href="{{ item.share.facebookUrl }}" class="btn btn-block" target="_blank"><i class="icon-facebook"></i> Facebook</a>
+        <a href="#" class="btn btn-block js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+      </div>
+    </div>
   {% endif %}
 {% endblock %}

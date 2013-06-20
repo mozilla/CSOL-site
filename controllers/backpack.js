@@ -47,6 +47,18 @@ function shuffle(array) {
   return array;
 }
 
+function twitterShareUrl(opts) {
+  var queries = [];
+  for (prop in opts) {
+    queries.push(prop + '=' + encodeURIComponent(opts[prop]));
+  }
+  return '//twitter.com/share?' + queries.join('&');
+}
+
+function facebookShareUrl(url) {
+  return '//facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+}
+
 module.exports = function (app) {
 
   app.get('/claim', [
@@ -124,7 +136,7 @@ module.exports = function (app) {
     var user = req.session.user;
 
     async.each(data.badges, 
-      function attachShareToken(badge, callback){
+      function prepForSharing(badge, callback){
         shareToken.findOrCreate({
           shortName: badge.id,
           email: user.email
@@ -133,6 +145,13 @@ module.exports = function (app) {
             badge.share = shareToken.values;
             badge.share.url = shareToken.getUrl();
             badge.share.toggleUrl = shareToken.getToggleUrl();
+            badge.share.twitterUrl = twitterShareUrl({
+              url: shareToken.getUrl(),
+              text: 'Check out my badge:',
+              hashtags: 'CSOL2013',
+              dnt: 1
+            });
+            badge.share.facebookUrl = facebookShareUrl(shareToken.getUrl());
           }
           callback(err);
         });
