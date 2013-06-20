@@ -1,9 +1,19 @@
 {% extends 'includes/badge-thumbnail.html' %}
 {% block buttons_right %}
   {{ super() }}
+
   {% if user and not user.underage %}
+
     {% set modalId = 'shareModal' + item.id %}
     {% set modalLabelId = modalId + 'Label' %}
+    {% macro socialButtons(item, private=true) %}
+      <a href="{{ item.share.twitterUrl }}" class="btn btn-block share-button {% if private %}disabled{% endif %}"
+        target="_blank"><i class="icon-twitter"></i> Twitter</a>
+      <a href="{{ item.share.facebookUrl }}" class="btn btn-block share-button {% if private %}disabled{% endif %}"
+        target="_blank"><i class="icon-facebook"></i> Facebook</a>
+      <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+    {% endmacro %}
+
     <a href="#" role="button" class="btn js-share" 
       data-toggle="modal" data-target="#{{ modalId }}">Share</a>
 
@@ -29,9 +39,7 @@
             <p class="muted">
               Share via:
             </p>
-            <a href="{{ item.share.twitterUrl }}" class="btn btn-block share-button" target="_blank"><i class="icon-twitter"></i> Twitter</a>
-            <a href="{{ item.share.facebookUrl }}" class="btn btn-block share-button" target="_blank"><i class="icon-facebook"></i> Facebook</a>
-            <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+            {{ socialButtons(item, false) }}
           </div>
           <div class="js-badge-private" {% if item.share.shared %}style="display: none;"{% endif %}>
             <form method="post" action="{{ item.share.toggleUrl }}">
@@ -44,10 +52,8 @@
                 <button type="submit" class="btn btn-link">Make this badge public</button> to share it through your social networks. 
                 You can always send badges to your Backpack:
               </p>
+              {{ socialButtons(item, true) }}
             </form>
-            <a href="{{ item.share.twitterUrl }}" class="btn btn-block disabled share-button" target="_blank"><i class="icon-twitter"></i> Twitter</a>
-            <a href="{{ item.share.facebookUrl }}" class="btn btn-block disabled share-button" target="_blank"><i class="icon-facebook"></i> Facebook</a>
-            <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
           </div>
         </div>
       </div>
