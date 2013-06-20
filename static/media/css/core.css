@@ -1328,9 +1328,14 @@ body.home #cl_i_vid {
 .share {
   margin-bottom: 10px;
 }
-.share .share-state {
+.share-modal hr {
+  clear: both;
+}
+.share .share-state,
+.share-modal .share-state {
   float: left;
 }
-.share .share-toggle {
+.share .share-toggle,
+.share-modal .share-toggle {
   float: right;
 }
