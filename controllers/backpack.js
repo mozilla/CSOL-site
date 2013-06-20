@@ -47,6 +47,18 @@ function shuffle(array) {
   return array;
 }
 
+function twitterShareUrl(opts) {
+  var queries = [];
+  for (prop in opts) {
+    queries.push(prop + '=' + encodeURIComponent(opts[prop]));
+  }
+  return '//twitter.com/share?' + queries.join('&');
+}
+
+function facebookShareUrl(url) {
+  return '//facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+}
+
 module.exports = function (app) {
 
   app.get('/claim', [
@@ -131,13 +143,41 @@ module.exports = function (app) {
     favoriteMiddleware
   ], function (req, res, next) {
     var data = req.remote;
+    var user = req.session.user;
 
-    data.badges.template = 'includes/badge-instance-thumbnail.html';
+    async.each(data.badges, 
+      function prepForSharing(badge, callback){
+        shareToken.findOrCreate({
+          shortName: badge.id,
+          email: user.email
+        }).complete(function(err, shareToken){
+          if (shareToken) {
+            badge.share = shareToken.values;
+            badge.share.url = shareToken.getUrl();
+            badge.share.toggleUrl = shareToken.getToggleUrl();
+            badge.share.twitterUrl = twitterShareUrl({
+              url: shareToken.getUrl(),
+              text: 'Check out my newest badge from the Chicago Summer of Learning!',
+              hashtags: 'CSOL2013',
+              dnt: 1
+            });
+            badge.share.facebookUrl = facebookShareUrl(shareToken.getUrl());
+          }
+          callback(err);
+        });
+      },
+      function done(err) {
+        if (err)
+          next(err);
 
-    res.render('user/backpack.html', {
-      items: data.badges
-    });
+        res.render('user/backpack.html', {
+          items: data.badges,
+          template: 'includes/badge-instance-thumbnail.html'
+        });
+      }
+    );
   });
+
   app.get('/mybadges/:id', [
     isLearner,
     openbadger.middleware('getUserBadge'),
@@ -214,7 +254,8 @@ module.exports = function (app) {
           badge: data.badge,
           user: {
             email: token.email
-          }
+          },
+          fullUrl: req.protocol + '://' + req.headers.host + req.originalUrl
         });
       });
     });
@@ -241,6 +282,9 @@ module.exports = function (app) {
         if (err)
           return next(err);
 
+        if (req.xhr) {
+          return res.send(200);
+        }
         return res.redirect('/mybadges/' + token.shortName);
       });
     });

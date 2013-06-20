@@ -45,8 +45,8 @@
 							<li class="span3">
 								{% if item.template %}
 									{% include item.template %}
-								{% elif items.template %}
-									{% include items.template %}
+								{% elif template %}
+									{% include template %}
 								{% else %}
 									{# this is hacky! #}
 									{% if itemType == 'program' or itemType == 'org' %}

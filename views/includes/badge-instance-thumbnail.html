@@ -1,9 +1,66 @@
 {% extends 'includes/badge-thumbnail.html' %}
 {% block buttons_right %}
-  {{super()}}
+  {{ super() }}
+
   {% if user and not user.underage %}
+
+    {% set modalId = 'shareModal' + item.id %}
+    {% set modalLabelId = modalId + 'Label' %}
+    {% macro socialButtons(item, private=true) %}
+      <a href="{{ item.share.twitterUrl }}" target="_blank"
+        class="btn btn-block share-button js-twitter-share {% if private %}disabled{% endif %}">
+          <i class="icon-twitter"></i> Twitter
+      </a>
+      <a href="{{ item.share.facebookUrl }}" target="_blank"
+        class="btn btn-block share-button js-facebook-share {% if private %}disabled{% endif %}">
+          <i class="icon-facebook"></i> Facebook
+      </a>
+      <a href="#" class="btn btn-block share-button js-moz-backpack" data-assertion-url="{{ item.assertionUrl }}">Mozilla Backpack</a>
+    {% endmacro %}
+
     <a href="#" role="button" class="btn js-share" 
-      data-toggle="modal" data-target="#shareModal" 
-      data-url="{{item.assertionUrl}}">Share</a>
+      data-toggle="modal" data-target="#{{ modalId }}">Share</a>
+
+    <div id="{{ modalId }}" class="modal hide fade" tabindex="-1" 
+      role="dialog" aria-labelledby="{{ modalLabelId }}" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="{{ modalLabelId }}">Share Your {{ item.name }} Badge</h3>
+      </div>
+      <div class="modal-body share-modal">
+        <div class="js-badge-state">
+          <div class="js-badge-public" {% if not item.share.shared %}style="display: none;"{% endif %}>
+            <p class="share-state">
+              This badge is public. 
+            </p>
+            <form class="share-toggle" method="post" action="{{ item.share.toggleUrl }}">
+              <button type="submit" class="btn btn-small">Make it private.</button>
+            </form>
+            <hr>
+            <p class="muted">
+              Copy and paste the url: <a class="share-link" href="{{ item.share.url }}">{{ item.share.url }}</a>
+            </p>
+            <p class="muted">
+              Share via:
+            </p>
+            {{ socialButtons(item, false) }}
+          </div>
+          <div class="js-badge-private" {% if item.share.shared %}style="display: none;"{% endif %}>
+            <form method="post" action="{{ item.share.toggleUrl }}">
+              <p class="share-state">
+                This badge is private.
+              </p>
+              <button type="submit" class="btn btn-small share-toggle">Make it public.</button>
+              <hr>
+              <p class="muted">
+                <button type="submit" class="btn btn-link">Make this badge public</button> to share it through your social networks. 
+                You can always send badges to your Backpack:
+              </p>
+              {{ socialButtons(item, true) }}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 {% endblock %}
