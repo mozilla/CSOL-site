@@ -477,6 +477,11 @@ module.exports = function (app) {
           return next();
         }
 
+        // Showing this notification to underage learners without guardians
+        // across the site, so doing it here
+        if (dbUser.underage && !dbUser.GuardianId)
+          req.flash('block', 'We are waiting for your parent or guardian to approve your account.');
+
         _.functions(dbUser).forEach(function(method) {
           if (/^(get|set|add|remove|has)[A-Z]/.test(method))
             user[method] = dbUser[method].bind(dbUser);
