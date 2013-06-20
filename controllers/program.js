@@ -25,7 +25,7 @@ module.exports = function (app) {
 
     _.each(subset, function (item) {
       var filter = all[item] || {name:item, label: item, options: []};
-      filter.selected = query[filter.name];
+      filter.value = query[filter.name];
       filters.push(filter);
     });
 
@@ -45,7 +45,7 @@ module.exports = function (app) {
   app.get('/explore', badger.middleware('getPrograms'), function (req, res, next) {
     var data = req.remote;
     res.render('programs/list.html', {
-      filters: getFilters(req.query, ['categories', 'orgs', 'ageRanges', 'activityTypes']),
+      filters: getFilters(req.query, ['categories', 'orgs', 'ageRanges', 'activityTypes', 'search']),
       items: data.programs,
       page: data.page,
       pages: data.pages
@@ -225,7 +225,7 @@ module.exports = function (app) {
     var data = req.remote;
 
     res.render('badges/list.html', {
-      filters: getFilters(req.query, ['categories', 'ageRanges', 'badgeTypes', 'activityTypes']),
+      filters: getFilters(req.query, ['categories', 'ageRanges', 'badgeTypes', 'activityTypes', 'search']),
       items: data.badges,
       page: data.page,
       pages: data.pages

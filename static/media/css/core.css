@@ -859,15 +859,16 @@ input[type="password"].metered:focus:invalid:focus + .password-meter {
 /* ------------------------------ */
 body .navbar.filter {
   margin-top: 20px;
+  text-align: center;
 }
-body .navbar.filter label,
-body .navbar.filter select,
-body .navbar.filter input {
-  display: block;
-  float: left;
+body .navbar.filter .selectWrapper {
+  display: inline;
 }
 body .navbar.filter select {
   margin-right: 25px;
+}
+body .navbar.filter .btn {
+  margin-left: 25px;
 }
 body .navbar.filter label {
   background: url('../img/icon-sprite.png') no-repeat top left;
@@ -891,6 +892,9 @@ body .navbar.filter label.filter-activity {
 }
 body .navbar.filter label.filter-type {
   background-position: 0 -720px;
+}
+body .navbar.filter label.filter-search {
+  background-position: 0 -560px;
 }
 body .navbar.filter .navbar-inner {
   border: 1px solid #c0c0c0;
@@ -928,14 +932,32 @@ body p.description {
 /* Mobile : general  ------------ */
 /* ------------------------------ */
 @media only screen and (max-width: 599px) {
-  body .navbar.filter .selectWrapper,
-  body .navbar.filter input {
+  body .navbar.filter .selectWrapper {
     clear: left;
-    margin: auto;
+    margin: 0 auto 10px;
     text-align: center;
-    width: 180px;
     display: block;
     float: none;
+    padding-left: 35px;
+    overflow: hidden;
+  }
+  body .navbar.filter .selectWrapper.text {
+    padding-right: 14px;
+  }
+  body .navbar.filter label {
+    float: left;
+    margin-top: 0;
+    margin-left: -35px;
+  }
+  body .navbar.filter select,
+  body .navbar.filter input {
+    display: block;
+    float: left;
+    width: 100%;
+    margin: 0;
+  }
+  body .navbar.filter .btn {
+    margin-left: 0;
   }
   body.challenges #main > .container > h2,
   body.explore #main > .container > h2,
