@@ -137,10 +137,11 @@ test('getBadge', function(t) {
 });
 
 test('getBadges', function(t){
+  const CALLBACK_INDEX = 2;
 
   t.test('on error', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, 500, 'error of some sort');
+    getStub.callsArgWith(CALLBACK_INDEX, 500, 'error of some sort');
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.same(err, 500, 'error');
       t.same(data, 'error of some sort', 'data');
@@ -150,7 +151,7 @@ test('getBadges', function(t){
 
   t.test('with data', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['badges']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['badges']);
     openbadger.getBadges(DEFAULT_QUERY, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.badges.length, 3, 'data length');
@@ -163,7 +164,7 @@ test('getBadges', function(t){
 
   t.test('paginates', function(t) {
     var getStub = mock.expects('get');
-    getStub.callsArgWith(1, null, DATA['badges']);
+    getStub.callsArgWith(CALLBACK_INDEX, null, DATA['badges']);
     openbadger.getBadges({ pageSize: 2, page: 1 }, function(err, data) {
       t.notOk(err, 'no error');
       t.same(data.badges.length, 2, 'paginated');
