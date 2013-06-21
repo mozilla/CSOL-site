@@ -118,6 +118,9 @@ Property            | Default  | Description
 `CSOL_MANDRILL_KEY` | `null` | The Mandrill key to use for mailings.
 `CSOL_AESTIMIA_URL`      | `null` | Aestimia API Location, e.g. http://aestimia.com/api/
 `CSOL_AESTIMIA_SECRET`   | `null` | A shared secret with Aestimia
+'CSOL_IREMIX_URL'   | `null` | iRemix API location (eg http://csol.staging-iremix.me/api/v1)
+'CSOL_IREMIX_USER'  | `null` | Username to access iRemix API (should eventually be replaced with a JWT secret)
+'CSOL_IREMIX_PASS'  | `null` | Password to access iRemix API (should eventually be replaced with a JWT secret)
 
 ### Development Environment
 

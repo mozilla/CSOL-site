@@ -1,5 +1,8 @@
 ['CSOL_OPENBADGER_URL',
- 'CSOL_OPENBADGER_SECRET'].forEach(function(name) {
+ 'CSOL_OPENBADGER_SECRET',
+ 'CSOL_IREMIX_URL',
+ 'CSOL_IREMIX_USER',
+ 'CSOL_IREMIX_PASS'].forEach(function(name) {
   if (!process.env[name])
     process.env[name] = 'FAKEVALUE';
 });
@@ -273,7 +276,7 @@ test('claim', function(t) {
     postStub.callsArgWith(2, null, DATA['claim']);
     openbadger.claim({
       code: 'CLAIMCODE',
-      email: 'EMAIL'
+      learner: { email: 'EMAIL' }
     }, function(err, data) {
       t.notOk(err, 'no error');
       var opts = postStub.args[0][1];

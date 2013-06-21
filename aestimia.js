@@ -164,7 +164,7 @@ var aestimia = new Api(ENDPOINT, {
               if (err || !learner) return;
 
               openbadger.awardBadge({
-                email: learner.email,
+                learner: learner,
                 badge: application.badgeId
               }, function (err, assertionUrl) {
                 if (err)
