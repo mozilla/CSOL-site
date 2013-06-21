@@ -6,8 +6,13 @@
 
 {% block content %}
 	{% block notice %}
-		<div class="alert">
-			Your application is waiting to be reviewed.
+		<div class="alert alert-block">
+			{% if user.underage %}
+			<h4>You applied for the {{badge.name}} Badge. Awesome work!</h4>
+			<p>We need to be sure your parent or guardian is OK with this so we sent them an email. As soon as they agree, we'll send your work to a mentor who will decide if you should earn the badge.</p>
+			{% else %}
+			<p>You have successfully applied for the {{badge.name}} badge. Your application has been sent to a mentor who will review it and get back to you.</p>
+			{% endif %}
 		</div>
 	{% endblock %}
 	<div class="row-fluid">
@@ -42,6 +47,18 @@
 			</div>
 		</div>
 	</div>
+	{% if similar %}
+		<div class="row-fluid">
+			<div class="span12">
+				<h3>Here are other badges that might interest you:</h3>
+				{% for item in similar %}
+					<div class="span3">
+						{% include "includes/badge-thumbnail.html" %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}
 
 {% block finally %}
