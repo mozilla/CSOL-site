@@ -240,9 +240,11 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/earn/:badgeName/apply', function (req, res, next) {
+  app.get('/earn/:badgeName/apply', [badger.middleware('getBadgeRecommendations', {limit:4})], function (req, res, next) {
     var badge = req.params.badge;
     var mimeTypes = evidence.getMimeTypes();
+    var data = req.remote
+    var similar = data.badges;
 
     if (!req.session.user) {
       req.session.afterLogin = '/earn/' + req.params.badgeName + '/apply';
@@ -253,7 +255,8 @@ module.exports = function (app) {
       context = _.defaults(context || {}, {
         application: applications.build({
           badgeId: badge.id,
-          state: 'open'
+          state: 'open',
+          similar:similar
         }),
         mimeTypes: mimeTypes,
         evidence: [],
