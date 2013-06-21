@@ -1,9 +1,11 @@
 const Api = require('./api');
 const errors = require('./lib/errors');
+const logger = require('./logger');
 const _ = require('underscore');
 const jwt = require('jwt-simple');
 const async = require('async');
 const s3 = require('./s3');
+const iremix = require('./iremix');
 
 const ENDPOINT = process.env['CSOL_OPENBADGER_URL'];
 const JWT_SECRET = process.env['CSOL_OPENBADGER_SECRET'];
@@ -178,6 +180,21 @@ function getJWTToken(email) {
   return jwt.encode(claims, JWT_SECRET);
 }
 
+function handleAutoAwards(email, learner, autoAwardedBadges) {
+  if (autoAwardedBadges && autoAwardedBadges.length > 0) {
+    async.map(autoAwardedBadges, function(shortname, cb) {
+      openbadger.getUserBadge({ id: shortname, email: email }, cb);
+    }, function(err, results) {
+      if (err) {
+        logger.log('info', 'Failed to get user badges from openbadger for email %s', email);
+        return;
+      }
+
+      iremix.invite({ learner: learner, badges: results });
+    });
+  }
+}
+
 var openbadger = new Api(ENDPOINT, {
 
   getBadges: {
@@ -312,7 +329,7 @@ var openbadger = new Api(ENDPOINT, {
   },
 
   awardBadge: function awardBadge (query, callback) {
-    var email = query.email || query.session.user.email;
+    var email = query.learner ? query.learner.email : query.session.user.email;
     var shortname = query.badge;
 
     var params = {
@@ -323,6 +340,8 @@ var openbadger = new Api(ENDPOINT, {
     this.post('/user/badge/' + shortname, { form: params }, function(err, data) {
       if (err)
         return callback(err, data);
+
+      handleAutoAwards(email, query.learner, data.autoAwardedBadges);
 
       return callback(null, {
         assertionUrl: data.url
@@ -345,7 +364,7 @@ var openbadger = new Api(ENDPOINT, {
 
 
   claim: function claim (query, callback) {
-    var email = query.email;
+    var email = query.learner ? query.learner.email : null;
     var code = query.code;
     var params = {
       auth: getJWTToken(email),
@@ -353,7 +372,12 @@ var openbadger = new Api(ENDPOINT, {
       code: code,
     };
     this.post('/claim', { json: params }, function(err, data) {
-      return callback(err, data);
+      if (err)
+        return callback(err);
+
+      handleAutoAwards(email, query.learner, data.autoAwardedBadges);
+
+      return callback(null, data);
     });
   },
 
