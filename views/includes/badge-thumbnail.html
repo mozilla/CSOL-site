@@ -26,12 +26,7 @@ doesn't have a URL #}
 	</div>
 	<a href="{{ itemUrl(url, item) }}"><img src="{% if item.imageUrl %}{{ item.imageUrl }}{% else %}{% if item.image %}{{item.image}}{% else %}{{item.issuer.imageUrl}}{% endif %}{% endif %}"></a>
 	<figcaption class="caption">
-		<p>{{ item.name }}</p>
-		{% if item.description %}
-			<p class="description">{{ item.description | truncate(20, false, "…") }}
-				<a href="{{ itemUrl(url, item) }}">Read…</a>
-			</p>
-		{% endif %}
+		<p>{{ item.name | truncate(42, true, "…") }}</p>
 		<div class="item-actions row-fluid">
 			<div class="span6">
 				{% if playlisted %}
