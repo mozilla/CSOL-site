@@ -40,6 +40,24 @@ function isUserType (type) {
 exports.isLearner = isUserType('learner');
 exports.isGuardian = isUserType('guardian');
 
+exports.isUnderage = function (req, res, next) {
+  exports.isLearner(req, res, function() {
+    if (req.session.user.underage) 
+      next();
+    else
+      next('route');
+  });
+}
+
+exports.notUnderage = function (req, res, next) {
+  exports.isLearner(req, res, function() {
+    if (!req.session.user.underage) 
+      next();
+    else
+      next('route');
+  });
+}
+
 exports.loggedIn = function loggedIn(req, res, next) {
   var user = req.session.user;
   if (!user) {
