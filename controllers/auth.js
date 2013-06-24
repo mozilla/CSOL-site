@@ -568,8 +568,16 @@ module.exports = function (app) {
 
       user.getGuardian()
         .complete(function(err, guardian) {
-          if (!err && guardian)
+          if (!err && guardian) {
             send(guardian.email);
+          }
+          else {
+            signupTokens.find(user.SignupTokenId).success(function(signupToken) {
+              if (!err && signupToken) {
+                send(signupToken.email);
+              }
+            });
+          }
         });
     }
 
@@ -683,7 +691,7 @@ module.exports = function (app) {
 
     function sendConfirmationEmail (user) {
       function send(address) {
-        email.send('password reset', {
+        email.send('password reset confirmation', {
           earnername: user.getDisplayName()
         }, address);
       }
@@ -693,8 +701,16 @@ module.exports = function (app) {
 
       user.getGuardian()
         .complete(function(err, guardian) {
-          if (!err && guardian)
+          if (!err && guardian) {
             send(guardian.email);
+          }
+          else {
+            signupTokens.find(user.SignupTokenId).success(function(signupToken) {
+              if (!err && signupToken) {
+                send(signupToken.email);
+              }
+            });
+          }
         });
     }
 
