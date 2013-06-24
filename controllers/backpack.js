@@ -168,7 +168,7 @@ module.exports = function (app) {
       },
       function done(err) {
         if (err)
-          next(err);
+          return next(err);
 
         res.render('user/backpack.html', {
           items: data.badges,
