@@ -704,6 +704,7 @@ ul.thumbnails li .thumbnail > a .ie-fix img {
 }
 ul.thumbnails li .thumbnail > a .ie-fix .no-src {
   background-image: url('../img/badge-default.png');
+  display: block;
   width: 210px;
   height: 210px;
 }
