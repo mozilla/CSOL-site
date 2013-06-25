@@ -3,6 +3,7 @@ const async = require('async');
 const openbadger = require('../openbadger');
 const db = require('../db');
 const isLearner = require('../middleware').isLearner;
+const isUnderageLearner = require('../middleware').isUnderageLearner;
 
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
@@ -138,6 +139,36 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
+    isUnderageLearner,
+    openbadger.middleware('getUserBadges'),
+    favoriteMiddleware
+  ], function (req, res, next) {
+    var data = req.remote;
+    var user = req.session.user;
+
+    res.render('user/backpack.html', {
+      items: data.badges,
+      template: 'includes/badge-instance-thumbnail.html'
+    });
+  });
+
+  app.get('/mybadges/:id', [
+    isUnderageLearner,
+    openbadger.middleware('getUserBadge'),
+    openbadger.middleware('getBadgeRecommendations', {limit:4})
+  ], function (req, res, next) {
+    var user = req.session.user;
+    var data = req.remote;
+
+    return res.render('user/badge.html', {
+      badge: data.badge,
+      user: req.session.user,
+      similar: data.badges,
+      share: false
+    });
+  });
+
+  app.get('/mybadges', [
     isLearner,
     openbadger.middleware('getUserBadges'),
     favoriteMiddleware
@@ -168,7 +199,7 @@ module.exports = function (app) {
       },
       function done(err) {
         if (err)
-          next(err);
+          return next(err);
 
         res.render('user/backpack.html', {
           items: data.badges,
@@ -186,47 +217,33 @@ module.exports = function (app) {
     var user = req.session.user;
     var data = req.remote;
 
-    // XXX: replace with API call to openbadger
-    var similar = data.badges;
+    async.waterfall([
+      function getToken (callback) {
+        shareToken.findOrCreate({
+          shortName: data.badge.shortname,
+          email: user.email
+        }).complete(callback);
+      },
+      function ensureTokenValue (token, callback) {
+        if (!token.token)
+          return token.generateToken(callback);
+        return callback(null, token);
+      }
+    ], function renderPage (err, shareToken) {
+      var share = false;
+      if (shareToken) {
+        share = shareToken.values;
+        share.url = shareToken.getUrl();
+        share.toggleUrl = shareToken.getToggleUrl();
+      }
 
-    if (user.underage) {
       return res.render('user/badge.html', {
         badge: data.badge,
         user: req.session.user,
-        similar: similar,
-        share: false
+        similar: data.badges,
+        share: share
       });
-    }
-    else {
-      async.waterfall([
-        function getToken (callback) {
-          shareToken.findOrCreate({
-            shortName: data.badge.shortname,
-            email: user.email
-          }).complete(callback);
-        },
-        function ensureTokenValue (token, callback) {
-          if (!token.token)
-            token.generateToken(callback);
-          else
-            callback(null, token);
-        }
-      ], function renderPage (err, shareToken) {
-        var share = false;
-        if (shareToken) {
-          share = shareToken.values;
-          share.url = shareToken.getUrl();
-          share.toggleUrl = shareToken.getToggleUrl();
-        }
-
-        return res.render('user/badge.html', {
-          badge: data.badge,
-          user: req.session.user,
-          similar: similar,
-          share: share
-        });
-      });
-    }
+    });
   });
 
   app.get('/share/:token', function (req, res, next) {
