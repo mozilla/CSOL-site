@@ -682,11 +682,30 @@ nav.pagination ul li a {
 ul.thumbnails li .thumbnail {
   margin: 0 0 0 0;
 }
-ul.thumbnails li .thumbnail > a img {
-  display: block;
+ul.thumbnails li .thumbnail > a {
+  display: table-cell;
   width: 210px;
   height: 210px;
+  text-align: center;
+  vertical-align: middle;
+}
+ul.thumbnails li .thumbnail > a .ie-fix {
+  /* IE8 has a bug in which it renders max-width imgs inside table-cells improperly;
+             solved by wrapping the img in a div with width set to max-width of img.
+           */
+
+  width: 210px;
+}
+ul.thumbnails li .thumbnail > a .ie-fix img {
+  width: auto;
+  height: auto;
+  max-width: 210px;
+  max-height: 210px;
+}
+ul.thumbnails li .thumbnail > a .ie-fix .no-src {
   background-image: url('../img/badge-default.png');
+  width: 210px;
+  height: 210px;
 }
 ul.thumbnails li .thumbnail a.show-tooltip {
   display: none;
@@ -775,13 +794,13 @@ ul.thumbnails li .thumbnail.state-accepted .state::before,
 ul.thumbnails li .thumbnail.state-awarded .state::before {
   background-position: -100px 0;
 }
-ul.thumbnails li:nth-child(2n+2) figure.thumbnail > a img {
+ul.thumbnails li:nth-child(2n+2) figure.thumbnail .no-src {
   background-position: 0 -210px;
 }
-ul.thumbnails li:nth-child(3n+3) figure.thumbnail > a img {
+ul.thumbnails li:nth-child(3n+3) figure.thumbnail .no-src {
   background-position: -210px 0px;
 }
-ul.thumbnails li:nth-child(4n+4) figure.thumbnail > a img {
+ul.thumbnails li:nth-child(4n+4) figure.thumbnail .no-src {
   background-position: -210px -210px;
 }
 .recommendations .category.science .category-header h4 {
