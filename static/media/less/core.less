@@ -744,11 +744,32 @@ ul.thumbnails {
 		.thumbnail {
 			margin: 0 0 0 0;
 
-			& > a img {
-				display: block;
-				width: 210px;
-				height: 210px;
-				background-image: url('../img/badge-default.png');
+      & > a {
+        display: table-cell;
+        width: 210px;
+        height: 210px;
+        text-align: center;
+        vertical-align: middle;
+
+        .ie-fix {
+          /* IE8 has a bug in which it renders max-width imgs inside table-cells improperly;
+             solved by wrapping the img in a div with width set to max-width of img.
+           */
+          width: 210px;
+
+          img {
+            width: auto;
+            height: auto;
+            max-width: 210px;
+            max-height: 210px;
+          }
+
+          .no-src {
+            background-image: url('../img/badge-default.png');
+            width: 210px;
+            height: 210px;
+          }
+        }
 			}
 
 			a.show-tooltip {
@@ -859,21 +880,21 @@ ul.thumbnails {
 	}
 	li:nth-child(2n+2) {
 		figure.thumbnail {
-			& > a img {
+			.no-src {
 				background-position: 0 -210px;
 			}
 		}
 	}
 	li:nth-child(3n+3) {
 		figure.thumbnail {
-			& > a img {
+			.no-src {
 				background-position: -210px 0px;
 			}
 		}
 	}
 	li:nth-child(4n+4) {
 		figure.thumbnail {
-			& > a img {
+			.no-src {
 				background-position: -210px -210px;
 			}
 		}

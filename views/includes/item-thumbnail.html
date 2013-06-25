@@ -1,5 +1,8 @@
 <figure class="thumbnail">
-	<a href="{{ item.localUrl }}"><img src="{{ item.imageUrl | default(item.issuer.imageUrl) }}"></a>
+	<a href="{{ item.localUrl }}">
+    {% set src = item.imageUrl | default(item.issuer.imageUrl) %}
+    <div class="ie-fix"><img src="{{ src }}" {% if not src %}class="no-src"{% endif %}></div>
+  </a>
 	<figcaption class="caption">
 		<p>{{ item.name }}</p>
 		{% block item_actions_wrapper %}
