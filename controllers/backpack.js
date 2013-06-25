@@ -3,8 +3,7 @@ const async = require('async');
 const openbadger = require('../openbadger');
 const db = require('../db');
 const isLearner = require('../middleware').isLearner;
-const isUnderage = require('../middleware').isUnderage;
-const notUnderage = require('../middleware').notUnderage;
+const isUnderageLearner = require('../middleware').isUnderageLearner;
 
 const claim = db.model('Claim');
 const favorite = db.model('Favorite');
@@ -140,8 +139,7 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges', [
-    isLearner,
-    isUnderage,
+    isUnderageLearner,
     openbadger.middleware('getUserBadges'),
     favoriteMiddleware
   ], function (req, res, next) {
@@ -155,27 +153,23 @@ module.exports = function (app) {
   });
 
   app.get('/mybadges/:id', [
-    isLearner,
-    isUnderage,
+    isUnderageLearner,
     openbadger.middleware('getUserBadge'),
     openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     var data = req.remote;
 
-    var similar = data.badges;
-
     return res.render('user/badge.html', {
       badge: data.badge,
       user: req.session.user,
-      similar: similar,
+      similar: data.badges,
       share: false
     });
   });
 
   app.get('/mybadges', [
     isLearner,
-    notUnderage,
     openbadger.middleware('getUserBadges'),
     favoriteMiddleware
   ], function (req, res, next) {
@@ -217,14 +211,11 @@ module.exports = function (app) {
 
   app.get('/mybadges/:id', [
     isLearner,
-    notUnderage,
     openbadger.middleware('getUserBadge'),
     openbadger.middleware('getBadgeRecommendations', {limit:4})
   ], function (req, res, next) {
     var user = req.session.user;
     var data = req.remote;
-
-    var similar = data.badges;
 
     async.waterfall([
       function getToken (callback) {
@@ -235,9 +226,8 @@ module.exports = function (app) {
       },
       function ensureTokenValue (token, callback) {
         if (!token.token)
-          token.generateToken(callback);
-        else
-          callback(null, token);
+          return token.generateToken(callback);
+        return callback(null, token);
       }
     ], function renderPage (err, shareToken) {
       var share = false;
@@ -250,7 +240,7 @@ module.exports = function (app) {
       return res.render('user/badge.html', {
         badge: data.badge,
         user: req.session.user,
-        similar: similar,
+        similar: data.badges,
         share: share
       });
     });
