@@ -24,7 +24,12 @@ doesn't have a URL #}
 		{% include "includes/add-to-playlist-btn.html" %}
 	{% endif %}
 	</div>
-	<a href="{{ itemUrl(url, item) }}"><img src="{% if item.imageUrl %}{{ item.imageUrl }}{% else %}{% if item.image %}{{item.image}}{% else %}{{item.issuer.imageUrl}}{% endif %}{% endif %}"></a>
+	<a href="{{ itemUrl(url, item) }}">
+    <div class="ie-fix">
+      {% set src = item.imageUrl | default(item.image) %}
+      <img src="{{ src }}" {% if not src %}class="no-src"{% endif %}>
+    </div>
+  </a>
 	<figcaption class="caption">
 		<p>{{ item.name | truncate(42, true, "…") }}</p>
 		<div class="item-actions row-fluid">
