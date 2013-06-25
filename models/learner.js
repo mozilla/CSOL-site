@@ -108,7 +108,7 @@ module.exports = {
       return this.firstName + ' ' + this.lastName;
     },
     getDisplayName: function () {
-      return this.firstName || this.username;
+      return this.username;
     },
     getActivities: function (options, callback) {
       var learner = this;
