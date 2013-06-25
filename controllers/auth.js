@@ -131,7 +131,8 @@ function extractUserData (user) {
     favorites: [],
     dependents: [],
     home: userHome,
-    underage: user.underage
+    underage: user.underage,
+    displayName: user.getDisplayName()
   };
 }
 
