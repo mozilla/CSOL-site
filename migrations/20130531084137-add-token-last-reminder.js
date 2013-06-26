@@ -6,7 +6,7 @@ module.exports = {
     runMigrations(target, [
       {
         type: 'addColumn',
-        args: ['signuptokens', 'lastReminder', {
+        args: ['SignupTokens', 'lastReminder', {
           type: DataTypes.DATE,
           allowNull: true
         }]
@@ -15,7 +15,7 @@ module.exports = {
   },
   down: function(target, DataTypes, callback) {
     runMigrations(target, [
-      {type: 'removeColumn', args: ['signuptokens', 'lastReminder']}
+      {type: 'removeColumn', args: ['SignupTokens', 'lastReminder']}
     ], callback);
   }
 }
