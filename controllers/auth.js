@@ -531,7 +531,7 @@ module.exports = function (app) {
       return finalize(new Error('Missing username or password'));
 
     // Annoying redundancy here, but no other obvious way to generate OR queries
-    learners.find({where: ["`email`=? OR `username`=?", normalizedUsername, normalizedUsername]})
+    learners.find({where: ["`email`=? OR `username`=?", username, normalizedUsername]})
       .complete(function(err, user) {
         if (err) return finalize(err);
         if (user) return validateUser(user);
@@ -622,7 +622,7 @@ module.exports = function (app) {
         });
     }
 
-    learners.find({where: ["`email`=? OR `username`=?", normalizedUsername, normalizedUsername]})
+    learners.find({where: ["`email`=? OR `username`=?", username, normalizedUsername]})
       .complete(function(err, user) {
         if (err)
           return finalize(err);

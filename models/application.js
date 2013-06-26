@@ -123,6 +123,11 @@ module.exports = {
             if (err)
               return callback(err);
 
+            if (!guardian) {
+              // Guardian has not signed up yet.  Not an error condition, but no email should be sent.
+              return application.updateAttributes({ state: 'waiting' }).complete(callback);
+            }
+
             openbadger.getBadge(application.badgeId, function (err, data) {
               if (err)
                 return callback(err);
