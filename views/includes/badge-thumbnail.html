@@ -19,9 +19,11 @@ doesn't have a URL #}
 {% endmacro %}
 
 <figure class="thumbnail">
-	<div class="playlist-bar text-right">
+	<div class="playlist-bar text-center{% if playlisted %} in{% endif %}">
 	{% if not playlisted %}
 		{% include "includes/add-to-playlist-btn.html" %}
+	{% else %}
+		<p>In Playlist</p>
 	{% endif %}
 	</div>
 	<a href="{{ itemUrl(url, item) }}">

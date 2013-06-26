@@ -180,6 +180,28 @@ nav.pagination ul li a {
   cursor: hand;
   cursor: pointer;
 }
+.playlist-bar {
+  min-height: 30px;
+  background: #BCBEC0;
+  border-bottom: 1px solid #676565;
+}
+.playlist-bar.in {
+  background: #6BA06A;
+}
+.playlist-bar > form {
+  float: right;
+  margin: 0 0 0 0;
+}
+.playlist-bar .btn {
+  border: none;
+  line-height: 22px;
+  background: #9b9d9e;
+  border-radius: 0 4px 0 0;
+}
+.playlist-bar p {
+  margin-bottom: 0px;
+  line-height: 30px;
+}
 /*footer*/
 .footer {
   background-image: url('/media/img/background-chalkboard-green.jpg');
@@ -681,10 +703,11 @@ nav.pagination ul li a {
 }
 ul.thumbnails li .thumbnail {
   margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 ul.thumbnails li .thumbnail > a {
   display: table-cell;
-  width: 210px;
+  width: 218px;
   height: 210px;
   text-align: center;
   vertical-align: middle;
@@ -694,7 +717,7 @@ ul.thumbnails li .thumbnail > a .ie-fix {
              solved by wrapping the img in a div with width set to max-width of img.
            */
 
-  width: 210px;
+  width: 218px;
 }
 ul.thumbnails li .thumbnail > a .ie-fix img {
   width: auto;
@@ -711,15 +734,19 @@ ul.thumbnails li .thumbnail > a .ie-fix .no-src {
 ul.thumbnails li .thumbnail a.show-tooltip {
   display: none;
 }
-ul.thumbnails li .thumbnail .caption p:first-child {
+ul.thumbnails li .thumbnail .caption > p:first-child {
   height: 40px;
 }
 ul.thumbnails li .thumbnail .caption .badge-description {
   height: 40px;
 }
+ul.thumbnails li .thumbnail .caption .item-actions p {
+  margin-bottom: 0px;
+}
 ul.thumbnails li .thumbnail .playlist-bar form,
 ul.thumbnails li .thumbnail .item-actions form {
   display: inline-block;
+  margin: 0 0 0 0;
 }
 ul.thumbnails li .thumbnail[class*="state-"] {
   position: relative;

@@ -190,6 +190,29 @@ nav.pagination {
 	cursor:pointer;
 }
 
+.playlist-bar {
+	min-height:30px;
+	background:#BCBEC0;
+	border-bottom:1px solid #676565;
+	&.in {
+		background:#6BA06A;
+	}
+	& > form {
+		float:right;
+		margin:0 0 0 0;
+	}
+	.btn {
+		border:none;
+		line-height:22px;
+		background:#9b9d9e;
+		border-radius:0 4px 0 0;
+	}
+	p {
+	margin-bottom:0px;
+	line-height:30px;
+	}
+}
+
 /*footer*/
 .footer {
 	background-image:url('/media/img/background-chalkboard-green.jpg');
@@ -743,10 +766,11 @@ ul.thumbnails {
 	li {
 		.thumbnail {
 			margin: 0 0 0 0;
+			padding: 0 0 0 0;
 
       & > a {
         display: table-cell;
-        width: 210px;
+        width: 218px;
         height: 210px;
         text-align: center;
         vertical-align: middle;
@@ -755,7 +779,7 @@ ul.thumbnails {
           /* IE8 has a bug in which it renders max-width imgs inside table-cells improperly;
              solved by wrapping the img in a div with width set to max-width of img.
            */
-          width: 210px;
+          width: 218px;
 
           img {
             width: auto;
@@ -778,11 +802,17 @@ ul.thumbnails {
 			}
 
 			.caption {
-				p:first-child {
+
+				& > p:first-child {
 					height: 40px;
 				}
 				.badge-description {
 					height: 40px;
+				}
+				.item-actions {
+					p {
+						margin-bottom:0px;
+					}
 				}
 			}
 
@@ -790,6 +820,7 @@ ul.thumbnails {
       .item-actions {
         form {
           display: inline-block;
+          margin:0 0 0 0;
         }
       }
 
