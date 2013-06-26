@@ -1,0 +1,16 @@
+{% extends 'applications/submitted.html' %}
+
+{% block notice %}
+  <div class="alert alert-error">
+    Your application was denied by your parent or guardian. 
+  </div>
+{% endblock %}
+
+{% block notes %}
+	{{ super() }}
+	<form class="text-right" method="post">
+		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+		<input type="hidden" name="action" value="reopen">
+		<button type="submit" class="btn">Reopen this application</button>
+	</form>
+{% endblock %}
