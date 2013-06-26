@@ -14,7 +14,7 @@ const healthCheck = require('./controllers/health-check');
 
 const port = parseInt(process.env.PORT || '3000');
 const app = express();
-const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: false});
+const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, 'views')), {autoescape: true});
 env.express(app);
 const healthChecker = healthCheck({
   auth: express.basicAuth('health_check', process.env.COOKIE_SECRET),

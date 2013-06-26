@@ -16,6 +16,6 @@
 {% endblock %}
 
 {% block item_actions %}
-	{{ super() }}
+	{{ super() | safe }}
 	<a class="btn" href="{{ item.url }}/unfavorite"><i class="icon-remove-circle"></i></a>
 {% endblock %}
