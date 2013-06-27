@@ -21,7 +21,7 @@ var aestimia = new Api(ENDPOINT, {
 
   submit: function (application, callback) {
     var api = this;
-    var description = application.description.trim().replace(/[^a-z0-9\s]/ig, '');
+    var description = (application.description||'').trim().replace(/[^a-z0-9\s]/ig, '');
     var wordcount = !!description ? description.split(/\s+/).length : 0;
     var minWordCount = 10;
 
