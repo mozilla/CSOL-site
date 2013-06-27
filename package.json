@@ -1,6 +1,6 @@
 {
   "name": "CSOL-site",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "The website for the Chicago Summer of Learning, developed by Ocupop and Mozilla.",
   "main": "app.js",
   "dependencies": {
