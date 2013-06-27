@@ -21,7 +21,7 @@
                         <a href="mailto:{{badge.program.contact}}">{{badge.program.contact}}</a>
                       {% elif badge.program.url %}
                         <a href="{{badge.program.url}}">{{badge.program.url}}</a>
-                      {% elif badge.program.phone %} 
+                      {% elif badge.program.phone %}
                         {{badge.program.phone}}
                       {% endif %}
                     {% else %}
@@ -37,6 +37,22 @@
                   {% include "includes/add-to-playlist-btn.html" %}
                 {% endfor %}
             {% endif %}
+            <dl class="tags">
+              <dt>Categories:</dt>
+              <dd>
+                <ul>
+                  {% for category in badge.categories %}
+                    <li class="label">{{category}}</li>
+                  {% endfor %}
+                </ul>
+              </dd>
+              <dt>Organization:</dt>
+              <dd class="label">{{badge.program.issuer.name}}</dd>
+              <dt>Badge type:</dt>
+              <dd class="label">{{badge.type}}</dd>
+              <dt>Activity type:</dt>
+              <dd class="label">{{badge.activityType}}</dd>
+            </dl>
         </div>
     </div>
 
