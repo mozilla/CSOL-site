@@ -57,6 +57,7 @@ require('./controllers/program')(app);
 require('./controllers/learn')(app);
 require('./controllers/challenges')(app);
 require('./controllers/openbadger-hooks')(app);
+require('./controllers/landing')(app);
 
 app.get('/health_check', healthChecker);
 require('./lib/errors')(app, env);
