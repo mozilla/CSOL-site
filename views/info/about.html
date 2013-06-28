@@ -51,7 +51,7 @@
     <h4>Over {{ nearestTen }} Participating Organizations</h4>
     <ul class="row org-list">
     {% for org in orgs %}
-      <li class="span4"><a href="{{ org.url }}">{{ org.name }}</a></li>
+      <li class="span4">{% if org.url %}<a href="{{ org.url }}">{{ org.name }}</a>{% else %}{{ org.name }}{% endif %}</li>
     {% endfor %}
     </ul>
   {% endif %}
