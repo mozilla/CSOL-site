@@ -1439,3 +1439,11 @@ body.home #cl_i_vid {
   margin-bottom: 20px;
   font-size: 16px;
 }
+body.badge-detail .featured-badge .thumbnail {
+  margin-left: 0px;
+}
+body.badge-detail ul.tags li {
+  text-transform: lowercase;
+  margin-bottom: 10px;
+  padding: 5px;
+}

@@ -1,71 +1,70 @@
 {% extends 'badges/layout.html' %}
-{% set pageTitle = badge.name %}
+{% set bodyClass = 'badge-detail' %}
 
 {% block content %}
-    <div class="row-fluid">
+    {% for _ in [0] %}
+    {% set item = badge %}
+    <div class="row">
         <div class="span4">
-            <img src="{{ badge.image }}">
+          <div class="featured-badge">
+            {% set hide_badge_actions = 1 %}
+            {% include "includes/badge-thumbnail.html" %}
+          </div>
         </div>
         <div class="span8">
             <h3>What is this badge about?</h3>
-            <p class="description">{{ badge.description }}</p>
-            <p class="desription">Part of <a href="/explore/{{badge.program.shortname}}">{{badge.program.name}}</a></p>
+            <p class="description">{{ item.description }}</p>
+            <p class="desription">Part of <a href="/explore/{{item.program.shortname}}">{{item.program.name}}</a></p>
 
             {% if not user or user.type == 'learner' %}
                 <h3>How can you earn it?</h3>
-                <p class="description">{{badge.criteria}}</p>
-                <p class="text-right">
-                    {% if badge.tags.indexOf('aestimia') == -1 %}
-                      Learn more about this badge:
-                      {% if badge.program.contact %}
-                        <a href="mailto:{{badge.program.contact}}">{{badge.program.contact}}</a>
-                      {% elif badge.program.url %}
-                        <a href="{{badge.program.url}}">{{badge.program.url}}</a>
-                      {% elif badge.program.phone %}
-                        {{badge.program.phone}}
+                <p class="description">{{item.criteria}}</p>
+                <br>
+                <p>
+                    {% if item.tags.indexOf('aestimia') == -1 %}
+                      <strong>Learn more about this badge:</strong>
+                      {% if item.program.contact %}
+                        <a href="mailto:{{item.program.contact}}">{{item.program.contact}}</a>
+                      {% elif item.program.url %}
+                        <a href="{{item.program.url}}">{{item.program.url}}</a>
+                      {% elif item.program.phone %}
+                        {{item.program.phone}}
                       {% endif %}
                     {% else %}
-                        <a href="{{ badge.url }}/apply" class="btn">Apply</a>
+                        <a href="{{ item.url }}/apply" class="btn">Apply</a>
                     {% endif %}
                 </p>
-                {% for _ in [0] %}
-                  {# create scope so that setting item = badge doesn't globally
-                  set item, which breaks the similar badges for loop below
-                  (probably a bug in nunjucks, also could factor out
-                  badge-thumbnail into a macro) #}
-                  {% set item = badge %}
-                  {% include "includes/add-to-playlist-btn.html" %}
-                {% endfor %}
+                <br>
+                <p>
+                    <form action="/myplaylist" method="POST">
+                        <input type="hidden" name="shortname" value="{{ item.id }}">
+                        <button type="submit" class="btn" title="Add to playlist">Add to your playlist</button>
+                    </form>
+                </p>
             {% endif %}
-            <dl class="tags">
-              <dt>Categories:</dt>
-              <dd>
-                <ul>
-                  {% for category in badge.categories %}
-                    <li class="label">{{category}}</li>
-                  {% endfor %}
-                </ul>
-              </dd>
-              <dt>Organization:</dt>
-              <dd class="label">{{badge.program.issuer.name}}</dd>
-              <dt>Badge type:</dt>
-              <dd class="label">{{badge.type}}</dd>
-              <dt>Activity type:</dt>
-              <dd class="label">{{badge.activityType}}</dd>
-            </dl>
+            <hr>
+            <ul class="tags">
+                {% for category in item.categories %}
+                <li class="label">{{category}}</li>
+                {% endfor %}
+                <li class="label">{{item.program.issuer.name}}</li>
+                <li class="label">{{item.type}}</li>
+                <li class="label">{{item.activityType}}</li>
+            </ul>
         </div>
     </div>
+    {% endfor %}
 
     {% if relatedBadges and relatedBadges|length > 0 %}
-      <h3><a href="/badges">Similar or Related Badges</a></h3>
-      <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
-      <ul class="thumbnails">
-          {% for relatedBadge in relatedBadges %}
-          <li class="span3">
-              {% set item = relatedBadge %}
-              {% include "includes/badge-thumbnail.html" %}
-          </li>
-          {% endfor %}
-      </ul>
+        <h3><a href="/badges">Similar or Related Badges</a></h3>
+        <p>If you're interested in this badge, you might be interested in these too. These are badges on similar STEAM topics or ones that can take you to the next level.</p>
+        <ul class="thumbnails">
+            {% for relatedBadge in relatedBadges %}
+                <li class="span3">
+                    {% set item = relatedBadge %}
+                    {% include "includes/badge-thumbnail.html" %}
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endblock %}
