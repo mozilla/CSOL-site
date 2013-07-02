@@ -130,6 +130,9 @@ module.exports = function (app) {
     var badgeShortname = req.body.badgeShortname;
     var email = req.body.email;
 
+    if (req.body.isTesting)
+      return res.send(200, { status: 'ok' });
+
     if (!badgeShortname)
       return res.send(500, { status: 'error', error: 'No badgeShortname provided' });
 
