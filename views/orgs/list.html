@@ -4,5 +4,5 @@
 {% set itemType = 'org' %}
 
 {% block item_actions %}
-	{{ super() }}
+	{{ super() | safe }}
 {% endblock %}
