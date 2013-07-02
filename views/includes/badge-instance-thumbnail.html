@@ -1,6 +1,6 @@
 {% extends 'includes/badge-thumbnail.html' %}
 {% block buttons_right %}
-  {{ super() }}
+  {{ super() | safe }}
 
   {% if user and not user.underage %}
 

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block notes %}
-	{{ super() }}
+	{{ super() | safe }}
 	<form class="text-right" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<input type="hidden" name="action" value="reopen">

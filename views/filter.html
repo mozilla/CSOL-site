@@ -70,7 +70,7 @@
 		{% if pages > 1 %}
 			<nav class="pagination pagination-centered">
 				<ul>
-					{{ paginate(pages, page) }}
+					{{ paginate(pages, page) | safe }}
 				</ul>
 			</nav>
 		{% endif %}
