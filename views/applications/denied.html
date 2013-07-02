@@ -1,13 +1,13 @@
-{% extends 'applications/accepted.html' %}
+{% extends 'applications/submitted.html' %}
 
 {% block notice %}
-	<div class="alert alert-error">
-		Your application has not been successful.
-	</div>
+  <div class="alert alert-error">
+    Your application was denied by your parent or guardian. 
+  </div>
 {% endblock %}
 
 {% block notes %}
-	{{ super() | safe }}
+	{{ super() }}
 	<form class="text-right" method="post">
 		<input type="hidden" name="_csrf" value="{{ csrfToken }}">
 		<input type="hidden" name="action" value="reopen">

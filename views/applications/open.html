@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block items %}
-		{{ super() }}
+		{{ super() | safe }}
 		<h3>Confirm the requirements for this badge</h3>
 		{% if badge.rubric %}
 			<ul class="rubric">
@@ -36,7 +36,7 @@
 {% block evidenceTitle %}<h3>Upload more pictures, videos, or other files</h3>{% endblock %}
 
 {% block finally %}
-	{{ super() }}
+	{{ super() | safe }}
 	<script>
 		(function ($) {
 			var $review = $('#application-review'),

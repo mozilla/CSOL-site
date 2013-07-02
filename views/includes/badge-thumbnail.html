@@ -12,7 +12,7 @@ parent template overriding the badge (or in some cases supplying it if it
 doesn't have a URL #}
 {% macro itemUrl(url, item) %}
 {% if url %}
-	{{ url }}
+	{{ url }}asdf
 {% else %}
 	{{ item.url }}
 {% endif %}
@@ -34,23 +34,25 @@ doesn't have a URL #}
   </a>
 	<figcaption class="caption">
 		<p>{{ item.name | truncate(42, true, "…") }}</p>
-		<div class="item-actions row-fluid">
-			<div class="span6">
-				{% if playlisted %}
-				<form action="/myplaylist" method="POST" class="playlist-remove">
-					<input type="hidden" name="_method" value="DELETE">
-					<input type="hidden" name="shortname" value="{{ item.id }}">
-					<button class="btn"><i class="icon-trash"></i></button>
-				</form>
-				{% endif %}
+		{% if not hide_badge_actions %}
+			<div class="item-actions row-fluid">
+				<div class="span6">
+					{% if playlisted %}
+					<form action="/myplaylist" method="POST" class="playlist-remove">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="shortname" value="{{ item.id }}">
+						<button class="btn"><i class="icon-trash"></i></button>
+					</form>
+					{% endif %}
+				</div>
+				<div class="span6">
+					<p class="pull-right">
+						{% block buttons_right %}
+							<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
+						{% endblock %}
+					</p>
+				</div>
 			</div>
-			<div class="span6">
-				<p class="pull-right">
-					{% block buttons_right %}
-						<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
-					{% endblock %}
-				</p>
-			</div>
-		</div>
+		{% endif %}
 	</figcaption>
 </figure>

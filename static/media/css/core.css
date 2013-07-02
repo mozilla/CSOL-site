@@ -1141,11 +1141,24 @@ body.home .navbar .nav-wrap ul.nav > li.video {
 }
 body.home .navbar .nav-wrap ul.nav > li.video a {
   color: #fff;
+}
+body.home .navbar .nav-wrap ul.nav > li span {
+  color: #fff;
+}
+body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
+  border-left: none;
+  border-right: none;
+}
+body.home .btn-cta {
+  color: #fff;
   border-radius: 7px;
-  margin: auto;
   display: block;
   width: 140px;
+  padding: 10px 15px;
+  margin: auto;
   text-align: center;
+  font-size: 22px;
+  font-weight: normal;
   line-height: 20px;
   background: #e82202;
   background: -moz-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
@@ -1156,12 +1169,8 @@ body.home .navbar .nav-wrap ul.nav > li.video a {
   background: linear-gradient(to bottom, #e82202 0%, #e5381d 44%, #e56854 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e82202', endColorstr='#e56854', GradientType=0);
 }
-body.home .navbar .nav-wrap ul.nav > li span {
-  color: #fff;
-}
-body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
-  border-left: none;
-  border-right: none;
+body.home .btn-cta:hover {
+  text-decoration: none;
 }
 /* ------------------------------ */
 /* Landing page : all displays -- */
@@ -1219,16 +1228,19 @@ body.home #bkg_fade {
 }
 body.home #i_vid_wrap {
   width: 640px;
-  height: 360px;
+  height: 425px;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -204px;
+  margin-top: -240px;
   margin-left: -348px;
   z-index: 4;
   background-color: #000;
   padding: 28px;
   border-radius: 7px;
+}
+body.home #i_vid_wrap .btn-cta {
+  margin-top: 22px;
 }
 body.home #cl_i_vid {
   background-image: url('../img/close.png');
@@ -1450,4 +1462,27 @@ body.home #cl_i_vid {
 .share-modal .share-button {
   width: 300px;
   margin: 0 auto 12px;
+}
+.lead p {
+  margin-bottom: 30px;
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 30px;
+}
+.lead ul {
+  margin-bottom: 30px;
+  padding: 20px 30px 10px 30px;
+  border-left: 4px solid #f2f2f2;
+}
+.lead ul li {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+body.badge-detail .featured-badge .thumbnail {
+  margin-left: 0px;
+}
+body.badge-detail ul.tags li {
+  text-transform: lowercase;
+  margin-bottom: 10px;
+  padding: 5px;
 }

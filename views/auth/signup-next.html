@@ -11,10 +11,10 @@
 		<br><br>
 		<fieldset class="span12 well">
 			<div class="control-group">
-				<div class="controls"><small><em>Fields marked * are optional</em></small></div>
+				<div class="controls"><small><em>Fields marked * are required</em></small></div>
 			</div>
 			<div class="control-group {{ _fields.first_name.state }} {{ _fields.last_name.state }}">
-				<label class="control-label" for="input-email">Your Name</label>
+				<label class="control-label" for="input-email">Your Name *</label>
 				<div class="controls">
 					<input type="text" id="input-first-name" name="first_name" value="{{ first_name }}" class="input-small" required="required" placeholder="First">
 					<input type="text" id="input-last-name" name="last_name" value="{{ last_name }}" class="input-small" required="required" placeholder="Last">
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="control-group {{ _fields.email.state }}">
-				<label class="control-label" for="input-email">Your Email Address</label>
+				<label class="control-label" for="input-email">Your Email Address *</label>
 				<div class="controls">
 					<input type="email" id="input-email" name="email" value="{{ email }}" required="required">
 					<span class="help-block">
@@ -42,7 +42,7 @@
 			</div>
 
 			<div class="control-group {{ _fields.school.state }}">
-				<label class="control-label" id="input-school-label" for="input-school">School *</label>
+				<label class="control-label" id="input-school-label" for="input-school">School</label>
 				<div class="controls">
 					<input type="text" id="input-school" name="school" value={{ school }}>
 					{% if _fields.school.message -%}
@@ -52,14 +52,14 @@
 			</div>
 
 			<div class="control-group {{ _fields.studentId.state }}">
-				<label class="control-label" id="input-student-id-label" for="input-student-id">CPS Student ID *</label>
+				<label class="control-label" id="input-student-id-label" for="input-student-id">CPS Student ID</label>
 				<div class="controls">
 					<input type="text" id="input-student-id" name="studentId" value="{{ studentId }}">
 				</div>
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" id="input-gender-label" for="input-gender">Gender *</label>
+				<label class="control-label" id="input-gender-label" for="input-gender">Gender</label>
 				<div class="controls">
 					<select id="input-gender" name="gender">
 						<option value=""></option>
@@ -73,7 +73,7 @@
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" id="input-ethnicity-label">Race/Ethnicity *</label>
+				<label class="control-label" id="input-ethnicity-label">Race/Ethnicity</label>
 				<div class="controls">
 					{%- set ethnicities = [
 						'American Indian or Alaska Native',
@@ -103,7 +103,7 @@
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" id="input-zipcode-label" for="input-zipcode">Zip Code *</label>
+				<label class="control-label" id="input-zipcode-label" for="input-zipcode">Zip Code</label>
 				<div class="controls">
 					<input type="text" id="input-zipcode" name="zipCode" placeholder="e.g. 11111" pattern="[0-9]{5}">
 					<span class="help-block">
@@ -118,7 +118,7 @@
 
 
 			<div class="control-group {{ _fields.password.state }}">
-				<label class="control-label" id="input-password-label" for="input-password">Your Password</label>
+				<label class="control-label" id="input-password-label" for="input-password">Your Password *</label>
 				<div class="controls">
 					{% if passwordGenerated -%}
 						<input type="text" readonly="readonly" id="input-password" value="{{ password }}">
