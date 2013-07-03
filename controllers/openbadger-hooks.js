@@ -5,6 +5,7 @@ const learners = db.model('Learner');
 const guardians = db.model('Guardian');
 const mandrill = require('../mandrill');
 const openbadger = require('../openbadger');
+const iremix = require('../iremix');
 const url = require('url');
 const logger = require('../logger');
 const s3 = require('../s3');
@@ -123,6 +124,34 @@ module.exports = function (app) {
 
       return res.send(200, { status: 'ok' });
     });
+  });
+
+  app.post('/notify/award', auth, function (req, res, next) {
+    var badgeShortname = req.body.badgeShortname;
+    var email = req.body.email;
+
+    if (req.body.isTesting)
+      return res.send(200, { status: 'ok' });
+
+    if (!badgeShortname)
+      return res.send(500, { status: 'error', error: 'No badgeShortname provided' });
+
+    badgeShortname = badgeShortname.trim();
+
+    openbadger.getUserBadge({ id: badgeShortname, email: email }, function(err, badge) {
+      if (err) {
+        logger.log('info', 'Failed to get user badge from openbadger for email %s', email);
+        return res.send(500, { status: 'error', error: 'Database error' });
+      }
+      learners.find({where: {email: email}}).complete(function(err, learner) {
+        if (err) {
+          logger.log('info', 'Failed to get learner for email %s', email);
+          return res.send(500, { status: 'error', error: 'Database error' });
+        }
+        iremix.invite({ learner: learner, badges: [badge] });
+        return res.send(200, { status: 'ok' });
+      });
+   });
   });
 };
 
