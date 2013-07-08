@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle }}{% endif %}{% endblock %}</title>
+        <title>CSOL{% block title %}{% if pageTitle %} | {{ pageTitle | safe }}{% endif %}{% endblock %}</title>
         <link rel="stylesheet" href="/media/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="/media/css/core.css">
         <link rel="icon" type="image/png" href="/media/img/favicon.png">
@@ -38,7 +38,7 @@
                                     </li>
                                     {% if bodyClass == 'home' %}
                                         <li class="video">
-                                            <a href="http://www.youtube.com/v/6WwpwtYNsNk">Watch Video</a>
+                                            <a href="http://www.youtube.com/v/6WwpwtYNsNk" class="btn-cta">Watch Video</a>
                                         </li>
                                     {% endif %}
                                     {% if user %}
@@ -123,7 +123,7 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        {% block pageTitleWrapper %}{% if pageTitle %}<h2><span>{% block pageTitle %}{{ pageTitle }}{% endblock %}</span></h2>{% endif %}{% endblock %}
+                        {% block pageTitleWrapper %}{% if pageTitle %}<h2><span>{% block pageTitle %}{{ pageTitle | safe }}{% endblock %}</span></h2>{% endif %}{% endblock %}
                         {% block content %}{% endblock %}
                     </div>
                 </div>
@@ -133,7 +133,7 @@
             <div class="inner-wrapper">
                 <div class="container">
                     <div class="upper clearfix">
-                        <p class="pull-left" id="rahm">"Because we are making the right choices today, every child in Chicago has a better chance at a brighter future tomorrow."<br><span style="margin-top:5px;display:block; text-align:right;">–Mayor Rahm Emanuel</span></p>
+                        <p class="pull-left" id="rahm"><a target="_blank" href="http://lucian.uchicago.edu/blogs/gamechanger/register/"><span style="color:#ffffcd;font-weight:bold;">Calling all Teens - last week to sign up for the city-wide game <em>The Source!</em></span></a><br><br>"Because we are making the right choices today, every child in Chicago has a better chance at a brighter future tomorrow."<br><span style="margin-top:5px;display:block; text-align:right;">–Mayor Rahm Emanuel</span></p>
                         <ul class="pull-left" id="logos">
                             <li><a class="logo moz" href="http://openbadges.org" target=_blank>Mozilla</a></li>
                             <li><a class="logo chi" href="http://www.cityofchicago.org" target=_blank>City of Chicago</a></li>

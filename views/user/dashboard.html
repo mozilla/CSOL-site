@@ -14,7 +14,7 @@
       {% endfor %}
     {% endblock %}
   </ul>
-  {{ super() }}
+  {{ super() | safe }}
 {% endblock %}
 
 {% block content %}

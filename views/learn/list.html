@@ -3,5 +3,5 @@
 {% if not pageTitle %}{% set pageTitle = 'Learn' %}{% endif %}
 
 {% block item_actions %}
-	{{ super() }}
+	{{ super() | safe }}
 {% endblock %}

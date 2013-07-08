@@ -180,6 +180,28 @@ nav.pagination ul li a {
   cursor: hand;
   cursor: pointer;
 }
+.playlist-bar {
+  min-height: 30px;
+  background: #BCBEC0;
+  border-bottom: 1px solid #676565;
+}
+.playlist-bar.in {
+  background: #6BA06A;
+}
+.playlist-bar > form {
+  float: right;
+  margin: 0 0 0 0;
+}
+.playlist-bar .btn {
+  border: none;
+  line-height: 22px;
+  background: #9b9d9e;
+  border-radius: 0 4px 0 0;
+}
+.playlist-bar p {
+  margin-bottom: 0px;
+  line-height: 30px;
+}
 /*footer*/
 .footer {
   background-image: url('/media/img/background-chalkboard-green.jpg');
@@ -250,7 +272,7 @@ nav.pagination ul li a {
   position: relative;
   width: 300px;
   padding-left: 0px;
-  padding-top: 78px;
+  padding-top: 30px;
   background: none;
   float: left;
   -webkit-hyphens: none;
@@ -681,10 +703,11 @@ nav.pagination ul li a {
 }
 ul.thumbnails li .thumbnail {
   margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 ul.thumbnails li .thumbnail > a {
   display: table-cell;
-  width: 210px;
+  width: 218px;
   height: 210px;
   text-align: center;
   vertical-align: middle;
@@ -694,7 +717,7 @@ ul.thumbnails li .thumbnail > a .ie-fix {
              solved by wrapping the img in a div with width set to max-width of img.
            */
 
-  width: 210px;
+  width: 218px;
 }
 ul.thumbnails li .thumbnail > a .ie-fix img {
   width: auto;
@@ -711,15 +734,19 @@ ul.thumbnails li .thumbnail > a .ie-fix .no-src {
 ul.thumbnails li .thumbnail a.show-tooltip {
   display: none;
 }
-ul.thumbnails li .thumbnail .caption p:first-child {
+ul.thumbnails li .thumbnail .caption > p:first-child {
   height: 40px;
 }
 ul.thumbnails li .thumbnail .caption .badge-description {
   height: 40px;
 }
+ul.thumbnails li .thumbnail .caption .item-actions p {
+  margin-bottom: 0px;
+}
 ul.thumbnails li .thumbnail .playlist-bar form,
 ul.thumbnails li .thumbnail .item-actions form {
   display: inline-block;
+  margin: 0 0 0 0;
 }
 ul.thumbnails li .thumbnail[class*="state-"] {
   position: relative;
@@ -1114,11 +1141,24 @@ body.home .navbar .nav-wrap ul.nav > li.video {
 }
 body.home .navbar .nav-wrap ul.nav > li.video a {
   color: #fff;
+}
+body.home .navbar .nav-wrap ul.nav > li span {
+  color: #fff;
+}
+body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
+  border-left: none;
+  border-right: none;
+}
+body.home .btn-cta {
+  color: #fff;
   border-radius: 7px;
-  margin: auto;
   display: block;
   width: 140px;
+  padding: 10px 15px;
+  margin: auto;
   text-align: center;
+  font-size: 22px;
+  font-weight: normal;
   line-height: 20px;
   background: #e82202;
   background: -moz-linear-gradient(top, #e82202 0%, #e5381d 44%, #e56854 100%);
@@ -1129,12 +1169,8 @@ body.home .navbar .nav-wrap ul.nav > li.video a {
   background: linear-gradient(to bottom, #e82202 0%, #e5381d 44%, #e56854 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e82202', endColorstr='#e56854', GradientType=0);
 }
-body.home .navbar .nav-wrap ul.nav > li span {
-  color: #fff;
-}
-body.home .navbar .nav-wrap ul.nav > li:nth-child(even) {
-  border-left: none;
-  border-right: none;
+body.home .btn-cta:hover {
+  text-decoration: none;
 }
 /* ------------------------------ */
 /* Landing page : all displays -- */
@@ -1192,16 +1228,19 @@ body.home #bkg_fade {
 }
 body.home #i_vid_wrap {
   width: 640px;
-  height: 360px;
+  height: 425px;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -204px;
+  margin-top: -240px;
   margin-left: -348px;
   z-index: 4;
   background-color: #000;
   padding: 28px;
   border-radius: 7px;
+}
+body.home #i_vid_wrap .btn-cta {
+  margin-top: 22px;
 }
 body.home #cl_i_vid {
   background-image: url('../img/close.png');

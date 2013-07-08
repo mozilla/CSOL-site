@@ -20,8 +20,9 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) mob
 						});
 						return false;
 					});
+          var signUpButton = $('<a href="/signup" class="btn-cta">Sign up</a>');
 					$('body').prepend($(bkgFade).fadeIn(function() {
-						$(this).append(vidWrap.append('<iframe id="i_vid" width="640" height="360" src="http://www.youtube.com/embed/6WwpwtYNsNk?autoplay=1&feature=player_detailpage" frameborder="0" allowfullscreen></iframe>', vidClose)).find('#i_vid_wrap').fadeIn();
+						$(this).append(vidWrap.append('<iframe id="i_vid" width="640" height="360" src="http://www.youtube.com/embed/6WwpwtYNsNk?autoplay=1&feature=player_detailpage" frameborder="0" allowfullscreen></iframe>', vidClose, signUpButton)).find('#i_vid_wrap').fadeIn();
 					}));
 				}
 				return false;

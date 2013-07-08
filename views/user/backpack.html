@@ -5,7 +5,7 @@
 
 {% block list %}
   <p>See all the badges you have earned. Keep it up!</p>
-  {{ super() }}
+  {{ super() | safe }}
   <li class="span3">
   <figure class="thumbnail">
     <a href="/claim"><img src="/media/img/add-badge.png"></a>
