@@ -1,6 +1,8 @@
 const _ = require('underscore');
 const db = require('../db');
 const async = require('async');
+const logger = require('../logger');
+const util = require('util');
 
 module.exports = {
 	properties: {
@@ -46,11 +48,18 @@ module.exports = {
 		remove: function (user, shortName, callback) {
 			this.find({where: {LearnerId: user.id, shortName: shortName}}).
 				success(function(item) {
-					item.destroy().success(function() {
-						callback(null);
-					}).error(function(err) {
-						callback(err);
-					});
+          if (item === null) {
+            // not treating this as an error condition as the result is what the user wanted to happen anyway:  The badge in question is no longer in their playlist.
+            logger.log('info', 'playlist.classMethods.remove was unable to find item with learnerid %s and shortname %s', user.id, shortName);
+            callback(null);
+          }
+          else {
+            item.destroy().success(function() {
+              callback(null);
+            }).error(function(err) {
+              callback(err);
+            });
+          }
 				}).
 				error(function(err) {
 					callback(err);

@@ -368,7 +368,7 @@ module.exports = function (app) {
     var shortname = req.body.shortname;
 
     actions[method](user, shortname, function(err) {
-      if (err) next(err);
+      if (err) return next(err);
       res.redirect('/myplaylist');
     });
   });
