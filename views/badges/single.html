@@ -13,7 +13,7 @@
         </div>
         <div class="span8">
             <h3>What is this badge about?</h3>
-            <p class="description">{{ item.description }}</p>
+            <p class="description">{{ item.description|safe }}</p>
             <p class="desription">Part of <a href="/explore/{{item.program.shortname}}">{{item.program.name}}</a></p>
 
             {% if not user or user.type == 'learner' %}
