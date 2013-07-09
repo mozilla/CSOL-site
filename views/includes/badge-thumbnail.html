@@ -33,7 +33,13 @@ doesn't have a URL #}
     </div>
   </a>
 	<figcaption class="caption">
-		<p>{{ item.name | truncate(42, true, "…") }}</p>
+		<p>
+			{% if item.name %}
+				{{ item.name | truncate(42, true, "…") }}
+			{% else %}
+				&nbsp;
+			{% endif %}
+		</p>
 		{% if not hide_badge_actions %}
 			<div class="item-actions row-fluid">
 				<div class="span6">
