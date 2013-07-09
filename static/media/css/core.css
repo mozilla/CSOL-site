@@ -1486,3 +1486,6 @@ body.badge-detail ul.tags li {
   margin-bottom: 10px;
   padding: 5px;
 }
+ul.thumbnails li .thumbnail .caption {
+  max-width: 200px;
+}
