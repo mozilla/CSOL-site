@@ -18,7 +18,7 @@ doesn't have a URL #}
 {% endif %}
 {% endmacro %}
 
-<figure class="thumbnail state-{{ item.state }}">
+<figure class="thumbnail{% if application %} state-{{ item.state }}{% endif %}">
 	{% if not application %}
 		<div class="playlist-bar text-center{% if playlisted %} in{% endif %}">
 			{% if not playlisted %}
