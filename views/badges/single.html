@@ -18,7 +18,7 @@
 
             {% if not user or user.type == 'learner' %}
                 <h3>How can you earn it?</h3>
-                <p class="description">{{item.criteria}}</p>
+                <p class="description">{{item.criteria|safe}}</p>
                 <br>
                 <p>
                     {% if item.tags.indexOf('aestimia') == -1 %}

@@ -734,6 +734,9 @@ ul.thumbnails li .thumbnail > a .ie-fix .no-src {
 ul.thumbnails li .thumbnail a.show-tooltip {
   display: none;
 }
+ul.thumbnails li .thumbnail .caption {
+  max-width: 200px;
+}
 ul.thumbnails li .thumbnail .caption > p:first-child {
   height: 40px;
 }
@@ -1478,6 +1481,38 @@ body.home #cl_i_vid {
   margin-bottom: 20px;
   font-size: 16px;
 }
+body.asm h3 {
+  font-size: 24px;
+  line-height: auto;
+}
+body.asm hr {
+  margin: 5px 0;
+}
+body.asm ul.orgs li {
+  margin-bottom: 20px;
+}
+body.asm ul.orgs li h4 {
+  font-size: 18px;
+  line-height: auto;
+}
+body.asm ul.orgs li h4 a:hover {
+  cursor: pointer;
+}
+body.asm ul.orgs li h4 small {
+  display: block;
+  margin-top: 5px;
+}
+body.asm ul.orgs li div.meta {
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+body.asm ul.orgs li div.meta p {
+  font-size: 14px;
+  line-height: auto;
+  margin: 0;
+  display: inline;
+  margin-right: 10px;
+}
 body.badge-detail .featured-badge .thumbnail {
   margin-left: 0px;
 }
@@ -1485,7 +1520,4 @@ body.badge-detail ul.tags li {
   text-transform: lowercase;
   margin-bottom: 10px;
   padding: 5px;
-}
-ul.thumbnails li .thumbnail .caption {
-  max-width: 200px;
 }
