@@ -190,6 +190,29 @@ nav.pagination {
 	cursor:pointer;
 }
 
+.playlist-bar {
+	min-height:30px;
+	background:#BCBEC0;
+	border-bottom:1px solid #676565;
+	&.in {
+		background:#6BA06A;
+	}
+	& > form {
+		float:right;
+		margin:0 0 0 0;
+	}
+	.btn {
+		border:none;
+		line-height:22px;
+		background:#9b9d9e;
+		border-radius:0 4px 0 0;
+	}
+	p {
+	margin-bottom:0px;
+	line-height:30px;
+	}
+}
+
 /*footer*/
 .footer {
 	background-image:url('/media/img/background-chalkboard-green.jpg');
@@ -262,7 +285,7 @@ nav.pagination {
 		position:relative;
 		width:300px;
 		padding-left:0px;
-		padding-top:78px;
+		padding-top:30px;
 		background:none;
 		float:left;
 		-webkit-hyphens:none;
@@ -743,10 +766,11 @@ ul.thumbnails {
 	li {
 		.thumbnail {
 			margin: 0 0 0 0;
+			padding: 0 0 0 0;
 
       & > a {
         display: table-cell;
-        width: 210px;
+        width: 218px;
         height: 210px;
         text-align: center;
         vertical-align: middle;
@@ -755,7 +779,7 @@ ul.thumbnails {
           /* IE8 has a bug in which it renders max-width imgs inside table-cells improperly;
              solved by wrapping the img in a div with width set to max-width of img.
            */
-          width: 210px;
+          width: 218px;
 
           img {
             width: auto;
@@ -778,11 +802,18 @@ ul.thumbnails {
 			}
 
 			.caption {
-				p:first-child {
+        max-width:200px;
+
+				& > p:first-child {
 					height: 40px;
 				}
 				.badge-description {
 					height: 40px;
+				}
+				.item-actions {
+					p {
+						margin-bottom:0px;
+					}
 				}
 			}
 
@@ -790,6 +821,7 @@ ul.thumbnails {
       .item-actions {
         form {
           display: inline-block;
+          margin:0 0 0 0;
         }
       }
 
@@ -1243,22 +1275,8 @@ body.home {
             	&.video {
               		margin:30px 0;
 					a {
-                		color:#fff;
-                		border-radius:7px;
-                		margin:auto;
-                		display:block;
-                		width:140px;
-                		text-align:center;
-                		line-height:20px;
-                		background:#e82202;
-                		background:-moz-linear-gradient(top,  #e82202 0%, #e5381d 44%, #e56854 100%);
-                		background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e82202), color-stop(44%,#e5381d), color-stop(100%,#e56854));
-                		background:-webkit-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                		background:-o-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                		background:-ms-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                		background:linear-gradient(to bottom,  #e82202 0%,#e5381d 44%,#e56854 100%);
-                		filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#e82202', endColorstr='#e56854',GradientType=0 );
-					}
+                    color: #fff;
+            }
     			}
 				span {
 					color:#fff;
@@ -1270,6 +1288,31 @@ body.home {
 				}
 			}
 		}
+    }
+
+    .btn-cta {
+      color:#fff;
+      border-radius:7px;
+      display:block;
+      width:140px;
+      padding: 10px 15px;
+      margin: auto;
+      text-align:center;
+      font-size: 22px;
+      font-weight: normal;
+      line-height:20px;
+      background:#e82202;
+      background:-moz-linear-gradient(top,  #e82202 0%, #e5381d 44%, #e56854 100%);
+      background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e82202), color-stop(44%,#e5381d), color-stop(100%,#e56854));
+      background:-webkit-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+      background:-o-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+      background:-ms-linear-gradient(top,  #e82202 0%,#e5381d 44%,#e56854 100%);
+      background:linear-gradient(to bottom,  #e82202 0%,#e5381d 44%,#e56854 100%);
+      filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#e82202', endColorstr='#e56854',GradientType=0 );
+
+      &:hover {
+        text-decoration: none;
+      }
     }
 }
 
@@ -1333,16 +1376,20 @@ body.home {
 	}
 	#i_vid_wrap {
   		width:640px;
-  		height:360px;
+      height: 425px;
   		position:fixed;
   		top:50%;
   		left:50%;
-  		margin-top:-204px;
+  		margin-top:-240px;
   		margin-left:-348px;
   		z-index:4;
   		background-color:#000;
   		padding:28px;
   		border-radius:7px;
+
+      .btn-cta {
+        margin-top: 22px;
+      }
 	}
 	#cl_i_vid {
   		background-image:url('../img/close.png');
@@ -1610,4 +1657,18 @@ body.asm {
       }
     }
   }
+}
+
+body.badge-detail {
+  .featured-badge .thumbnail {
+    margin-left: 0px;
+  }
+  ul.tags {
+    li {
+      text-transform: lowercase;
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+  }
+}
 }

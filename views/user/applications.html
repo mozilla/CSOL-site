@@ -5,8 +5,9 @@
 
 {% block item %}
   <li class="span3">
+	  {#
     <figure class="thumbnail state-{{ item.state }}">
-      <a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+      <a href="{{ item.url }}"><div class="ie-fix"><img src="{{ item.image }}"></div></a>
       <figcaption class="caption">
         <p>{{ item.name }}</p>
         <p class="state">{{ item.getStateDescription() }}</p>
@@ -19,17 +20,20 @@
         {% endblock %}
       </figcaption>
     </figure>
+	#}
+	{% set hide_badge_actions = true %}
+	{% set application = true %}
+	{% include "includes/badge-thumbnail.html" %}
   </li>
 {% endblock %}
 
 {% block list %}
-  {{ super() }}
+  {{ super() | safe }}
   <li class="span3">
     <figure class="thumbnail">
-      <a href="/claim"><img src="/media/img/add-badge.png"></a>
-      <figcaption class="caption">
-        <p>Claim another badge!</p>
-        <p class="text-right"><a href="/claim" class="btn">+1</a></p>
+      <a href="/earn"><img src="/media/img/add-badge.png"></a>
+      <figcaption class="caption text-center">
+        <a href="/earn" class="btn btn-primary">Earn more badges!</a>
       </figcaption>
     </figure>
   </li>

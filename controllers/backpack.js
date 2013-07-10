@@ -368,7 +368,7 @@ module.exports = function (app) {
     var shortname = req.body.shortname;
 
     actions[method](user, shortname, function(err) {
-      if (err) next(err);
+      if (err) return next(err);
       res.redirect('/myplaylist');
     });
   });
@@ -381,28 +381,10 @@ module.exports = function (app) {
       openbadger.getBadges(function (err, data) {
         _.each(applications, function(app) {
           _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
+            app.url = '/earn/' + app.id + '/apply';
         });
         res.render('user/applications.html', {
-          items: _.map(applications, function(badge) {
-            badge.url = '/myapplications/' + badge.id;
-            return badge;
-          })
-        });
-      });
-    });
-  });
-
-  app.get('/myapplications/:id', [
-    isLearner,
-    openbadger.middleware('getBadgeRecommendations', {limit:4})
-  ], function (req, res, next) {
-    var user = req.session.user;
-    openbadger.getBadge({id: req.params.id}, function(err, data) {
-      var badge = data.badge;
-      applications.find({where: {LearnerId: user.id, BadgeId: req.params.id}}).success(function (application) {
-        res.render('user/application.html', {
-          badge: _.extend(badge, application),
-          similar:data.badges
+          items: applications
         });
       });
     });

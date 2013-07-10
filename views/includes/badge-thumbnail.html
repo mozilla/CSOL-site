@@ -18,37 +18,59 @@ doesn't have a URL #}
 {% endif %}
 {% endmacro %}
 
-<figure class="thumbnail">
-	<div class="playlist-bar text-right">
-	{% if not playlisted %}
-		{% include "includes/add-to-playlist-btn.html" %}
-	{% endif %}
-	</div>
-	<a href="{{ itemUrl(url, item) }}">
-    <div class="ie-fix">
-      {% set src = item.imageUrl | default(item.image) %}
-      <img src="{{ src }}" {% if not src %}class="no-src"{% endif %}>
-    </div>
-  </a>
-	<figcaption class="caption">
-		<p>{{ item.name | truncate(42, true, "…") }}</p>
-		<div class="item-actions row-fluid">
-			<div class="span6">
-				{% if playlisted %}
-				<form action="/myplaylist" method="POST" class="playlist-remove">
-					<input type="hidden" name="_method" value="DELETE">
-					<input type="hidden" name="shortname" value="{{ item.id }}">
-					<button class="btn"><i class="icon-trash"></i></button>
-				</form>
-				{% endif %}
-			</div>
-			<div class="span6">
-				<p class="pull-right">
-					{% block buttons_right %}
-						<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
-					{% endblock %}
-				</p>
-			</div>
+<figure class="thumbnail{% if application %} state-{{ item.state }}{% endif %}">
+	{% if not application %}
+		<div class="playlist-bar text-center{% if playlisted %} in{% endif %}">
+			{% if not playlisted %}
+				{% include "includes/add-to-playlist-btn.html" %}
+			{% else %}
+				<p>In Playlist</p>
+			{% endif %}
 		</div>
+	{% endif %}
+	<a href="{{ itemUrl(url, item) }}">
+		<div class="ie-fix">
+			{% set src = item.imageUrl | default(item.image) %}
+			<img src="{{ src }}" {% if not src %}class="no-src"{% endif %}>
+		</div>
+	</a>
+	<figcaption class="caption">
+		<p>
+			{% if item.name %}
+				{{ item.name | truncate(42, true, "…") }}
+			{% else %}
+				&nbsp;
+			{% endif %}
+		</p>
+		{% if application %}
+			<p class="state">{{ item.getStateDescription() }}</p>
+	        {% block item_actions_wrapper %}
+	          <p class="text-right">
+	            {% block item_actions %}
+	              <a href="{{ item.url }}" class="btn">Details</a>
+	            {% endblock %}
+	          </p>
+	        {% endblock %}
+		{% endif %}
+		{% if not hide_badge_actions %}
+			<div class="item-actions row-fluid">
+				<div class="span6">
+					{% if playlisted %}
+					<form action="/myplaylist" method="POST" class="playlist-remove">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="shortname" value="{{ item.id }}">
+						<button class="btn"><i class="icon-trash"></i></button>
+					</form>
+					{% endif %}
+				</div>
+				<div class="span6">
+					<p class="pull-right">
+						{% block buttons_right %}
+							<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
+						{% endblock %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
 	</figcaption>
 </figure>
