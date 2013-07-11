@@ -257,7 +257,7 @@ module.exports = function (app) {
       if (err)
         return next(err);
 
-      if (!token.shared)
+      if (token === null || !token.shared)
         return next('Invalid share token');
 
       openbadger.getUserBadge({
@@ -291,6 +291,9 @@ module.exports = function (app) {
     }).complete(function (err, token) {
       if (err)
         return next(err);
+
+      if (token === null)
+        return next('Could not find token ' + token);
 
       if (token.email !== user.email)
         return next('User does not own token');
