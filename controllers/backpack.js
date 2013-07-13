@@ -176,7 +176,7 @@ module.exports = function (app) {
     var data = req.remote;
     var user = req.session.user;
 
-    async.each(data.badges, 
+    async.each(data.badges,
       function prepForSharing(badge, callback){
         shareToken.findOrCreate({
           shortName: badge.id,
@@ -346,10 +346,25 @@ module.exports = function (app) {
       return [c.value, {label: c.label, badges: shuffle(grouped[c.value]).slice(0, maxPerCat)}];
     }));
 
+    // Construct the user's playlist
+		// Expects that `req.remote.badges` exists and that it is the *full* list
+		// of all badges -- this list is then filtered down by what's in the
+		// playlist table to produce the user's playlist (nb: once/if the openbadger
+		// API supports taking a list of badge shortnames to return badge details
+		// about, retrieving the full list from the API is no longer necessary).
+    var playlist = new Array(req.paylist_ids);
+    _.each(req.remote.badges, function(badge) {
+      if (badge.id in req.playlist_shortnames) {
+        var index = req.playlist_shortnames[badge.id];
+        playlist[index] = badge;
+      }
+    });
+
     res.render('user/myplaylist.html', {
       user: res.locals.user,
       recommended: recommended,
-      playlist: req.playlist
+      playlist: req.playlist,
+      paylist_ids: req.paylist_ids
     });
   });
 

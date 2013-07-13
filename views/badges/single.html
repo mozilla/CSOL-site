@@ -7,7 +7,6 @@
     <div class="row">
         <div class="span4">
           <div class="featured-badge">
-            {% set hide_badge_actions = 1 %}
             {% include "includes/badge-thumbnail.html" %}
           </div>
         </div>
@@ -35,12 +34,14 @@
                     {% endif %}
                 </p>
                 <br>
+                {% if (not playlist_ids or playlist_ids.indexOf(item.id) < 0) %}
                 <p>
                     <form action="/myplaylist" method="POST">
                         <input type="hidden" name="shortname" value="{{ item.id }}">
                         <button type="submit" class="btn" title="Add to playlist">Add to your playlist</button>
                     </form>
                 </p>
+                {% endif %}
             {% endif %}
             <hr>
             <ul class="tags">

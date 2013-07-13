@@ -9,6 +9,9 @@ var _ = require('underscore');
 var applications = db.model('Application');
 var evidence = db.model('Evidence');
 
+const playlist = db.model('Playlist');
+const playlistMiddleware = _.bind(playlist.middleware, playlist);
+
 module.exports = function (app) {
 
   function getFilters(query, subset) {
@@ -221,22 +224,24 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/earn', badger.middleware('getBadges'), function (req, res, next) {
+  app.get('/earn', [badger.middleware('getBadges'),playlistMiddleware], function (req, res, next) {
     var data = req.remote;
 
     res.render('badges/list.html', {
       filters: getFilters(req.query, ['categories', 'ageRanges', 'badgeTypes', 'activityTypes', 'search']),
       items: data.badges,
       page: data.page,
-      pages: data.pages
+      pages: data.pages,
+      playlist_ids:req.playlist_ids,
     });
   });
 
-  app.get('/earn/:badgeName', badger.middleware('getBadgeRecommendations', {limit:4}), function (req, res, next) {
+  app.get('/earn/:badgeName', [badger.middleware('getBadgeRecommendations', {limit:4}),playlistMiddleware], function (req, res, next) {
     var data = req.remote;
     res.render('badges/single.html', {
       badge: req.params.badge,
-      relatedBadges: data.badges
+      relatedBadges: data.badges,
+      playlist_ids:req.playlist_ids,
     });
   });
 
