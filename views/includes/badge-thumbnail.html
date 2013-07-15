@@ -4,7 +4,6 @@ Context variables from including template:
 
  - item (required)
  - url (optional)
- - playlisted (optional)
 #}
 
 {# itemUrl simplifies getting the URL for the badge: it can be set in the
@@ -17,11 +16,10 @@ doesn't have a URL #}
 	{{ item.url }}
 {% endif %}
 {% endmacro %}
-
 <figure class="thumbnail{% if application %} state-{{ item.state }}{% endif %}">
 	{% if not application %}
-		<div class="playlist-bar text-center{% if playlisted %} in{% endif %}">
-			{% if not playlisted %}
+		<div class="playlist-bar text-center{% if playlist_ids and playlist_ids.indexOf(item.id) >= 0 %} in{% endif %}">
+			{% if not playlist_ids or playlist_ids.indexOf(item.id) < 0 %}
 				{% include "includes/add-to-playlist-btn.html" %}
 			{% else %}
 				<p>In Playlist</p>
@@ -55,7 +53,7 @@ doesn't have a URL #}
 		{% if not hide_badge_actions %}
 			<div class="item-actions row-fluid">
 				<div class="span6">
-					{% if playlisted %}
+					{% if playlist_ids and playlist_ids.indexOf(item.id) >= 0 %}
 					<form action="/myplaylist" method="POST" class="playlist-remove">
 						<input type="hidden" name="_method" value="DELETE">
 						<input type="hidden" name="shortname" value="{{ item.id }}">
