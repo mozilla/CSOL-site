@@ -352,7 +352,7 @@ module.exports = function (app) {
 		// playlist table to produce the user's playlist (nb: once/if the openbadger
 		// API supports taking a list of badge shortnames to return badge details
 		// about, retrieving the full list from the API is no longer necessary).
-    var playlist = new Array(req.paylist_ids);
+    var playlist = new Array(req.playlist_ids);
     _.each(req.remote.badges, function(badge) {
       if (badge.id in req.playlist_shortnames) {
         var index = req.playlist_shortnames[badge.id];
@@ -363,8 +363,8 @@ module.exports = function (app) {
     res.render('user/myplaylist.html', {
       user: res.locals.user,
       recommended: recommended,
-      playlist: req.playlist,
-      paylist_ids: req.paylist_ids
+      playlist: playlist,
+      playlist_ids: req.playlist_ids
     });
   });
 
