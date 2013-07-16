@@ -7,8 +7,12 @@
     <p><a href="http://www.afterschoolmatters.org/about">After School Matters&reg;</a> is a non-profit organization that offers Chicago high school teens innovative out-of-school activities through Science, Sports, Tech, Words and nationally recognized Gallery programs.</p>
     <p>Check out the variety of programs offered by After School Matters as part of the Chicago Summer of Learning below. You can contact 312-742-4182 to learn more and enroll in programs that excite you.</p>
   </div>
-  <ul class="orgs unstyled">
-    {% for org in orgs %}
+  <div class="row">
+  {% for org in orgs %}
+    {% if loop.index == 1 or loop.index == split_column_number %}
+    <div class="span6">
+      <ul class="orgs unstyled">
+    {% endif %}
       {% if org.region != 'Cancelled' %}
         <li>
           <h4>
@@ -30,6 +34,12 @@
           </div>
         </li>
       {% endif %}
-    {% endfor %}
+    {% if loop.index == (split_column_number - 1) %}
+      </ul>
+    </div>
+    {% endif %}
+  {% endfor %}
   </ul>
+</div>
+</div>
 {% endblock %}

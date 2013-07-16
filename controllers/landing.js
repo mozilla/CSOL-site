@@ -4451,6 +4451,7 @@ module.exports = function (app) {
                 ]
     res.render('landing/after-school-matters.html', {
       orgs: orgs,
+      split_column_number:Math.ceil(orgs.length / 2)
     });
   });
 };
