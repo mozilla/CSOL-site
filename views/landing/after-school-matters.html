@@ -14,24 +14,26 @@
     <ul class="orgs unstyled">
 	  {% set rowloop = loop %}
       {% for org in list %}
-        <li>
-          <h4>
-            <a data-toggle="collapse" data-target="#collapse-{{rowloop.index}}-{{loop.index}}">{{org.program_name}}</a>
-            <small>
-              {{org.start}} - {{org.end}}
-              &bull; <abbr title="Scienece Technology Engineering Art Math">STEAM</abbr>: {{org.steam}}
-            </small>
-          </h4>
-          <div id="collapse-{{rowloop.index}}-{{loop.index}}" class="collapse">
-            <p>
-              {{org.program_description}}
-            </p>
-            <div class="meta">
-              <p><strong>Region:</strong> {{org.region}}</p>
-              <p><strong>Specialist:</strong> {{org.program_specialist}}</p>
+        {% if org.region != 'Cancelled' %}
+          <li>
+            <h4>
+              <a data-toggle="collapse" data-target="#collapse-{{rowloop.index}}-{{loop.index}}">{{org.program_name}}</a>
+              <small>
+                {{org.start}} - {{org.end}}
+                &bull; <abbr title="Scienece Technology Engineering Art Math">STEAM</abbr>: {{org.steam}}
+              </small>
+            </h4>
+            <div id="collapse-{{rowloop.index}}-{{loop.index}}" class="collapse">
+              <p>
+                {{org.program_description}}
+              </p>
+              <div class="meta">
+                <p><strong>Region:</strong> {{org.region}}</p>
+                <p><strong>Specialist:</strong> {{org.program_specialist}}</p>
+              </div>
             </div>
-          </div>
-        </li>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   {% endfor %}
