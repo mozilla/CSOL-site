@@ -1533,7 +1533,7 @@ module.exports.get_asm_programs = function(req, res, next) {
       "region":"North",
       "contact":"Ana Mercado [unlisted]Randall Strickland [unlisted]",
       "badge_description":"Words37 Achievement badge recognizes completion of an ASM Words program and skill development through a final activity, product or performance.",
-      "steam":"Arts",
+      "steam":"Art",
       "criteria":"80% attendance or higher in program; and complete a final product or performance",
       "rubrics":"",
       "age_group":"High school-aged youth",
@@ -4452,7 +4452,6 @@ module.exports.get_asm_programs = function(req, res, next) {
 
   var filters = build_filters(programs);
   filters['steam']['value'] = req.query['steam']
-  filters['age_group']['value'] = req.query['age_group']
 
   programs = apply_filter(programs, filters)
 
@@ -4471,13 +4470,6 @@ function build_filters(programs) {
       'value':'',
       'class':'category'
     },
-    'age_group': {
-      'options':[],
-      'name':'age_group',
-      'label':'Age',
-      'value':'',
-      'class':'age'
-    }
   }
 
   // Build options based on program data.
