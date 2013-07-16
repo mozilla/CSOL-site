@@ -1488,6 +1488,9 @@ body.asm h3 {
 body.asm hr {
   margin: 5px 0;
 }
+body.asm .span6:first-child ul {
+  padding-right: 40px;
+}
 body.asm ul.orgs li {
   margin-bottom: 20px;
 }
