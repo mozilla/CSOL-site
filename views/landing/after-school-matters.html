@@ -5,35 +5,61 @@
 {% block content %}
   <div class="lead">
     <p><a href="http://www.afterschoolmatters.org/about">After School Matters&reg;</a> is a non-profit organization that offers Chicago high school teens innovative out-of-school activities through Science, Sports, Tech, Words and nationally recognized Gallery programs.</p>
-    <p>Check out the variety of programs offered by After School Matters as part of the Chicago Summer of Learning below. You can contact {phone number} to learn more and enroll in programs that excite you.</p>
+    <p>Check out the variety of programs offered by After School Matters as part of the Chicago Summer of Learning below. You can contact 312-742-4182 to learn more and enroll in programs that excite you.</p>
   </div>
-
-  {% for grouper, list in orgs|groupby('organization_name') %}
-    <h3>{{grouper}} {{list|length}}</h3>
-    <hr>
-    <ul class="orgs unstyled">
-	  {% set rowloop = loop %}
-      {% for org in list %}
+  {% if filters %}
+    <div class="navbar filter">
+      <form class="navbar-inner navbar-form form-inline text-left" method="get">
+        {% for k,filter in filters %}
+          <div class="selectWrapper{% if not filter.options %} text{% endif %}">
+            <label for="filter-{{ filter.class }}" class="filter-icon filter-{{ filter.class }}">{{ filter.label }}</label>
+            {% if filter.options %}
+              <select id="filter-{{ filter.name }}" name="{{ filter.name }}" class="input-small{% if filter.class %} {{ filter.class }}{% endif %}">
+                <option value="">{{ filter.label }}</option>
+                {% for item in filter.options %}
+                  <option value="{{ item }}"{% if filter.value == item %} selected="selected"{% endif %}>{{ item }}</option>
+                {% endfor %}
+              </select>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <input type="submit" value="Update" class="btn">
+      </form>
+    </div>
+  {% endif %}
+  <div class="row">
+  {% for program in programs %}
+    {% if loop.index == 1 or loop.index == split_column_number %}
+    <div class="span6">
+      <ul class="orgs unstyled">
+    {% endif %}
+      {% if program.region != 'Cancelled' %}
         <li>
           <h4>
-            <a data-toggle="collapse" data-target="#collapse-{{rowloop.index}}-{{loop.index}}">{{org.program_name}}</a>
+            <a data-toggle="collapse" data-target="#collapse-{{rowloop.index}}-{{loop.index}}">{{program.program_name}}</a>
             <small>
-              {{org.start}} - {{org.end}}
-              &bull; <abbr title="Scienece Technology Engineering Art Math">STEAM</abbr>: {{org.steam}}
+              {{program.start}} - {{program.end}}
+              &bull; <abbr title="Scienece Technology Engineering Art Math">STEAM</abbr>: {{program.steam}}
             </small>
           </h4>
           <div id="collapse-{{rowloop.index}}-{{loop.index}}" class="collapse">
             <p>
-              {{org.program_description}}
+              {{program.program_description}}
             </p>
             <div class="meta">
-              <p><strong>Region:</strong> {{org.region}}</p>
-              <p><strong>Specialist:</strong> {{org.program_specialist}}</p>
+              <p><strong>Region:</strong> {{program.region}}</p>
+              <p><strong>Specialist:</strong> {{program.program_specialist}}</p>
+              <p><strong>Organization:</strong> {{program.organization_name}}</p>
             </div>
           </div>
         </li>
-      {% endfor %}
-    </ul>
+      {% endif %}
+    {% if loop.index == (split_column_number - 1) %}
+      </ul>
+    </div>
+    {% endif %}
   {% endfor %}
   </ul>
+</div>
+</div>
 {% endblock %}

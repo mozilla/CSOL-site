@@ -42,7 +42,7 @@ exports.isGuardian = isUserType('guardian');
 
 exports.isUnderageLearner = function (req, res, next) {
   exports.isLearner(req, res, function() {
-    if (req.session.user.underage) 
+    if (req.session.user.underage)
       return next();
     return next('route');
   });
