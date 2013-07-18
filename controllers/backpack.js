@@ -364,10 +364,10 @@ module.exports = function (app) {
     });
 
     playlist = _.reject(playlist, function(item) {
-        return !item;
+      return !item;
     });
 
-    return res.render('user/myplaylist.html', {
+    res.render('user/myplaylist.html', {
       user: res.locals.user,
       recommended: recommended,
       playlist: playlist,
