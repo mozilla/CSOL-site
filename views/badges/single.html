@@ -25,7 +25,7 @@
                       {% if item.program.contact %}
                         <a href="mailto:{{item.program.contact}}">{{item.program.contact}}</a>
                       {% elif item.program.url %}
-                        <a href="{{item.program.url}}">{{item.program.url}}</a>
+                        <a href="{{item.program.url}}" target="blank">{{item.program.url}}</a>
                       {% elif item.program.phone %}
                         {{item.program.phone}}
                       {% endif %}
