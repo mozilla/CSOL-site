@@ -9,20 +9,20 @@
           </figure>
         </div>
         <div class="span8">
-            <p><strong>From 
+            <p><strong>From
               {% if program.issuer.url %}
-                <a href="{{program.issuer.url}}">{{program.issuer.name}}</a>
-              {% else %}    
+                <a href="{{program.issuer.url}}" target="blank">{{program.issuer.name}}</a>
+              {% else %}
                 {{program.issuer.name}}
               {% endif %}
             .</strong></p>
             {% if program.description %}
-                <p class="description">{{program.description}}</p>
+                <p class="description">{{program.description|safe}}</p>
                 {% if program.contact %}
                   <p class="description">Email us at <a href="mailto:{{program.contact}}">{{program.contact}}</a> to sign up</p>
                 {% elif program.url %}
-                  <p class="description">Check us out at <a href="{{program.url}}">{{program.url}}</a> to learn more</p>
-                {% elif program.phone %} 
+                  <p class="description">Check us out at <a href="{{program.url}}" target="blank">{{program.url}}</a> to learn more</p>
+                {% elif program.phone %}
                   <p class="description">For more information, call {{program.phone}}</p>
                 {% endif %}
             {% endif %}
