@@ -215,7 +215,11 @@ module.exports = {
             if (err)
               return callback(err);
 
-            callback(null, _.flatten(badges));
+            badges = _.reject(_.flatten(badges), function(badge) {
+              return !badge;
+            });
+
+            callback(null, badges);
           });
         }
 
