@@ -346,27 +346,34 @@ module.exports = function (app) {
       return [c.value, {label: c.label, badges: shuffle(grouped[c.value]).slice(0, maxPerCat)}];
     }));
 
-    // Construct the user's playlist
-		// Expects that `req.remote.badges` exists and that it is the *full* list
-		// of all badges -- this list is then filtered down by what's in the
-		// playlist table to produce the user's playlist (nb: once/if the openbadger
-		// API supports taking a list of badge shortnames to return badge details
-		// about, retrieving the full list from the API is no longer necessary).
-    var playlist = new Array(req.playlist_ids);
+    var badgeLookup = {};
     _.each(req.remote.badges, function(badge) {
-      if (badge.id in req.playlist_shortnames) {
-        var index = req.playlist_shortnames[badge.id];
-        playlist[index] = badge;
+      if (badge) {
+        badgeLookup[badge.id] = badge;
       }
     });
 
-    res.render('user/myplaylist.html', {
+    // Construct the user's playlist
+    // Expects that `req.remote.badges` exists and that it is the *full* list
+    // of all badges -- this list is then filtered down by what's in the
+    // playlist table to produce the user's playlist (nb: once/if the openbadger
+    // API supports taking a list of badge shortnames to return badge details
+    // about, retrieving the full list from the API is no longer necessary).
+    var playlist = _.map(req.playlist_ids, function(shortname) {
+      return badgeLookup[shortname];
+    });
+
+    playlist = _.reject(playlist, function(item) {
+        return !item;
+    });
+
+    return res.render('user/myplaylist.html', {
       user: res.locals.user,
       recommended: recommended,
       playlist: playlist,
       playlist_ids: req.playlist_ids
     });
-  });
+});
 
   // This view supports both adding a badge to the playlist and removing a badge
   // from the playlist. It dispatches on which action by the HTTP method, which is

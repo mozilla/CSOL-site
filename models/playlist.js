@@ -84,7 +84,7 @@ module.exports = {
 					var playlist_ids = new Array(rawList.length);
 					_.each(rawList, function(item, index) {
 						shortNames[item.shortName] = index;
-						playlist_ids.push(item.shortName);
+						playlist_ids[index] = item.shortName;
 					});
 					req.playlist_shortnames = shortNames;
 					req.playlist_ids = playlist_ids;
