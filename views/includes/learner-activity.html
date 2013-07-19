@@ -1,6 +1,8 @@
 <figure class="thumbnail activity-type-{{ activity.type }} state-{{ activity.state }}">
 	<a href="/dashboard/{{ current.username }}/{{ activity.type }}s/{{ activity.badge.id | default(activity.badge.shortname) }}">
-		<img src="{{ activity.badge.image }}">
+		<div class="ie-fix">
+			<img src="{{ activity.badge.image }}">
+		</div>
 	</a>
 	<figcaption class="caption">
 		<p>{{ activity.badge.name }}</p>
