@@ -44,6 +44,12 @@
             <b>Issued to:</b> {{ user.email }}
           </p>
 
+          {% if badge.evidence %}
+            <p>
+              <b>Evidence:</b> <a href="{{ badge.evidence }}">{{ badge.evidence }}</a>
+            </p>
+          {% endif %}
+
           <h3>What is this badge about?</h3>
           <p class="description">{{ badge.description }}</p>
         </div>
