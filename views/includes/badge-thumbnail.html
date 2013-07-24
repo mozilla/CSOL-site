@@ -52,7 +52,7 @@ doesn't have a URL #}
 		{% endif %}
 		{% if not hide_badge_actions %}
 			<div class="item-actions row-fluid">
-				<div class="span6">
+				<div class="span3">
 					{% if playlist_ids and playlist_ids.indexOf(item.id) >= 0 %}
 					<form action="/myplaylist" method="POST" class="playlist-remove">
 						<input type="hidden" name="_method" value="DELETE">
@@ -61,7 +61,7 @@ doesn't have a URL #}
 					</form>
 					{% endif %}
 				</div>
-				<div class="span6">
+				<div class="span9">
 					<p class="pull-right">
 						{% block buttons_right %}
 							<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
