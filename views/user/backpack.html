@@ -3,8 +3,9 @@
 {% set bodyClass = 'mybadges' %}
 {% set navItem = 'backpack' %}
 
+{% block pageTitleWrapper %}{{ super()|safe }} <p>See all the badges you have earned. Keep it up!</p>{% endblock %}
+
 {% block list %}
-  <p>See all the badges you have earned. Keep it up!</p>
   {{ super() | safe }}
   <li class="span3">
   <figure class="thumbnail">
@@ -65,9 +66,9 @@
         var container = this;
         $('form', container).submit(function(){
           var url = $(this).attr('action');
-          $.post(url).done(function() { 
-            $(container).children().toggle(); 
-          }).fail(function() { 
+          $.post(url).done(function() {
+            $(container).children().toggle();
+          }).fail(function() {
             alert('Badge update failed');
           });
           return false;
