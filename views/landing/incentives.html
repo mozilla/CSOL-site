@@ -1,0 +1,58 @@
+{% extends 'info/layout.html' %}
+{% set pageTitle = 'About' %}
+{% set navItem = 'about' %}
+{% set bodyClass = 'about' %}
+
+{% block head %}
+  <!--[if (gt IE 9)|!(IE)]><!-->
+  <style>
+    .org-list {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+    }
+    .org-list [class*="span"] {
+      float: none;
+    }
+  </style>
+  <!--<![endif]-->
+{% endblock %}
+
+{% block content %}
+  <div class="lead">
+    <p>
+      Join Chicago Mayor Rahm Emanuel in challenging local kids to participate in the Summer of Learning, a citywide effort to engage young people in hands-on learning. School stops for the summer, but learning never should.
+    </p>
+    <p>
+      See how science, technology, engineering, art and math (STEAM) learning will rock the Windy City this summer.
+    </p>
+  </div>
+  <div class="video">
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/6WwpwtYNsNk" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="lead">
+	  <p>
+	    Kids can explore, play and learn with these organizations and earn badges along the way. They can unlock exploratory challenges and make their own projects to add to their skills. They'll showcase their work at an end of summer event in Chicago, into the next school year and beyond!
+	  </p>
+	  <p>Did you know that you can now enroll yourself and your family in programs at parks, libraries, community-based organizations and other places around Chicago? Find out more and apply for summer jobs at <a href="http://onesummerchicago.org/" target="blank">One Summer Chicago</a>.</p>
+	  <p>Chicago has thousands of summer camps and recreation and learning opportunities for youth. To sign up for park programs, visit the <a href="http://chicagoparkdistrict.com/" target="blank">Chicago Park District</a> or your nearest park. Similarly, to enroll in library programs, please go to your nearest library location or visit the <a href="http://chipublib.org/" target="blank">Chicago Public Library</a>.</p>
+	  <p>We want every learner in Chicago to have access to these incredible opportunities, so there are several ways to access online Chicago Summer of Learning opportunities:</p>
+	  <ul class="unstyled">
+		  <li>The Chicago Summer of Learning Drop-In Center at DePaul University at 1 E. Jackson Blvd., open from 10 a.m.-4 p.m. Mondays through Thursdays. This center is located in the basement of the building and has state-of-the-art technology and mentor support available.</li>
+		  <li>YOUmedia teen learning spaces, where staff will be on hand to help. YOUmedia has locations at the <a href="http://youmediachicago.org/30-locations/pages/71-harold-washington-library-center" target="blank">Harold Washington Library Center at 400 S. State St.</a>, the <a href="http://youmediachicago.org/30-locations/pages/73-rudy-lozano-branch" target="blank">Rudy Lozano Branch at 1805 S. Loomis St.</a>, the <a href="http://youmediachicago.org/30-locations/pages/74-richard-m-daley-branch" target="blank">Richard M. Daley Branch located at 733 N. Kedzie Ave.</a> and the <a href="http://youmediachicago.org/30-locations/pages/75-thurgood-marshall-branch" target="blank">Thurgood Marshall Branch at 7506 S. Racine Ave.</a></li>
+		  <li><a href="http://www.chipublib.org/library/locator/" target="blank">Chicago Public Libraries</a>, where there are reading rooms and over 2,500 public computers.</li>
+		  <li><a href="http://www.poetryfoundation.org/programs/library" target="blank">The Poetry Foundation Library</a> at 61 W. Superior St., which is open from 11 a.m.-4 p.m. on weekdays and on select Saturdays.</li>
+		  <li><a href="http://locations.weconnectchicago.org/" target="blank">Connect Chicago</a> provides locations with computer access, including public computer centers at Youth Career Development Centers, Community Technology Centers, Community Service Centers, City Colleges, WorkNet and Workforce centers, and CHA computer centers. Altogether, there are more than 250 locations in Chicago where free computer access is provided.</li>
+		  <li><a href="http://www.internetessentials.com/" target="blank">Internet Essentials</a> is a new program provided through a partnership with Comcast and the City of Chicago that is offering low-cost internet access to low-income families in Chicago. (A national program is also available.) Interested families can call toll-free 1-855-8-INTERNET or (1-855-846-8376). (Llama al 1-855-SOLO-995 (1-855-765-6995))</li>
+	  </ul>
+  </div>
+  {% if orgs %}
+    {% set nearestTen = (orgs.length // 10) * 10 %}
+    <h4>Over {{ nearestTen }} Participating Organizations</h4>
+    <ul class="row org-list">
+    {% for org in orgs %}
+      <li class="span4">{% if org.url %}<a href="{{ org.url }}" target="blank">{{ org.name }}</a>{% else %}{{ org.name }}{% endif %}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
