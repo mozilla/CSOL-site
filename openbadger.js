@@ -153,25 +153,6 @@ function applyFilter (data, query) {
   })
 }
 
-function filterBadges (data, query) {
-  var category = confirmFilterValue(query.category, categories),
-      ageGroup = confirmFilterValue(query.age, ageRanges),
-      badgeType = confirmFilterValue(query.type, badgeTypes),
-      activityType = confirmFilterValue(query.activity, activityTypes);
-
-  if (!category && !ageGroup && !badgeType && !activityType)
-    return data;
-
-  return applyFilter(data, {
-    'categories': category,
-    'ageRange': ageGroup,
-    'type': badgeType,
-    'activityType': activityType
-  });
-
-  return data;
-}
-
 function getJWTToken(email) {
   var claims = {
     prn: email,
@@ -201,16 +182,17 @@ var openbadger = new Api(ENDPOINT, {
     func: function getBadges (query, callback) {
       this.getAllBadges(query, callback);
     },
-    filters: filterBadges,
     paginate: true,
     key: 'badges'
   },
 
   getAllBadges: function getAllBadges (query, callback) {
-    // We should really be passing through the entire query at this point,
-    // but right now we're handling most of the querying on this side, so we'll
-    // only worry about 'search' for now
-    this.get('/badges', {qs: {search: query.search}}, function(err, data) {
+    var category = confirmFilterValue(query.category, categories),
+      ageGroup = confirmFilterValue(query.age, ageRanges),
+      badgeType = confirmFilterValue(query.type, badgeTypes),
+      activityType = confirmFilterValue(query.activity, activityTypes);
+
+    this.get('/badges', {qs: {search: query.search, category: category, ageGroup: ageGroup, badgeType: badgeType, activityType: activityType }}, function(err, data) {
       if (err)
         return callback(err, data);
 
