@@ -62,11 +62,13 @@ doesn't have a URL #}
 					{% endif %}
 				</div>
 				<div class="span9">
+					{% if not hide_details_button %}
 					<p class="pull-right">
 						{% block buttons_right %}
 							<a href="{{ itemUrl(url, item) }}" class="btn">Details</a>
 						{% endblock %}
 					</p>
+					{% endif %}
 				</div>
 			</div>
 		{% endif %}
