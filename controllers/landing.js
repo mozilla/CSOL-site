@@ -10,9 +10,9 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/incentives', function (req, res, next) {
+  app.get('/showcase', function (req, res, next) {
     var orgs = [];
-    res.render('landing/incentives.html', {
+    res.render('landing/showcase.html', {
     });
   });
 };
