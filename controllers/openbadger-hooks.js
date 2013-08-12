@@ -9,6 +9,8 @@ const iremix = require('../iremix');
 const url = require('url');
 const logger = require('../logger');
 const s3 = require('../s3');
+const _ = require('underscore');
+const async = require('async');
 
 const JWT_SECRET = process.env.CSOL_OPENBADGER_SECRET;
 const CSOL_HOST = process.env.CSOL_HOST;
@@ -21,8 +23,8 @@ if (!CSOL_HOST)
 
 function handleIssuedClaim(email, code, callback) {
   learners.find({ where: { email: email } }).success(function(learner) {
-    if (learner !== null && !learner.underage) {
-      // email matched a >13 learner.  Can immediately claim the badge.
+    if (learner !== null) {
+      // email matched a learner.  Can immediately claim the badge.
       openbadger.claim({ code: code, learner: learner }, function (err, data) {
           return callback(err);
       });
@@ -39,33 +41,18 @@ function handleIssuedClaim(email, code, callback) {
         if (err)
           return callback(err);
 
-        if (learner === null) {
-          guardians.find({ where: { email: email} }).success(function(guardian) {
-            if (guardian !== null) {
-              // email matched a guardian.  unknown child.
-              mandrill.send('<13 badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email, function(err) {
-                return callback(err);
-              });
-            }
-            else {
-              // email did not match any existing guardian or learner.
-              mandrill.send('unknown badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email, function(err) {
-                return callback(err);
-              });
-            }
-          });
-        }
-        else if (learner.underage) {
-          learner.getGuardian().complete(function (err, guardian) {
-            if (err)
-              return callback(err);
+        guardians.find({ where: { email: email} }).success(function(guardian) {
+          if (guardian !== null) {
+            // email matched a guardian.  unknown child.
+            mandrill.send('<13 badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
+          }
+          else {
+            // email did not match any existing guardian or learner.
+            mandrill.send('unknown badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
+          }
 
-            // email matched an underage learner.  Email the guardian
-            mandrill.send('<13 badge claim with name', { claimUrl: claimUrl, earnerName: learner.username, badgeName: badgeData.badge.name }, guardian.email, function(err) {
-              return callback(err)
-            });
-          });
-        }
+          return callback();
+        });
       });
     }
   });
@@ -105,25 +92,51 @@ function auth(req, res, next) {
 
 module.exports = function (app) {
   app.post('/notify/claim', auth, function (req, res, next) {
-    var claimCode = req.body.claimCode;
-    var email = req.body.email;
 
     if (req.body.isTesting)
       return module.exports.testHandler(req, res, next);
 
-    if (!claimCode)
-      return res.send(500, { status: 'error', error: 'No claimCode provided' });
+    var data = req.body.data;
 
-    claimCode = claimCode.trim();
+    if (!data) {
+      var claimCode = req.body.claimCode;
+      var email = req.body.email;
 
-    handleIssuedClaim(email, claimCode, function(err) {
-      if (err) {
-        logger.log('info', 'Error encountered while handling claim code %s for user %s: %s', claimCode, email, err.toString());
-        return res.send(500, { status: 'error', error: 'An error occurred while attempting to handle this claim notification.' });
+      data = [ { email : email, claimCode : claimCode } ];
+    }
+
+    if (!_.isArray(data)) {
+      return res.send(400, { status: 'error', error: 'Invalid parameters' });
+    }
+
+    async.each([ { email : email, claimCode : claimCode } ],
+      function iterator(entry, callback) {
+        var claimCode = entry.claimCode;
+        var email = entry.email;
+
+        if (!claimCode) {
+          return callback('No claimCode provided');
+        }
+
+        claimCode = claimCode.trim();
+
+        handleIssuedClaim(email, claimCode, function(err) {
+          if (err) {
+            logger.log('info', 'Error encountered while handling claim code %s for user %s: %s', claimCode, email, err.toString());
+            return callback('An error occurred while attempting to handle this claim notification.');
+          }
+
+          return callback();
+        });
+      },
+      function done(err) {
+        if (err) {
+          return res.send(500, { status: 'error', error: err });
+        }
+
+        return res.send(200, { status: 'ok' });
       }
-
-      return res.send(200, { status: 'ok' });
-    });
+    );
   });
 
   app.post('/notify/award', auth, function (req, res, next) {
