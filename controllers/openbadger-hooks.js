@@ -121,7 +121,7 @@ module.exports = function (app) {
       return res.send(400, { status: 'error', error: 'Invalid parameters' });
     }
 
-    async.each([ { email : email, claimCode : claimCode } ],
+    async.each(data,
       function iterator(entry, callback) {
         var claimCode = entry.claimCode;
         var email = entry.email;
