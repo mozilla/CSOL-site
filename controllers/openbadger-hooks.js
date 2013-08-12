@@ -23,8 +23,8 @@ if (!CSOL_HOST)
 
 function handleIssuedClaim(email, code, callback) {
   learners.find({ where: { email: email } }).success(function(learner) {
-    if (learner !== null) {
-      // email matched a learner.  Can immediately claim the badge.
+    if (learner !== null && !learner.underage) {
+      // email matched a >13 learner.  Can immediately claim the badge.
       openbadger.claim({ code: code, learner: learner }, function (err, data) {
           return callback(err);
       });
@@ -40,19 +40,31 @@ function handleIssuedClaim(email, code, callback) {
       openbadger.getBadgeFromCode({ code: code, email: email }, function(err, badgeData) {
         if (err)
           return callback(err);
+        if (learner === null) {
+          guardians.find({ where: { email: email} }).success(function(guardian) {
+            if (guardian !== null) {
+              // email matched a guardian.  unknown child.
+              mandrill.send('<13 badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
+            }
+            else {
+              // email did not match any existing guardian or learner.
+              mandrill.send('unknown badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
+            }
 
-        guardians.find({ where: { email: email} }).success(function(guardian) {
-          if (guardian !== null) {
-            // email matched a guardian.  unknown child.
-            mandrill.send('<13 badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
-          }
-          else {
-            // email did not match any existing guardian or learner.
-            mandrill.send('unknown badge claim', { claimUrl: claimUrl, badgeName: badgeData.badge.name }, email);
-          }
+            return callback();
+          });
+        }
+        else {
+          learner.getGuardian().complete(function (err, guardian) {
+            if (err)
+              return callback(err);
 
-          return callback();
-        });
+            // email matched an underage learner.  Email the guardian
+            mandrill.send('<13 badge claim with name', { claimUrl: claimUrl, earnerName: learner.username, badgeName: badgeData.badge.name }, guardian.email);
+
+            return callback();
+          });
+        }
       });
     }
   });
