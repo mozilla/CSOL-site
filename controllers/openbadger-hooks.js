@@ -77,7 +77,7 @@ function respondWithForbidden(res, reason) {
 function auth(req, res, next) {
   const param = req.method === "GET" ? req.query : req.body;
   const token = param.auth;
-  const email = param.email;
+  const email = param.email || param.data[0].email;
 
   const now = Date.now()/1000|0;
   var decodedToken, msg;
