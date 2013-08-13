@@ -17,7 +17,6 @@ html, body, h1, h2, h3, h4, p {
 .row-fluid [class*="span"] {
 	margin-left:0px;
 }
-
 p.description {
 	white-space: pre-wrap;
 }
@@ -229,7 +228,6 @@ nav.pagination {
 	-moz-box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
 	box-shadow:inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
 	background-repeat:repeat;
-	height:250px;
 	a {
 		color: #fff;
 	}
@@ -362,6 +360,9 @@ nav.pagination {
 		color:#fff;
 		overflow:hidden;
 	}
+  &.secondary.footer {
+    overflow: visible;
+  }
 }
 
 /*mobile*/
@@ -1681,6 +1682,23 @@ body.showcase {
   ol,ul {
     padding-left: 20px;
   }
+  ol {
+    margin: 20px 0;
+    li {
+      margin-bottom: 10px;
+      line-height: 20px;
+    }
+  }
+  .container {
+    p {
+      line-height: 20px;
+    }
+    .lead {
+      p {
+        line-height: 30px;
+      }
+    }
+  }
   table {
     td:first-child {
       width: 100px;
@@ -1690,5 +1708,16 @@ body.showcase {
   img {
     margin: 20px 0;
     border: 1px solid #d2d2d2;
+  }
+  .footer {
+    #bubbles {
+      margin-top: 35px;
+    }
+    ul {
+      padding: 0;
+    }
+    img {
+      border: none;
+    }
   }
 }
