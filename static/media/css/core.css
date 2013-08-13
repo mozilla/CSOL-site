@@ -218,7 +218,6 @@ nav.pagination ul li a {
   -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   background-repeat: repeat;
-  height: 250px;
 }
 .footer a {
   color: #fff;
@@ -342,6 +341,9 @@ nav.pagination ul li a {
   position: relative;
   color: #fff;
   overflow: hidden;
+}
+.wrapper.secondary.footer {
+  overflow: visible;
 }
 /*mobile*/
 @media only screen and (max-width: 599px) {
@@ -1528,6 +1530,19 @@ body.showcase ol,
 body.showcase ul {
   padding-left: 20px;
 }
+body.showcase ol {
+  margin: 20px 0;
+}
+body.showcase ol li {
+  margin-bottom: 10px;
+  line-height: 20px;
+}
+body.showcase .container p {
+  line-height: 20px;
+}
+body.showcase .container .lead p {
+  line-height: 30px;
+}
 body.showcase table td:first-child {
   width: 100px;
   max-width: 100px;
@@ -1535,4 +1550,13 @@ body.showcase table td:first-child {
 body.showcase img {
   margin: 20px 0;
   border: 1px solid #d2d2d2;
+}
+body.showcase .footer #bubbles {
+  margin-top: 35px;
+}
+body.showcase .footer ul {
+  padding: 0;
+}
+body.showcase .footer img {
+  border: none;
 }
