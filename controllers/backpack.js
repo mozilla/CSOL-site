@@ -148,7 +148,9 @@ module.exports = function (app) {
 
     res.render('user/backpack.html', {
       items: data.badges,
-      template: 'includes/badge-instance-thumbnail.html'
+      template: 'includes/badge-instance-thumbnail.html',
+      page: data.page,
+      pages: data.pages
     });
   });
 
@@ -203,7 +205,9 @@ module.exports = function (app) {
 
         res.render('user/backpack.html', {
           items: data.badges,
-          template: 'includes/badge-instance-thumbnail.html'
+          template: 'includes/badge-instance-thumbnail.html',
+          page: data.page,
+          pages: data.pages
         });
       }
     );
