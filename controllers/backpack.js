@@ -410,7 +410,7 @@ module.exports = function (app) {
       openbadger.getBadges(function (err, data) {
         _.each(applications, function(app) {
           _.extend(app, _.findWhere(data.badges, {id: app.badgeId}));
-            app.url = '/earn/' + app.id + '/apply';
+            app.url = '/earn/' + app.badgeId + '/apply';
         });
         res.render('user/applications.html', {
           items: applications
