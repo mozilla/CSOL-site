@@ -24,4 +24,4 @@ node_modules
 codekit-config.json
 config.env
 
-.env
+*.env
