@@ -26,8 +26,7 @@
   "devDependencies": {
     "sinon": "~1.7.2",
     "injectr": "~0.4.0",
-    "optimist": "~0.5.2",
-    "up": "~0.2.2"
+    "optimist": "~0.5.2"
   },
   "scripts": {
     "test": "node bin/test.js",
