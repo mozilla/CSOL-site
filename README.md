@@ -93,6 +93,10 @@ export CSOL_AWS_FAKE_S3_DIR='csol-s3'
 #Aestimia
 export CSOL_AESTIMIA_URL='http://localhost:8001/api/'
 export CSOL_AESTIMIA_SECRET='lksdafjjtitiejrwejjjresfs'
+
+#New Relic
+export NEWRELIC_LICENSE=''
+export NEWRELIC_APPNAME=''
 ```
 
 Then you can source the file like `. config.env`.
