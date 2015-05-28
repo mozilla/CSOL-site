@@ -27,6 +27,9 @@ const healthChecker = healthCheck({
   }
 });
 
+if (process.env['FORCE_HTTPS'] === 'true') {
+  app.use(middleware.forceHTTPS());
+}
 app.use(middleware.session());
 app.use(middleware.csrf({
   whitelist: [

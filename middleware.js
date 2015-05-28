@@ -15,6 +15,15 @@ if ('COOKIE_SECRET' in process.env) {
   throw new Error('COOKIE_SECRET not set in environment');
 }
 
+exports.forceHTTPS = function() {
+  return function(req, res, next) {
+    if (req.headers['x-forwarded-proto'] != 'https') {
+      res.redirect(301, process.env['CSOL_HOST'] + req.url);
+    }
+
+    process.nextTick(next);
+  };
+};
 
 exports.session = function session () {
   return clientSessions({
