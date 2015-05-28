@@ -18,7 +18,7 @@ if ('COOKIE_SECRET' in process.env) {
 exports.forceHTTPS = function() {
   return function(req, res, next) {
     if (req.headers['x-forwarded-proto'] != 'https') {
-      res.redirect(301, process.env['CSOL_HOST'] + req.url);
+      return res.redirect(301, process.env['CSOL_HOST'] + req.url);
     }
 
     process.nextTick(next);
