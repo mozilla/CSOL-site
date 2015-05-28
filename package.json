@@ -39,6 +39,9 @@
     "type": "git",
     "url": "git://github.com/mozilla/CSOL-site.git"
   },
+  "engines": {
+    "node": "0.10.x"
+  },
   "author": "Mozilla",
   "license": "MPL 2.0",
   "gitHead": "dcc7dcf3f377593ecee811ebf9a25eede814941f",
