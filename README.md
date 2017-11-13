@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/mozilla/CSOL-site.png?branch=master)](https://travis-ci.org/mozilla/CSOL-site)
 
+# This repo is no longer actively maintained and has been archived.
+
 # Chicago Summer of Learning
 
 Learning happens everywhere in the city—in libraries, parks, museums and cultural institutions, community-based organizations, colleges and universities, schools, and beyond. This summer, Mayor Rahm Emanuel is challenging all Chicago youth to participate in the Summer of Learning, a citywide effort to engage youth in hands-on learning opportunities—particularly in science, technology, engineering, arts, and math. School stops for the summer, but learning never should.
