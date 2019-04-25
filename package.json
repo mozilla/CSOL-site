@@ -19,7 +19,7 @@
     "tap": "~0.4.1",
     "underscore": "~1.4.4",
     "winston": "~0.7.1",
-    "newrelic": "~0.9.19",
+    "newrelic": "~0.10.3",
     "colors": "~0.6.0",
     "jwt-simple": "~0.1.0"
   },
